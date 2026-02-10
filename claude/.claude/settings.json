@@ -1,0 +1,115 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "Bash(npm:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(gh:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl config:*)",
+      "Bash(kubectl port-forward:*)",
+      "Bash(kubectl exec:*)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(pwd)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(npx *)",
+      "Bash(xargs *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:npmjs.com)",
+      "WebFetch(domain:docs.docker.com)",
+      "WebFetch(domain:kubernetes.io)"
+    ],
+    "deny": [
+      "Read(./.env*)",
+      "Edit(./.env*)",
+      "Write(./.env*)",
+      "Bash(rm -rf:*)",
+      "Bash(npm publish:*)",
+      "Bash(npm unpublish:*)",
+      "Bash(gh repo delete:*)",
+      "Bash(sudo:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(cat .env*)",
+      "Bash(head .env*)",
+      "Bash(tail .env*)",
+      "Bash(grep .env*)",
+      "Read(./secrets/**)",
+      "Read(./**/*.pem)",
+      "Read(./**/*.key)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.zshrc)",
+      "Read(~/.bashrc)",
+      "Read(~/.bash_profile)",
+      "Read(~/.gitconfig)",
+      "Edit(~/.zshrc)",
+      "Edit(~/.bashrc)",
+      "Edit(~/.bash_profile)",
+      "Edit(~/.gitconfig)",
+      "Bash(git reset --hard:*)",
+      "Bash(git reset --hard)",
+      "Bash(git clean -f:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git branch -D:*)",
+      "Bash(*xargs*rm *)",
+      "Bash(*xargs*rm -rf*)",
+      "Bash(*xargs*chmod*)",
+      "Bash(*xargs*chown*)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(git push)",
+      "Bash(git stash drop:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh pr close:*)",
+      "Bash(gh issue close:*)",
+      "WebSearch"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"decision\": \"allow\", \"message\": \"POST-WRITE CHECK REQUIRED:\\n□ No what-comments (delete & rename instead)\\n□ No vague names (data, result, temp, handle*, process*)\\n□ Only why-comments survive (business logic, warnings, TODOs w/ tickets)\"}'"
+          }
+        ]
+      }
+    ]
+  },
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.12"
+}
