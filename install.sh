@@ -22,6 +22,7 @@ mkdir -p "$CLAUDE_TARGET"
 
 # Files/directories to symlink
 CLAUDE_ITEMS=(
+    "CLAUDE.md"
     "settings.json"
     "hooks"
     "skills"
