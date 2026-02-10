@@ -2,10 +2,13 @@
 set -euo pipefail
 
 # Find all skills (optional - for your reference, not injected)
-SKILLS_DIR="${HOME}/.claude/skills"
+# HOME may be empty in hook context, so use fallback
+USER_HOME="${HOME:-$(eval echo ~)}"
+SKILLS_DIR="${USER_HOME}/.claude/skills"
 SKILL_COUNT=0
 if [ -d "$SKILLS_DIR" ]; then
-    SKILL_COUNT=$(find "$SKILLS_DIR" -name "SKILL.md" | wc -l | tr -d ' ')
+    # Use -L to follow symlinks (skills dir may be symlinked from dotfiles)
+    SKILL_COUNT=$(find -L "$SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 fi
 
 cat <<EOF
