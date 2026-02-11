@@ -78,6 +78,8 @@
       "Write(~/.claude/**)"
     ],
     "ask": [
+      "Bash(git commit:*)",
+      "Bash(git commit)",
       "Bash(git push:*)",
       "Bash(git push)",
       "Bash(git stash drop:*)",
@@ -100,17 +102,7 @@
         ]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '{\"decision\": \"allow\", \"message\": \"POST-WRITE CHECK REQUIRED:\\n□ No what-comments (delete & rename instead)\\n□ No vague names (data, result, temp, handle*, process*)\\n□ Only why-comments survive (business logic, warnings, TODOs w/ tickets)\"}'"
-          }
-        ]
-      }
-    ]
+    "PreToolUse": []
   },
   "autoUpdatesChannel": "stable",
   "minimumVersion": "2.1.12"
