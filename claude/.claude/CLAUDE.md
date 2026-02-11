@@ -16,3 +16,8 @@ Config files live in `~/repos/dotfiles/` and are symlinked to `~/.claude/`.
 | This file | `~/repos/dotfiles/claude/.claude/CLAUDE.md` |
 
 **Never edit via `~/.claude/` paths** - those are symlinks.
+
+## Git Preferences
+
+- Use **conventional commit** style unless the project specifies otherwise
+- Never commit or push on my behalf — suggest commit messages and branch names, I'll run the commands myself
