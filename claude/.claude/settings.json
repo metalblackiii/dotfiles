@@ -74,14 +74,24 @@
       "Bash(*xargs*rm -rf*)",
       "Bash(*xargs*chmod*)",
       "Bash(*xargs*chown*)",
-      "Edit(~/.claude/**)",
-      "Write(~/.claude/**)"
-    ],
-    "ask": [
       "Bash(git commit:*)",
       "Bash(git commit)",
       "Bash(git push:*)",
       "Bash(git push)",
+      "Edit(~/.claude/CLAUDE.md)",
+      "Edit(~/.claude/settings.json)",
+      "Edit(~/.claude/skills/**)",
+      "Edit(~/.claude/commands/**)",
+      "Edit(~/.claude/hooks/**)",
+      "Edit(~/.claude/rules/**)",
+      "Write(~/.claude/CLAUDE.md)",
+      "Write(~/.claude/settings.json)",
+      "Write(~/.claude/skills/**)",
+      "Write(~/.claude/commands/**)",
+      "Write(~/.claude/hooks/**)",
+      "Write(~/.claude/rules/**)"
+    ],
+    "ask": [
       "Bash(git stash drop:*)",
       "Bash(gh pr create:*)",
       "Bash(gh pr merge:*)",
