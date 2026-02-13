@@ -2,7 +2,7 @@
 name: neb-explorer
 description: Explore feature implementations, data flows, or patterns across the neb microservices ecosystem. Use when investigating how a feature spans multiple repos.
 tools: Read, Grep, Glob, Bash
-model: haiku
+model: sonnet
 maxTurns: 15
 ---
 
