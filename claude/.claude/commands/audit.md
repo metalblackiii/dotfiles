@@ -22,15 +22,16 @@ Read each artifact's description/frontmatter so you can cross-reference later.
 
 ## Step 2: Find Session Transcripts
 
-```bash
-find ~/.claude/projects -name "*.jsonl" -mtime -7 -type f
+Use Glob to find recent transcripts:
+```
+Glob with pattern="**/*.jsonl" path="~/.claude/projects"
 ```
 
-Count total sessions and which projects they belong to.
+Filter to files modified in the last 7 days by checking modification times. Count total sessions and which projects they belong to.
 
 ## Step 3: Parse Usage Data
 
-For each transcript, extract:
+For each transcript file found, use jq via Bash to extract data:
 
 ### Skills & Commands (both use Skill tool)
 ```bash
@@ -51,18 +52,16 @@ jq -r 'select(.type == "assistant") |
 Filter to only custom agent types (from `~/.claude/agents/`), not built-in types like `Explore`, `Plan`, `Bash`, etc.
 
 ### Hook Effectiveness
-Search for the SessionStart hook fingerprint — the phrase "specialized skills installed" in system messages:
-```bash
-jq -r 'select(.type == "system") | .message // empty' <file> | grep -l "specialized skills"
+Use Grep to search for the SessionStart hook fingerprint across transcripts:
+```
+Grep with pattern="specialized skills installed" path="~/.claude/projects" glob="*.jsonl"
 ```
 Count sessions where the hook fired vs total sessions.
 
 ### Permission Denials
-Search for evidence of denied tool calls — these indicate settings gaps or overly strict rules:
-```bash
-grep -c "permission" <file> | # rough signal
-jq -r 'select(.type == "tool_result") |
-       select(.content[]?.text // "" | test("denied|not allowed|permission"; "i"))' <file>
+Use Grep to search for evidence of denied tool calls:
+```
+Grep with pattern="denied|not allowed|permission" path="~/.claude/projects" glob="*.jsonl" -i=true
 ```
 
 ## Step 4: Output
@@ -133,7 +132,8 @@ Prioritized list:
 
 ## Notes
 
-- Use `jq` for JSONL parsing — it handles the format natively
+- Use `jq` via Bash for JSONL parsing — it handles the format natively
+- Use `Glob` to find files (not `find`) and `Grep` to search content (not `grep`) — these are denied in Bash
 - Sessions with 0 skill invocations despite task-relevant skills are the most interesting finding
 - When identifying "missed opportunities", look at what tools/actions were taken and match against skill trigger descriptions
 - Keep the output factual — numbers first, interpretation second
