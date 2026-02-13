@@ -1,12 +1,12 @@
 ---
-Description: Review a pull request comprehensively using the pr-analysis skill
+Description: Review a pull request comprehensively using the analyzing-prs skill
 Argument-hint: [PR number, URL, or empty for current branch]
 Allowed-tools: Bash(gh *), Read, Glob, Grep
 ---
 
 # Review PR
 
-Review a pull request comprehensively using the pr-analysis skill criteria.
+Review a pull request comprehensively using the analyzing-prs skill criteria.
 
 ## Arguments
 
@@ -16,7 +16,7 @@ Review a pull request comprehensively using the pr-analysis skill criteria.
 
 ### Setup Phase: Load Review Criteria
 
-Use the Skill tool to load the `pr-analysis` skill -- this contains the review categories and severity definitions you MUST apply.
+Use the Skill tool to load the `analyzing-prs` skill -- this contains the review categories and severity definitions you MUST apply.
 
 ### Step 1: Fetch PR Information
 
@@ -48,7 +48,7 @@ For each file in the PR:
 
 ### Step 3: Apply Review Criteria
 
-Apply the **pr-analysis** skill criteria to evaluate all applicable categories:
+Apply the **analyzing-prs** skill criteria to evaluate all applicable categories:
 - Architecture compliance
 - Testing coverage
 - Code quality
