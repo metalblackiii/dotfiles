@@ -1,6 +1,6 @@
 ---
-Name: prd-decomposition
-Description: Decompose Product Requirements Documents (PRDs) into atomic, reviewable implementation phases. Use when breaking down feature specs, technical designs, or product requirements into sequential branches and pull requests. Provides heuristics for phase ordering, dependency analysis, atomicity criteria, and PR sizing. Enforces working-state invariant where each phase leaves the codebase compilable and testable.
+name: prd-decomposition
+description: Decompose Product Requirements Documents (PRDs) into atomic, reviewable implementation phases. Use when breaking down feature specs, technical designs, or product requirements into sequential branches and pull requests. Provides heuristics for phase ordering, dependency analysis, atomicity criteria, and PR sizing. Enforces working-state invariant where each phase leaves the codebase compilable and testable.
 ---
 
 # PRD Decomposition Skill

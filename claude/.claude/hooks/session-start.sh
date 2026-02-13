@@ -52,7 +52,7 @@ fi
 
 cat <<EOF
 {
-  "hookSpecificOutput": {
+   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
     "additionalContext": "<EXTREMELY_IMPORTANT>
 
