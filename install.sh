@@ -27,6 +27,8 @@ CLAUDE_ITEMS=(
     "hooks"
     "skills"
     "commands"
+    "agents"
+    "rules"
 )
 
 for item in "${CLAUDE_ITEMS[@]}"; do

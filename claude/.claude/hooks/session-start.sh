@@ -1,14 +1,53 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Find all skills (optional - for your reference, not injected)
 # HOME may be empty in hook context, so use fallback
 USER_HOME="${HOME:-$(eval echo ~)}"
 SKILLS_DIR="${USER_HOME}/.claude/skills"
+
 SKILL_COUNT=0
+SKILL_LIST=""
+
 if [ -d "$SKILLS_DIR" ]; then
+    # Parse each SKILL.md frontmatter for name + description
     # Use -L to follow symlinks (skills dir may be symlinked from dotfiles)
-    SKILL_COUNT=$(find -L "$SKILLS_DIR" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+    while IFS= read -r skill_file; do
+        SKILL_COUNT=$((SKILL_COUNT + 1))
+
+        in_frontmatter=false
+        name=""
+        description=""
+
+        while IFS= read -r line; do
+            if [[ "$line" == "---" ]]; then
+                if $in_frontmatter; then
+                    break
+                else
+                    in_frontmatter=true
+                    continue
+                fi
+            fi
+            if $in_frontmatter; then
+                if [[ "$line" =~ ^[Nn]ame:\ *(.*) ]]; then
+                    name="${BASH_REMATCH[1]}"
+                elif [[ "$line" =~ ^[Dd]escription:\ *(.*) ]]; then
+                    description="${BASH_REMATCH[1]}"
+                fi
+            fi
+        done < "$skill_file"
+
+        # Fall back to directory name if no name in frontmatter
+        if [ -z "$name" ]; then
+            name=$(basename "$(dirname "$skill_file")")
+        fi
+
+        if [ -n "$description" ]; then
+            # Escape double quotes for JSON safety
+            description="${description//\"/\\\"}"
+            SKILL_LIST="${SKILL_LIST}
+- **${name}**: ${description}"
+        fi
+    done < <(find -L "$SKILLS_DIR" -name "SKILL.md" 2>/dev/null | sort)
 fi
 
 cat <<EOF
@@ -28,21 +67,8 @@ If the answer is YES (even 1% chance):
 2. Follow its guidance
 3. THEN respond to the user
 
-If the answer is \"I don't know what skills I have\":
-1. You're rationalizing
-2. The Skill tool knows what's available
-3. Check for skills anyway
-
-## Skill Triggers
-
-Match the task to the skill:
-- **Writing/editing code** → self-documenting-code
-- **Bug or test failure** → systematic-debugging
-- **New feature or fix** → test-driven-development
-- **Architecture or refactoring** → software-design
-- **About to claim done** → verification-before-completion
-
-The Skill tool's description field tells you when each skill applies. Trust those descriptions.
+## Installed Skills
+${SKILL_LIST}
 
 ## Red Flags
 

@@ -13,6 +13,7 @@ Config files live in `~/repos/dotfiles/` and are symlinked to `~/.claude/`.
 | Permissions, hooks | `~/repos/dotfiles/claude/.claude/settings.json` |
 | Skills | `~/repos/dotfiles/claude/.claude/skills/<name>/SKILL.md` |
 | Commands | `~/repos/dotfiles/claude/.claude/commands/<name>.md` |
+| Agents | `~/repos/dotfiles/claude/.claude/agents/<name>.md` |
 | This file | `~/repos/dotfiles/claude/.claude/CLAUDE.md` |
 
 **Never edit via `~/.claude/` paths** - those are symlinks.
