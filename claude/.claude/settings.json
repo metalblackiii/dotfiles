@@ -30,6 +30,7 @@
       "Bash(find *)",
       "Bash(grep *)",
       "Bash(npx *)",
+      "Bash(touch *)",
       "Bash(xargs *)",
       "Bash(*npm test*)",
       "WebFetch(domain:github.com)",
