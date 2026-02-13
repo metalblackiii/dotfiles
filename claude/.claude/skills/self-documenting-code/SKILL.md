@@ -1,5 +1,5 @@
 ---
-name: Self-Documenting Code
+name: self-documenting-code
 description: Invoke when writing or editing code. Transforms the instinct to comment into better naming. Comments explain "why", never "what".
 ---
 

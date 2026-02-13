@@ -18,7 +18,12 @@ Config files live in `~/repos/dotfiles/` and are symlinked to `~/.claude/`.
 
 **Never edit via `~/.claude/` paths** - those are symlinks.
 
+## Tool Preferences
+
+- **Always use built-in tools over Bash equivalents** — `Read` not `cat`/`head`/`tail`, `Glob` not `find`/`ls`, `Grep` not `grep`/`rg`. These are denied in settings.json to enforce this. Never attempt to work around the deny rules.
+
 ## Git Preferences
 
 - Use **conventional commit** style unless the project specifies otherwise
-- Never commit or push on my behalf — suggest commit messages and branch names, I'll run the commands myself
+- Only commit or push when I explicitly ask — every commit and push requires my approval (enforced via `ask` rules in settings.json)
+- Never auto-commit follow-up changes after an initial commit — always prompt again

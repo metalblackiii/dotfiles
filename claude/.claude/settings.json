@@ -22,26 +22,29 @@
       "Bash(kubectl config *)",
       "Bash(kubectl port-forward *)",
       "Bash(kubectl exec *)",
-      "Bash(ls *)",
-      "Bash(cat *)",
       "Bash(pwd)",
-      "Bash(head *)",
-      "Bash(tail *)",
-      "Bash(find *)",
-      "Bash(grep *)",
       "Bash(npx *)",
       "Bash(touch *)",
-      "Bash(xargs *)",
       "Bash(*npm test*)",
+      "Write(~/.claude/plans/**)",
+      "Edit(~/.claude/plans/**)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:npmjs.com)",
       "WebFetch(domain:docs.docker.com)",
-      "WebFetch(domain:kubernetes.io)"
+      "WebFetch(domain:kubernetes.io)",
+      "WebSearch"
     ],
     "deny": [
       "Read(**/.env*)",
       "Edit(**/.env*)",
       "Write(**/.env*)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(xargs *)",
       "Bash(rm -rf *)",
       "Bash(npm publish *)",
       "Bash(npm unpublish *)",
@@ -49,10 +52,6 @@
       "Bash(sudo *)",
       "Bash(curl *)",
       "Bash(wget *)",
-      "Bash(cat *.env*)",
-      "Bash(head *.env*)",
-      "Bash(tail *.env*)",
-      "Bash(grep *.env*)",
       "Read(**/secrets/**)",
       "Read(**/*.pem)",
       "Read(**/*.key)",
@@ -77,10 +76,6 @@
       "Bash(*xargs*rm -rf*)",
       "Bash(*xargs*chmod*)",
       "Bash(*xargs*chown*)",
-      "Bash(git commit *)",
-      "Bash(git commit)",
-      "Bash(git push *)",
-      "Bash(git push)",
       "Edit(~/.claude/CLAUDE.md)",
       "Edit(~/.claude/settings.json)",
       "Edit(~/.claude/skills/**)",
@@ -95,12 +90,15 @@
       "Write(~/.claude/rules/**)"
     ],
     "ask": [
+      "Bash(git commit *)",
+      "Bash(git commit)",
+      "Bash(git push *)",
+      "Bash(git push)",
       "Bash(git stash drop *)",
       "Bash(gh pr create *)",
       "Bash(gh pr merge *)",
       "Bash(gh pr close *)",
-      "Bash(gh issue close *)",
-      "WebSearch"
+      "Bash(gh issue close *)"
     ]
   },
   "hooks": {
@@ -114,9 +112,8 @@
           }
         ]
       }
-    ],
-    "PreToolUse": []
+    ]
   },
   "autoUpdatesChannel": "stable",
-  "minimumVersion": "2.1.12"
+  "minimumVersion": "2.1.39"
 }
