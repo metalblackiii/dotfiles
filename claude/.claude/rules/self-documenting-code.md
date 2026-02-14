@@ -1,7 +1,12 @@
 # Self-Documenting Code
 
-Every comment that explains "what" is a naming failure. Before writing a comment, try renaming first.
+Do NOT add comments that explain what code does. Rename to make it obvious instead.
 
-Post-write scan: fix "what" comments (rename), redundant comments (delete), vague names like `data`, `result`, `temp`, `handle*`, `process*` (rename to intent).
+Comments are ONLY permitted for:
+- **WHY** — business rules, regulatory requirements, non-obvious design choices
+- **WARNING** — hazards, ordering dependencies, surprising behavior
+- **TODO** — with ticket number (e.g., `TODO(JIRA-1234)`)
 
-Comments survive only if they explain **WHY** (business logic), **WARNING** (hazards), or **TODO** (with ticket number).
+Everything else is a naming failure. Fix the name, delete the comment.
+
+Vague names are defects: `data`, `result`, `temp`, `handle*`, `process*` — rename to intent.
