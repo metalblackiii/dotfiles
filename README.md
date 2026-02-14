@@ -39,14 +39,14 @@ dotfiles/
 │       ├── hooks/           # Session-start hook
 │       ├── rules/           # 4 behavioral rules
 │       ├── scripts/         # Status bar script
-│       └── skills/          # 15 specialized skills
+│       └── skills/          # 16 specialized skills
 ├── install.sh               # Symlink installer
 └── .gitignore
 ```
 
 ## Claude Code Configuration
 
-### Skills (15)
+### Skills (16)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. A session-start hook enforces this via "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -66,6 +66,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
+| **writing-agents** | Creating or editing custom agent .md files and frontmatter |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
 Several skills include reference libraries (e.g., `sql-pro/references/`, `prompt-engineer/references/`, `microservices-architect/references/`).
