@@ -27,3 +27,8 @@ Config files live in `~/repos/dotfiles/` and are symlinked to `~/.claude/`.
 - Use **conventional commit** style unless the project specifies otherwise
 - Only commit or push when I explicitly ask — every commit and push requires my approval (enforced via `ask` rules in settings.json)
 - Never auto-commit follow-up changes after an initial commit — always prompt again
+
+## PR Defaults
+
+- Default reviewers: `Chiropractic-CT-Cloud/phoenix`
+- Use `-r org/team-slug` with `gh pr create` (not `--team`)
