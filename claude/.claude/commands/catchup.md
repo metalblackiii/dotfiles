@@ -1,3 +1,7 @@
+---
+description: Restore context after /clear, /compact, or a long break
+---
+
 # Context Catchup
 
 Restore context after `/clear`, `/compact`, or a long break. Rebuild understanding of recent work and project state.

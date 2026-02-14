@@ -70,13 +70,16 @@ Specialized methodologies that activate automatically when relevant tasks are de
 
 Several skills include reference libraries (e.g., `sql-pro/references/`, `prompt-engineer/references/`, `microservices-architect/references/`).
 
-### Commands (4)
+### Commands (7)
 
 Slash commands invoked directly during sessions.
 
 | Command | Purpose |
 |---------|---------|
-| `/audit` | Audit usage patterns across all customizations by parsing session transcripts |
+| `/audit-skills` | Audit skill usage across recent sessions to find dormant skills and adoption gaps |
+| `/audit-commands` | Audit slash command usage across recent sessions to find unused commands |
+| `/audit-agents` | Audit custom agent usage across recent sessions to find unused agents |
+| `/audit-permissions` | Audit permission deny/allow/ask rules for denials and calibration issues |
 | `/catchup` | Restore context after `/clear`, `/compact`, or a long break |
 | `/introspect` | Review configuration for conflicts, redundancy, and staleness |
 | `/review` | Review a pull request using the analyzing-prs skill |

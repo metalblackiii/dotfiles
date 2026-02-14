@@ -28,7 +28,6 @@ Config files live in `~/repos/dotfiles/` and are symlinked to `~/.claude/`.
 - Use **conventional commit** style unless the project specifies otherwise
 - Only commit or push when I explicitly ask — every commit and push requires my approval (enforced via `ask` rules in settings.json)
 - Never auto-commit follow-up changes after an initial commit — always prompt again
-- When modifying a skill's behavior, bump its `version` in frontmatter (semver: patch for tweaks, minor for new sections, major for rewrites)
 
 ## PR Defaults
 
