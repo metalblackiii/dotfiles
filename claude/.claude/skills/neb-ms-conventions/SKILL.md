@@ -105,3 +105,7 @@ msRequest({
 
 - **Datadog** (dd-trace) for tracing, `@neb/datadog` helpers
 - **Pino** for structured logging
+
+## Architectural Decisions
+
+For service boundary design, DDD patterns, saga/choreography decisions, data ownership strategy, or any architectural design work spanning neb services — defer to the `microservices-architect` skill. This skill covers *how the codebase works today*; that skill covers *how to design what comes next*.

@@ -15,3 +15,6 @@ claude/.claude/plugins/
 claude/.claude/session-env/
 claude/.claude/shell-snapshots/
 claude/.claude/stats-cache.json
+
+# Exclude turbo caching
+.turbo

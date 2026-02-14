@@ -21,20 +21,33 @@ Perform a configuration introspection.
    - **Overly broad instructions:** Rules that might cause unintended side effects
    - **Missing coverage:** Common workflows without automation
 
-3. **Output format:**
-   
+3. **Prompt Quality Audit** (invoke the `prompt-engineer` skill for this section):
+
+   For each skill, evaluate the **description** field against these criteria:
+   - **Trigger-only?** Does it say WHEN to use, not HOW it works? Descriptions containing process steps cause agents to follow the brief summary instead of reading the full skill.
+   - **Specific enough?** Would a model reliably match this description to the right user request? Vague descriptions like "Use for development" won't trigger correctly.
+   - **Overlap detection:** Do any two descriptions match the same user request? If so, which one wins and is the precedence clear?
+   - **Completeness:** Are there common triggering scenarios the description misses? (e.g., a SQL skill that doesn't mention "migration" won't trigger during migration work)
+
+   Rate each skill description: STRONG / NEEDS WORK / WEAK, with a one-line explanation.
+
+4. **Output format:**
+
    ### 🔴 Conflicts Found
    (contradictory instructions that need resolution)
-   
+
    ### 🟡 Redundancies
    (duplicated or overlapping functionality)
-   
+
    ### 🟠 Potentially Stale
    (may no longer be needed)
-   
+
+   ### 🎯 Prompt Quality Audit
+   (per-skill description effectiveness rating with improvement suggestions)
+
    ### 🟢 Configuration Health
    (what's working well)
-   
+
    ### 💡 Suggestions
    (improvements or gaps to consider)
 
