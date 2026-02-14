@@ -6,22 +6,20 @@ Restore context after `/clear`, `/compact`, or a long break. Rebuild understandi
 
 ### 1. Git State
 
-Run these commands to understand current position:
+Run these as separate parallel Bash calls (no chaining or subshells — keeps permissions clean):
 
-```bash
-git branch --show-current
-git status --short
-git log --oneline -10
-git log --oneline --since="midnight" --author="$(git config user.name)" 2>/dev/null
-```
+- `git branch --show-current`
+- `git status --short`
+- `git log --oneline -10`
 
 ### 2. Recent Changes
 
-```bash
-git diff --stat HEAD~5 2>/dev/null || git diff --stat $(git rev-list --max-parents=0 HEAD)
-git diff --name-only
-git diff --cached --name-only
-```
+Run these as separate parallel Bash calls:
+
+- `git diff --stat HEAD~5`
+- `git diff --name-only`
+- `git diff --cached --name-only`
+- `git log --name-only --pretty=format: HEAD~5..HEAD` (for TODO scan file list)
 
 ### 3. TODO Scan
 
