@@ -128,3 +128,7 @@ mkdir -p topic-name/
 ```
 
 Then update `install.sh` to symlink the new topic.
+
+## Attribution
+
+See [ATTRIBUTION.md](ATTRIBUTION.md) for skill sources and credits.
