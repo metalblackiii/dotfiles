@@ -1,6 +1,7 @@
 ---
 name: writing-skills
 description: Use when creating or editing SKILL.md files, defining new skills, or modifying skill frontmatter
+version: "1.0.0"
 ---
 
 # Writing Skills
@@ -25,6 +26,7 @@ All supported YAML frontmatter fields:
 | `context` | No | Set to `fork` to run in isolated subagent context |
 | `agent` | No | Subagent type when `context: fork` (e.g., `Explore`, `Plan`) |
 | `hooks` | No | Skill-scoped hooks (see Hooks documentation) |
+| `version` | No | Semver string for tracking skill evolution (e.g., `"1.0.0"`) |
 
 **Max frontmatter size:** 1024 characters total
 
@@ -58,6 +60,7 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 ---
 name: skill-name
 description: Use when [triggering conditions]
+version: "1.0.0"
 ---
 
 # Skill Name
@@ -102,6 +105,7 @@ Bullet list of warning signs.
 - [ ] Overview: core principle in 1-2 sentences
 - [ ] Content: actionable, scannable (tables, bullets)
 - [ ] For discipline skills: Iron Law, rationalizations table, red flags
+- [ ] Version: `version: "1.0.0"` in frontmatter
 - [ ] Size: <500 words for most skills, <200 for frequently-loaded
 
 ## Anti-Patterns

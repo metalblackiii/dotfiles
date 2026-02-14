@@ -1,6 +1,7 @@
 ---
 name: microservices-architect
 description: Use when designing distributed systems, decomposing monoliths, defining service boundaries, or implementing microservices patterns like sagas, event sourcing, or service mesh.
+version: "1.0.0"
 ---
 
 # Microservices Architect
