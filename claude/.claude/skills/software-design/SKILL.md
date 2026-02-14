@@ -1,6 +1,6 @@
 ---
 name: software-design
-description: Use when making architecture decisions, restructuring code, planning implementations, or evaluating code smells and refactoring opportunities.
+description: Use when making single-service design decisions, restructuring code, planning implementations, or evaluating code smells and refactoring opportunities.
 ---
 
 # Software Design
@@ -149,3 +149,9 @@ Prioritize work with clear success criteria. "The API returns the correct data" 
 | Tests don't exist | Write characterization tests before touching code |
 | Change requires edits in 5+ places | Smell: shotgun surgery. Consider consolidating. |
 | Method takes 8 parameters | Smell: long parameter list. Consider parameter object. |
+
+---
+
+## Related Skills
+
+**For distributed systems** — service decomposition, cross-service communication, saga patterns, service mesh — use the **microservices-architect** skill instead. This skill covers single-service design; that skill covers multi-service architecture.
