@@ -1,7 +1,6 @@
 ---
 name: handoff
 description: Use when ending a session with work in progress, or when context usage is high and a fresh start would help.
-version: "1.0.0"
 ---
 
 Write or update a handoff document so the next agent with fresh context can continue this work.

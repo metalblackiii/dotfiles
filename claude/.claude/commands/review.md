@@ -1,7 +1,7 @@
 ---
-Description: Review a pull request comprehensively using the analyzing-prs skill
-Argument-hint: [PR number, URL, or empty for current branch]
-Allowed-tools: Bash(gh *), Read, Glob, Grep
+description: Review a pull request comprehensively using the analyzing-prs skill
+argument-hint: [PR number, URL, or empty for current branch]
+allowed-tools: Bash(gh *), Read, Glob, Grep
 ---
 
 # Review PR

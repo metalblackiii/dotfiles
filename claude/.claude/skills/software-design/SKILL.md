@@ -1,7 +1,6 @@
 ---
 name: software-design
 description: Use when making single-service design decisions, restructuring code, planning implementations, or evaluating code smells and refactoring opportunities.
-version: "1.0.0"
 ---
 
 # Software Design

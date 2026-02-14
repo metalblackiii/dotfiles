@@ -1,7 +1,6 @@
 ---
 name: prompt-engineer
 description: Use when designing prompts for LLMs, optimizing model performance, building evaluation frameworks, or implementing advanced prompting techniques like chain-of-thought, few-shot learning, or structured outputs.
-version: "1.0.0"
 ---
 
 # Prompt Engineer
