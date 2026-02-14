@@ -106,6 +106,7 @@ Bullet list of warning signs.
 - [ ] Content: actionable, scannable (tables, bullets)
 - [ ] For discipline skills: Iron Law, rationalizations table, red flags
 - [ ] Version: `version: "1.0.0"` in frontmatter
+- [ ] README: if adding or removing a skill, update the skills table in repo root README
 - [ ] Size: <500 words for most skills, <200 for frequently-loaded
 
 ## Anti-Patterns
