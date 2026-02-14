@@ -40,6 +40,9 @@ A dead program does less damage than a crippled one. When something impossible h
 ### Prove It, Don't Assume It
 "select isn't broken"—when something fails, the bug is almost certainly in your code. Don't blame the library, the OS, or the compiler until you've proven it. Test your assumptions explicitly.
 
+### Names Over Comments
+Good names eliminate comments. A comment that explains *what* the code does is a naming failure—rename until the comment is redundant, then delete it. Time spent on comments is better spent on names; the latter pays compound interest. See the **self-documenting-code** skill for naming methodology and comment survival criteria.
+
 ---
 
 ## Part 2: When to Refactor
