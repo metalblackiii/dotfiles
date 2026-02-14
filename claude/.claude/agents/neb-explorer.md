@@ -64,7 +64,7 @@ Service conventions (controller patterns, directory layout, database access, cro
 
 ## How to Explore
 
-1. **Run `ls ~/repos/neb-*`** to discover locally available repos
+1. **Use `Glob` with `pattern="neb-*" path="~/repos/"`** to discover locally available repos
 2. **Start with the layer most likely to own the feature** (usually frontend or the most relevant microservice)
 3. **Trace the route**: find the controller file via filesystem path, then follow to services/models
 4. **Trace cross-service calls**: search for `msRequest`, `NEB_*_API_URL`, or `api-clients/` to find service boundaries
