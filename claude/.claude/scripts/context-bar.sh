@@ -94,79 +94,28 @@ if [[ -n "$cwd" && -d "$cwd" ]]; then
     fi
 fi
 
-# Get transcript path for context calculation and last message feature
+# Context bar from JSON fields
 transcript_path=$(echo "$input" | jq -r '.transcript_path // empty')
-
-# Get context window size from JSON (accurate), but calculate tokens from transcript
-# (more accurate than total_input_tokens which excludes system prompt/tools/memory)
-# See: github.com/anthropics/claude-code/issues/13652
 max_context=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
 max_k=$((max_context / 1000))
+pct=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
+[[ $pct -gt 100 ]] && pct=100
 
-# Calculate context bar from transcript
-if [[ -n "$transcript_path" && -f "$transcript_path" ]]; then
-    context_length=$(jq -s '
-        map(select(.message.usage and .isSidechain != true and .isApiErrorMessage != true)) |
-        last |
-        if . then
-            (.message.usage.input_tokens // 0) +
-            (.message.usage.cache_read_input_tokens // 0) +
-            (.message.usage.cache_creation_input_tokens // 0)
-        else 0 end
-    ' < "$transcript_path")
-
-    # 20k baseline: includes system prompt (~3k), tools (~15k), memory (~300),
-    # plus ~2k for git status, env block, XML framing, and other dynamic context
-    baseline=20000
-    bar_width=10
-
-    if [[ "$context_length" -gt 0 ]]; then
-        pct=$((context_length * 100 / max_context))
-        pct_prefix=""
+bar_width=10
+bar=""
+for ((i=0; i<bar_width; i++)); do
+    bar_start=$((i * 10))
+    progress=$((pct - bar_start))
+    if [[ $progress -ge 8 ]]; then
+        bar+="${C_ACCENT}█${C_RESET}"
+    elif [[ $progress -ge 3 ]]; then
+        bar+="${C_ACCENT}▄${C_RESET}"
     else
-        # At conversation start, ~20k baseline is already loaded
-        pct=$((baseline * 100 / max_context))
-        pct_prefix="~"
+        bar+="${C_BAR_EMPTY}░${C_RESET}"
     fi
+done
 
-    [[ $pct -gt 100 ]] && pct=100
-
-    bar=""
-    for ((i=0; i<bar_width; i++)); do
-        bar_start=$((i * 10))
-        progress=$((pct - bar_start))
-        if [[ $progress -ge 8 ]]; then
-            bar+="${C_ACCENT}█${C_RESET}"
-        elif [[ $progress -ge 3 ]]; then
-            bar+="${C_ACCENT}▄${C_RESET}"
-        else
-            bar+="${C_BAR_EMPTY}░${C_RESET}"
-        fi
-    done
-
-    ctx="${bar} ${C_GRAY}${pct_prefix}${pct}% of ${max_k}k tokens"
-else
-    # Transcript not available yet - show baseline estimate
-    baseline=20000
-    bar_width=10
-    pct=$((baseline * 100 / max_context))
-    [[ $pct -gt 100 ]] && pct=100
-
-    bar=""
-    for ((i=0; i<bar_width; i++)); do
-        bar_start=$((i * 10))
-        progress=$((pct - bar_start))
-        if [[ $progress -ge 8 ]]; then
-            bar+="${C_ACCENT}█${C_RESET}"
-        elif [[ $progress -ge 3 ]]; then
-            bar+="${C_ACCENT}▄${C_RESET}"
-        else
-            bar+="${C_BAR_EMPTY}░${C_RESET}"
-        fi
-    done
-
-    ctx="${bar} ${C_GRAY}~${pct}% of ${max_k}k tokens"
-fi
+ctx="${bar} ${C_GRAY}${pct}% of ${max_k}k tokens"
 
 # Build output: Model | Dir | Branch (uncommitted) | Context
 output="${C_ACCENT}${model}${C_GRAY} | 📁${dir}"
