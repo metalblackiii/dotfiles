@@ -16,5 +16,8 @@ claude/.claude/session-env/
 claude/.claude/shell-snapshots/
 claude/.claude/stats-cache.json
 
+# Session handoff files
+HANDOFF.md
+
 # Exclude turbo caching
 .turbo
