@@ -28,6 +28,7 @@
       "Bash(*npm test*)",
       "Bash(docker *)",
       "Bash(docker compose *)",
+      "Bash(ast-grep *)",
       "Bash(jq *)",
       "Bash(python3 *)",
       "Write(~/.claude/plans/**)",
