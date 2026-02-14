@@ -1,6 +1,6 @@
 ---
 name: analyzing-prs
-description: Analyze pull requests against quality standards, security best practices, and team conventions. Use when reviewing PR diffs for architecture compliance, testing coverage, code quality, authentication/authorization patterns, database migrations, API design, logging, frontend changes, documentation, security vulnerabilities (OWASP), performance issues (N+1 queries, blocking calls), or dependency updates. Categorizes findings as Critical (must fix), Important (should fix), or Minor (nice to have).
+description: Use when reviewing PR diffs for architecture compliance, testing coverage, code quality, security vulnerabilities, authentication patterns, database migrations, API design, performance issues, logging, frontend changes, documentation, or dependency updates.
 ---
 
 # PR Analysis Skill

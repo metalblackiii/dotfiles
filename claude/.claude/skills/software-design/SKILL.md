@@ -1,6 +1,6 @@
 ---
 name: software-design
-description: Apply when making architecture decisions, restructuring code, or planning implementations. Covers design principles, refactoring discipline, and code smell recognition.
+description: Use when making architecture decisions, restructuring code, planning implementations, or evaluating code smells and refactoring opportunities.
 ---
 
 # Software Design

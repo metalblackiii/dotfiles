@@ -60,12 +60,16 @@ You have ${SKILL_COUNT} specialized skills installed. These represent YOUR perso
 
 ## The Rule
 
-Before responding to ANY user request, ask yourself: \"Could any of my skills apply to this task?\"
+Before responding to a user request, check if any installed skills apply.
 
-If the answer is YES (even 1% chance):
-1. Use the Skill tool to invoke the relevant skill
-2. Follow its guidance
-3. THEN respond to the user
+**For non-trivial tasks** (features, debugging, architecture, reviews, deployments):
+1. Check which skills apply
+2. Invoke the relevant skill(s)
+3. Follow the skill's guidance
+4. THEN respond to the user
+
+**For trivial tasks** (single-line fixes, typos, simple questions, file reads):
+- Proceed directly. Skills add overhead here with no benefit.
 
 ## Installed Skills
 ${SKILL_LIST}
@@ -73,16 +77,14 @@ ${SKILL_LIST}
 ## Red Flags
 
 If you're thinking:
-- \"Let me just...\" → STOP. Check for skills first.
+- \"Let me just...\" → STOP. Is this actually trivial, or are you rationalizing?
 - \"This won't take long...\" → STOP. Check for skills first.
-- \"I need to explore first...\" → STOP. Skills guide exploration.
-- \"After I gather context...\" → STOP. Skills guide context gathering.
-
-**No exploration, no clarifying questions, no work until you've checked for applicable skills.**
+- \"I need to explore first...\" → Skills guide exploration.
+- \"After I gather context...\" → Skills guide context gathering.
 
 ## The Iron Law
 
-Skills are not optional when applicable. Invoke first, work second.
+Skills are not optional when applicable. Invoke first, work second. But don't invoke skills for work that genuinely doesn't benefit from them.
 
 </EXTREMELY_IMPORTANT>"
   }

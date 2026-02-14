@@ -1,6 +1,7 @@
 ---
 name: self-documenting-code
-description: Invoke when writing or editing code. Transforms the instinct to comment into better naming. Comments explain "why", never "what".
+description: Use when explicitly reviewing naming quality, improving comment hygiene, or refactoring code for readability.
+user-invocable: false
 ---
 
 # Self-Documenting Code

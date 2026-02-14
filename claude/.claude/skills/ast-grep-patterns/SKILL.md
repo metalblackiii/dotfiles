@@ -1,4 +1,5 @@
 ---
+name: ast-grep-patterns
 description: Use when doing large refactoring across multiple files, searching for structural code patterns (empty catches, unsafe async, silent fallbacks), or migrating APIs across a codebase. Not for simple text searches — use Grep for those.
 ---
 

@@ -5,7 +5,6 @@ tools: Read, Grep, Glob, Bash
 model: sonnet
 maxTurns: 25
 skills:
-  - prd-decomposition
   - neb-ms-conventions
 ---
 
@@ -100,7 +99,7 @@ Each needs confirmation before implementation begins.
 
 ## Suggested Phasing
 
-Based on the prd-decomposition methodology, if this requirement is clear enough:
+If the requirement is clear enough, suggest implementation phases ordered by dependency (types/interfaces → data layer → business logic → API → UI → tests):
 
 1. **Phase 1**: [Foundation work — what to build first]
 2. **Phase 2**: [Next layer]
