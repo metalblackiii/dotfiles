@@ -48,6 +48,7 @@ Skip any step = lying, not verifying
 | Regression test works | Red-green cycle verified | Test passes once |
 | Agent completed | VCS diff shows changes | Agent reports "success" |
 | Requirements met | Line-by-line checklist | Tests passing |
+| Ready to commit/PR | Self-review agent: no Critical findings | Mechanical checks only |
 
 ## Red Flags - STOP
 
@@ -104,6 +105,34 @@ Skip any step = lying, not verifying
 ✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
 ❌ Trust agent report
 ```
+
+**Pre-commit/Pre-PR self-review:**
+```
+✅ Mechanical verification passes → Spawn self-review agent → Present findings → THEN commit/PR
+❌ "Tests pass, ready to commit" (tests verify behavior, not code quality)
+```
+
+## Fresh-Eyes Review Gate
+
+Before **committing or creating a PR**, after all mechanical verification passes:
+
+1. **Spawn the `self-review` agent** with the appropriate diff:
+   - Pre-commit: `git diff --staged`
+   - Pre-PR: `git diff main...HEAD` (or appropriate base branch)
+2. **Present findings** to the user with severity levels
+3. **Do not commit/PR if Critical findings exist** — flag them and fix first
+4. **Important/Minor findings** — present to user, let them decide
+
+This catches what mechanical verification cannot: logic errors, missing edge cases,
+security gaps, architecture violations, and patterns the implementer missed due to
+familiarity with their own code.
+
+| Excuse | Reality |
+|--------|---------|
+| "Tests pass, code is fine" | Tests verify behavior, not quality |
+| "I just reviewed it myself" | Same context = same blind spots |
+| "It's a small change" | Small changes cause big outages |
+| "Self-review will slow us down" | Rework from missed issues is slower |
 
 ## Why This Matters
 
