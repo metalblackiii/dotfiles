@@ -1,7 +1,7 @@
 ---
 name: self-documenting-code
 description: Use when explicitly reviewing naming quality, improving comment hygiene, or refactoring code for readability.
-user-invocable: false
+user-invokable: false
 ---
 
 # Self-Documenting Code

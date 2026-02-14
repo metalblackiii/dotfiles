@@ -1,7 +1,7 @@
 ---
 name: docker-infrastructure
 description: Use when troubleshooting Docker containers, debugging compose services, fixing Dockerfile build failures, investigating networking or volume issues, or working with container orchestration in local development environments.
-user-invocable: false
+user-invokable: false
 ---
 
 # Docker Infrastructure

@@ -19,7 +19,7 @@ All supported YAML frontmatter fields:
 | `description` | Recommended | When to use this skill. Claude uses this to decide when to load it. Start with "Use when..." |
 | `argument-hint` | No | Hint shown during autocomplete (e.g., `[issue-number]`) |
 | `disable-model-invocation` | No | Set `true` to prevent auto-loading. For manual-only workflows. |
-| `user-invocable` | No | Set `false` to hide from `/` menu. For background knowledge skills. |
+| `user-invokable` | No | Set `false` to hide from `/` menu. For background knowledge skills. |
 | `allowed-tools` | No | Comma-separated tools allowed without permission when skill is active |
 | `model` | No | Model to use when skill is active (e.g., `opus`, `sonnet`) |
 | `context` | No | Set to `fork` to run in isolated subagent context |
