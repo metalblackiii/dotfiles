@@ -26,17 +26,15 @@
       "Bash(npx *)",
       "Bash(touch *)",
       "Bash(*npm test*)",
+      "Bash(docker *)",
       "Bash(docker compose *)",
-      "Bash(docker ps *)",
-      "Bash(docker logs *)",
-      "Bash(docker inspect *)",
-      "Bash(docker images *)",
-      "Bash(docker network *)",
-      "Bash(docker volume *)",
       "Bash(jq *)",
+      "Bash(python3 *)",
       "Write(~/.claude/plans/**)",
       "Edit(~/.claude/plans/**)",
       "WebFetch(domain:github.com)",
+      "WebFetch(domain:localhost)",
+      "WebFetch(domain:127.0.0.1)",
       "WebFetch(domain:npmjs.com)",
       "WebFetch(domain:docs.docker.com)",
       "WebFetch(domain:kubernetes.io)",
@@ -54,6 +52,9 @@
       "Bash(grep *)",
       "Bash(xargs *)",
       "Bash(rm -rf *)",
+      "Bash(docker run --privileged *)",
+      "Bash(docker run -v /:/host *)",
+      "Bash(docker run -v /var/run/docker.sock:*)",
       "Bash(npm publish *)",
       "Bash(npm unpublish *)",
       "Bash(gh repo delete *)",
@@ -107,7 +108,8 @@
       "Bash(gh pr merge *)",
       "Bash(gh pr close *)",
       "Bash(gh issue close *)"
-    ]
+    ],
+    "defaultMode": "default"
   },
   "hooks": {
     "SessionStart": [
