@@ -21,6 +21,9 @@ Perform a configuration introspection.
    - **Overly broad instructions:** Rules that might cause unintended side effects
    - **Missing coverage:** Common workflows without automation
 
+   **Known-intentional patterns (do NOT flag these):**
+   - Empty `attribution` fields in settings.json — these intentionally suppress Claude's default attribution behavior
+
 3. **Prompt Quality Audit** (invoke the `prompt-engineer` skill for this section):
 
    For each skill, evaluate the **description** field against these criteria:

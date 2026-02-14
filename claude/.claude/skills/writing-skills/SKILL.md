@@ -1,7 +1,7 @@
 ---
 name: writing-skills
 description: Use when creating or editing SKILL.md files, defining new skills, or modifying skill frontmatter
-version: "1.0.0"
+version: "1.1.0"
 ---
 
 # Writing Skills
@@ -108,6 +108,12 @@ Bullet list of warning signs.
 - [ ] Version: `version: "1.0.0"` in frontmatter
 - [ ] README: if adding or removing a skill, update the skills table in repo root README
 - [ ] Size: <500 words for most skills, <200 for frequently-loaded
+
+## Cross-References
+
+**For description quality**, apply the `prompt-engineer` skill criteria when writing or reviewing descriptions. Skill descriptions are prompts — they determine when the model loads the skill. Evaluate each description for: trigger-only (no workflow summary), specificity (would the model match this to the right request?), overlap (does another skill's description match the same trigger?), and completeness (are common triggering scenarios covered?).
+
+**For current frontmatter fields and conventions**, consult the `claude-code-guide` agent. The frontmatter reference table above may lag behind Claude Code releases. When adding new skills or using unfamiliar frontmatter fields, verify against claude-code-guide to ensure you're using current features correctly.
 
 ## Anti-Patterns
 
