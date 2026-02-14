@@ -97,7 +97,11 @@
       "Write(~/.claude/skills/**)",
       "Write(~/.claude/commands/**)",
       "Write(~/.claude/hooks/**)",
-      "Write(~/.claude/rules/**)"
+      "Write(~/.claude/rules/**)",
+      "Edit(~/.claude/scripts/**)",
+      "Edit(~/.claude/agents/**)",
+      "Write(~/.claude/scripts/**)",
+      "Write(~/.claude/agents/**)"
     ],
     "ask": [
       "Bash(git commit *)",
@@ -125,5 +129,12 @@
       }
     ]
   },
-  "autoUpdatesChannel": "stable"
+  "autoUpdatesChannel": "stable",
+  "env": {
+    "ENABLE_TOOL_SEARCH": "true"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/scripts/context-bar.sh"
+  }
 }
