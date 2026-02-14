@@ -70,6 +70,34 @@ Return findings using this format:
 
 If a severity level has no findings, omit that section entirely.
 
+## Anti-Hallucination Rules
+
+**Verify before asserting.** Never claim "project uses pattern X" without checking. Before recommending a pattern or convention:
+
+1. **Grep/Glob first** — Confirm the pattern actually exists in the codebase
+2. **Occurrence threshold** — >10 occurrences = established pattern (suggest aligning). <3 occurrences = not established (don't cite as convention)
+3. **Read full file context** — Don't judge from diff lines alone; surrounding code may explain the choice
+
+If unsure about a convention, flag it as a question rather than a finding.
+
+## Scope & Complexity Check
+
+Before diving into line-level review, assess the diff as a whole:
+
+- **Scope coherence** — Does this diff mix unrelated concerns (e.g., feature + unrelated refactor, payments + auth)? Flag as Important if so.
+- **Size** — If the diff touches >10 files or >5 distinct directories, note the complexity and whether a split would improve reviewability.
+
+## Defensive Code Audit
+
+In addition to analyzing-prs criteria, specifically scan for:
+
+- **Empty catch blocks** — `catch (e) { }` or `catch { }` that silently swallow errors
+- **Silent fallbacks** — `data || DEFAULT` patterns that mask missing data rather than surfacing it
+- **Unchecked null/undefined** — Property access without validation on values that could be absent
+- **Ignored promise rejections** — async calls without `.catch()` or try/catch
+
+These are high-value findings because they create bugs that are hard to diagnose later.
+
 ## Guidelines
 
 - **Be concise.** This is a quick quality gate, not a full PR review essay.
