@@ -1,6 +1,6 @@
 ---
 name: self-documenting-code
-description: Use when explicitly reviewing naming quality, improving comment hygiene, or refactoring code for readability.
+description: Use when writing or reviewing code for naming quality, comment hygiene, or readability improvements.
 user-invokable: false
 ---
 

@@ -62,7 +62,7 @@ description: Research dependency upgrades, platform migrations, or breaking chan
 | **Output** | Returns a result message to caller | Guides behavior inline |
 | **Tools** | Can restrict to specific toolset | Uses whatever tools are available |
 | **File** | Single `.md` in `agents/` | `SKILL.md` in `skills/<name>/` directory |
-| **Example** | `self-review` — runs a review in isolation | `analyzing-prs` — review criteria loaded inline |
+| **Example** | `self-code-reviewer` — runs a review in isolation | `analyzing-prs` — review criteria loaded inline |
 
 **Use an agent when:** the work is self-contained, benefits from isolation, or should run in parallel.
 **Use a skill when:** the guidance shapes how the main agent behaves throughout a task.
@@ -107,7 +107,7 @@ Agents compose with skills via `skills:` frontmatter to inherit domain expertise
 
 | Agent | Loads Skill | Why |
 |-------|-------------|-----|
-| `self-review` | `analyzing-prs` | Review criteria maintained in one place, reused by agent and manual reviews |
+| `self-code-reviewer` | `analyzing-prs` | Review criteria maintained in one place, reused by agent and manual reviews |
 | `neb-explorer` | `neb-ms-conventions` | Service conventions shared across neb agents |
 | `requirements-analyst` | `neb-ms-conventions` | Same conventions for assessing implementation feasibility |
 | `analysis-writer` | `software-design` | Design principles inform comparison criteria |

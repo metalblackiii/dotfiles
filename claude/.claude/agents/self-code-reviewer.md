@@ -1,5 +1,5 @@
 ---
-name: self-review
+name: self-code-reviewer
 description: Fresh-eyes code review of uncommitted or branch changes using analyzing-prs criteria. Use as a pre-commit/pre-PR quality gate to catch issues the implementer may have missed.
 tools: Read, Grep, Glob, Bash
 model: sonnet
