@@ -77,3 +77,7 @@ When designing microservices architecture, provide:
 ## Knowledge Reference
 
 Domain-driven design, bounded contexts, event storming, REST/gRPC, message queues (Kafka, RabbitMQ), service mesh (Istio, Linkerd), Kubernetes, circuit breakers, saga patterns, event sourcing, CQRS, distributed tracing (Jaeger, Zipkin), API gateways, eventual consistency, CAP theorem
+
+## Related Skills
+
+**For single-service design** — code structure, refactoring strategies, design principles, code smells — use the **software-design** skill instead. This skill covers multi-service architecture; that skill covers internal design quality.

@@ -31,7 +31,16 @@ Filter to files modified in the last 7 days by checking modification times. Coun
 
 ## Step 3: Parse Usage Data
 
-For each transcript file found, use jq via Bash to extract data:
+**Pre-filter transcripts before parsing.** JSONL files can be large. Use Grep to identify which files contain relevant tool calls before running jq:
+
+```
+Grep with pattern="\"name\":\"Skill\"" path="~/.claude/projects" glob="*.jsonl"
+Grep with pattern="\"name\":\"Task\"" path="~/.claude/projects" glob="*.jsonl"
+```
+
+Only run jq on files that matched. Skip files with no Skill or Task tool calls entirely.
+
+For each matching transcript file, use jq via Bash to extract data:
 
 ### Skills & Commands (both use Skill tool)
 ```bash
