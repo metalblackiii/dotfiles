@@ -3,6 +3,7 @@ name: gha
 description: Use when investigating GitHub Actions workflow failures, CI/CD pipeline errors, or flaky tests in GitHub Actions.
 argument-hint: <url>
 allowed-tools: Bash(gh *)
+version: "1.0.0"
 ---
 
 Investigate this GitHub Actions URL: $ARGUMENTS

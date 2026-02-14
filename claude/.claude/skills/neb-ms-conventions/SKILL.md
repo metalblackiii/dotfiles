@@ -1,6 +1,7 @@
 ---
 name: neb-ms-conventions
 description: Use when writing or modifying code in neb microservice repositories (neb-ms-* or neb-microservice)
+version: "1.0.0"
 ---
 
 # Neb Service Conventions
