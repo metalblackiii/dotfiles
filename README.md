@@ -106,7 +106,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **dispatching-parallel-agents** | Multiple independent failures or investigations without shared state |
 | **docker-infrastructure** | Troubleshooting containers, compose services, Dockerfiles |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
-| **gha** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
+| **github-actions** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
 | **handoff** | Ending sessions with work in progress or high context usage |
 | **kubernetes-specialist** | Deploying/managing K8s workloads, Helm charts, RBAC, troubleshooting pods |
 | **legacy-modernizer** | Incremental migrations, strangler fig patterns, dual-mode coexistence |
