@@ -85,6 +85,6 @@ Use `AskUserQuestion` to let the user choose how to challenge their idea.
 
 ## Related Skills
 
-- **software-design** — for evaluating code-level design decisions
+- **refactoring-guide** — for evaluating refactoring decisions and code smells
 - **microservices-architect** — for cross-service architecture decisions
 - **legacy-modernizer** — for migration strategy decisions (pre-mortem mode is especially relevant)

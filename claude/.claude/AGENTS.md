@@ -52,6 +52,9 @@ When touching code:
 - Apply the Rule of Three for extraction
 - Name the code smell before refactoring — no smell, no refactor
 - Stop when structure supports the current need
+- Crash early — a dead program does less damage than a crippled one. Surface errors, don't mask them with defensive returns or empty catches
+- Don't program by coincidence — understand *why* code works, not just *that* it works
+- Prefer reversible decisions — hide third-party dependencies behind abstractions, prefer configuration over hardcoding
 
 Don't gold-plate. Don't add features nobody asked for. But don't leave code worse than you found it either.
 

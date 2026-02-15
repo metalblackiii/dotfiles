@@ -116,7 +116,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
-| **software-design** | Single-service design, code smells, refactoring opportunities |
+| **refactoring-guide** | Code smells, refactoring discipline, structural improvements |
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
 | **sql-pro** | Query optimization, schema design, migrations, indexing strategies |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
