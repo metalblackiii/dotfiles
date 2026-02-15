@@ -55,4 +55,4 @@ REST API design specialist for Express/Node.js services. Focuses on resource mod
 
 - **neb-ms-conventions** — for implementation patterns (filesystem routing, controllerWrapper, `req.db`)
 - **microservices-architect** — for cross-service communication design and data ownership
-- **software-design** — for service-layer design behind the API
+- **refactoring-guide** — for refactoring service-layer code behind the API

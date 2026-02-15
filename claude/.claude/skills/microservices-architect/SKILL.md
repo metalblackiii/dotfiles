@@ -80,4 +80,4 @@ Domain-driven design, bounded contexts, event storming, REST/gRPC, message queue
 
 ## Related Skills
 
-**For single-service design** — code structure, refactoring strategies, design principles, code smells — use the **software-design** skill instead. This skill covers multi-service architecture; that skill covers internal design quality.
+**For refactoring** — code smells, refactoring discipline, structural improvements within a single service — use the **refactoring-guide** skill instead. This skill covers multi-service architecture; that skill covers single-service refactoring.
