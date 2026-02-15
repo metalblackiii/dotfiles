@@ -7,7 +7,7 @@ description: Use when writing or modifying code in neb microservice repositories
 
 ## Overview
 
-All `neb-ms-*` services extend `@neb/microservice`. This skill covers the patterns and conventions for implementing code in these services. The framework source at `~/repos/neb-microservice` may be available locally — consult it when you need to understand how middleware, routing, or helpers work under the hood.
+All `neb-ms-*` services extend `@neb/microservice`. This skill covers the patterns and conventions for implementing code in these services. The framework source in the `neb-microservice` repo may be available locally — consult it when you need to understand how middleware, routing, or helpers work under the hood.
 
 ## Directory Layout
 

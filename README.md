@@ -60,7 +60,7 @@ dotfiles/
 │       ├── commands/        # 7 slash commands
 │       ├── hooks/           # Session-start hook
 │       ├── scripts/         # Status bar script
-│       └── skills/          # 16 specialized skills (shared with Codex)
+│       └── skills/          # 17 specialized skills (shared with Codex)
 ├── codex/                   # Codex configuration
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -76,7 +76,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | AGENTS.md (conventions, rules) | Yes | `claude/.claude/AGENTS.md` — both platforms symlink to it |
-| Skills (16) | Yes | `claude/.claude/skills/` — Codex discovers via `~/.agents/skills/personal` |
+| Skills (17) | Yes | `claude/.claude/skills/` — Codex discovers via `~/.agents/skills/personal` |
 | Claude settings, hooks, commands, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -93,7 +93,7 @@ The `AGENTS.md` file is the single source of truth for conventions shared across
 
 ## Claude Code Configuration
 
-### Skills (16)
+### Skills (17)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. A session-start hook enforces this via "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -106,6 +106,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **handoff** | Ending sessions with work in progress or high context usage |
 | **microservices-architect** | Distributed system design, service boundaries, sagas, event sourcing |
 | **neb-ms-conventions** | Code in neb microservice repositories |
+| **neb-repo-layout** | Background knowledge: where neb repos live and how they're organized |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **software-design** | Single-service design, code smells, refactoring opportunities |
@@ -144,7 +145,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 | **self-review** | Fresh-eyes code review as a pre-commit/pre-PR quality gate |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |
 
-> **Neb-specific agents**: `neb-explorer` and `requirements-analyst` assume neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). The `neb-ms-conventions` skill they load also references this layout. If your repos live elsewhere, update the paths in `agents/neb-explorer.md`, `agents/requirements-analyst.md`, and `skills/neb-ms-conventions/SKILL.md`.
+> **Neb-specific agents**: `neb-explorer` and `requirements-analyst` load the `neb-repo-layout` skill which assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `skills/neb-repo-layout/SKILL.md`.
 
 ### Hooks & Scripts
 
@@ -174,6 +175,15 @@ Codex shares `AGENTS.md` and skills from the Claude directory. Its only platform
 3. Symlink to `claude/.claude/AGENTS.md` for shared conventions
 4. Symlink to `claude/.claude/skills/` for shared skills
 5. The top-level orchestrator picks up `*/install.sh` automatically
+
+## Customization
+
+If you fork this repo, update these team/environment-specific values:
+
+| What | Where | Default |
+|------|-------|---------|
+| Neb repo base path | `claude/.claude/skills/neb-repo-layout/SKILL.md` | `~/repos/` |
+| PR default reviewers | `claude/.claude/AGENTS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 
 ## Attribution
 
