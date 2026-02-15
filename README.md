@@ -56,11 +56,11 @@ dotfiles/
 │       ├── AGENTS.md        # Shared instructions (single source of truth)
 │       ├── CLAUDE.md        # Claude-specific settings (thin wrapper)
 │       ├── settings.json    # Permissions, hooks, env vars
-│       ├── agents/          # 5 custom subagents
+│       ├── agents/          # 6 custom subagents
 │       ├── commands/        # 7 slash commands
 │       ├── hooks/           # Session-start hook
 │       ├── scripts/         # Status bar script
-│       └── skills/          # 17 specialized skills (shared with Codex)
+│       └── skills/          # 27 specialized skills (shared with Codex)
 ├── codex/                   # Codex configuration
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -76,7 +76,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | AGENTS.md (conventions, rules) | Yes | `claude/.claude/AGENTS.md` — both platforms symlink to it |
-| Skills (17) | Yes | `claude/.claude/skills/` — Codex discovers via `~/.agents/skills/personal` |
+| Skills (27) | Yes | `claude/.claude/skills/` — Codex discovers via `~/.agents/skills/personal` |
 | Claude settings, hooks, commands, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -93,31 +93,41 @@ The `AGENTS.md` file is the single source of truth for conventions shared across
 
 ## Claude Code Configuration
 
-### Skills (17)
+### Skills (27)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. A session-start hook enforces this via "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
 | Skill | When it activates |
 |-------|-------------------|
 | **analyzing-prs** | Reviewing PR diffs for quality, security, architecture, testing |
+| **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
+| **database-optimizer** | Query performance, Aurora migrations, Sequelize tuning, index strategies |
+| **dispatching-parallel-agents** | Multiple independent failures or investigations without shared state |
 | **docker-infrastructure** | Troubleshooting containers, compose services, Dockerfiles |
+| **feature-forge** | Defining new features, requirements workshops, writing specifications |
 | **gha** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
 | **handoff** | Ending sessions with work in progress or high context usage |
+| **kubernetes-specialist** | Deploying/managing K8s workloads, Helm charts, RBAC, troubleshooting pods |
+| **legacy-modernizer** | Incremental migrations, strangler fig patterns, dual-mode coexistence |
 | **microservices-architect** | Distributed system design, service boundaries, sagas, event sourcing |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-repo-layout** | Background knowledge: where neb repos live and how they're organized |
+| **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **software-design** | Single-service design, code smells, refactoring opportunities |
+| **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
 | **sql-pro** | Query optimization, schema design, migrations, indexing strategies |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
+| **test-architect** | Planning test strategy for features, migrations, or refactoring of existing code |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
+| **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-agents** | Creating or editing custom agent .md files and frontmatter |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
-Several skills include reference libraries (e.g., `sql-pro/references/`, `prompt-engineer/references/`, `microservices-architect/references/`).
+Several skills include reference libraries (e.g., `sql-pro/references/`, `prompt-engineer/references/`, `microservices-architect/references/`, `the-fool/references/`, `database-optimizer/references/`, `test-architect/references/`, `neb-playwright-expert/references/`).
 
 ### Commands (7)
 
@@ -133,7 +143,7 @@ Slash commands invoked directly during sessions.
 | `/introspect` | Review configuration for conflicts, redundancy, and staleness |
 | `/review` | Review a pull request using the analyzing-prs skill |
 
-### Agents (5)
+### Agents (6)
 
 Custom subagents spawned via the Task tool for parallel or specialized work.
 
@@ -141,8 +151,9 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 |-------|---------|
 | **analysis-writer** | Produce structured analysis documents for team decision-making |
 | **neb-explorer** | Explore feature implementations across neb microservices |
+| **qa-engineer** | Plan and write test coverage for features, migrations, or refactoring |
 | **requirements-analyst** | Surface ambiguities and risks in requirements before engineering |
-| **self-review** | Fresh-eyes code review as a pre-commit/pre-PR quality gate |
+| **self-code-reviewer** | Fresh-eyes code review as a pre-commit/pre-PR quality gate |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |
 
 > **Neb-specific agents**: `neb-explorer` and `requirements-analyst` load the `neb-repo-layout` skill which assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `skills/neb-repo-layout/SKILL.md`.
