@@ -1,6 +1,6 @@
 # Claude Code Configuration
 
-Read and follow AGENTS.md for shared conventions (git, PRs, code quality, security, skills).
+Read and follow [AGENTS.md](./AGENTS.md) for shared conventions (git, PRs, code quality, security, skills).
 
 ## Tool Preferences
 
