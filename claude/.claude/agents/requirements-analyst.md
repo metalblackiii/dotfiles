@@ -1,6 +1,6 @@
 ---
 name: requirements-analyst
-description: Analyze requirements from JIRA tickets, specs, or ad hoc descriptions to surface ambiguities, missing edge cases, and implementation risks before engineering work begins. Use when receiving new feature requests or reviewing product requirements.
+description: Analyze requirements from JIRA tickets, specs, or ad hoc descriptions to surface ambiguities, missing edge cases, and implementation risks before engineering work begins. Use when receiving new feature requests or reviewing product requirements. For creating requirements from scratch (no existing spec), the feature-forge skill is invoked internally.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 maxTurns: 25
