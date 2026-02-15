@@ -1,10 +1,12 @@
 # dotfiles
 
-Personal configuration files, managed with Git and symlinks.
+Personal configuration files for AI coding assistants, managed with Git and symlinks.
+
+Currently supports **Claude Code** and **Codex**. Skills and conventions are shared across platforms via a single `AGENTS.md` and symlinked skills directory.
 
 ## Prerequisites
 
-[Claude Code](https://docs.anthropic.com/en/docs/claude-code) must be installed. The following CLI tools are referenced in permissions and skills:
+[Claude Code](https://docs.anthropic.com/en/docs/claude-code) and/or [Codex](https://codex.openai.com/) must be installed. The following CLI tools are referenced in permissions and skills:
 
 | Tool | Required | Install | Used by |
 |------|----------|---------|---------|
@@ -21,28 +23,73 @@ Personal configuration files, managed with Git and symlinks.
 ```bash
 git clone https://github.com/metalblackiii/dotfiles.git ~/repos/dotfiles
 cd ~/repos/dotfiles
+
+# Install everything
 ./install.sh
+
+# Or install a single platform
+./claude/install.sh
+./codex/install.sh
 ```
 
 Original files are backed up with `.backup.TIMESTAMP` before symlinking.
+
+To remove:
+
+```bash
+# Uninstall everything
+./uninstall.sh
+
+# Or uninstall a single platform
+./claude/uninstall.sh
+./codex/uninstall.sh
+```
 
 ## Structure
 
 ```
 dotfiles/
 ├── claude/                  # Claude Code configuration
+│   ├── install.sh
+│   ├── uninstall.sh
 │   └── .claude/
-│       ├── CLAUDE.md        # Global instructions
+│       ├── AGENTS.md        # Shared instructions (single source of truth)
+│       ├── CLAUDE.md        # Claude-specific settings (thin wrapper)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 5 custom subagents
-│       ├── commands/        # 4 slash commands
+│       ├── commands/        # 7 slash commands
 │       ├── hooks/           # Session-start hook
-│       ├── rules/           # 4 behavioral rules
 │       ├── scripts/         # Status bar script
-│       └── skills/          # 16 specialized skills
-├── install.sh               # Symlink installer
+│       └── skills/          # 16 specialized skills (shared with Codex)
+├── codex/                   # Codex configuration
+│   ├── install.sh
+│   ├── uninstall.sh
+│   └── .codex/
+│       └── config.toml      # Codex runtime settings
+├── install.sh               # Orchestrator — runs */install.sh
+├── uninstall.sh             # Orchestrator — runs */uninstall.sh
 └── .gitignore
 ```
+
+### What's Shared vs Platform-Specific
+
+| Layer | Shared? | Where |
+|-------|---------|-------|
+| AGENTS.md (conventions, rules) | Yes | `claude/.claude/AGENTS.md` — both platforms symlink to it |
+| Skills (16) | Yes | `claude/.claude/skills/` — Codex discovers via `~/.agents/skills/personal` |
+| Claude settings, hooks, commands, agents | No | Claude-only features |
+| Codex config.toml | No | Codex-only runtime settings |
+
+## Shared Configuration (AGENTS.md)
+
+The `AGENTS.md` file is the single source of truth for conventions shared across all platforms:
+
+- **Git preferences** — conventional commits, explicit commit/push approval
+- **PR defaults** — reviewers, gh flags
+- **Code quality** — preparatory refactoring, Rule of Three, fix broken windows
+- **Security** — HIPAA context, no PII in examples, no hardcoded secrets
+- **Self-documenting code** — rename over comment, only "why" comments
+- **Skill usage** — check skills before non-trivial tasks
 
 ## Claude Code Configuration
 
@@ -99,17 +146,6 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 
 > **Neb-specific agents**: `neb-explorer` and `requirements-analyst` assume neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). The `neb-ms-conventions` skill they load also references this layout. If your repos live elsewhere, update the paths in `agents/neb-explorer.md`, `agents/requirements-analyst.md`, and `skills/neb-ms-conventions/SKILL.md`.
 
-### Rules (4)
-
-Global behavioral rules applied to every interaction.
-
-| Rule | Focus |
-|------|-------|
-| **code-quality** | Preparatory refactoring, Rule of Three, fix broken windows in code you touch |
-| **communication** | Concise and direct, lead with solutions, prioritize bugs > security > perf > style |
-| **security** | No hardcoded secrets, parameterized queries, input validation, secure defaults |
-| **self-documenting-code** | Every "what" comment is a naming failure — rename first, comment only "why" |
-
 ### Hooks & Scripts
 
 - **session-start.sh** — Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
@@ -123,15 +159,21 @@ The `settings.json` enforces strict guardrails:
 - **Ask**: `git commit`, `git push`, `gh pr create/merge/close`
 - **Allowed**: standard dev tools, read-only kubectl, scoped web access
 
-## Adding New Topics
+## Codex Configuration
 
-```bash
-mkdir -p topic-name/
-# Add config files mirroring home directory structure
-# e.g., git/.gitconfig for ~/.gitconfig
-```
+Codex shares `AGENTS.md` and skills from the Claude directory. Its only platform-specific file is `config.toml`:
 
-Then update `install.sh` to symlink the new topic.
+- **Model**: `gpt-5.3-codex`
+- **Approval policy**: `never` (sandbox restricts filesystem/network access)
+- **Project doc fallback**: reads `CLAUDE.md` and `TEAM_GUIDE.md` from project roots
+
+## Adding a New Platform
+
+1. Create a directory: `platform-name/`
+2. Add `install.sh` and `uninstall.sh`
+3. Symlink to `claude/.claude/AGENTS.md` for shared conventions
+4. Symlink to `claude/.claude/skills/` for shared skills
+5. The top-level orchestrator picks up `*/install.sh` automatically
 
 ## Attribution
 
