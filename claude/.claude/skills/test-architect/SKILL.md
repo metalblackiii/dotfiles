@@ -1,6 +1,6 @@
 ---
 name: test-architect
-description: Use when planning test strategy for features, migrations, or refactoring — especially when existing code needs characterization tests before changes
+description: Use when planning high-level test strategy for features, migrations, or refactoring before implementation begins — especially when existing code needs characterization tests before changes
 ---
 
 # Test Architect

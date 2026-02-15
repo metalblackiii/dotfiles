@@ -64,6 +64,8 @@
       "Bash(sudo *)",
       "Bash(curl *)",
       "Bash(wget *)",
+      "Bash(echo *>*)",
+      "Bash(printf *>*)",
       "Read(**/secrets/**)",
       "Read(**/*.pem)",
       "Read(**/*.key)",

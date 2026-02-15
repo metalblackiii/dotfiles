@@ -1,6 +1,6 @@
 ---
 name: database-optimizer
-description: Use when optimizing database performance, planning Aurora migrations, troubleshooting slow Sequelize queries, designing indexes, or analyzing query execution plans in MySQL/Aurora/PostgreSQL
+description: Use when optimizing database performance, planning Aurora migrations, troubleshooting slow Sequelize queries, designing indexes, or analyzing query execution plans in MySQL/Aurora/PostgreSQL. Focuses on database engines and ORMs. For SQL query writing (CTEs, window functions), see sql-pro.
 ---
 
 # Database Optimizer

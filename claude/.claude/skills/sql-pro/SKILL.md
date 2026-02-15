@@ -1,6 +1,6 @@
 ---
 name: sql-pro
-description: Use when optimizing SQL queries, designing database schemas, writing migrations, or tuning database performance. Invoke for complex queries, window functions, CTEs, indexing strategies, query plan analysis.
+description: Use when optimizing SQL queries, designing database schemas, writing migrations, or tuning database performance. Invoke for complex queries, window functions, CTEs, indexing strategies, query plan analysis. Focuses on SQL language and query writing. For engine/ORM-level optimization, see database-optimizer.
 ---
 
 # SQL Pro
