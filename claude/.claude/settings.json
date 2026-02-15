@@ -1,4 +1,7 @@
 {
+  "env": {
+    "ENABLE_TOOL_SEARCH": "true"
+  },
   "attribution": {
     "commit": "",
     "pr": ""
@@ -79,6 +82,8 @@
       "Bash(git clean -fd *)",
       "Bash(git push --force *)",
       "Bash(git push -f *)",
+      "Bash(git checkout -- *)",
+      "Bash(git restore *)",
       "Bash(git branch -D *)",
       "Bash(*xargs*rm *)",
       "Bash(*xargs*rm -rf*)",
@@ -125,12 +130,9 @@
       }
     ]
   },
-  "autoUpdatesChannel": "stable",
-  "env": {
-    "ENABLE_TOOL_SEARCH": "true"
-  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/scripts/context-bar.sh"
-  }
+  },
+  "autoUpdatesChannel": "stable"
 }
