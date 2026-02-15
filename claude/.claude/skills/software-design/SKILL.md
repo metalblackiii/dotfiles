@@ -203,3 +203,5 @@ You don't need to handle every case — but you need to have *considered* them. 
 ## Related Skills
 
 **For distributed systems** — service decomposition, cross-service communication, saga patterns, service mesh — use the **microservices-architect** skill instead. This skill covers single-service design; that skill covers multi-service architecture.
+
+**For naming and readability** — vague names, what-comments, readability problems solvable through better naming — use the **self-documenting-code** skill instead.
