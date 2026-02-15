@@ -1,0 +1,4 @@
+model = "gpt-5.3-codex"
+approval_policy = "never"
+sandbox_mode = "workspace-write"
+project_doc_fallback_filenames = ["CLAUDE.md", "TEAM_GUIDE.md"]

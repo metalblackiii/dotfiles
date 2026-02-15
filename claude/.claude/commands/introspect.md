@@ -12,7 +12,7 @@ Perform a configuration introspection.
    - `.claude/settings.json` (project settings if present)
    - All files in `~/.claude/skills/` and `.claude/skills/`
    - All files in `~/.claude/commands/` and `.claude/commands/`
-   - `CLAUDE.md` and `.claude/rules/` if present
+   - `CLAUDE.md` and `AGENTS.md`
 
 2. **Check for:**
    - **Conflicts:** Instructions that contradict each other
