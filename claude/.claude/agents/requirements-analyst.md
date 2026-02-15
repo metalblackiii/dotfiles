@@ -5,6 +5,7 @@ tools: Read, Grep, Glob, Bash
 model: sonnet
 maxTurns: 25
 skills:
+  - neb-repo-layout
   - neb-ms-conventions
 ---
 

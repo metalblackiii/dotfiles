@@ -37,6 +37,7 @@
       "WebFetch(domain:npmjs.com)",
       "WebFetch(domain:docs.docker.com)",
       "WebFetch(domain:kubernetes.io)",
+      "WebFetch(domain:developers.openai.com)",
       "WebSearch"
     ],
     "deny": [

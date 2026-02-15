@@ -16,6 +16,9 @@ claude/.claude/session-env/
 claude/.claude/shell-snapshots/
 claude/.claude/stats-cache.json
 
+# Local settings (machine-specific overrides, not shared)
+claude/.claude/settings.local.json
+
 # Session handoff files
 HANDOFF.md
 
