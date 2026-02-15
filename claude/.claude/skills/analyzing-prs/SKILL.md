@@ -116,6 +116,12 @@ Use these categories to evaluate PR changes comprehensively.
 - [ ] No conflicting dependency versions
 - [ ] Security vulnerabilities checked
 
+## Reference Guide
+
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Security Deep Dive | `references/security-deep-dive.md` | PR touches auth, patient data, audit logging, encryption, or entitlements |
+
 ## Issue Severity Definitions
 
 ### Critical (Must Fix Before Merge)

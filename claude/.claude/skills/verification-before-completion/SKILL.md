@@ -112,6 +112,12 @@ Skip any step = lying, not verifying
 ❌ "Tests pass, ready to commit" (tests verify behavior, not code quality)
 ```
 
+**Test coverage planned:**
+```
+✅ Feature/migration has a test strategy → characterization tests exist for modified code → new tests cover new behavior
+❌ "I'll add tests later" / no test plan for a multi-site change
+```
+
 ## Fresh-Eyes Review Gate
 
 Before **committing or creating a PR**, after all mechanical verification passes:

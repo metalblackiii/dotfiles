@@ -354,6 +354,10 @@ Bug found? Write failing test reproducing it. Follow TDD cycle. Test proves fix 
 
 Never fix bugs without a test.
 
+## Existing Code & Migrations
+
+TDD is for **new code and changes**. When modifying existing untested code, use the **test-architect** skill to plan characterization tests before applying TDD to the new behavior. For complex multi-layer test planning, dispatch the **qa-engineer agent**.
+
 ## Testing Anti-Patterns
 
 When adding mocks or test utilities, read @testing-anti-patterns.md to avoid common pitfalls:
