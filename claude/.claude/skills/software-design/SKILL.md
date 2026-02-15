@@ -1,6 +1,6 @@
 ---
 name: software-design
-description: Use when making single-service design decisions, restructuring code, planning implementations, or evaluating code smells and refactoring opportunities.
+description: Use when making single-service design decisions, restructuring code, evaluating code smells and refactoring opportunities, or choosing between structural approaches for a feature.
 ---
 
 # Software Design
@@ -119,6 +119,51 @@ Large changes are hard to verify. Small, focused changes are easy. Prefer many s
 
 ### Objective Over Subjective
 Prioritize work with clear success criteria. "The API returns the correct data" is verifiable. "The code is clean" is subjective. When requirements are fuzzy, clarify them before starting.
+
+---
+
+## Part 6: Recording Design Decisions
+
+When choosing between approaches, document the decision — even briefly. A decision without recorded rationale becomes cargo cult for the next developer.
+
+**Lightweight format:**
+1. **Context** — What situation prompted the choice?
+2. **Options considered** — What alternatives existed? (minimum two)
+3. **Decision** — What was chosen and why?
+4. **Trade-offs accepted** — What downsides come with this choice?
+
+This doesn't need to be a formal ADR. A code comment, PR description paragraph, or commit message works — as long as the *why* is captured alongside the *what*.
+
+---
+
+## Part 7: Plan for Failure Modes
+
+"Crash Early" tells you what to do *when* failures happen. This principle says: think about what *can* go wrong *before* it does.
+
+Before finalizing a design:
+- What happens when the dependency is unavailable?
+- What happens when input is malformed, enormous, or empty?
+- What happens when two operations race?
+- What's the blast radius if this component fails silently?
+
+You don't need to handle every case — but you need to have *considered* them. The ones you choose not to handle, document why (see Part 6).
+
+---
+
+## Constraints
+
+### MUST DO
+- Evaluate trade-offs, not just benefits — every design choice has a cost; name it
+- Consider failure modes before finalizing a design
+- Record rationale for non-obvious design decisions
+- Identify the specific smell before refactoring (no smell, no refactor)
+- Write characterization tests before touching untested code
+
+### MUST NOT DO
+- Choose an approach without considering at least one alternative
+- Refactor without tests covering the affected code
+- Mix refactoring commits with feature commits
+- Add abstractions for hypothetical future use cases
 
 ---
 
