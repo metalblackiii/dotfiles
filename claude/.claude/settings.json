@@ -33,8 +33,6 @@
       "Bash(docker compose *)",
       "Bash(ast-grep *)",
       "Bash(jq *)",
-      "Bash(* | head *)",
-      "Bash(* | tail *)",
       "Write(~/.claude/plans/**)",
       "Edit(~/.claude/plans/**)",
       "WebFetch",
