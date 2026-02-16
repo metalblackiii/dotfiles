@@ -59,6 +59,7 @@
       "Bash(*| python3 -c *)",
       "Bash(*| python -c *)",
       "Bash(rm -rf *)",
+      "Bash(rm -r *)",
       "Bash(docker run --privileged *)",
       "Bash(docker run -v /:/host *)",
       "Bash(docker run -v /var/run/docker.sock:*)",
