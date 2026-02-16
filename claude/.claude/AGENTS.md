@@ -39,7 +39,7 @@ Before responding to a non-trivial request (features, debugging, architecture, r
 
 For trivial tasks (single-line fixes, typos, simple questions, file reads), proceed directly.
 
-Skills often compose naturally — for example, a bugfix typically involves `systematic-debugging` then `test-driven-development`, and any task nearing completion should invoke `verification-before-completion`.
+Skills often compose naturally — for example, a bugfix typically involves `systematic-debugging` then `test-driven-development`, meaningful implementation chunks should invoke `reflection`, and any task nearing completion should invoke `verification-before-completion`.
 
 ## Code Quality
 

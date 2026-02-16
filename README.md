@@ -102,7 +102,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **analyzing-prs** | Reviewing PR diffs for quality, security, architecture, testing |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
-| **database-optimizer** | Query performance, Aurora migrations, Sequelize tuning, index strategies |
+| **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
 | **dispatching-parallel-agents** | Multiple independent failures or investigations without shared state |
 | **docker-infrastructure** | Troubleshooting containers, compose services, Dockerfiles |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
@@ -115,10 +115,10 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **neb-repo-layout** | Background knowledge: where neb repos live and how they're organized |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
+| **reflection** | After completing meaningful implementation chunks, before reporting progress |
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **refactoring-guide** | Code smells, refactoring discipline, structural improvements |
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
-| **sql-pro** | Query optimization, schema design, migrations, indexing strategies |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
 | **test-architect** | Planning test strategy for features, migrations, or refactoring of existing code |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
@@ -127,7 +127,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **writing-agents** | Creating or editing custom agent .md files and frontmatter |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
-Several skills include reference libraries (e.g., `sql-pro/references/`, `prompt-engineer/references/`, `microservices-architect/references/`, `the-fool/references/`, `database-optimizer/references/`, `test-architect/references/`, `neb-playwright-expert/references/`).
+Several skills include reference libraries (e.g., `database-expert/references/`, `prompt-engineer/references/`, `microservices-architect/references/`, `the-fool/references/`, `test-architect/references/`, `neb-playwright-expert/references/`).
 
 ### Commands (7)
 

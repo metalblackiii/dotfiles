@@ -7,4 +7,6 @@ Skills and commands in this repo were adapted from the following sources:
 - [PracticeTek-Common-Services/ptek-ai-playbook](https://github.com/PracticeTek-Common-Services/ptek-ai-playbook) — analyzing-prs skill, `/review` command
 - [ykdojo/claude-code-tips](https://github.com/ykdojo/claude-code-tips) — ast-grep-patterns, gha (now github-actions), handoff skills, `/catchup` command, status line
 
+- [Andrew Ng / DeepLearning.AI](https://www.deeplearning.ai/the-batch/how-agents-can-improve-llm-performance/) — reflection skill (inspired by the Reflection agentic pattern)
+
 All other skills are original work or codified from standard practices.

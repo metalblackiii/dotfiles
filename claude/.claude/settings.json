@@ -83,7 +83,6 @@
       "Bash(git push --force *)",
       "Bash(git push -f *)",
       "Bash(git checkout -- *)",
-      "Bash(git restore *)",
       "Bash(git branch -D *)",
       "Bash(*xargs*rm *)",
       "Bash(*xargs*rm -rf*)",
@@ -113,7 +112,8 @@
       "Bash(gh pr create *)",
       "Bash(gh pr merge *)",
       "Bash(gh pr close *)",
-      "Bash(gh issue close *)"
+      "Bash(gh issue close *)",
+      "Bash(git restore *)"
     ],
     "defaultMode": "default"
   },
