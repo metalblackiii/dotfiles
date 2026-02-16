@@ -2,7 +2,7 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Claude Code** and **Codex**. Skills and conventions are shared across platforms via a single `AGENTS.md` and symlinked skills directory.
+Currently supports **Claude Code** and **Codex**. Skills are shared across platforms via a symlinked skills directory.
 
 ## Prerequisites
 
@@ -53,8 +53,7 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .claude/
-│       ├── AGENTS.md        # Shared instructions (single source of truth)
-│       ├── CLAUDE.md        # Claude-specific settings (thin wrapper)
+│       ├── CLAUDE.md        # Global instructions (single source of truth)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 6 custom subagents
 │       ├── commands/        # 7 slash commands
@@ -75,14 +74,14 @@ dotfiles/
 
 | Layer | Shared? | Where |
 |-------|---------|-------|
-| AGENTS.md (conventions, rules) | Yes | `claude/.claude/AGENTS.md` — both platforms symlink to it |
+| CLAUDE.md (conventions, rules) | Claude-only | `claude/.claude/CLAUDE.md` — auto-loaded every session |
 | Skills (27) | Yes | `claude/.claude/skills/` — Codex discovers via `~/.agents/skills/personal` |
 | Claude settings, hooks, commands, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
-## Shared Configuration (AGENTS.md)
+## Global Configuration (CLAUDE.md)
 
-The `AGENTS.md` file is the single source of truth for conventions shared across all platforms:
+The `CLAUDE.md` file is the single source of truth for Claude Code conventions:
 
 - **Git preferences** — conventional commits, explicit commit/push approval
 - **PR defaults** — reviewers, gh flags
@@ -173,7 +172,7 @@ The `settings.json` enforces strict guardrails:
 
 ## Codex Configuration
 
-Codex shares `AGENTS.md` and skills from the Claude directory. Its only platform-specific file is `config.toml`:
+Codex shares skills from the Claude directory via `~/.agents/skills/personal`. Its only platform-specific file is `config.toml`:
 
 - **Model**: `gpt-5.3-codex`
 - **Approval policy**: `never` (sandbox restricts filesystem/network access)
@@ -183,9 +182,8 @@ Codex shares `AGENTS.md` and skills from the Claude directory. Its only platform
 
 1. Create a directory: `platform-name/`
 2. Add `install.sh` and `uninstall.sh`
-3. Symlink to `claude/.claude/AGENTS.md` for shared conventions
-4. Symlink to `claude/.claude/skills/` for shared skills
-5. The top-level orchestrator picks up `*/install.sh` automatically
+3. Symlink to `claude/.claude/skills/` for shared skills
+4. The top-level orchestrator picks up `*/install.sh` automatically
 
 ## Customization
 
@@ -194,7 +192,7 @@ If you fork this repo, update these team/environment-specific values:
 | What | Where | Default |
 |------|-------|---------|
 | Neb repo base path | `claude/.claude/skills/neb-repo-layout/SKILL.md` | `~/repos/` |
-| PR default reviewers | `claude/.claude/AGENTS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
+| PR default reviewers | `claude/.claude/CLAUDE.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 
 ## Attribution
 

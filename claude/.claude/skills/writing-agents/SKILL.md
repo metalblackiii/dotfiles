@@ -110,8 +110,8 @@ Agents compose with skills via `skills:` frontmatter to inherit domain expertise
 | `self-code-reviewer` | `analyzing-prs` | Review criteria maintained in one place, reused by agent and manual reviews |
 | `neb-explorer` | `neb-ms-conventions` | Service conventions shared across neb agents |
 | `requirements-analyst` | `neb-ms-conventions` | Same conventions for assessing implementation feasibility |
-| `analysis-writer` | *(none)* | Design principles inherited from AGENTS.md |
-| `upgrade-analyst` | *(none)* | Design principles inherited from AGENTS.md |
+| `analysis-writer` | *(none)* | Design principles inherited from CLAUDE.md |
+| `upgrade-analyst` | *(none)* | Design principles inherited from CLAUDE.md |
 
 **Pattern:** If a skill captures domain knowledge that an agent needs, compose rather than duplicate. When the skill updates, all agents that load it benefit automatically.
 

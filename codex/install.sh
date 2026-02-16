@@ -25,16 +25,6 @@ fi
 echo "  Linking $TARGET_CONFIG -> $CODEX_CONFIG"
 ln -s "$CODEX_CONFIG" "$TARGET_CONFIG"
 
-# AGENTS.md is shared from claude directory
-AGENTS_SOURCE="$DOTFILES_DIR/claude/.claude/AGENTS.md"
-TARGET_AGENTS="$CODEX_TARGET/AGENTS.md"
-
-if [ -L "$TARGET_AGENTS" ]; then
-    rm "$TARGET_AGENTS"
-fi
-echo "  Linking $TARGET_AGENTS -> $AGENTS_SOURCE"
-ln -s "$AGENTS_SOURCE" "$TARGET_AGENTS"
-
 # Share skills with Codex via native skill discovery
 SKILLS_LINK="$HOME/.agents/skills/personal"
 mkdir -p "$(dirname "$SKILLS_LINK")"

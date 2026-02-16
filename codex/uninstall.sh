@@ -10,7 +10,6 @@ echo "Uninstalling Codex config..."
 
 CODEX_ITEMS=(
     "config.toml"
-    "AGENTS.md"
 )
 
 for item in "${CODEX_ITEMS[@]}"; do
