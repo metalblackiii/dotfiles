@@ -167,7 +167,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 
 The `settings.json` enforces strict guardrails:
 
-- **Denied**: shell aliases for tools with dedicated equivalents (`cat`, `grep`, `find`, `ls`), env/secret files, destructive git operations, dangerous docker flags, package publishing
+- **Denied**: shell aliases for tools with dedicated equivalents (`cat`, `grep`, `find`, `ls`), `python -c` inline execution (use `jq` instead), env/secret files, destructive git operations, dangerous docker flags, package publishing
 - **Ask**: `git commit`, `git push`, `gh pr create/merge/close`
 - **Allowed**: standard dev tools, read-only kubectl, scoped web access
 

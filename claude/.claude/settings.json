@@ -25,6 +25,7 @@
       "Bash(kubectl config *)",
       "Bash(kubectl port-forward *)",
       "Bash(pwd)",
+      "Bash(basename *)",
       "Bash(npx *)",
       "Bash(touch *)",
       "Bash(*npm test*)",
@@ -51,6 +52,10 @@
       "Bash(sed *)",
       "Bash(awk *)",
       "Bash(xargs *)",
+      "Bash(python3 -c *)",
+      "Bash(python -c *)",
+      "Bash(*| python3 -c *)",
+      "Bash(*| python -c *)",
       "Bash(rm -rf *)",
       "Bash(docker run --privileged *)",
       "Bash(docker run -v /:/host *)",
@@ -134,5 +139,6 @@
     "type": "command",
     "command": "bash ~/.claude/scripts/context-bar.sh"
   },
-  "autoUpdatesChannel": "stable"
+  "autoUpdatesChannel": "stable",
+  "effortLevel": "medium"
 }
