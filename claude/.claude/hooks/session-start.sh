@@ -54,7 +54,9 @@ cat <<EOF
 {
    "hookSpecificOutput": {
     "hookEventName": "SessionStart",
-    "additionalContext": "You have ${SKILL_COUNT} specialized skills installed. These represent YOUR personal development methodology and best practices.
+    "additionalContext": "<EXTREMELY_IMPORTANT>
+
+You have ${SKILL_COUNT} specialized skills installed. These represent YOUR personal development methodology and best practices.
 
 ## The Rule
 
@@ -82,7 +84,9 @@ If you're thinking:
 
 ## The Iron Law
 
-Skills are not optional when applicable. Invoke first, work second. But don't invoke skills for work that genuinely doesn't benefit from them."
+Skills are not optional when applicable. Invoke first, work second. But don't invoke skills for work that genuinely doesn't benefit from them.
+
+</EXTREMELY_IMPORTANT>"
   }
 }
 EOF
