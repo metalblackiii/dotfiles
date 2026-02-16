@@ -23,6 +23,8 @@ If you haven't run the verification command in this message, you cannot claim it
 
 ## The Gate Function
 
+**Prerequisite:** Reasoning-based self-critique (`reflection` skill) should happen *before* this evidence-based gate. Reflection catches intent-vs-implementation drift; verification catches runtime failures.
+
 ```
 BEFORE claiming any status or expressing satisfaction:
 
