@@ -14,7 +14,6 @@ echo "Installing Claude Code config..."
 mkdir -p "$CLAUDE_TARGET"
 
 CLAUDE_ITEMS=(
-    "AGENTS.md"
     "CLAUDE.md"
     "settings.json"
     "hooks"

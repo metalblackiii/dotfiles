@@ -9,7 +9,6 @@ CLAUDE_TARGET="$HOME/.claude"
 echo "Uninstalling Claude Code config..."
 
 CLAUDE_ITEMS=(
-    "AGENTS.md"
     "CLAUDE.md"
     "settings.json"
     "hooks"
