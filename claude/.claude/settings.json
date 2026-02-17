@@ -44,8 +44,6 @@
       "Write(**/.env*)",
       "Bash(ls *)",
       "Bash(cat *)",
-      "Bash(head *)",
-      "Bash(tail *)",
       "Bash(find *)",
       "Bash(grep *)",
       "Bash(rg *)",
@@ -119,7 +117,9 @@
       "Bash(gh pr merge *)",
       "Bash(gh pr close *)",
       "Bash(gh issue close *)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(head *)",
+      "Bash(tail *)"
     ],
     "defaultMode": "default"
   },
