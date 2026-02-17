@@ -1,6 +1,7 @@
 ---
 name: spec-miner
 description: Use when understanding legacy or undocumented systems, reverse-engineering specifications from existing code, or creating documentation for existing features before modifying them
+disable-model-invocation: true
 ---
 
 # Spec Miner

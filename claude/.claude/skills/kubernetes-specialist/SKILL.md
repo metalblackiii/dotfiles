@@ -1,6 +1,7 @@
 ---
 name: kubernetes-specialist
 description: Use when deploying or managing Kubernetes workloads, writing or modifying Helm charts, troubleshooting pod issues, configuring RBAC or NetworkPolicies, or optimizing cluster resource usage
+disable-model-invocation: true
 ---
 
 # Kubernetes Specialist
