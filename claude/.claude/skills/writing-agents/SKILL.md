@@ -1,6 +1,7 @@
 ---
 name: writing-agents
 description: Use when creating or editing custom agent .md files in .claude/agents/, defining new subagents, or modifying agent frontmatter
+disable-model-invocation: true
 ---
 
 # Writing Agents

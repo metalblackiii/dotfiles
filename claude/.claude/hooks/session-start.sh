@@ -10,13 +10,13 @@ SKILL_LIST=""
 
 if [ -d "$SKILLS_DIR" ]; then
     # Parse each SKILL.md frontmatter for name + description
+    # Skip skills with disable-model-invocation: true
     # Use -L to follow symlinks (skills dir may be symlinked from dotfiles)
     while IFS= read -r skill_file; do
-        SKILL_COUNT=$((SKILL_COUNT + 1))
-
         in_frontmatter=false
         name=""
         description=""
+        disabled=false
 
         while IFS= read -r line; do
             if [[ "$line" == "---" ]]; then
@@ -32,9 +32,16 @@ if [ -d "$SKILLS_DIR" ]; then
                     name="${BASH_REMATCH[1]}"
                 elif [[ "$line" =~ ^[Dd]escription:\ *(.*) ]]; then
                     description="${BASH_REMATCH[1]}"
+                elif [[ "$line" =~ ^disable-model-invocation:\ *true ]]; then
+                    disabled=true
                 fi
             fi
         done < "$skill_file"
+
+        # Skip skills that have opted out of model invocation
+        if $disabled; then
+            continue
+        fi
 
         # Fall back to directory name if no name in frontmatter
         if [ -z "$name" ]; then
@@ -42,6 +49,7 @@ if [ -d "$SKILLS_DIR" ]; then
         fi
 
         if [ -n "$description" ]; then
+            SKILL_COUNT=$((SKILL_COUNT + 1))
             # Escape double quotes for JSON safety
             description="${description//\"/\\\"}"
             SKILL_LIST="${SKILL_LIST}

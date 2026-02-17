@@ -1,7 +1,7 @@
 ---
 name: self-documenting-code
 description: Use when encountering vague names (data, result, temp, handle*, process*), comments that explain 'what' code does instead of 'why', or readability problems solvable through better naming rather than more comments.
-user-invokable: false
+user-invocable: false
 ---
 
 # Self-Documenting Code

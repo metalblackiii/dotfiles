@@ -1,6 +1,7 @@
 ---
 name: reflection
 description: Use after completing a meaningful chunk of implementation, before claiming progress or moving to verification. Not for trivial single-line changes.
+disable-model-invocation: true
 ---
 
 # Reflection

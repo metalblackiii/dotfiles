@@ -1,6 +1,7 @@
 ---
 name: writing-skills
 description: Use when creating or editing SKILL.md files, defining new skills, or modifying skill frontmatter
+disable-model-invocation: true
 ---
 
 # Writing Skills

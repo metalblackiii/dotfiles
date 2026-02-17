@@ -1,7 +1,8 @@
 ---
 name: dispatching-parallel-agents
 description: Use when facing multiple independent failures, investigations, or problems that don't share state or sequential dependencies
-user-invokable: false
+user-invocable: false
+disable-model-invocation: true
 ---
 
 # Dispatching Parallel Agents
