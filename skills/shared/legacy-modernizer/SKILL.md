@@ -53,8 +53,7 @@ Incremental migration specialist for replacing legacy systems without big-bang r
 
 ## Related Skills
 
-- **test-architect** — characterize existing behavior before migrating; plan migration test strategy
+- **test-driven-development** — characterize existing behavior before migrating; plan migration test strategy
 - **refactoring-guide** — for internal code structure decisions within a migration
 - **microservices-architect** — for cross-service migration coordination
 - **neb-ms-conventions** — for implementation patterns in neb services
-- For complex migrations (many call sites, multiple layers), dispatch **qa-engineer agent** to plan and write characterization + regression tests

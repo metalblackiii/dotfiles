@@ -1,6 +1,6 @@
 ---
 name: neb-repo-layout
-description: Use when exploring, analyzing, or writing code across neb repositories to know where repos live and how they're organized.
+description: Use when unsure which neb repo owns a feature, navigating cross-repo dependencies, or needing the neb architecture layer map (frontend, microservices, shared libs, infra).
 user-invocable: false
 ---
 

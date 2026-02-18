@@ -17,7 +17,7 @@ E2E testing patterns for neb-www's Playwright infrastructure. neb-www has a cust
 ## When NOT to Use
 
 - Unit or integration tests → use `test-driven-development`
-- Planning which test layers a feature needs → use `test-architect`
+- Planning which test layers a feature needs → use `test-driven-development`
 - Playwright in non-neb projects → these patterns are neb-specific
 
 ## Iron Rules

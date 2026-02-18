@@ -117,5 +117,5 @@ After completing one refactoring move, stop. Run tests. Verify. Do not chain add
 ## Related Skills
 
 - **self-documenting-code** — for naming and readability improvements (not structural refactoring)
-- **test-architect** — for planning characterization tests before refactoring
+- **test-driven-development** — for planning characterization tests before refactoring
 - **microservices-architect** — for cross-service structural changes (this skill covers single-service refactoring)
