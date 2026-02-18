@@ -1,6 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use when facing multiple independent failures, investigations, or problems that don't share state or sequential dependencies
+description: Use when facing multiple independent tasks, failures, investigations, or explorations that don't share state — parallel file analysis, concurrent codebase searches, simultaneous multi-repo investigation, or any work that can be decomposed into independent threads
 user-invocable: false
 disable-model-invocation: true
 ---
