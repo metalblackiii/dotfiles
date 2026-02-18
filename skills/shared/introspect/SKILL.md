@@ -66,10 +66,22 @@ Rate each: **STRONG** / **NEEDS WORK** / **WEAK**, with a one-line explanation.
 
 ### 5. Cross-Platform Parity
 
-Check whether skills available to one platform are missing from the other:
-- Symlinks in `claude/.claude/skills/` vs `codex/.agents/skills/`
-- Platform-specific skills that could be shared
-- Broken symlinks in either view directory
+Compare which skills are available on each platform using Glob (do NOT use Bash loops or `readlink`):
+
+**Claude Code:** `Glob("claude/.claude/skills/*/SKILL.md")` from the dotfiles repo root
+**Codex:** `Glob("codex/.agents/skills/*/SKILL.md")` from the dotfiles repo root
+
+Then compare both lists against the canonical set: `Glob("skills/shared/*/SKILL.md")`
+
+Look for:
+- Skills present in one platform's view directory but missing from the other
+- Skills in `skills/shared/` that aren't linked into either view directory
+- Platform-specific skills (in `skills/claude/` or `skills/codex/`) that could be shared
+
+Note: some assets are inherently platform-specific and should NOT be flagged:
+- Slash commands (`claude/.claude/commands/`) — Claude Code only, Codex has no equivalent
+- Custom agents (`claude/.claude/agents/`) — Claude Code only, Codex has no equivalent
+- `settings.json`, hooks, scripts — Claude Code only, Codex uses `config.toml`
 
 ## Known-Intentional Patterns (Do NOT Flag)
 
