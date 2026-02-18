@@ -1,7 +1,6 @@
 ---
 name: legacy-modernizer
 description: Use when migrating legacy systems incrementally, replacing old APIs with new facades, planning strangler fig migrations, or managing dual-mode coexistence between old and new systems
-disable-model-invocation: true
 ---
 
 # Legacy Modernizer

@@ -1,7 +1,6 @@
 ---
 name: neb-ms-conventions
 description: Use when writing or modifying code in neb microservice repositories (neb-ms-* or neb-microservice)
-disable-model-invocation: true
 ---
 
 # Neb Service Conventions

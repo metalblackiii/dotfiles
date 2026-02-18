@@ -1,6 +1,7 @@
 ---
 name: self-review
 description: Use as a pre-commit or pre-PR quality gate to review local git changes. Catches issues the implementer may have missed through fresh-eyes analysis of staged, unstaged, or branch diffs.
+disable-model-invocation: true
 ---
 
 # Self-Review Skill

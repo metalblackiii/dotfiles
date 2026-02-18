@@ -1,7 +1,6 @@
 ---
 name: feature-forge
 description: Use when defining new features from scratch, gathering requirements through structured workshops, or writing feature specifications with structured requirements and acceptance criteria. For analyzing existing requirements (JIRA tickets, specs), use the requirements-analyst agent instead.
-disable-model-invocation: true
 ---
 
 # Feature Forge

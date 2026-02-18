@@ -1,5 +1,5 @@
 ---
-name: github-actions
+name: gha
 description: Use when investigating GitHub Actions workflow failures, CI/CD pipeline errors, flaky tests in GitHub Actions, writing new workflows, or optimizing CI pipeline performance.
 argument-hint: <url>
 allowed-tools: Bash(gh *)
