@@ -1,6 +1,7 @@
 ---
 name: introspect
 description: Use when reviewing agent configuration for conflicts, redundancy, staleness, or prompt quality issues. Covers skills, commands, settings, and instructions across Claude Code and Codex.
+allowed-tools: Read, Glob, Grep
 ---
 
 # Configuration Introspection
