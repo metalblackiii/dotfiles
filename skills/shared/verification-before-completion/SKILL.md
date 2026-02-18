@@ -23,7 +23,7 @@ If you haven't run the verification command in this message, you cannot claim it
 
 ## The Gate Function
 
-**Prerequisite:** Reasoning-based self-critique (`reflection` skill) should happen *before* this evidence-based gate. Reflection catches intent-vs-implementation drift; verification catches runtime failures.
+**Prerequisite:** Reasoning-based self-critique should happen *before* this evidence-based gate. Self-critique catches intent-vs-implementation drift; verification catches runtime failures.
 
 ```
 BEFORE claiming any status or expressing satisfaction:
@@ -110,7 +110,7 @@ Skip any step = lying, not verifying
 
 **Pre-commit/Pre-PR self-review:**
 ```
-✅ Mechanical verification passes → Spawn self-code-reviewer agent → Present findings → THEN commit/PR
+✅ Mechanical verification passes → Invoke self-review skill → Present findings → THEN commit/PR
 ❌ "Tests pass, ready to commit" (tests verify behavior, not code quality)
 ```
 
@@ -124,9 +124,9 @@ Skip any step = lying, not verifying
 
 Before **committing or creating a PR**, after all mechanical verification passes:
 
-1. **Spawn the `self-code-reviewer` agent** with the appropriate diff:
-   - Pre-commit: `git diff --staged`
-   - Pre-PR: `git diff main...HEAD` (or appropriate base branch)
+1. **Invoke the `self-review` skill** to review the appropriate diff:
+   - Pre-commit: staged changes
+   - Pre-PR: all commits since the base branch
 2. **Present findings** to the user with severity levels
 3. **Do not commit/PR if Critical findings exist** — flag them and fix first
 4. **Important/Minor findings** — present to user, let them decide

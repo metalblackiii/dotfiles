@@ -1,6 +1,7 @@
 ---
 name: analyzing-prs
-description: Use when reviewing PR diffs for architecture compliance, testing coverage, code quality, security vulnerabilities, authentication patterns, database migrations, API design, performance issues, logging, frontend changes, documentation, or dependency updates.
+description: Domain knowledge for PR review checklists and quality criteria. Consumed by the review and self-review skills — not invoked directly.
+user-invocable: false
 ---
 
 # PR Analysis Skill
