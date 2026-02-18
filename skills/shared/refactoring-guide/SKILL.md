@@ -1,7 +1,6 @@
 ---
 name: refactoring-guide
 description: Use when explicitly refactoring code, when preparatory refactoring is needed before a feature, or when evaluating a specific code smell. Not for routine implementation that follows existing patterns.
-disable-model-invocation: true
 ---
 
 # Refactoring Guide

@@ -13,7 +13,7 @@ Currently supports **Claude Code** and **Codex**. Skills live in a canonical `sk
 | `git` | Yes | Xcode CLT / `brew install git` | Core workflow |
 | `gh` | Yes | `brew install gh` | PR creation, issue management, `/review` command |
 | `node` / `npm` / `npx` | Yes | `brew install node` or nvm | Running and testing projects |
-| `docker` | Optional | [Docker Desktop](https://www.docker.com/products/docker-desktop/) | `docker-infrastructure` skill |
+| `docker` | Optional | [Docker Desktop](https://www.docker.com/products/docker-desktop/) | Container workflows |
 | `kubectl` | Optional | `brew install kubectl` | Read-only cluster access |
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
@@ -50,7 +50,7 @@ To remove:
 ```
 dotfiles/
 ├── skills/                  # Canonical skill source of truth
-│   ├── shared/              # Cross-platform skills (27)
+│   ├── shared/              # Cross-platform skills (26)
 │   │   ├── analyzing-prs/SKILL.md
 │   │   ├── systematic-debugging/SKILL.md
 │   │   └── ...
@@ -64,8 +64,8 @@ dotfiles/
 │   └── .claude/
 │       ├── CLAUDE.md        # Global instructions (single source of truth)
 │       ├── settings.json    # Permissions, hooks, env vars
-│       ├── agents/          # 6 custom subagents
-│       ├── commands/        # 7 slash commands
+│       ├── agents/          # 4 custom subagents
+│       ├── commands/        # 3 slash commands
 │       ├── hooks/           # Session-start hook
 │       ├── scripts/         # Status bar script
 │       └── skills/          # View: symlinks → skills/shared + skills/claude
@@ -86,7 +86,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | CLAUDE.md (conventions, rules) | Claude-only | `claude/.claude/CLAUDE.md` — auto-loaded every session |
-| Shared skills (27) | Yes | `skills/shared/` — symlinked into both platform views |
+| Shared skills (26) | Yes | `skills/shared/` — symlinked into both platform views |
 | Claude-only skills | No | `skills/claude/` — symlinked into Claude view only |
 | Codex-only skills | No | `skills/codex/` — symlinked into Codex view only |
 | Claude settings, hooks, commands, agents | No | Claude-only features |
@@ -105,7 +105,7 @@ The `CLAUDE.md` file is the single source of truth for Claude Code conventions:
 
 ## Claude Code Configuration
 
-### Skills (27)
+### Skills (26)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. A session-start hook enforces this via "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -115,11 +115,11 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
-| **dispatching-parallel-agents** | Multiple independent failures or investigations without shared state |
-| **docker-infrastructure** | Troubleshooting containers, compose services, Dockerfiles |
+| **dispatching-parallel-agents** | Multiple independent tasks, failures, or explorations that can be decomposed into parallel threads |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
-| **github-actions** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
+| **gha** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
 | **handoff** | Ending sessions with work in progress or high context usage |
+| **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
 | **kubernetes-specialist** | Deploying/managing K8s workloads, Helm charts, RBAC, troubleshooting pods |
 | **legacy-modernizer** | Incremental migrations, strangler fig patterns, dual-mode coexistence |
 | **microservices-architect** | Distributed system design, service boundaries, sagas, event sourcing |
@@ -127,19 +127,18 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **neb-repo-layout** | Background knowledge: where neb repos live and how they're organized |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
-| **reflection** | After completing meaningful implementation chunks, before reporting progress |
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **refactoring-guide** | Code smells, refactoring discipline, structural improvements |
+| **review** | PR review for architecture, testing, code quality, security |
+| **self-review** | Pre-commit/pre-PR quality gate for local git changes |
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
-| **test-architect** | Planning test strategy for features, migrations, or refactoring of existing code |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
 | **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
-| **writing-agents** | Creating or editing custom agent .md files and frontmatter |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
-Several skills include reference libraries (e.g., `skills/shared/database-expert/references/`, `skills/shared/prompt-engineer/references/`, `skills/shared/microservices-architect/references/`, `skills/shared/the-fool/references/`, `skills/shared/test-architect/references/`, `skills/shared/neb-playwright-expert/references/`).
+Several skills include reference libraries (e.g., `skills/shared/database-expert/references/`, `skills/shared/prompt-engineer/references/`, `skills/shared/microservices-architect/references/`, `skills/shared/the-fool/references/`, `skills/shared/neb-playwright-expert/references/`).
 
 ### Adding a New Skill
 
@@ -156,21 +155,17 @@ scripts/link-skill.sh my-new-skill claude
 scripts/link-skill.sh my-new-skill codex
 ```
 
-### Commands (7)
+### Commands (3)
 
 Slash commands invoked directly during sessions.
 
 | Command | Purpose |
 |---------|---------|
 | `/audit-skills` | Audit skill usage across recent sessions to find dormant skills and adoption gaps |
-| `/audit-commands` | Audit slash command usage across recent sessions to find unused commands |
-| `/audit-agents` | Audit custom agent usage across recent sessions to find unused agents |
-| `/audit-permissions` | Audit permission deny/allow/ask rules for denials and calibration issues |
 | `/catchup` | Restore context after `/clear`, `/compact`, or a long break |
-| `/introspect` | Review configuration for conflicts, redundancy, and staleness |
 | `/review` | Review a pull request using the analyzing-prs skill |
 
-### Agents (6)
+### Agents (4)
 
 Custom subagents spawned via the Task tool for parallel or specialized work.
 
@@ -178,9 +173,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 |-------|---------|
 | **analysis-writer** | Produce structured analysis documents for team decision-making |
 | **neb-explorer** | Explore feature implementations across neb microservices |
-| **qa-engineer** | Plan and write test coverage for features, migrations, or refactoring |
 | **requirements-analyst** | Surface ambiguities and risks in requirements before engineering |
-| **self-code-reviewer** | Fresh-eyes code review as a pre-commit/pre-PR quality gate |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |
 
 > **Neb-specific agents**: `neb-explorer` and `requirements-analyst` load the `neb-repo-layout` skill which assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `skills/neb-repo-layout/SKILL.md`.

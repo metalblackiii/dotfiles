@@ -2,7 +2,6 @@
 name: neb-repo-layout
 description: Use when exploring, analyzing, or writing code across neb repositories to know where repos live and how they're organized.
 user-invocable: false
-disable-model-invocation: true
 ---
 
 # Neb Repository Layout

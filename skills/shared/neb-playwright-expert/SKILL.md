@@ -1,7 +1,6 @@
 ---
 name: neb-playwright-expert
 description: Use when writing, debugging, or planning E2E tests in neb-www using the Playwright framework and its custom component generation system
-disable-model-invocation: true
 ---
 
 # Playwright Neb

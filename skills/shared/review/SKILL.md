@@ -1,6 +1,7 @@
 ---
 name: review
 description: Use when reviewing a pull request for architecture compliance, testing coverage, code quality, security vulnerabilities, and other quality criteria. Accepts a PR number, URL, or empty for the current branch.
+disable-model-invocation: true
 ---
 
 # PR Review Skill
