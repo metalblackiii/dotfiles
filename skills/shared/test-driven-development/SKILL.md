@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Use when implementing features test-first, writing new production code with red-green-refactor cycles, or fixing bugs with a failing test before the fix
+description: Use when implementing any feature or bugfix, before writing implementation code
 ---
 
 # Test-Driven Development (TDD)
@@ -356,7 +356,11 @@ Never fix bugs without a test.
 
 ## Existing Code & Migrations
 
-TDD is for **new code and changes**. When modifying existing untested code, use the **test-architect** skill to plan characterization tests before applying TDD to the new behavior. For complex multi-layer test planning, dispatch the **qa-engineer agent**.
+TDD is for **new code and changes**. When modifying existing untested code:
+
+1. **Characterize first** — write tests that capture current behavior before changing it
+2. **Then TDD the change** — red-green-refactor for the new behavior
+3. **Don't skip characterization** — changing untested code without understanding it is guessing
 
 ## Testing Anti-Patterns
 

@@ -21,7 +21,7 @@ Config files live in `~/repos/dotfiles/` and are symlinked to their platform dir
 
 ## Tool Preferences
 
-- **Always use built-in tools over Bash equivalents** — `Read` not `cat`/`head`/`tail`, `Glob` not `find`/`ls`, `Grep` not `grep`/`rg`. These are denied in settings.json to enforce this. Never attempt to work around the deny rules.
+- **Prefer built-in tools over Bash equivalents** — `Read` not `cat`, `Glob` not `find`/`ls`, `Grep` not `grep`/`rg`. `head`/`tail` are allowed for quick peeking. Never attempt to work around the deny rules.
 
 ## Git Preferences
 
@@ -42,7 +42,7 @@ Before responding to a non-trivial request (features, debugging, architecture, r
 
 For trivial tasks (single-line fixes, typos, simple questions, file reads), proceed directly.
 
-Skills often compose naturally — for example, a bugfix typically involves `systematic-debugging` then `test-driven-development`, meaningful implementation chunks should invoke `reflection`, and any task nearing completion should invoke `verification-before-completion`.
+Skills often compose naturally — for example, a bugfix typically involves `systematic-debugging` then `test-driven-development`, and any task nearing completion should invoke `verification-before-completion`.
 
 ## Code Quality
 
