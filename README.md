@@ -2,7 +2,7 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Claude Code** and **Codex**. Skills are shared across platforms via a symlinked skills directory.
+Currently supports **Claude Code** and **Codex**. Skills live in a canonical `skills/` directory and are shared across platforms via symlink views.
 
 ## Prerequisites
 
@@ -49,6 +49,15 @@ To remove:
 
 ```
 dotfiles/
+├── skills/                  # Canonical skill source of truth
+│   ├── shared/              # Cross-platform skills (27)
+│   │   ├── analyzing-prs/SKILL.md
+│   │   ├── systematic-debugging/SKILL.md
+│   │   └── ...
+│   ├── claude/              # Claude-only skills (.gitkeep)
+│   └── codex/               # Codex-only skills (.gitkeep)
+├── scripts/
+│   └── link-skill.sh        # Helper to scaffold & symlink new skills
 ├── claude/                  # Claude Code configuration
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -59,12 +68,14 @@ dotfiles/
 │       ├── commands/        # 7 slash commands
 │       ├── hooks/           # Session-start hook
 │       ├── scripts/         # Status bar script
-│       └── skills/          # 27 specialized skills (shared with Codex)
+│       └── skills/          # View: symlinks → skills/shared + skills/claude
 ├── codex/                   # Codex configuration
 │   ├── install.sh
 │   ├── uninstall.sh
-│   └── .codex/
-│       └── config.toml      # Codex runtime settings
+│   ├── .codex/
+│   │   └── config.toml      # Codex runtime settings
+│   └── .agents/
+│       └── skills/          # View: symlinks → skills/shared + skills/codex
 ├── install.sh               # Orchestrator — runs */install.sh
 ├── uninstall.sh             # Orchestrator — runs */uninstall.sh
 └── .gitignore
@@ -75,7 +86,9 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | CLAUDE.md (conventions, rules) | Claude-only | `claude/.claude/CLAUDE.md` — auto-loaded every session |
-| Skills (27) | Yes | `claude/.claude/skills/` — Codex discovers via `~/.agents/skills/personal` |
+| Shared skills (27) | Yes | `skills/shared/` — symlinked into both platform views |
+| Claude-only skills | No | `skills/claude/` — symlinked into Claude view only |
+| Codex-only skills | No | `skills/codex/` — symlinked into Codex view only |
 | Claude settings, hooks, commands, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -126,7 +139,22 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **writing-agents** | Creating or editing custom agent .md files and frontmatter |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
-Several skills include reference libraries (e.g., `database-expert/references/`, `prompt-engineer/references/`, `microservices-architect/references/`, `the-fool/references/`, `test-architect/references/`, `neb-playwright-expert/references/`).
+Several skills include reference libraries (e.g., `skills/shared/database-expert/references/`, `skills/shared/prompt-engineer/references/`, `skills/shared/microservices-architect/references/`, `skills/shared/the-fool/references/`, `skills/shared/test-architect/references/`, `skills/shared/neb-playwright-expert/references/`).
+
+### Adding a New Skill
+
+Use the helper script to scaffold a new skill and symlink it into the appropriate views:
+
+```bash
+# Shared skill (both Claude and Codex)
+scripts/link-skill.sh my-new-skill shared
+
+# Claude-only skill
+scripts/link-skill.sh my-new-skill claude
+
+# Codex-only skill
+scripts/link-skill.sh my-new-skill codex
+```
 
 ### Commands (7)
 
@@ -172,7 +200,7 @@ The `settings.json` enforces strict guardrails:
 
 ## Codex Configuration
 
-Codex shares skills from the Claude directory via `~/.agents/skills/personal`. Its only platform-specific file is `config.toml`:
+Codex shares skills via its own view directory (`codex/.agents/skills/`) symlinked to `~/.agents/skills/personal`. Its only platform-specific file is `config.toml`:
 
 - **Model**: `gpt-5.3-codex`
 - **Approval policy**: `never` (sandbox restricts filesystem/network access)
@@ -182,8 +210,9 @@ Codex shares skills from the Claude directory via `~/.agents/skills/personal`. I
 
 1. Create a directory: `platform-name/`
 2. Add `install.sh` and `uninstall.sh`
-3. Symlink to `claude/.claude/skills/` for shared skills
-4. The top-level orchestrator picks up `*/install.sh` automatically
+3. Create a view directory (e.g. `platform-name/.config/skills/`) with symlinks to `skills/shared/`
+4. Optionally create `skills/platform-name/` for platform-specific skills
+5. The top-level orchestrator picks up `*/install.sh` automatically
 
 ## Customization
 
@@ -191,7 +220,7 @@ If you fork this repo, update these team/environment-specific values:
 
 | What | Where | Default |
 |------|-------|---------|
-| Neb repo base path | `claude/.claude/skills/neb-repo-layout/SKILL.md` | `~/repos/` |
+| Neb repo base path | `skills/shared/neb-repo-layout/SKILL.md` | `~/repos/` |
 | PR default reviewers | `claude/.claude/CLAUDE.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 
 ## Attribution
