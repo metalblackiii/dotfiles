@@ -8,24 +8,36 @@ disable-model-invocation: true
 
 ## Overview
 
-Skills are reusable methodology guides that Claude loads when relevant. Good skills are discoverable, concise, and actionable.
+Skills are reusable methodology guides that agents load when relevant. Good skills are discoverable, concise, and actionable. The format follows the open [Agent Skills spec](https://agentskills.io/specification) — skills work across Claude Code, Codex, and other compatible agents.
 
 ## Frontmatter Reference
 
-All supported YAML frontmatter fields:
+### Standard fields (agentskills.io spec)
+
+These fields are recognized by all spec-compliant agents:
 
 | Field | Required | Description |
 |-------|----------|-------------|
-| `name` | No | Display name (lowercase, letters/numbers/hyphens only, max 64 chars). Defaults to directory name. |
-| `description` | Recommended | When to use this skill. Claude uses this to decide when to load it. Start with "Use when..." |
-| `argument-hint` | No | Hint shown during autocomplete (e.g., `[issue-number]`) |
-| `disable-model-invocation` | No | Set `true` to prevent auto-loading. For manual-only workflows. |
-| `user-invokable` | No | Set `false` to hide from `/` menu. For background knowledge skills. |
-| `allowed-tools` | No | Comma-separated tools allowed without permission when skill is active |
-| `model` | No | Model to use when skill is active (e.g., `opus`, `sonnet`) |
-| `context` | No | Set to `fork` to run in isolated subagent context |
-| `agent` | No | Subagent type when `context: fork` (e.g., `Explore`, `Plan`) |
-| `hooks` | No | Skill-scoped hooks (see Hooks documentation) |
+| `name` | **Yes** | Must match parent directory name. Lowercase letters, numbers, hyphens only. Max 64 chars. No leading/trailing/consecutive hyphens. |
+| `description` | **Yes** | When to use this skill. Agents use this to decide when to load it. Max 1024 chars. |
+| `license` | No | License name or reference to bundled license file |
+| `compatibility` | No | Environment requirements (e.g., "Requires git, docker"). Max 500 chars. |
+| `metadata` | No | Arbitrary key-value pairs (e.g., `author`, `version`) |
+| `allowed-tools` | No | Space-delimited tools the skill may use (experimental, support varies) |
+
+### Claude Code extensions
+
+These fields are only recognized by Claude Code and are ignored by other agents:
+
+| Field | Description |
+|-------|-------------|
+| `argument-hint` | Hint shown during autocomplete (e.g., `[issue-number]`) |
+| `disable-model-invocation` | Set `true` to prevent auto-loading. For manual-only workflows. |
+| `user-invokable` | Set `false` to hide from `/` menu. For background knowledge skills. |
+| `model` | Model to use when skill is active (e.g., `opus`, `sonnet`) |
+| `context` | Set to `fork` to run in isolated subagent context |
+| `agent` | Subagent type when `context: fork` (e.g., `Explore`, `Plan`) |
+| `hooks` | Skill-scoped hooks (see Hooks documentation) |
 
 **Max frontmatter size:** 1024 characters total
 
@@ -51,7 +63,7 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 - Start with "Use when..."
 - Describe triggers/symptoms, NOT what the skill does
 - Write in third person
-- Keep under 500 characters
+- Max 1024 characters (spec limit), aim for under 500
 
 ## SKILL.md Structure
 
@@ -106,17 +118,20 @@ skills/
   shared/               # Cross-platform skills
     skill-name/
       SKILL.md              # Required - main content
-      supporting-file.*     # Optional - heavy reference or tools only
+      scripts/              # Optional - executable code
+      references/           # Optional - detailed docs, loaded on demand
+      assets/               # Optional - templates, schemas, data files
   claude/               # Claude-only skills
   codex/                # Codex-only skills
 ```
 
 **Keep inline:** Principles, code patterns (<50 lines), everything else
-**Separate files:** Heavy reference (100+ lines), reusable scripts/tools
+**Separate files (`references/`):** Heavy reference (100+ lines), loaded on demand by the agent
+**Executable code (`scripts/`):** Reusable scripts/tools the agent can run
 
 ## Quick Checklist
 
-- [ ] Name: lowercase, letters/numbers/hyphens only
+- [ ] Name: required, must match directory name, lowercase/numbers/hyphens only, no leading/trailing/consecutive hyphens
 - [ ] Description: starts with "Use when...", triggers only, no workflow
 - [ ] Overview: core principle in 1-2 sentences
 - [ ] Content: actionable, scannable (tables, bullets)
@@ -129,7 +144,7 @@ skills/
 
 **For description quality**, apply the `prompt-engineer` skill criteria when writing or reviewing descriptions. Skill descriptions are prompts — they determine when the model loads the skill. Evaluate each description for: trigger-only (no workflow summary), specificity (would the model match this to the right request?), overlap (does another skill's description match the same trigger?), and completeness (are common triggering scenarios covered?).
 
-**For current frontmatter fields and conventions**, consult the `claude-code-guide` agent. The frontmatter reference table above may lag behind Claude Code releases. When adding new skills or using unfamiliar frontmatter fields, verify against claude-code-guide to ensure you're using current features correctly.
+**For the open spec**, see [agentskills.io/specification](https://agentskills.io/specification). Standard fields work across all compatible agents. **For Claude Code extensions**, consult the `claude-code-guide` agent — Claude-specific fields may change between releases.
 
 ## Anti-Patterns
 
