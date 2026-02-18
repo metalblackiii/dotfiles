@@ -9,7 +9,8 @@ Config files live in `~/repos/dotfiles/` and are symlinked to their platform dir
 | What | Edit Here |
 |------|-----------|
 | Global instructions | `~/repos/dotfiles/claude/.claude/CLAUDE.md` |
-| Skills | `~/repos/dotfiles/claude/.claude/skills/<name>/SKILL.md` |
+| Shared skills | `~/repos/dotfiles/skills/shared/<name>/SKILL.md` |
+| Claude skills | `~/repos/dotfiles/skills/claude/<name>/SKILL.md` |
 | Settings | `~/repos/dotfiles/claude/.claude/settings.json` |
 | Hooks | `~/repos/dotfiles/claude/.claude/hooks/` |
 | Commands | `~/repos/dotfiles/claude/.claude/commands/<name>.md` |

@@ -33,7 +33,7 @@ if [ -L "$SKILLS_LINK" ]; then
     rm "$SKILLS_LINK"
 fi
 
-SKILLS_SOURCE="$DOTFILES_DIR/claude/.claude/skills"
+SKILLS_SOURCE="$DOTFILES_DIR/codex/.agents/skills"
 echo "  Linking $SKILLS_LINK -> $SKILLS_SOURCE"
 ln -s "$SKILLS_SOURCE" "$SKILLS_LINK"
 
