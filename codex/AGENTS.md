@@ -9,8 +9,7 @@ Config files live in `~/repos/dotfiles/` and are symlinked to their platform dir
 | What | Edit Here |
 |------|-----------|
 | Global instructions | `~/repos/dotfiles/codex/AGENTS.md` |
-| Shared skills | `~/repos/dotfiles/skills/shared/<name>/SKILL.md` |
-| Codex skills | `~/repos/dotfiles/skills/codex/<name>/SKILL.md` |
+| Skills | `~/repos/dotfiles/codex/.agents/skills/<name>/SKILL.md` |
 | Config | `~/repos/dotfiles/codex/.codex/config.toml` |
 
 **Never edit via `~/.codex/` or `~/.agents/` paths** — those are symlinks.
