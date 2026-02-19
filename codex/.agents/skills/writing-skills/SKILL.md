@@ -97,31 +97,24 @@ Bullet list of warning signs.
 
 ## Creating a New Skill
 
-Use the helper script to scaffold and symlink in one step:
+Create a new skill directory directly in the canonical location:
 
 ```bash
-# Shared skill (both Claude and Codex) — default
-scripts/link-skill.sh my-skill-name shared
-
-# Claude-only or Codex-only
-scripts/link-skill.sh my-skill-name claude
-scripts/link-skill.sh my-skill-name codex
+mkdir codex/.agents/skills/my-skill-name
+# Then create SKILL.md with proper frontmatter (see template above)
 ```
 
-This creates `skills/<scope>/my-skill-name/SKILL.md` with frontmatter scaffold and adds symlinks to the appropriate platform view directories. Edit the generated SKILL.md to fill in the content.
+Both Claude and Codex share this directory — Claude accesses it via a symlink at `claude/.claude/skills`.
 
 ## Directory Structure
 
 ```
-skills/
-  shared/               # Cross-platform skills
-    skill-name/
-      SKILL.md              # Required - main content
-      scripts/              # Optional - executable code
-      references/           # Optional - detailed docs, loaded on demand
-      assets/               # Optional - templates, schemas, data files
-  claude/               # Claude-only skills
-  codex/                # Codex-only skills
+codex/.agents/skills/         # Source of truth — all skills live here
+  skill-name/
+    SKILL.md              # Required - main content
+    scripts/              # Optional - executable code
+    references/           # Optional - detailed docs, loaded on demand
+    assets/               # Optional - templates, schemas, data files
 ```
 
 **Keep inline:** Principles, code patterns (<50 lines), everything else
@@ -135,7 +128,6 @@ skills/
 - [ ] Overview: core principle in 1-2 sentences
 - [ ] Content: actionable, scannable (tables, bullets)
 - [ ] For discipline skills: Iron Law, rationalizations table, red flags
-- [ ] Scaffold: created via `scripts/link-skill.sh` (not manually)
 - [ ] README: if adding or removing a skill, update the skills table in repo root README
 - [ ] Size: <500 words for most skills, <200 for frequently-loaded
 

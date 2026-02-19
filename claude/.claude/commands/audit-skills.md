@@ -8,7 +8,7 @@ Audit which skills are being invoked, which are dormant, and whether the Session
 ## Step 1: Discover Installed Skills
 
 ```
-Glob with pattern="*/SKILL.md" path="~/repos/dotfiles/skills/shared"
+Glob with pattern="*/SKILL.md" path="~/repos/dotfiles/codex/.agents/skills"
 ```
 
 Read each SKILL.md frontmatter for name and description.
