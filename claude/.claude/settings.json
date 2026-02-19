@@ -35,6 +35,7 @@
       "Bash(jq *)",
       "Bash(head *)",
       "Bash(tail *)",
+      "Bash(readlink *)",
       "Bash(test *)",
       "Write(~/.claude/plans/**)",
       "Edit(~/.claude/plans/**)",
