@@ -5,7 +5,7 @@ description: Use when explicitly refactoring code, when preparatory refactoring 
 
 # Refactoring Guide
 
-Refactoring is changing code structure without changing behavior. It's a disciplined practice, not a free-for-all. General design principles live in CLAUDE.md — this skill covers when, why, and how to refactor.
+Refactoring is changing code structure without changing behavior. It's a disciplined practice, not a free-for-all. General design principles live in global instructions (CLAUDE.md / AGENTS.md) — this skill covers when, why, and how to refactor.
 
 ---
 

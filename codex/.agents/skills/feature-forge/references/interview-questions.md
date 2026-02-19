@@ -55,7 +55,7 @@ These come up for most features in the neb ecosystem:
 - Are there audit logging requirements?
 - Does data need encryption at rest beyond standard?
 
-## Using AskUserQuestion
+## Structured Elicitation
 
 Use structured choices when questions have a finite set of likely answers. Use open-ended follow-up when answers are unbounded.
 
@@ -81,19 +81,19 @@ Use structured choices when questions have a finite set of likely answers. Use o
 ### Phase 1: Discovery (Open-Ended → Structured)
 1. "Tell me about this feature in your own words"
 2. "What problem are we solving?"
-3. Then `AskUserQuestion`: Target users, priority, scope (MVP/Full/Phased)
+3. Then Ask the user: Target users, priority, scope (MVP/Full/Phased)
 
 ### Phase 2: Details (Structured → Open-Ended)
-1. `AskUserQuestion`: Feature gating approach, tier assignment, key capabilities
+1. Ask the user: Feature gating approach, tier assignment, key capabilities
 2. Then open-ended: "Walk me through the user journey"
 
 ### Phase 3: Edge Cases (Structured → Open-Ended)
-1. `AskUserQuestion`: Error handling approach, data limits
+1. Ask the user: Error handling approach, data limits
 2. Then open-ended: "What happens when [X] fails?"
 
 ### Phase 4: Validation
 1. Present spec summary
-2. `AskUserQuestion`: "Does this capture your requirements?" (Yes / Needs changes / Major gaps)
+2. Ask the user: "Does this capture your requirements?" (Yes / Needs changes / Major gaps)
 
 ## Pre-Discovery: Codebase Exploration
 
@@ -110,4 +110,4 @@ Before interview, launch in parallel:
 Collect findings → Use them to inform interview questions
 ```
 
-This is especially valuable when the `requirements-analyst` agent invokes feature-forge — the agent has already explored the codebase and can feed that context into the workshop.
+This is especially valuable when feature-forge is invoked after codebase exploration — existing findings feed directly into more grounded interview questions.

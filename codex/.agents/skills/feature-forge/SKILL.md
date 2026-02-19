@@ -1,6 +1,6 @@
 ---
 name: feature-forge
-description: Use when defining new features from scratch, gathering requirements through structured workshops, or writing feature specifications with structured requirements and acceptance criteria. For analyzing existing requirements (JIRA tickets, specs), use the requirements-analyst agent instead.
+description: Use when defining new features from scratch, gathering requirements through structured workshops, or writing feature specifications with structured requirements and acceptance criteria. Not for analyzing existing requirements — this skill creates specs, not analyzes them.
 ---
 
 # Feature Forge
@@ -17,17 +17,17 @@ Requirements workshop specialist for defining comprehensive feature specificatio
 
 ## Core Workflow
 
-1. **Discover** — Use `AskUserQuestion` to understand the feature goal, target users, and value. Present structured choices.
+1. **Discover** — Ask the user structured questions to understand the feature goal, target users, and value. Present choices when possible.
 2. **Interview** — Systematic questioning from PM and Dev perspectives. Load `references/interview-questions.md` for question banks.
 3. **Document** — Write EARS-format requirements + acceptance criteria. Load `references/specification-template.md`.
-4. **Validate** — Review spec with user via `AskUserQuestion`, presenting key trade-offs as structured choices.
+4. **Validate** — Review spec with the user, presenting key trade-offs as structured choices.
 5. **Plan** — Create implementation phases ordered by dependency.
 
 ## Reference Guide
 
 | Topic | Reference | Load When |
 |-------|-----------|-----------|
-| Interview Questions | `references/interview-questions.md` | Gathering requirements, PM/Dev hat questions, AskUserQuestion patterns |
+| Interview Questions | `references/interview-questions.md` | Gathering requirements, PM/Dev hat questions, structured elicitation |
 | Specification Template | `references/specification-template.md` | Writing the final spec document with EARS requirements |
 | Acceptance Criteria | `references/acceptance-criteria.md` | Writing Given/When/Then acceptance criteria |
 
@@ -46,7 +46,7 @@ For detailed EARS syntax and neb-specific examples, see also the `spec-miner` sk
 ## Constraints
 
 ### MUST DO
-- Use `AskUserQuestion` for structured elicitation — don't dump a wall of questions
+- Ask structured questions one topic at a time — don't dump a wall of questions
 - Conduct interview BEFORE writing spec (don't generate specs from assumptions)
 - Use EARS format for all functional requirements
 - Include non-functional requirements (performance, security, HIPAA if applicable)
