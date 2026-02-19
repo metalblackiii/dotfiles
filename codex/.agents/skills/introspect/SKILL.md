@@ -66,12 +66,19 @@ Rate each: **STRONG** / **NEEDS WORK** / **WEAK**, with a one-line explanation.
 
 ### 5. Cross-Platform Parity
 
-Both platforms share the same skill directory (`codex/.agents/skills/`). Claude accesses it via a symlink at `claude/.claude/skills`. Verify parity using Glob (do NOT use Bash loops or `readlink`):
+Both platforms share the same skill directory (`codex/.agents/skills/`). Verify all three levels resolve correctly:
 
-**Canonical:** `Glob("codex/.agents/skills/*/SKILL.md")` from the dotfiles repo root
-**Claude view:** `Glob("claude/.claude/skills/*/SKILL.md")` from the dotfiles repo root
+**Canonical (source of truth):** `Glob("codex/.agents/skills/*/SKILL.md")` from the dotfiles repo root
 
-Both should return identical skill names. If they diverge, the `claude/.claude/skills` symlink may be broken.
+**Claude runtime:** `Glob("*/SKILL.md")` from `~/.claude/skills/`
+- Symlink chain: `~/.claude/skills` → `dotfiles/claude/.claude/skills` → `../../codex/.agents/skills`
+- Should match canonical skill names exactly
+
+**Codex runtime:** `Glob("personal/*/SKILL.md")` from `~/.agents/skills/`
+- Structure: `~/.agents/skills/personal/` → `dotfiles/codex/.agents/skills` (symlink under real parent dirs)
+- Should match canonical skill names exactly
+
+Do NOT glob within the repo at `claude/.claude/skills/` — it's a relative symlink that only resolves at the installed location.
 
 Note: some assets are inherently platform-specific and should NOT be flagged:
 - Slash commands (`claude/.claude/commands/`) — Claude Code only, Codex has no equivalent
