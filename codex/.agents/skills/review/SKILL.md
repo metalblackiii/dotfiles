@@ -1,7 +1,6 @@
 ---
 name: review
 description: Use when reviewing a GitHub pull request for architecture compliance, testing coverage, code quality, security vulnerabilities, and other quality criteria. Requires working `gh` CLI auth/context. Accepts a PR number, URL, or empty for the current branch.
-disable-model-invocation: true
 ---
 
 # PR Review Skill

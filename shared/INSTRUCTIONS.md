@@ -23,7 +23,7 @@ This configuration is managed via dotfiles repo (`~/repos/dotfiles/`) with symli
 
 Detailed skill usage workflow lives in `using-skills` and is the source of truth.
 
-- Use platform skill invocation (`Skill` tool in Claude Code, `$skill` in Codex); do not read skill files directly.
+- Use platform skill invocation (`Skill` tool in Claude Code, `$skill` in Codex). Direct SKILL.md reading is allowed for meta-maintenance and audit tasks.
 - For non-trivial tasks, identify relevant skills first and follow them before responding.
 - For trivial tasks (single-line fixes, typos, simple questions, file reads), proceed directly.
 - Skills are mandatory when applicable.
