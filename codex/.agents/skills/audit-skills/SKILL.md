@@ -11,7 +11,8 @@ Audit which skills are being invoked, which are dormant, and whether the skills 
 ## Step 1: Discover Installed Skills
 
 ```
-Glob with pattern="*/SKILL.md" path="~/repos/dotfiles/codex/.agents/skills"
+Glob with pattern="*/SKILL.md" path="~/.claude/skills"        # Claude Code
+Glob with pattern="personal/*/SKILL.md" path="~/.agents/skills"  # Codex
 ```
 
 Read each SKILL.md frontmatter for name and description.

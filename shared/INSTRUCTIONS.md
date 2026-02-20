@@ -1,8 +1,8 @@
 # Agent Configuration
 
-This configuration is managed via dotfiles repo (`~/repos/dotfiles/`) with symlinks.
+This configuration is managed via a dotfiles repo with symlinks.
 
-**Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets.
+**Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets. To find the repo root, use `git rev-parse --show-toplevel` from any file inside it, or follow a symlink (e.g., `readlink ~/.claude/skills`) back to the source.
 
 ## Tool Preferences
 

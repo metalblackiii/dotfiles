@@ -36,6 +36,7 @@
       "Bash(head *)",
       "Bash(tail *)",
       "Bash(readlink *)",
+      "Bash(ls *)",
       "Bash(test *)",
       "Write(~/.claude/plans/**)",
       "Edit(~/.claude/plans/**)",
@@ -46,7 +47,6 @@
       "Read(**/.env*)",
       "Edit(**/.env*)",
       "Write(**/.env*)",
-      "Bash(ls *)",
       "Bash(cat *)",
       "Bash(find *)",
       "Bash(grep *)",
@@ -142,6 +142,5 @@
     "type": "command",
     "command": "bash ~/.claude/scripts/context-bar.sh"
   },
-  "autoUpdatesChannel": "stable",
-  "effortLevel": "medium"
+  "autoUpdatesChannel": "stable"
 }
