@@ -23,11 +23,46 @@ This configuration is managed via dotfiles repo (`~/repos/dotfiles/`) with symli
 
 You have specialized skills installed. These represent personal development methodology and best practices.
 
-Before responding to a non-trivial request (features, debugging, architecture, reviews, deployments), check if any installed skills apply. Invoke the relevant skill, follow its guidance, then respond to the user.
+### Discovery
 
-For trivial tasks (single-line fixes, typos, simple questions, file reads), proceed directly.
+Invoke skills via the platform's skill mechanism (e.g., `Skill` tool in Claude Code, `$skill` in Codex). The platform lists available skills — check there first. When you invoke a skill, its full content is loaded. Follow it directly.
 
-Skills often compose naturally — for example, a bugfix typically involves `systematic-debugging` then `test-driven-development`, and any task nearing completion should invoke `verification-before-completion`.
+Never use the Read tool on skill files. Always use the platform's skill invocation.
+
+### When to Check for Skills
+
+**Non-trivial tasks** — features, debugging, architecture, reviews, deployments:
+1. Check which skills apply (scan the available skills list)
+2. Invoke the relevant skill(s)
+3. Follow the skill's guidance
+4. THEN respond to the user
+
+**Trivial tasks** — single-line fixes, typos, simple questions, file reads:
+- Proceed directly. Skills add overhead here with no benefit.
+
+### Sequencing
+
+Skills compose naturally. Common sequences:
+
+- **Bugfix:** `systematic-debugging` → `test-driven-development` → `verification-before-completion`
+- **New feature:** `feature-forge` (or `requirements-analyst` agent) → `test-driven-development` → `verification-before-completion`
+- **Refactor:** `refactoring-guide` → `verification-before-completion`
+- **PR review:** `review` or `self-review` (these consume `analyzing-prs` internally)
+
+When multiple skills apply, invoke process skills first (debugging, planning), then implementation skills (domain-specific, testing).
+
+### Red Flags
+
+If you're thinking any of these, stop and check for skills:
+
+- "Let me just..." → Is this actually trivial, or are you rationalizing?
+- "This won't take long..." → Check for skills first.
+- "I need to explore first..." → Skills guide exploration.
+- "After I gather context..." → Skills guide context gathering.
+
+### The Iron Law
+
+Skills are not optional when applicable. Invoke first, work second. But don't invoke skills for work that genuinely doesn't benefit from them.
 
 ## Code Quality
 
