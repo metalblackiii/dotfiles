@@ -1,12 +1,14 @@
 ---
 name: self-review
-description: Use as a pre-commit or pre-PR quality gate to review local git changes. Catches issues the implementer may have missed through fresh-eyes analysis of staged, unstaged, or branch diffs.
+description: Use when running a pre-commit or pre-PR quality gate on local git changes only (no `gh`). Catches issues the implementer may have missed through fresh-eyes analysis of staged, unstaged, or branch diffs.
 disable-model-invocation: true
 ---
 
 # Self-Review Skill
 
 Fresh-eyes code review of local changes. You have NO context about why these changes were made — you see only the diff and the codebase. This is intentional. Your value is catching what the implementer missed due to familiarity bias.
+
+This skill is local-only: use local `git` and filesystem inspection. Do **not** call `gh` in this workflow.
 
 ## Input
 
