@@ -174,6 +174,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 
 - **Model**: `gpt-5.3-codex`
 - **Approval policy**: `on-request`
+- **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project doc fallback**: reads `CLAUDE.md` and `TEAM_GUIDE.md` from project roots
 
 ## Adding a New Platform

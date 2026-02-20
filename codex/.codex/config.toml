@@ -2,6 +2,20 @@ model = "gpt-5.3-codex"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 model_reasoning_effort = "high"
+developer_instructions = """
+Use skills by default for non-trivial work (features, debugging, architecture, reviews, deployments):
+1) identify applicable skills from the available list,
+2) invoke them via platform skill invocation (`$skill`), and
+3) follow their workflow before responding.
+For trivial work (single-line fixes, typos, simple questions, file reads), proceed directly.
+`using-skills` is the canonical skill-usage policy.
+"""
 
 [sandbox_workspace_write]
 network_access = true
+
+[analytics]
+enabled = false
+
+[feedback]
+enabled = false
