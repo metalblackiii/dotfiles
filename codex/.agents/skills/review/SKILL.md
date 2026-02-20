@@ -1,6 +1,6 @@
 ---
 name: review
-description: Use when reviewing a pull request for architecture compliance, testing coverage, code quality, security vulnerabilities, and other quality criteria. Accepts a PR number, URL, or empty for the current branch.
+description: Use when reviewing a GitHub pull request for architecture compliance, testing coverage, code quality, security vulnerabilities, and other quality criteria. Requires working `gh` CLI auth/context. Accepts a PR number, URL, or empty for the current branch.
 disable-model-invocation: true
 ---
 
@@ -45,6 +45,8 @@ gh pr checks <PR>
 ```
 
 If no PR identifier was given, omit the `<PR>` argument — `gh pr view` defaults to the current branch.
+
+**Failure policy:** If any required `gh` command fails (auth failure, network error, missing PR context, or CLI error), stop immediately and report the failure. Do **not** fall back to local `git diff` review under this skill.
 
 ### Step 3: Analyze Changed Files
 

@@ -10,15 +10,15 @@ You have specialized skills installed. These represent personal development meth
 
 ## Discovery
 
-**Use the `Skill` tool to invoke skills.** The platform lists available skills in system-reminder messages — check there first. When you invoke a skill, its full content is loaded and presented to you. Follow it directly.
+**Use the platform's skill invocation to invoke skills (`Skill` tool in Claude Code, `$skill` in Codex).** The platform lists available skills in system-reminder messages — check there first. When you invoke a skill, its full content is loaded and presented to you. Follow it directly.
 
-Never use the Read tool on skill files. Always use the Skill tool.
+Never use the Read tool on skill files. Always use the platform skill invocation.
 
 ## When to Check for Skills
 
 **Non-trivial tasks** — features, debugging, architecture, reviews, deployments:
 1. Check which skills apply (scan the available skills list)
-2. Invoke the relevant skill(s) via the Skill tool
+2. Invoke the relevant skill(s) via platform skill invocation (`Skill` tool in Claude Code, `$skill` in Codex)
 3. Follow the skill's guidance
 4. THEN respond to the user
 
