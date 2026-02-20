@@ -12,18 +12,20 @@ Audit agent configuration for conflicts, redundancy, staleness, and prompt quali
 
 Scan configuration from the dotfiles repo. All config lives under these paths (relative to the repo root):
 
-### Skills (both platforms)
+### Shared (both platforms)
+- `shared/INSTRUCTIONS.md` — global instructions (single source of truth)
 - `codex/.agents/skills/*/SKILL.md` — canonical skill files (source of truth)
+- `claude/.claude/CLAUDE.md` — symlink → `shared/INSTRUCTIONS.md`
+- `codex/AGENTS.md` — symlink → `shared/INSTRUCTIONS.md`
 
 ### Claude Code
-- `claude/.claude/CLAUDE.md` — global instructions
 - `claude/.claude/settings.json` — global settings
 - `claude/.claude/commands/*.md` — slash commands
 - `claude/.claude/agents/*.md` — agent definitions
 - `claude/.claude/skills` — symlink → `codex/.agents/skills`
 
 ### Codex
-- `codex/AGENTS.md` — global instructions
+- `codex/.codex/config.toml` — Codex settings
 - `codex/.agents/skills/` — actual skill directories (source of truth)
 
 Also check for project-level overrides:
@@ -36,7 +38,7 @@ Also check for project-level overrides:
 
 Instructions that contradict each other, across or within files:
 - Settings that deny a tool one file allows
-- Instructions in CLAUDE.md vs AGENTS.md that diverge on the same topic
+- Instructions that diverge between shared and platform-specific files
 - Skills with overlapping triggers that give conflicting guidance
 
 ### 2. Redundancy
