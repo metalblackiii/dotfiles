@@ -65,8 +65,8 @@ dotfiles/
 │   └── .claude/
 │       ├── CLAUDE.md        # Global instructions (single source of truth)
 │       ├── settings.json    # Permissions, hooks, env vars
-│       ├── agents/          # 4 custom subagents
-│       ├── commands/        # 2 slash commands
+│       ├── agents/          # 3 custom subagents
+│       ├── commands/        # Slash commands
 │       ├── hooks/           # Session-start hook
 │       ├── scripts/         # Status bar script
 │       └── skills           # Symlink → ../../codex/.agents/skills
@@ -105,10 +105,10 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | Skill | When it activates |
 |-------|-------------------|
 | **analyzing-prs** | Reviewing PR diffs for quality, security, architecture, testing |
+| **analyzing-requirements** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
-| **dispatching-parallel-agents** | Multiple independent tasks, failures, or explorations that can be decomposed into parallel threads |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
 | **gha** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
 | **handoff** | Ending sessions with work in progress or high context usage |
@@ -131,18 +131,9 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
-Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/microservices-architect/references/`, `codex/.agents/skills/the-fool/references/`, `codex/.agents/skills/neb-playwright-expert/references/`).
+Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/microservices-architect/references/`, `codex/.agents/skills/the-fool/references/`).
 
-### Commands (2)
-
-Slash commands invoked directly during sessions.
-
-| Command | Purpose |
-|---------|---------|
-| `/audit-skills` | Audit skill usage across recent sessions to find dormant skills and adoption gaps |
-| `/catchup` | Restore context after `/clear`, `/compact`, or a long break |
-
-### Agents (4)
+### Agents (3)
 
 Custom subagents spawned via the Task tool for parallel or specialized work.
 
@@ -150,10 +141,9 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 |-------|---------|
 | **analysis-writer** | Produce structured analysis documents for team decision-making |
 | **neb-explorer** | Explore feature implementations across neb microservices |
-| **requirements-analyst** | Surface ambiguities and risks in requirements before engineering |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |
 
-> **Neb-specific agents**: `neb-explorer` and `requirements-analyst` load the `neb-repo-layout` skill which assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `codex/.agents/skills/neb-repo-layout/SKILL.md`.
+> **Neb-specific agents**: `neb-explorer` loads the `neb-repo-layout` skill which assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `codex/.agents/skills/neb-repo-layout/SKILL.md`.
 
 ### Hooks & Scripts
 

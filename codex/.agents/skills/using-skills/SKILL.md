@@ -12,7 +12,7 @@ You have specialized skills installed. These represent personal development meth
 
 **Use the platform's skill invocation to invoke skills (`Skill` tool in Claude Code, `$skill` in Codex).** The platform lists available skills in system-reminder messages — check there first. When you invoke a skill, its full content is loaded and presented to you. Follow it directly.
 
-Never use the Read tool on skill files. Always use the platform skill invocation.
+Prefer platform skill invocation over reading SKILL.md directly. Direct reading is allowed for meta-maintenance and audit tasks.
 
 ## When to Check for Skills
 
@@ -30,7 +30,7 @@ Never use the Read tool on skill files. Always use the platform skill invocation
 Skills compose naturally. Common sequences:
 
 - **Bugfix:** `systematic-debugging` → `test-driven-development` → `verification-before-completion`
-- **New feature:** `feature-forge` (or `requirements-analyst` agent) → `test-driven-development` → `verification-before-completion`
+- **New feature:** `feature-forge` (or `analyzing-requirements`) → `test-driven-development` → `verification-before-completion`
 - **Refactor:** `refactoring-guide` → `verification-before-completion`
 - **PR review:** `review` or `self-review` (these consume `analyzing-prs` internally)
 
