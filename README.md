@@ -55,7 +55,7 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (26)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (25)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -79,7 +79,7 @@ dotfiles/
 
 | Layer | Shared? | Where |
 |-------|---------|-------|
-| Skills (26) | Yes | `codex/.agents/skills/` — Claude accesses via symlink |
+| Skills (25) | Yes | `codex/.agents/skills/` — Claude accesses via symlink |
 | CLAUDE.md (conventions, rules) | Claude-only | `claude/.claude/CLAUDE.md` — auto-loaded every session |
 | AGENTS.md (conventions, rules) | Codex-only | `codex/AGENTS.md` — auto-loaded every session |
 | Claude settings, hooks, commands, agents | No | Claude-only features |
@@ -98,7 +98,7 @@ The `CLAUDE.md` file is the single source of truth for Claude Code conventions:
 
 ## Claude Code Configuration
 
-### Skills (26)
+### Skills (25)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. A session-start hook enforces this via "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -117,7 +117,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **legacy-modernizer** | Incremental migrations, strangler fig patterns, dual-mode coexistence |
 | **microservices-architect** | Distributed system design, service boundaries, sagas, event sourcing |
 | **neb-ms-conventions** | Code in neb microservice repositories |
-| **neb-repo-layout** | Background knowledge: where neb repos live and how they're organized |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
@@ -143,7 +142,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 | **neb-explorer** | Explore feature implementations across neb microservices |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |
 
-> **Neb-specific agents**: `neb-explorer` loads the `neb-repo-layout` skill which assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `codex/.agents/skills/neb-repo-layout/SKILL.md`.
+> **Neb-specific agents**: `neb-explorer` has the neb architecture knowledge (layers, environments, services, shared libraries) inlined directly and assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `claude/.claude/agents/neb-explorer.md`.
 
 ### Hooks & Scripts
 
@@ -154,7 +153,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 
 The `settings.json` enforces strict guardrails:
 
-- **Denied**: shell aliases for tools with dedicated equivalents (`cat`, `grep`, `find`, `ls`), `python -c` inline execution (use `jq` instead), env/secret files, destructive git operations, dangerous docker flags, package publishing
+- **Denied**: shell aliases for tools with dedicated equivalents (`cat`, `grep`, `find`), `python -c` inline execution (use `jq` instead), env/secret files, destructive git operations, dangerous docker flags, package publishing
 - **Ask**: `git commit`, `git push`, `gh pr create/merge/close`
 - **Allowed**: standard dev tools, read-only kubectl, scoped web access
 
@@ -180,7 +179,7 @@ If you fork this repo, update these team/environment-specific values:
 
 | What | Where | Default |
 |------|-------|---------|
-| Neb repo base path | `codex/.agents/skills/neb-repo-layout/SKILL.md` | `~/repos/` |
+| Neb repo base path | `claude/.claude/agents/neb-explorer.md` | `~/repos/` |
 | PR default reviewers | `claude/.claude/CLAUDE.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 
 ## Attribution

@@ -10,7 +10,7 @@ Audit agent configuration for conflicts, redundancy, staleness, and prompt quali
 
 ## What to Analyze
 
-Scan configuration from the dotfiles repo. All config lives under these paths (relative to the repo root):
+Scan configuration from the dotfiles repo. Resolve the repo root dynamically: follow a symlink (e.g., `readlink ~/.claude/skills` or `readlink ~/.agents/skills/personal`) back to the source, or run `git rev-parse --show-toplevel` from inside it. All config lives under these paths (relative to the repo root):
 
 ### Shared (both platforms)
 - `shared/INSTRUCTIONS.md` — global instructions (single source of truth)
