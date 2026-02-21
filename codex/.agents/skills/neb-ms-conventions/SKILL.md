@@ -1,6 +1,6 @@
 ---
 name: neb-ms-conventions
-description: Use when writing or modifying code in neb microservice repositories (neb-ms-* or neb-microservice)
+description: Use when writing or modifying code in neb microservice repositories (neb-ms-* or neb-microservice) (org-specific example)
 ---
 
 # Neb Service Conventions
