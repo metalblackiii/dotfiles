@@ -18,7 +18,6 @@ CLAUDE_ITEMS=(
     "settings.json"
     "hooks"
     "skills"
-    "commands"
     "agents"
     "scripts"
 )
