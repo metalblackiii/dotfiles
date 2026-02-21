@@ -57,7 +57,7 @@ Instructions that may be obsolete:
 
 ### 4. Prompt Quality Audit
 
-For each skill, evaluate the **description** field. Read the `prompt-engineer` skill (sibling directory at `prompt-engineer/SKILL.md`) for criteria, then assess:
+For each skill, evaluate the **description** field. Read the `prompt-engineer` skill (sibling directory at `../prompt-engineer/SKILL.md`) for criteria, then assess:
 
 - **Trigger-only?** Does it say WHEN to use, not HOW it works? Descriptions containing process steps cause agents to follow the brief summary instead of reading the full skill.
 - **Specific enough?** Would a model reliably match this description to the right user request?

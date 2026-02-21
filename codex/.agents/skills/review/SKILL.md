@@ -20,8 +20,8 @@ The user provides one of:
 
 Read the `analyzing-prs` skill and its references to load review categories and severity definitions. These files are co-located in the skills directory:
 
-- `analyzing-prs/SKILL.md` — review categories, severity definitions, anti-patterns
-- `analyzing-prs/references/security-deep-dive.md` — load when PR touches auth, patient data, audit logging, encryption, or entitlements
+- `../analyzing-prs/SKILL.md` — review categories, severity definitions, anti-patterns
+- `../analyzing-prs/references/security-deep-dive.md` — load when PR touches auth, patient data, audit logging, encryption, or entitlements
 
 Use relative paths from this skill's location (sibling directory). Read these files directly — do not use platform-specific skill invocation.
 
