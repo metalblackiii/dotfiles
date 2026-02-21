@@ -8,6 +8,10 @@ allowed-tools: Read, Glob, Grep
 
 Audit agent configuration for conflicts, redundancy, staleness, and prompt quality.
 
+## Tool Constraints
+
+Use dedicated file-reading and search tools (not shell commands) for all file discovery and content inspection. Avoid shell commands like `ls`, `find`, `cat`, or piped pipelines — they trigger permission prompts and add no value over built-in tools. Only use the shell for `readlink` or `git rev-parse` when resolving symlinks and repo roots.
+
 ## What to Analyze
 
 Scan configuration from the dotfiles repo. Resolve the repo root dynamically: follow a symlink (e.g., `readlink ~/.claude/skills` or `readlink ~/.agents/skills/personal`) back to the source, or run `git rev-parse --show-toplevel` from inside it. All config lives under these paths (relative to the repo root):
