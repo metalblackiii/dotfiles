@@ -26,8 +26,8 @@ If unspecified, default to `git diff --staged`. If staged is empty, fall back to
 
 Read the `analyzing-prs` skill to load review categories and severity definitions. The file is co-located in the skills directory:
 
-- `analyzing-prs/SKILL.md` — review categories, severity definitions, anti-patterns
-- `analyzing-prs/references/security-deep-dive.md` — load when changes touch auth, patient data, audit logging, encryption, or entitlements
+- `../analyzing-prs/SKILL.md` — review categories, severity definitions, anti-patterns
+- `../analyzing-prs/references/security-deep-dive.md` — load when changes touch auth, patient data, audit logging, encryption, or entitlements
 
 Use relative paths from this skill's location (sibling directory). Read these files directly — do not use platform-specific skill invocation.
 
