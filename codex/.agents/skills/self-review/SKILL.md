@@ -24,12 +24,11 @@ If unspecified, default to `git diff --staged`. If staged is empty, fall back to
 
 ### Step 1: Load Review Criteria
 
-Read the `analyzing-prs` skill to load review categories and severity definitions. The file is co-located in the skills directory:
+Read the `analyzing-prs` skill to load review categories, security deep-dive criteria, and severity definitions:
 
-- `../analyzing-prs/SKILL.md` — review categories, severity definitions, anti-patterns
-- `../analyzing-prs/references/security-deep-dive.md` — load when changes touch auth, patient data, audit logging, encryption, or entitlements
+- `../analyzing-prs/SKILL.md`
 
-Use relative paths from this skill's location (sibling directory). Read these files directly — do not use platform-specific skill invocation.
+Use relative paths from this skill's location (sibling directory). Read the file directly — do not use platform-specific skill invocation.
 
 ### Step 2: Scope & Complexity Check
 
