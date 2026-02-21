@@ -8,3 +8,7 @@ Skills and commands in this repo were adapted from the following sources:
 - [ykdojo/claude-code-tips](https://github.com/ykdojo/claude-code-tips) — ast-grep-patterns, gha, handoff skills, status line
 
 All other skills are original work or codified from standard practices.
+
+---
+
+**If you adapt skills from this repo**, maintain your own `ATTRIBUTION.md` tracking where they came from. This keeps the sharing ecosystem healthy — people publish more freely when they know they'll get credit.

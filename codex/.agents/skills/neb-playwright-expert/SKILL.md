@@ -1,6 +1,6 @@
 ---
 name: neb-playwright-expert
-description: Use when writing, debugging, or planning E2E tests in neb-www using the Playwright framework and its custom component generation system
+description: Use when writing, debugging, or planning E2E tests in neb-www using the Playwright framework and its custom component generation system (org-specific example)
 ---
 
 # Playwright Neb
