@@ -35,6 +35,7 @@
       "Bash(jq *)",
       "Bash(head *)",
       "Bash(tail *)",
+      "Bash(wc *)",
       "Bash(readlink *)",
       "Bash(ls *)",
       "Bash(test *)",
