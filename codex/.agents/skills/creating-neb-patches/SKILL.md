@@ -114,6 +114,28 @@ gh pr create --base PATCH-X.Y.Z --title "<original-title> [PATCH]"
 
 **Important:** The `--base` flag must target the `PATCH-X.Y.Z` branch, not `main`. Reviewers follow the standard defaults from project instructions.
 
+Use a structured PR body (avoid literal `\n` text in a single-line body):
+
+```bash
+cat > /tmp/patch-pr-body.md <<'EOF'
+## Summary
+Backports main PR #<main-pr-number> to `PATCH-X.Y.Z` for hotfix deployment.
+
+## Source
+- Main PR: #<main-pr-number>
+- Cherry-picked commit: `<commit-sha>`
+
+## Patch Notes
+- Resolved `package-lock.json` cherry-pick conflict.
+- Regenerated lockfile with `npm install`.
+EOF
+
+gh pr create \
+  --base PATCH-X.Y.Z \
+  --title "<original-title> [PATCH]" \
+  --body-file /tmp/patch-pr-body.md
+```
+
 ## Lockfile Conflict Resolution
 
 Cherry-picks almost always conflict on `package-lock.json`. The resolution is always the same:
