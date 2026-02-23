@@ -2,11 +2,11 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Claude Code** and **Codex**. Skills live in `codex/.agents/skills/` (source of truth) and are shared with Claude via a single symlink.
+Currently supports **Codex** and **Claude Code**. Skills live in `codex/.agents/skills/` and instructions in `shared/INSTRUCTIONS.md` — both shared across platforms via symlinks.
 
 ## Prerequisites
 
-[Claude Code](https://docs.anthropic.com/en/docs/claude-code) and/or [Codex](https://codex.openai.com/) must be installed. The following CLI tools are referenced in permissions and skills:
+[Codex](https://codex.openai.com/) and/or [Claude Code](https://docs.anthropic.com/en/docs/claude-code) must be installed. The following CLI tools are referenced in permissions and skills:
 
 | Tool | Required | Install | Used by |
 |------|----------|---------|---------|
@@ -49,13 +49,16 @@ To remove:
 
 ```
 dotfiles/
+├── shared/                  # Cross-platform sources of truth
+│   └── INSTRUCTIONS.md      # Agent conventions, rules, preferences
 ├── codex/                   # Codex configuration
 │   ├── install.sh
 │   ├── uninstall.sh
+│   ├── AGENTS.md            # Symlink → ../shared/INSTRUCTIONS.md
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (25)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (27)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -63,10 +66,9 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .claude/
-│       ├── CLAUDE.md        # Global instructions (single source of truth)
+│       ├── CLAUDE.md        # Symlink → ../../shared/INSTRUCTIONS.md
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 3 custom subagents
-│       ├── commands/        # Slash commands
 │       ├── hooks/           # Session-start hook
 │       ├── scripts/         # Status bar script
 │       └── skills           # Symlink → ../../codex/.agents/skills
@@ -79,33 +81,29 @@ dotfiles/
 
 | Layer | Shared? | Where |
 |-------|---------|-------|
-| Skills (25) | Yes | `codex/.agents/skills/` — Claude accesses via symlink |
-| CLAUDE.md (conventions, rules) | Claude-only | `claude/.claude/CLAUDE.md` — auto-loaded every session |
-| AGENTS.md (conventions, rules) | Codex-only | `codex/AGENTS.md` — auto-loaded every session |
-| Claude settings, hooks, commands, agents | No | Claude-only features |
+| Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
+| Skills (27) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
-## Global Configuration (CLAUDE.md)
+## Codex Configuration
 
-The `CLAUDE.md` file is the single source of truth for Claude Code conventions:
+Codex owns the canonical skill directory (`codex/.agents/skills/`), which is symlinked to `~/.agents/skills/personal` at install time. Its platform-specific file is `config.toml`:
 
-- **Git preferences** — conventional commits, explicit commit/push approval
-- **PR defaults** — reviewers, gh flags
-- **Code quality** — preparatory refactoring, Rule of Three, fix broken windows
-- **Security** — HIPAA context, no PII in examples, no hardcoded secrets
-- **Self-documenting code** — rename over comment, only "why" comments
-- **Skill usage** — check skills before non-trivial tasks
+- **Model**: `gpt-5.3-codex`
+- **Approval policy**: `on-request`
+- **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
+- **Project doc fallback**: reads `CLAUDE.md` and `TEAM_GUIDE.md` from project roots
 
-## Claude Code Configuration
+### Skills (27)
 
-### Skills (25)
-
-Specialized methodologies that activate automatically when relevant tasks are detected. A session-start hook enforces this via "The Iron Law" — check for applicable skills before responding to non-trivial requests.
+Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
 | Skill | When it activates |
 |-------|-------------------|
 | **analyzing-prs** | Reviewing PR diffs for quality, security, architecture, testing |
 | **analyzing-requirements** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
+| **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
@@ -127,10 +125,26 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
 | **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
+| **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
 Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/microservices-architect/references/`, `codex/.agents/skills/the-fool/references/`).
+
+## Shared Instructions
+
+`shared/INSTRUCTIONS.md` is the single source of truth for agent conventions. It's symlinked as `CLAUDE.md` (for Claude Code) and `AGENTS.md` (for Codex), so both platforms get the same rules:
+
+- **Git preferences** — conventional commits, explicit commit/push approval
+- **PR defaults** — reviewers, gh flags
+- **Code quality** — preparatory refactoring, Rule of Three, fix broken windows
+- **Security** — HIPAA context, no PII in examples, no hardcoded secrets
+- **Self-documenting code** — rename over comment, only "why" comments
+- **Skill usage** — check skills before non-trivial tasks
+
+## Claude Code Configuration
+
+Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via another (`claude/.claude/CLAUDE.md` → `shared/INSTRUCTIONS.md`). It adds platform-specific features on top.
 
 ### Agents (3)
 
@@ -157,15 +171,6 @@ The `settings.json` enforces strict guardrails:
 - **Ask**: `git commit`, `git push`, `gh pr create/merge/close`
 - **Allowed**: standard dev tools, read-only kubectl, scoped web access
 
-## Codex Configuration
-
-Codex owns the canonical skill directory (`codex/.agents/skills/`), which is symlinked to `~/.agents/skills/personal` at install time. Its platform-specific file is `config.toml`:
-
-- **Model**: `gpt-5.3-codex`
-- **Approval policy**: `on-request`
-- **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
-- **Project doc fallback**: reads `CLAUDE.md` and `TEAM_GUIDE.md` from project roots
-
 ## Adding a New Platform
 
 1. Create a directory: `platform-name/`
@@ -180,7 +185,7 @@ If you fork this repo, update these team/environment-specific values:
 | What | Where | Default |
 |------|-------|---------|
 | Neb repo base path | `claude/.claude/agents/neb-explorer.md` | `~/repos/` |
-| PR default reviewers | `claude/.claude/CLAUDE.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
+| PR default reviewers | `shared/INSTRUCTIONS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 
 ## Attribution
 

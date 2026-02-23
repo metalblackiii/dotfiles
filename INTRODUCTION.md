@@ -26,7 +26,9 @@ You can use both. The playbook gives you the org baseline; your personal config 
 
 ## Skill Anatomy
 
-Every skill lives in `codex/.agents/skills/<name>/SKILL.md` and follows this structure:
+Skills are the core of this setup. They live in `codex/.agents/skills/<name>/SKILL.md` — Codex owns the canonical copy, and other platforms (like Claude Code) access them via symlinks. This means you write each skill once and it works everywhere.
+
+Every skill follows this structure:
 
 ```yaml
 ---
@@ -45,11 +47,11 @@ Skills can reference each other. For example, `neb-ms-conventions` defers archit
 
 ## Key Patterns Worth Adopting
 
-### SessionStart Hook
+### Skills-First Workflow
 
-The `claude/.claude/hooks/session-start.sh` fires on every startup, resume, clear, and compact. It lists all installed skills and enforces the skill-first workflow. This is the mechanism behind "The Iron Law" — check for applicable skills before responding to non-trivial requests.
+In Codex, the `developer_instructions` field in `config.toml` runs on every session — it's where you tell the agent to check for applicable skills before responding to non-trivial requests. This is "The Iron Law" — skills activate before work begins, not as an afterthought. Claude Code achieves the same thing via a SessionStart hook.
 
-Even if you don't adopt the full skill set, a session-start hook that reminds the agent of your conventions is high-value with low effort.
+Even if you don't adopt the full skill set, adding a skills-first reminder to your agent's always-on instructions is high-value with low effort.
 
 ### Review / Self-Review Pair
 
@@ -77,13 +79,13 @@ When you adapt someone's skill, credit them. When someone adapts yours, they cre
 4. Modify remaining skills to match your preferences
 5. Add your own domain-specific skills
 
-Update the values in the [Customization](../README.md#customization) section of the README — reviewer teams, repo paths, etc.
+Update the values in the [Customization](README.md#customization) section of the README — reviewer teams, repo paths, etc.
 
 ### Option B: Start from Scratch
 
 1. Create a new repo with the same structure
 2. Use the `writing-skills` skill to guide you through creating your first SKILL.md
-3. Add a session-start hook
+3. Add a skills-first reminder to your agent config (`developer_instructions` in Codex, SessionStart hook in Claude Code)
 4. Build up gradually — add skills as you find yourself repeating the same guidance
 
 Starting from scratch is more work up front but gives you a setup that's entirely yours. No dead skills, no conventions that don't match your workflow.

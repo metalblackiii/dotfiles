@@ -12,7 +12,7 @@ The question: what's the right mechanism for sharing?
 
 ### Option 1: Symlink Bundles
 
-Reorganize skills into bundle directories (`discipline/`, `review/`, `architecture/`), update `install.sh` to accept `--bundle` flags, symlink selected bundles flat into `~/.claude/skills/`.
+Reorganize skills into bundle directories (`discipline/`, `review/`, `architecture/`), update `install.sh` to accept `--bundle` flags, symlink selected bundles into the platform skills directory.
 
 **Pros:** Live edits work, minimal rebuild, selective installation.
 **Cons:** Bundle boundaries are inherently subjective. Skills reference each other (e.g., `verification-before-completion` references `refactoring-guide`), creating cross-bundle dependencies that fight the grouping.
@@ -79,7 +79,7 @@ It's 6 months out. Every skill iteration now requires asking "will this break so
 
 1. **The pain is context-switching, not tooling.** Teaching people to build their own setup addresses the root cause. Shipping them a bundle addresses a symptom.
 
-2. **The highest-value shareable artifact is the system for building skills**, not the skills themselves. The `writing-skills` skill, the frontmatter conventions, the SessionStart hook, the dotfiles repo structure — that's what's novel and transferable.
+2. **The highest-value shareable artifact is the system for building skills**, not the skills themselves. The `writing-skills` skill, the frontmatter conventions, the `developer_instructions` pattern, the dotfiles repo structure — that's what's novel and transferable.
 
 3. **No maintenance tax.** The repo stays a personal tool with full iteration freedom. No implicit stability contract with external consumers.
 
@@ -104,7 +104,7 @@ Present both honestly. Some teammates will prefer the guardrails and structure o
 If workshop sessions generate demand for easier adoption:
 
 1. **GitHub template repo** — One-click "generate from template" that strips org-specific skills
-2. **Starter kit** — Minimal repo with SessionStart hook, `writing-skills`, and 2-3 example skills
+2. **Starter kit** — Minimal repo with skills-first config (`developer_instructions` / SessionStart hook), `writing-skills`, and 2-3 example skills
 3. **Plugin system** — Full distribution via `claude plugin install` if the audience grows beyond the team
 
 None of these require structural changes now. The current repo is the right starting point for all three paths.
