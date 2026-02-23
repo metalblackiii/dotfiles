@@ -24,7 +24,7 @@ Scan configuration from the dotfiles repo. Resolve the repo root dynamically: fo
 
 ### Claude Code
 - `claude/.claude/settings.json` — global settings
-- `claude/.claude/commands/*.md` — slash commands
+- `claude/.claude/commands/*.md` — slash commands (optional; check only if the directory exists)
 - `claude/.claude/agents/*.md` — agent definitions
 - `claude/.claude/skills` — symlink → `codex/.agents/skills`
 
@@ -84,7 +84,15 @@ Both platforms share the same skill directory (`codex/.agents/skills/`). Verify 
 - Structure: `~/.agents/skills/personal/` → `dotfiles/codex/.agents/skills` (symlink under real parent dirs)
 - Should match canonical skill names exactly
 
-Do NOT glob within the repo at `claude/.claude/skills/` — it's a relative symlink that only resolves at the installed location.
+You may inspect `claude/.claude/skills/` in-repo to validate the symlink target, but runtime parity must still be verified from `~/.claude/skills/`.
+
+### 6. Review Skill Coherence
+
+To prevent drift without structural extraction, compare `review` and `self-review` for coherence in shared policy language:
+- Both load review criteria from `../analyzing-prs/SKILL.md`
+- Severity taxonomy remains aligned (`Critical`, `Important`, `Minor`)
+- Shared quality expectations stay consistent (category coverage and anti-hallucination posture)
+- Flag divergences unless the file explicitly documents an intentional reason
 
 Note: some assets are inherently platform-specific and should NOT be flagged:
 - Slash commands (`claude/.claude/commands/`) — Claude Code only, Codex has no equivalent

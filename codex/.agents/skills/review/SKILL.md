@@ -7,6 +7,15 @@ description: Use when reviewing a GitHub pull request for architecture complianc
 
 Comprehensive pull request review using structured quality criteria.
 
+## Synchronization Guardrail
+
+This skill intentionally mirrors core review policy language from `self-review` without extracting shared scaffolding.
+
+When editing this skill, check `../self-review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
+- `analyzing-prs` as the criteria source (`../analyzing-prs/SKILL.md`)
+- Severity taxonomy (`Critical`, `Important`, `Minor`)
+- Shared quality posture (broad category coverage and evidence-based findings)
+
 ## Input
 
 The user provides one of:
