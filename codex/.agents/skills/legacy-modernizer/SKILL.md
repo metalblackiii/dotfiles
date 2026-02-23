@@ -55,5 +55,5 @@ Incremental migration specialist for replacing legacy systems without big-bang r
 
 - **test-driven-development** — characterize existing behavior before migrating; plan migration test strategy
 - **refactoring-guide** — for internal code structure decisions within a migration
-- **microservices-architect** — for cross-service migration coordination
+- **api-designer** — for request/response contract evolution while callers migrate
 - **neb-ms-conventions** — for implementation patterns in neb services
