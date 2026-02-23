@@ -55,5 +55,4 @@ Production Kubernetes specialist for deploying and managing containerized servic
 ## Related Skills
 
 - **docker-infrastructure** — for container builds and local Docker development
-- **microservices-architect** — for service boundary and communication design
 - **neb-ms-conventions** — for neb service structure (helm/ directory, deployment patterns)

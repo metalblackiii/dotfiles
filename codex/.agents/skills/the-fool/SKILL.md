@@ -86,5 +86,4 @@ Ask the user to let the user choose how to challenge their idea.
 ## Related Skills
 
 - **refactoring-guide** — for evaluating refactoring decisions and code smells
-- **microservices-architect** — for cross-service architecture decisions
 - **legacy-modernizer** — for migration strategy decisions (pre-mortem mode is especially relevant)

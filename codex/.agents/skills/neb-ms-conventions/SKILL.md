@@ -108,4 +108,4 @@ msRequest({
 
 ## Architectural Decisions
 
-For service boundary design, DDD patterns, saga/choreography decisions, data ownership strategy, or any architectural design work spanning neb services — defer to the `microservices-architect` skill. This skill covers *how the codebase works today*; that skill covers *how to design what comes next*.
+For service boundary design, DDD patterns, saga/choreography decisions, data ownership strategy, or any architectural design work spanning neb services — use `legacy-modernizer` for incremental migration strategy and `api-designer` for contract/interface design. This skill covers *how the codebase works today*; those skills cover *how to design what comes next*.

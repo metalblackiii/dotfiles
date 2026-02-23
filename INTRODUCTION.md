@@ -43,13 +43,41 @@ Below the frontmatter is the skill body: the actual guidance, patterns, examples
 
 ### Sibling Dependencies
 
-Skills can reference each other. For example, `neb-ms-conventions` defers architectural questions to `microservices-architect`. The `review` and `self-review` skills both consume `analyzing-prs` internally. This keeps skills focused — each one does one thing well and delegates the rest.
+Skills can reference each other. The `review` and `self-review` skills both consume `analyzing-prs` internally. This keeps skills focused — each one does one thing well and delegates the rest.
+
+## Why Skills Improve Agent Performance
+
+### Progressive Disclosure Beats Prompt Bloat
+
+Large always-on instruction files eventually become self-defeating. As global context grows, the agent has to carry more irrelevant material on every request, which can degrade focus and output quality.
+
+The skills system solves this through **progressive disclosure**:
+- Keep always-on instructions short and invariant (safety rules, git policy, quality bar)
+- Move situational workflows into skills with strong trigger descriptions
+- Load deeper references only when the active skill needs them
+
+This keeps the default context lean while still making specialized guidance available exactly when relevant.
+
+If you want more background on why this matters, see: [Writing a good CLAUDE.md](https://www.humanlayer.dev/blog/writing-a-good-claude-md).
+
+### A Practical Split That Works
+
+Use this three-layer model:
+1. **Global instructions**: stable rules that should apply in nearly every session
+2. **Skills**: reusable workflows that activate for specific task types
+3. **Skill references**: deep domain material loaded on demand
+
+### Failure Modes to Avoid
+
+- Putting every preference into always-on instructions
+- Creating many near-duplicate skills with overlapping triggers
+- Writing vague frontmatter descriptions that never reliably activate
 
 ## Key Patterns Worth Adopting
 
 ### Skills-First Workflow
 
-In Codex, the `developer_instructions` field in `config.toml` runs on every session — it's where you tell the agent to check for applicable skills before responding to non-trivial requests. This is "The Iron Law" — skills activate before work begins, not as an afterthought. Claude Code achieves the same thing via a SessionStart hook.
+In Codex, the `developer_instructions` field in `config.toml` runs on every session. Treat this as your always-on hook: it's where you enforce "check for applicable skills before non-trivial work." This is "The Iron Law" — skills activate before work begins, not as an afterthought. Claude Code achieves similar behavior via a SessionStart hook.
 
 Even if you don't adopt the full skill set, adding a skills-first reminder to your agent's always-on instructions is high-value with low effort.
 
@@ -68,6 +96,63 @@ The `the-fool` skill provides structured critical reasoning — devil's advocate
 ### ATTRIBUTION.md Culture
 
 When you adapt someone's skill, credit them. When someone adapts yours, they credit you. The `ATTRIBUTION.md` file tracks where skills came from. This creates a healthy sharing ecosystem where people feel safe publishing their work because they know they'll get credit.
+
+## Recommended Skill Bundles
+
+These are **adoption bundles**, not install-time bundles or enforced directory structure.
+Descriptions are copied from each skill's frontmatter and lightly shortened for readability.
+
+### 1) Discipline Bundle (start here)
+
+Inspired by [obra/superpowers](https://github.com/obra/superpowers), this bundle gives the highest leverage for daily reliability:
+
+- `test-driven-development` — Non-trivial feature/bugfix work where tests should drive design.
+- `systematic-debugging` — Bugs with non-obvious root cause; structured debugging before proposing fixes.
+- `verification-before-completion` — Run evidence-based checks before claiming work is complete or passing.
+- `using-skills` — Session-start discovery/invocation workflow for applicable skills.
+
+### 2) Review Bundle
+
+This bundle tightens quality gates before code reaches teammates:
+
+- `review` — Full GitHub PR review for architecture, tests, quality, and security.
+- `self-review` — Fresh-eyes local diff review before commit/PR, no `gh` required.
+- `analyzing-prs` — Shared review checklist criteria consumed by `review` and `self-review`.
+
+### 3) Meta Bundle
+
+These skills help you improve the system itself:
+
+- `writing-skills` — Create/edit SKILL.md files and frontmatter conventions.
+- `introspect` — Audit agent configuration for conflicts, redundancy, and stale guidance.
+- `audit-skills` — Measure skill adoption and find dormant skills.
+
+### 4) Niche Skills (Low-Cost One-Offs)
+
+Useful when the situation appears, with little ongoing overhead:
+
+- `handoff` — Capture session state when pausing or when context pressure is high.
+- `gha` — Investigate and improve GitHub Actions workflows and CI failures.
+
+### 5) Domain Skills (If It's Important to You)
+
+Domain-heavy skills are worth adopting when they match your recurring work:
+
+- `database-expert` — SQL, schema design, query optimization, indexes, and Aurora/ORM patterns.
+- `api-designer` — REST contracts, versioning strategy, and API evolution planning.
+- `neb-playwright-expert` — E2E test design/debugging for neb-www's Playwright setup.
+
+For more domain-specific ideas, see the `jeffallan/claude-skills` source listed in `ATTRIBUTION.md`.
+
+## What This Repo Does Not Cover (Yet)
+
+This repo intentionally focuses on portable instructions + skills + symlinked platform config. Other valid approaches are out of scope for now:
+
+- **MCP servers**: Model Context Protocol integrations for external tools and data sources. Useful, but not configured in this repo yet.
+- **Agentic programming / agent teams**: Orchestrating multiple agents with explicit role delegation and coordination loops.
+- **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)).
+
+These approaches can complement this repo later. For now, the priority is a robust baseline that works reliably across Codex and Claude Code with minimal moving parts.
 
 ## How to Start Your Own
 

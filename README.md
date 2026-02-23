@@ -58,7 +58,7 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (27)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (26)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -82,7 +82,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
-| Skills (27) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Skills (26) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -93,9 +93,9 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Model**: `gpt-5.3-codex`
 - **Approval policy**: `on-request`
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
-- **Project doc fallback**: reads `CLAUDE.md` and `TEAM_GUIDE.md` from project roots
+- **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (27)
+### Skills (26)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -113,7 +113,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
 | **kubernetes-specialist** | Deploying/managing K8s workloads, Helm charts, RBAC, troubleshooting pods |
 | **legacy-modernizer** | Incremental migrations, strangler fig patterns, dual-mode coexistence |
-| **microservices-architect** | Distributed system design, service boundaries, sagas, event sourcing |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
@@ -129,7 +128,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
-Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/microservices-architect/references/`, `codex/.agents/skills/the-fool/references/`).
+Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/the-fool/references/`).
 
 ## Shared Instructions
 
