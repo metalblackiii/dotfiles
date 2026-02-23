@@ -1,7 +1,6 @@
 ---
 name: using-skills
 description: Establishes how to discover and use skills. Loaded at session start — not invoked directly.
-disable-model-invocation: true
 ---
 
 # Using Skills

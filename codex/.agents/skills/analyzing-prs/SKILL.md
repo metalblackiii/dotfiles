@@ -2,7 +2,6 @@
 name: analyzing-prs
 description: Domain knowledge for PR review checklists and quality criteria. Consumed by the review and self-review skills — not invoked directly.
 user-invocable: false
-disable-model-invocation: true
 ---
 
 # PR Analysis Skill
