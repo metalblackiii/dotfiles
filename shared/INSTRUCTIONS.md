@@ -17,7 +17,12 @@ This configuration is managed via a dotfiles repo with symlinks.
 ## PR Defaults
 
 - Default reviewers: `Chiropractic-CT-Cloud/phoenix`
-- Use `-r org/team-slug` with `gh pr create` (not `--team`)
+- Always include default reviewers. Optional reviewers are additive only when explicitly requested.
+- Optional team reviewer, if asking for "architecture team" review: `Chiropractic-CT-Cloud/architecture`
+- Optional individual reviewers, if asking for "devops" review: `daniel-goss_ptek`, `troy-lewis_ptek`
+- Use `-r` with `gh pr create`:
+  - team format: `org/team-slug` (for example `Chiropractic-CT-Cloud/phoenix`)
+  - individual format: `username` (for example `daniel-goss_ptek`)
 
 ## Skills
 
