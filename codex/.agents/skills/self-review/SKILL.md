@@ -9,6 +9,15 @@ Fresh-eyes code review of local changes. You have NO context about why these cha
 
 This skill is local-only: use local `git` and filesystem inspection. Do **not** call `gh` in this workflow.
 
+## Synchronization Guardrail
+
+This skill intentionally mirrors core review policy language from `review` without extracting shared scaffolding.
+
+When editing this skill, check `../review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
+- `analyzing-prs` as the criteria source (`../analyzing-prs/SKILL.md`)
+- Severity taxonomy (`Critical`, `Important`, `Minor`)
+- Shared quality posture (broad category coverage and evidence-based findings)
+
 ## Input
 
 The user specifies what to review. Typical inputs:

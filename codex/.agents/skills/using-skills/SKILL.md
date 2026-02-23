@@ -11,7 +11,7 @@ You have specialized skills installed. These represent personal development meth
 
 **Use the platform's skill invocation to invoke skills (`Skill` tool in Claude Code, `$skill` in Codex).** The platform lists available skills in system-reminder messages — check there first. When you invoke a skill, its full content is loaded and presented to you. Follow it directly.
 
-Prefer platform skill invocation over reading SKILL.md directly. Direct reading is allowed for meta-maintenance and audit tasks.
+Prefer platform skill invocation over reading SKILL.md directly. Direct reading is allowed for meta-maintenance and audit tasks. Exception: if a parent skill explicitly instructs you to read a support skill by relative path (for example, `review`/`self-review` loading `analyzing-prs`), follow the parent skill's workflow.
 
 ## When to Check for Skills
 
