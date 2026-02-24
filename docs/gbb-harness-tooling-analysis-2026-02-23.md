@@ -284,3 +284,290 @@ If hardened ptek matches or beats ralph on intervention count + review quality, 
 - iannuttall/ralph releases: https://github.com/iannuttall/ralph/releases
 - mikeyobrien/ralph-orchestrator repo: https://github.com/mikeyobrien/ralph-orchestrator
 - ralph-orchestrator docs: https://ralph-orchestrator.readthedocs.io/en/latest/
+
+## 11. Head-to-Head Evaluation Plan: `ralph-orchestrator` vs `ptek-ai-playbook`
+
+This section defines the immediate next step: run one controlled evaluation cycle for each tool on the same bounded scenario and score results with weighted criteria.
+
+### 11.1 Scope Lock (must be identical for both tools)
+
+- Target: `GBB provisioning-v2 Phase 1` only
+- Repos in scope: only repos required by Phase 1 implementation
+- Hard stops:
+  - no Phase 2+ changes
+  - no multi-repo expansion unless explicitly pre-approved
+  - no unresolved product decision implementation; use documented assumptions only
+
+### 11.2 Readiness Gate (before any execution run)
+
+Pass/fail checks per tool:
+
+1. Can start non-interactively from CLI/script (no manual prompt dependency)
+2. Has explicit command path for planning, execution, and review/remediation
+3. Can persist state and resume after interruption
+4. Can enforce or at least report scope limits (files/LOC)
+5. Uses acceptable safety defaults (or can be safely overridden for pilot)
+6. No missing functional dependency for review loop
+
+If a tool fails 2 or more checks, do not run execution cycle yet; log it as `readiness-failed`.
+
+### 11.3 Single-Cycle Trial Protocol (per tool)
+
+Run this exact sequence once per candidate:
+
+1. Planning run
+   - Input: Phase 1 PRD + assumption block
+   - Output required: phase plan with files, tests, stop conditions
+2. Execution run
+   - Input: approved plan
+   - Output required: branch with implementation + tests
+3. Review/remediation run
+   - Input: execution PR
+   - Output required: review report + remediation tasks (if needed) + post-remediation state
+
+Capture timestamps and intervention notes for each step.
+
+### 11.4 Scoring Rubric (weighted)
+
+Score each category `1-5` (5 is best), then multiply by weight.
+
+| Category | Weight | Scoring Guidance |
+|---|---:|---|
+| Reliability / Loop completion | 30% | Completes planning->execution->review without manual recovery |
+| Human intervention burden | 25% | Fewer manual corrections, reruns, or prompt surgery |
+| Review/remediation quality | 20% | Finds meaningful issues, inserts/executes remediation cleanly |
+| Safety/operational control | 15% | Safe defaults, policy controls, clear stop conditions |
+| Throughput (speed) | 10% | Time to first reviewable PR and final reviewed state |
+
+Weighted score formula:
+
+`total = sum(category_score * weight_percent)`
+
+Example:
+
+- Reliability `4` x `0.30` = `1.20`
+- Intervention `3` x `0.25` = `0.75`
+- Review quality `4` x `0.20` = `0.80`
+- Safety `3` x `0.15` = `0.45`
+- Speed `4` x `0.10` = `0.40`
+- Total = `3.60 / 5.00`
+
+### 11.5 Result Capture Template
+
+| Metric | ralph-orchestrator | ptek-ai-playbook |
+|---|---|---|
+| Readiness gate status (pass/fail) |  |  |
+| Time to first valid plan |  |  |
+| Time to first reviewable PR |  |  |
+| Time to reviewed/remediated state |  |  |
+| Human interventions (#) |  |  |
+| Loop stalls/retries (#) |  |  |
+| Critical findings in review (#) |  |  |
+| Important findings in review (#) |  |  |
+| Rework volume after review (files/LOC) |  |  |
+| Weighted score (out of 5.0) |  |  |
+
+### 11.6 Decision Rule
+
+1. If one tool fails readiness and the other passes, choose the passing tool for pilot continuation.
+2. If both pass readiness, choose the higher weighted score.
+3. Tie-breakers in order:
+   - lower intervention count
+   - stronger safety/operability posture
+   - faster time to reviewed/remediated state
+
+### 11.7 Immediate Next Action
+
+Execute readiness gate for both tools first, then run the single-cycle trial for the tool(s) that pass.
+
+## 12. Benchmark Wrappers (2026-02-24)
+
+To standardize inputs across both tools, use these wrapper assets:
+
+- Canonical benchmark spec:
+  - `/Users/martinburch/repos/dotfiles/docs/gbb-phase1-benchmark-2026-02-24.md`
+- Ralph wrappers:
+  - `/Users/martinburch/repos/dotfiles/docs/ralph-gbb-phase1-prompt-2026-02-24.md`
+  - `/Users/martinburch/repos/dotfiles/docs/ralph-gbb-phase1-config-2026-02-24.yml`
+- ptek wrappers:
+  - `/Users/martinburch/repos/ptek-ai-playbook/experimental/auto-agent-codex/PRD-gbb-phase1-benchmark.md`
+  - `/Users/martinburch/repos/ptek-ai-playbook/experimental/auto-agent-codex/prd_list.json`
+
+### 12.1 Suggested Execution Order
+
+1. `Readiness` (tool install/auth/required files)
+2. `Planning-only trial` on both tools
+3. `Full cycle attempt` on both tools (planning -> execution -> review)
+4. Capture metrics using Section 11.5 table
+
+### 12.2 Notes
+
+- These wrappers intentionally freeze Phase 1 assumptions and hard stops.
+- If either tool exceeds scope guardrails, classify as intervention event and score accordingly.
+
+## 13. Run Results (2026-02-24, sandbox)
+
+Sandbox target repo:
+
+- `/tmp/gbb-phase1-neb-ms-registry`
+
+### 13.1 ptek-ai-playbook
+
+Status: `partially passed` (planning complete, execution in progress)
+
+Observed progress:
+
+1. Root planning task completed:
+   - output: `.gbb-phase1/phase_breakdown_mb/gbb-phase1-benchmark.md`
+2. Phase planning task completed:
+   - output: `.gbb-phase1/plan_mb/gbb-phase1-benchmark-phase1.md`
+3. Execution task started and produced concrete code/test/migration changes in sandbox:
+   - updated: `src/controllers/v1/tenants/:tenantId/addons/post.js`
+   - updated: `src/controllers/v1/tenants/:tenantId/addons/util.js`
+   - updated: `src/models/tenant.js`
+   - added: `src/services/provisioning-v2/{tier-constants,apply-bundles,addon-side-effects}.js`
+   - added: `migrations/20260224023000-alter-tenant-add-product-insurance-bundle.js`
+   - added: `test/services/provisioning-v2/{apply-bundles,addon-side-effects}.test.js`
+
+Known issues:
+
+- Execution required dependency install in sandbox (`npm ci --cache .npm-cache`) before tests.
+- Long-turn stability noise from Codex runtime:
+  - repeated `failed to queue rollout items: channel closed`
+  - occasional turn-level non-zero exits despite partial task-memory progress
+- Execution was intentionally interrupted before any push/PR behavior to keep benchmark local-only.
+
+### 13.2 ralph-orchestrator
+
+Status: `blocked/incomplete` (planning-only trial did not produce plan artifact yet)
+
+Observed behavior:
+
+1. Runner starts with codex backend and iterates.
+2. Progresses through source reading and task/memory management.
+3. Did not emit planning artifact at `.ralph/gbb-phase1-plan.md` during this pass.
+4. Session interrupted after prolonged run and repeated Codex runtime noise.
+
+Known issues:
+
+- Same Codex runtime noise pattern during execution:
+  - repeated `failed to queue rollout items: channel closed`
+  - `Operation not permitted` warnings for cache/path writes
+
+### 13.3 Interpretation for Section 11 Protocol
+
+- Readiness gate: both tools can start and route commands in sandbox.
+- Single-cycle trial: ptek advanced further (planning complete + execution started with real file changes); ralph planning-only pass is still incomplete.
+- Review/remediation stage is not yet executed in this sandbox cycle; scoring table (11.5) is therefore still preliminary.
+
+## 14. Clean Reset A/B Pass (2026-02-24, strict timebox)
+
+This section captures a second apples-to-apples pass run after sandbox reset.
+
+Run setup:
+
+- ptek sandbox: `/tmp/gbb-phase1-neb-ms-registry`
+- ralph sandbox: `/tmp/gbb-phase1-neb-ms-registry-ralph`
+- Same Phase 1 wrapper inputs and hard boundaries
+- Ralph runtime budget: up to 2x ptek runtime budget
+
+### 14.1 Evidence Snapshot
+
+| Metric | ptek-ai-playbook | ralph-orchestrator |
+|---|---|---|
+| Readiness gate | `pass` (after relinking `resources` to in-house command set) | `pass` |
+| Time to first valid plan | `~1m57s` (`02:31:48Z` -> `02:33:45Z`) | N/A (single loop model; no separate planning artifact) |
+| Time to first implementation commit | `~19m42s` from run start (`bbe950d`) | `~5m51s` from loop start (`63909d0`) |
+| Completed atomic tasks | 2 planning tasks complete; 1 execution task failed | 2 tasks closed with commits; 2 tasks still open |
+| Execution end state | `failed` due push error (`remote unpack failed`); local commit exists | `in-progress` when timebox ended; no hard failure recorded |
+| Commits produced | `bbe950d` | `63909d0`, `d6b3ba3` |
+| Scope evidence | Side-effects extraction landed + tests | Migration/model + side-effects extraction landed |
+| Review/remediation loop | Not completed end-to-end (self-review steps occurred inside execution) | Not completed end-to-end |
+| Runtime stability signals | Codex rollout/cache warnings observed | Same warnings observed; internal retries recorded |
+
+### 14.2 Commit-Level Output
+
+`ptek-ai-playbook`:
+
+- `bbe950d refactor(add-ons): extract v1 add-on side effects service`
+- Files:
+  - `src/controllers/v1/tenants/:tenantId/addons/post.js`
+  - `src/services/add-ons/side-effects.js`
+  - `test/services/add-ons/side-effects.test.js`
+
+`ralph-orchestrator`:
+
+- `63909d0 feat(tenant): add bundle columns for phase1 provisioning`
+  - `migrations/20260224120000-alter-tenant-add-bundle-columns.js`
+  - `src/models/tenant.js`
+- `d6b3ba3 refactor: extract add-on side effects service`
+  - `src/controllers/v1/tenants/:tenantId/addons/post.js`
+  - `src/services/addon-side-effects.js`
+
+### 14.3 Weighted Score (Section 11.4 rubric, preliminary)
+
+Scores are `1-5`, then weighted. This is preliminary because neither run completed full review/remediation.
+
+| Category | Weight | ptek | ralph |
+|---|---:|---:|---:|
+| Reliability / loop completion | 30% | 2.5 | 3.0 |
+| Human intervention burden | 25% | 2.5 | 3.0 |
+| Review/remediation quality | 20% | 2.5 | 1.5 |
+| Safety/operational control | 15% | 2.0 | 4.0 |
+| Throughput (speed) | 10% | 2.5 | 4.0 |
+| Weighted total | 100% | **2.43 / 5.00** | **2.95 / 5.00** |
+
+Interpretation:
+
+- `ralph-orchestrator` leads on this pass due faster atomic delivery and stronger orchestration controls.
+- `ptek-ai-playbook` showed stronger built-in phase planning shape, but this run was penalized by push-coupled failure semantics.
+- Final tool choice should wait for one more pass where both tools complete full planning -> execution -> review/remediation with push behavior normalized.
+
+### 14.4 Completion Pass (No-Push Wrapper, Raw vs Normalized)
+
+This pass reran both tools with:
+
+- clean reset sandboxes
+- identical pre-provision (`npm install --cache .npm-cache --no-audit --no-fund`)
+- push/PR decoupled for ptek execution benchmark wrapper
+- Ralph runtime budget capped at 2x ptek runtime
+
+Observed runtime windows:
+
+- ptek run: `2026-02-24T03:26:46Z` -> `2026-02-24T03:42:05Z` (`~15m19s`)
+- ralph run: `2026-02-24T03:42:31Z` -> `2026-02-24T04:07:26Z` (`~24m55s`)
+
+Outcome snapshot:
+
+- `ptek-ai-playbook`
+  - completed: root planning, phase1 planning, phase1 execution
+  - produced commit: `6a0d032`
+  - pending at stop: `gbb-phase1-phase1-execution-pr-review`, phase2 planning, phase3 planning
+  - stop cause: runner hit consecutive Codex runtime shutdown errors before continuing to review turn
+- `ralph-orchestrator`
+  - completed all four Phase 1 runtime tasks and emitted `LOOP_COMPLETE`
+  - produced commits:
+    - `70cc00f` (side-effect extraction)
+    - `4bf4bb4` (tier resolver/apply + tests)
+    - `9295f0d` (tenant bundle columns migration)
+    - `787c2e1` (expanded bundle/side-effect test coverage)
+  - events file recorded sequential `task.done` entries and final completion event
+
+Raw vs normalized scoring:
+
+- `Raw`: includes runtime friction/noise and harness instability effects
+- `Normalized`: discounts environment/runtime artifacts (e.g., Codex shutdown recorder failures) to emphasize workflow behavior
+
+| Category | Weight | ptek Raw | ptek Normalized | ralph Raw | ralph Normalized |
+|---|---:|---:|---:|---:|---:|
+| Reliability / loop completion | 30% | 2.6 | 3.4 | 4.3 | 4.5 |
+| Human intervention burden | 25% | 2.5 | 3.3 | 3.8 | 4.1 |
+| Review/remediation quality | 20% | 1.6 | 2.4 | 3.3 | 3.5 |
+| Safety/operational control | 15% | 2.1 | 2.2 | 4.0 | 4.0 |
+| Throughput (speed) | 10% | 2.8 | 3.0 | 4.0 | 4.1 |
+| Weighted total | 100% | **2.36 / 5.00** | **2.97 / 5.00** | **3.87 / 5.00** | **4.09 / 5.00** |
+
+Decision from this pass:
+
+- Winner: `ralph-orchestrator` on both `Raw` and `Normalized` tracks.
+- Main reason: it closed the complete Phase 1 objective with atomic task lifecycle and commits inside the 2x budget, while ptek did not reach its review/remediation turn before runtime failure stop.
