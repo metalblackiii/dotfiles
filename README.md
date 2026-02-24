@@ -15,6 +15,8 @@ Currently supports **Codex** and **Claude Code**. Skills live in `codex/.agents/
 | `node` / `npm` / `npx` | Yes | `brew install node` or nvm | Running and testing projects |
 | `docker` | Optional | [Docker Desktop](https://www.docker.com/products/docker-desktop/) | Container workflows |
 | `kubectl` | Optional | `brew install kubectl` | Read-only cluster access |
+| `rg` (ripgrep) | Optional | `brew install ripgrep` | Fast shell fallback for text search when built-in tools are unavailable |
+| `fd` | Optional | `brew install fd` | Fast shell fallback for file discovery when built-in tools are unavailable |
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
 
@@ -58,7 +60,7 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (26)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (27)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -82,7 +84,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
-| Skills (26) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Skills (27) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -95,7 +97,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (26)
+### Skills (27)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 

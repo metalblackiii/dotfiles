@@ -6,7 +6,9 @@ This configuration is managed via a dotfiles repo with symlinks.
 
 ## Tool Preferences
 
-- **Prefer built-in tools over Bash equivalents** — `Read` not `cat`, `Glob` not `find`/`ls`, `Grep` not `grep`/`rg`. `head`/`tail` are allowed for quick peeking. Never attempt to work around deny rules.
+- **Prefer built-in tools over Bash equivalents** — `Read` not `cat`, `Glob` not `find`/`ls`, `Grep` not `grep`/`rg`.
+- **Fallback preference when shell is needed** — use `rg` for text search and `fd` (or `rg --files`) for file discovery.
+- `head`/`tail` are allowed for quick peeking. Never attempt to work around deny rules.
 
 ## Git Preferences
 
