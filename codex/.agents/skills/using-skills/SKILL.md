@@ -32,8 +32,19 @@ Skills compose naturally. Common sequences:
 - **New feature:** `feature-forge` (or `analyzing-requirements`) → `test-driven-development` → `verification-before-completion`
 - **Refactor:** `refactoring-guide` → `verification-before-completion`
 - **PR review:** `review` or `self-review` (these consume `analyzing-prs` internally)
+- **Security-sensitive implementation:** `feature-forge` (or `analyzing-requirements`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
+- **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)
 
 When multiple skills apply, invoke process skills first (debugging, planning), then implementation skills (domain-specific, testing).
+
+## Overlap Precedence
+
+To avoid trigger collisions:
+
+1. If the user asks for "review", default to `review` or `self-review`.
+2. Use `security-reviewer` only for explicit security audits or deep security assessments.
+3. Use `secure-code-guardian` for implementing or remediating security controls in code.
+4. Use `self-documenting-code` for naming/readability in code, not documentation artifact generation.
 
 ## Red Flags
 

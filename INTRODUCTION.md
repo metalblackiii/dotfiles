@@ -144,6 +144,15 @@ Domain-heavy skills are worth adopting when they match your recurring work:
 
 For more domain-specific ideas, see the `jeffallan/claude-skills` source listed in `ATTRIBUTION.md`.
 
+### 6) Optional Security Bundle (Escalation Lane)
+
+Treat security as an opt-in escalation lane, not baseline complexity:
+
+- `security-reviewer` — Use for dedicated security audits or high-risk change sets. Keep this out of everyday review unless explicitly needed.
+- `secure-code-guardian` — Use when implementing or remediating security controls in code.
+
+This bundle does **not** require extra tooling to adopt. Teams can run in manual mode first (threat-focused code review + remediation guidance), then add scanner tooling later if they want deeper automation.
+
 ## What This Repo Does Not Cover (Yet)
 
 This repo intentionally focuses on portable instructions + skills + symlinked platform config. Other valid approaches are out of scope for now:

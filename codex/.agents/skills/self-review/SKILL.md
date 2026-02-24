@@ -1,6 +1,6 @@
 ---
 name: self-review
-description: Use when running a pre-commit or pre-PR quality gate on local git changes only (no `gh`). Catches issues the implementer may have missed through fresh-eyes analysis of staged, unstaged, or branch diffs.
+description: Use when running a pre-commit or pre-PR quality gate on local git changes only (no `gh`) with baseline security checks. For dedicated security audits or deep security assessments, use `security-reviewer`.
 ---
 
 # Self-Review Skill
@@ -33,7 +33,7 @@ If unspecified, default to `git diff --staged`. If staged is empty, fall back to
 
 ### Step 1: Load Review Criteria
 
-Read the `analyzing-prs` skill to load review categories, security deep-dive criteria, and severity definitions:
+Read the `analyzing-prs` skill to load baseline review categories, healthcare addendum checks, and severity definitions:
 
 - `../analyzing-prs/SKILL.md`
 
@@ -77,6 +77,12 @@ In addition to the standard criteria, specifically scan for:
 - **Ignored promise rejections** — async calls without `.catch()` or try/catch
 
 These are high-value findings because they create bugs that are hard to diagnose later.
+
+### Security Escalation (When Needed)
+
+`self-review` includes baseline security checks via `analyzing-prs`. Escalate to `security-reviewer` only when:
+- the user explicitly requests security depth, or
+- local changes hit high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 
 ### Step 7: Report Findings
 
