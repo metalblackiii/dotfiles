@@ -1,6 +1,6 @@
 ---
 name: introspect
-description: Use when reviewing agent configuration for conflicts, redundancy, staleness, or prompt quality issues. Covers skills, commands, settings, and instructions across Claude Code and Codex.
+description: Use when reviewing agent configuration for conflicts, redundancy, staleness, or prompt quality issues, with platform-aware prioritization plus cross-platform capability parity checks.
 allowed-tools: Read, Glob, Grep, Bash
 ---
 
@@ -67,8 +67,13 @@ For each skill, evaluate the **description** field. Read the `prompt-engineer` s
 - **Specific enough?** Would a model reliably match this description to the right user request?
 - **Overlap detection:** Do any two descriptions match the same user request? If so, which one wins and is the precedence clear?
 - **Completeness:** Are there common triggering scenarios the description misses?
+- **Active platform/model reliability:** Would this description be selected reliably by the active runtime in this session (Codex vs Claude Code)?
 
 Rate each: **STRONG** / **NEEDS WORK** / **WEAK**, with a one-line explanation.
+
+Prompt-quality platform rule:
+- Rate primarily through the active platform/model lens.
+- If a concern is specific to the non-active platform only, keep it informational (Suggestions) unless it affects shared parity/capabilities.
 
 ### 5. Cross-Platform Parity
 
@@ -94,6 +99,32 @@ To prevent drift without structural extraction, compare `review` and `self-revie
 - Shared quality expectations stay consistent (category coverage and anti-hallucination posture)
 - Flag divergences unless the file explicitly documents an intentional reason
 
+## Scope and Weighting
+
+Determine active platform first, then prioritize findings accordingly:
+
+1. **Shared sources of truth** (always first): `shared/INSTRUCTIONS.md`, canonical skills in `codex/.agents/skills/`, and shared symlink wiring
+2. **Active platform configuration** (depends on runtime):
+   - In **Codex**: prioritize `codex/.codex/config.toml` and Codex runtime behavior
+   - In **Claude Code**: prioritize `claude/.claude/settings.json`, hooks, status line, and Claude runtime behavior
+3. **Cross-platform parity/capability drift** (always required): symlinks, skill availability, and behavior differences that impact both platforms
+4. **Non-active platform configuration**: treat as informational unless it affects shared policy/parity/security
+
+Non-active platform policy:
+- Treat findings as **informational by default**.
+- Do **not** make strong/prescriptive recommendations unless one of these is true:
+  - It conflicts with shared instructions or single-source-of-truth wiring
+  - It breaks cross-platform parity/capabilities
+  - It introduces a clear security/compliance risk that impacts shared assets or workflows
+- If none of the above apply, place it in **Suggestions** (or omit), not as a hard **Conflict**.
+
+Codex-mode hard rule:
+- When the active platform is **Codex**, do **not** emit `claude/.claude/settings.json` findings under **Conflicts Found**.
+- In Codex mode, Claude settings may only appear under:
+  - **Cross-Platform Parity** (wiring/parity impacts), or
+  - **Suggestions** (informational notes), if relevant.
+- If a concern originates in Claude settings and also affects shared policy, report the shared-policy conflict against shared/canonical files first (for example `shared/INSTRUCTIONS.md`), not as a Claude-settings conflict.
+
 Note: some assets are inherently platform-specific and should NOT be flagged:
 - Slash commands (`claude/.claude/commands/`) — Claude Code only, Codex has no equivalent
 - Custom agents (`claude/.claude/agents/`) — Claude Code only, Codex has no equivalent
@@ -103,6 +134,7 @@ Note: some assets are inherently platform-specific and should NOT be flagged:
 
 - Empty `attribution` fields in settings.json — intentionally suppress default attribution behavior
 - Claude-only commands (`.claude/commands/`) that have shared skill equivalents — the command is kept for `/slash` invocation
+- Claude-only permission tuning and UX wiring (hooks/status line) without Codex or shared-policy impact
 
 ## Output Format
 
