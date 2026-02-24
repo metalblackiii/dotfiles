@@ -1,6 +1,6 @@
 ---
 name: review
-description: Use when reviewing a GitHub pull request for architecture compliance, testing coverage, code quality, security vulnerabilities, and other quality criteria. Requires working `gh` CLI auth/context. Accepts a PR number, URL, or empty for the current branch.
+description: Use when reviewing a GitHub pull request for architecture compliance, testing coverage, code quality, and baseline security checks. For dedicated security audits or deep security assessments, use `security-reviewer`. Requires working `gh` CLI auth/context. Accepts a PR number, URL, or empty for the current branch.
 ---
 
 # PR Review Skill
@@ -27,7 +27,7 @@ The user provides one of:
 
 ### Step 1: Load Review Criteria
 
-Read the `analyzing-prs` skill to load review categories, security deep-dive criteria, and severity definitions:
+Read the `analyzing-prs` skill to load baseline review categories, healthcare addendum checks, and severity definitions:
 
 - `../analyzing-prs/SKILL.md`
 
@@ -79,6 +79,12 @@ Apply every applicable category from the `analyzing-prs` skill:
 - Dependencies
 
 Skip categories that don't apply to the PR (e.g., skip Database if no schema changes).
+
+### Security Escalation (When Needed)
+
+`review` includes baseline security checks via `analyzing-prs`. Escalate to `security-reviewer` only when:
+- the user explicitly requests a security audit/deep-dive, or
+- the PR changes high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 
 ### Step 5: Generate Review Report
 
@@ -184,6 +190,16 @@ gh pr review <PR> --approve -b "LGTM!"
 ```
 
 Never submit without explicit user request.
+
+## Anti-Hallucination Rules
+
+**Verify before asserting.** Never claim "project uses pattern X" without checking. Before recommending a pattern or convention:
+
+1. **Use `gh` + file inspection first** — confirm the pattern in changed files and relevant repository context, not only PR text.
+2. **Occurrence threshold** — >10 occurrences = established pattern (suggest aligning). <3 occurrences = not established (don't cite as convention).
+3. **Read full file context** — don't judge from diff lines alone; surrounding code may explain the choice.
+
+If unsure about a convention, flag it as a question rather than a finding.
 
 ## Guidelines
 

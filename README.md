@@ -20,6 +20,21 @@ Currently supports **Codex** and **Claude Code**. Skills live in `codex/.agents/
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
 
+### Optional Security Tooling (Only for `security-reviewer` Scanner Mode)
+
+The security skills work without additional installs. Extra tooling is optional and only used for deeper scan automation.
+
+Scanner-mode tools that use `pip` assume `python3` and `pip` are installed (or use `pipx` equivalents).
+
+| Tool | Required | Install | Used by |
+|------|----------|---------|---------|
+| `gitleaks` | No | `brew install gitleaks` | Secret scanning workflows |
+| `semgrep` | No | `pip install semgrep` | Static security pattern scanning |
+| `trivy` | No | `brew install trivy` | Dependency/config/container security checks |
+| `checkov` | No | `pip install checkov` | IaC security checks |
+
+If these tools are unavailable, `security-reviewer` falls back to manual review and reports which scans were not executed.
+
 ## Installation
 
 ```bash
@@ -60,7 +75,7 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (27)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (29)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -84,7 +99,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
-| Skills (27) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Skills (29) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -97,7 +112,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (27)
+### Skills (29)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -121,6 +136,8 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **refactoring-guide** | Code smells, refactoring discipline, structural improvements |
 | **review** | PR review for architecture, testing, code quality, security |
+| **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
+| **security-reviewer** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
 | **self-review** | Pre-commit/pre-PR quality gate for local git changes |
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
