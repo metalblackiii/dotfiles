@@ -38,9 +38,9 @@ These fields are only recognized by Claude Code and are ignored by other agents:
 | `agent` | Subagent type when `context: fork` (e.g., `Explore`, `Plan`) |
 | `hooks` | Skill-scoped hooks (see Hooks documentation) |
 
-### Codex extensions
+### Codex extensions (optional/future-facing)
 
-These fields live in `agents/openai.yaml` inside the skill directory (not in SKILL.md frontmatter):
+When available in a Codex runtime, these fields live in `agents/openai.yaml` inside the skill directory (not in SKILL.md frontmatter). Some environments may not support this file yet.
 
 | Field (in `agents/openai.yaml`) | Description |
 |---|---|
@@ -48,7 +48,7 @@ These fields live in `agents/openai.yaml` inside the skill directory (not in SKI
 | `interface.display_name` | User-facing skill name in the Codex app |
 | `interface.short_description` | User-facing description |
 
-When disabling auto-invocation, set `disable-model-invocation: true` in SKILL.md frontmatter (Claude Code) **and** `allow_implicit_invocation: false` in `agents/openai.yaml` (Codex) for cross-platform consistency.
+When disabling auto-invocation, set `disable-model-invocation: true` in SKILL.md frontmatter (Claude Code) and, when `agents/openai.yaml` is supported, set `allow_implicit_invocation: false` there for cross-platform consistency.
 
 **Max frontmatter size:** 1024 characters total
 
@@ -147,7 +147,7 @@ codex/.agents/skills/         # Source of truth — all skills live here
 
 **For description quality**, apply the `prompt-engineer` skill criteria when writing or reviewing descriptions. Skill descriptions are prompts — they determine when the model loads the skill. Evaluate each description for: trigger-only (no workflow summary), specificity (would the model match this to the right request?), overlap (does another skill's description match the same trigger?), and completeness (are common triggering scenarios covered?).
 
-**For the open spec**, see [agentskills.io/specification](https://agentskills.io/specification). Standard fields work across all compatible agents. **For Claude Code extensions**, consult the `claude-code-guide` agent — Claude-specific fields may change between releases. Platform skill docs: [Claude Code](https://code.claude.com/docs/en/skills) | [Codex](https://developers.openai.com/codex/skills).
+**For the open spec**, see [agentskills.io/specification](https://agentskills.io/specification). Standard fields work across all compatible agents. **For Claude Code extensions**, consult the `claude-code-guide` agent (Claude CLI only; it may not exist in Codex-focused repos) — Claude-specific fields may change between releases. Platform skill docs: [Claude Code](https://code.claude.com/docs/en/skills) | [Codex](https://developers.openai.com/codex/skills).
 
 ## Anti-Patterns
 

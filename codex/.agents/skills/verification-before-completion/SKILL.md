@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, or before committing or creating PRs.
+description: Use immediately before making any success claim (for example, "fixed", "tests pass", "build succeeds", or "ready to commit/PR") to verify the claim with fresh command evidence.
 ---
 
 # Verification Before Completion

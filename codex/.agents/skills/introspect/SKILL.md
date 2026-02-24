@@ -1,7 +1,7 @@
 ---
 name: introspect
 description: Use when reviewing agent configuration for conflicts, redundancy, staleness, or prompt quality issues. Covers skills, commands, settings, and instructions across Claude Code and Codex.
-allowed-tools: Read, Glob, Grep
+allowed-tools: Read, Glob, Grep, Bash
 ---
 
 # Configuration Introspection
@@ -10,11 +10,11 @@ Audit agent configuration for conflicts, redundancy, staleness, and prompt quali
 
 ## Tool Constraints
 
-Use dedicated file-reading and search tools (not shell commands) for all file discovery and content inspection. Avoid shell commands like `ls`, `find`, `cat`, or piped pipelines — they trigger permission prompts and add no value over built-in tools. Only use the shell for `readlink` or `git rev-parse` when resolving symlinks and repo roots.
+Prefer dedicated file-reading and search tools for file discovery and content inspection when available. Shell commands are allowed when needed, but default to built-in tools to reduce permission prompts and keep workflows consistent.
 
 ## What to Analyze
 
-Scan configuration from the dotfiles repo. Resolve the repo root dynamically: follow a symlink (e.g., `readlink ~/.claude/skills` or `readlink ~/.agents/skills/personal`) back to the source, or run `git rev-parse --show-toplevel` from inside it. All config lives under these paths (relative to the repo root):
+Scan configuration from the dotfiles repo. Resolve the repo root from current workspace context and trace symlink targets, preferring file tools first and using minimal shell commands only when needed. All config lives under these paths (relative to the repo root):
 
 ### Shared (both platforms)
 - `shared/INSTRUCTIONS.md` — global instructions (single source of truth)
