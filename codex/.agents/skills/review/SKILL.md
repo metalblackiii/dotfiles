@@ -176,17 +176,58 @@ Omit any severity section that has no findings.
 
 ### Step 6: Submit Review (Only When Asked)
 
-Only if the user explicitly asks to submit the review to GitHub:
+Only if the user explicitly asks to submit the review to GitHub.
+
+#### 6.1 Comment Placement Policy (Default Behavior)
+
+When the user asks to "leave comments" or "submit review", place feedback by type:
+
+- **Inline review comments** for findings tied to specific changed code (`file:line`).
+- **Top-level review body** for cross-cutting/general feedback without a clear diff anchor.
+- If both exist, submit a single `COMMENTED` review containing inline comments plus a short top-level summary.
+- Do **not** use `gh pr comment` unless the user explicitly asks for a conversation comment (not a review).
+
+This avoids losing code-specific feedback in the Conversation-only surface.
+
+#### 6.2 Command Decision Table
+
+| Intent | Command pattern |
+|---|---|
+| Top-level review comment only | `gh pr review <PR> --comment --body-file <file>` |
+| Inline review comments (with or without summary) | `gh api -X POST repos/<org>/<repo>/pulls/<PR>/reviews --input <json>` |
+| Request changes | `gh pr review <PR> --request-changes --body-file <file>` |
+| Approve | `gh pr review <PR> --approve --body-file <file>` |
+
+#### 6.3 Inline Review Payload Template
+
+Use for code-anchored comments in `Files changed`:
+
+```json
+{
+  "commit_id": "<head-sha>",
+  "event": "COMMENT",
+  "body": "Optional top-level summary",
+  "comments": [
+    {
+      "path": "src/file.js",
+      "line": 123,
+      "side": "RIGHT",
+      "body": "Inline feedback"
+    }
+  ]
+}
+```
+
+Get `head-sha` from:
 
 ```bash
-# Comment
-gh pr review <PR> --comment -b "Review body here"
+gh pr view <PR> --json headRefOid --jq .headRefOid
+```
 
-# Request changes
-gh pr review <PR> --request-changes -b "Please address the issues found"
+Then submit:
 
-# Approve
-gh pr review <PR> --approve -b "LGTM!"
+```bash
+gh api -X POST repos/<org>/<repo>/pulls/<PR>/reviews --input review.json
 ```
 
 Never submit without explicit user request.
