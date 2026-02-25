@@ -35,7 +35,6 @@
       "Bash(*| python -c *)",
       "Bash(*rm -rf *)",
       "Bash(*rm -r *)",
-      "Bash(*chmod *)",
       "Bash(*chown *)",
       "Bash(*kill *)",
       "Bash(*killall *)",
@@ -145,7 +144,8 @@
       "Bash(gh pr merge *)",
       "Bash(gh pr close *)",
       "Bash(gh issue close *)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(*chmod *)"
     ],
     "defaultMode": "default"
   },
