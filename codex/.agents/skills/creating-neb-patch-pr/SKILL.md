@@ -1,9 +1,9 @@
 ---
-name: creating-neb-patches
-description: Use when a user asks to create a patch branch or patch PR for a merged main PR in a neb-ms-* repo or neb-www (often provided as a PR URL or number) for hotfix deployment.
+name: creating-neb-patch-pr
+description: Use when a user asks to create a patch PR for a merged main PR in a neb-ms-* repo or neb-www. Input is typically a PR URL or number of the just-merged main PR.
 ---
 
-# Creating Neb Patch Branches
+# Creating Neb Patch PR
 
 ## Overview
 
@@ -19,6 +19,16 @@ Patch branches enable hotfix deployments without waiting for the next full relea
 
 - Normal feature work (just PR to `main`)
 - The change hasn't been merged to `main` yet
+
+## Input Parsing
+
+If given a PR URL or number, extract repo and merge details before starting the workflow:
+
+```bash
+gh pr view <url-or-number> --json number,title,mergeCommit,url,headRepository --jq '{number, title, mergeCommit: .mergeCommit.oid, url, repo: .headRepository.name}'
+```
+
+Use the extracted values (`repo`, `mergeCommit`, `number`, `title`) throughout the workflow steps below.
 
 ## Workflow
 
@@ -152,6 +162,22 @@ If you need to cherry-pick multiple commits, cherry-pick them in order:
 git cherry-pick <sha1> -m 1
 git cherry-pick <sha2> -m 1
 ```
+
+## Structured Output
+
+After the patch PR is created, always emit a summary block with these values for downstream tracking (e.g., Jira updates):
+
+```
+## Patch Summary
+- Repo: `Chiropractic-CT-Cloud/<repo-name>`
+- Main PR: #<number> (<url>)
+- Main merge SHA: `<sha>`
+- Patch branch: `PATCH-X.Y.Z`
+- Patch branch HEAD: `<sha>`
+- Patch PR: #<number> (<url>)
+```
+
+Populate every field from actual command output — never use placeholders in the final summary.
 
 ## Red Flags — STOP
 
