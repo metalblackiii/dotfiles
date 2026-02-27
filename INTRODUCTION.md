@@ -1,6 +1,6 @@
 # Sharing Agent Skills — Introduction
 
-A companion guide for teammates exploring this repo for the first time.
+A companion guide for teammates exploring this repo for the first time. See [README.md](README.md) for installation, structure, and platform-specific details.
 
 ## Why Personal Config Matters
 
