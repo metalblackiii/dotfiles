@@ -77,7 +77,8 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 ```
 
 **Rules:**
-- Start with "Use when..."
+- Prefer starting with "Use when..." for user-invocable skills
+- Background/non-invocable skills may use concise declarative descriptions when they clearly include "not invoked directly" or equivalent boundary language
 - Describe triggers/symptoms, NOT what the skill does
 - Write in third person
 - Max 1024 characters (spec limit), aim for under 500
@@ -127,7 +128,7 @@ Both Claude and Codex share this directory — Claude accesses it via a symlink 
 ## Codex-First Workflow (Replacement For System `skill-creator`)
 
 1. Define the trigger and boundary first
-   Write a trigger-only description beginning with "Use when...". Keep process details in the body.
+   Write a trigger-only description ("Use when..." is preferred). Keep process details in the body.
 2. Create or update the canonical folder
    Work only in `codex/.agents/skills/<skill-name>/` and keep `name` equal to the directory name.
 3. Keep SKILL.md lean, push heavy detail to resources
@@ -135,7 +136,7 @@ Both Claude and Codex share this directory — Claude accesses it via a symlink 
 4. Maintain optional Codex UI metadata when used
    If `agents/openai.yaml` exists for a skill, keep it aligned with SKILL.md semantics (`display_name`, `short_description`, `default_prompt`, and policy values).
 5. Run lightweight validation checks before completion
-   Confirm frontmatter parses, `name` matches folder, `description` starts with "Use when...", and referenced relative files exist.
+   Confirm frontmatter parses, `name` matches folder, description style matches intent (trigger-style for user-facing skills, declarative for clearly non-invocable/background skills), and referenced relative files exist.
 
 ### Validation Snippets
 
@@ -148,9 +149,12 @@ for f in codex/.agents/skills/*/SKILL.md; do
   rg -q '^name: ' "$f" && rg -q '^description: ' "$f" || echo "Missing keys: $f"
 done
 
-# Ensure description follows trigger style
+# Ensure description style matches intended invocability
 for f in codex/.agents/skills/*/SKILL.md; do
-  rg -q '^description: Use when' "$f" || echo "Description style issue: $f"
+  if rg -q '^user-invocable:[[:space:]]*false' "$f" || rg -q '^description: .*not invoked directly' "$f"; then
+    continue
+  fi
+  rg -q '^description: Use ' "$f" || echo "Description style issue (expected trigger-style): $f"
 done
 
 # Ensure referenced relative files exist
@@ -175,12 +179,12 @@ codex/.agents/skills/         # Source of truth — all skills live here
 
 **Keep inline:** Principles, code patterns (<50 lines), everything else
 **Separate files (`references/`):** Heavy reference (100+ lines), loaded on demand by the agent
-**Executable code (`scripts/`):** Reusable scripts/tools the agent can run
+**Executable code (`scripts/`):** Reusable executable helpers the agent can run
 
 ## Quick Checklist
 
 - [ ] Name: required, must match directory name, lowercase/numbers/hyphens only, no leading/trailing/consecutive hyphens
-- [ ] Description: starts with "Use when...", triggers only, no workflow
+- [ ] Description: trigger-style for user-facing skills (prefer "Use when..."); declarative style allowed for clearly non-invocable/background skills
 - [ ] Overview: core principle in 1-2 sentences
 - [ ] Content: actionable, scannable (tables, bullets)
 - [ ] For discipline skills: Iron Law, rationalizations table, red flags

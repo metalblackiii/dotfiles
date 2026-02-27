@@ -110,6 +110,9 @@ dotfiles/
 Codex owns the canonical skill directory (`codex/.agents/skills/`), which is symlinked to `~/.agents/skills/personal` at install time. Its platform-specific file is `config.toml`:
 
 - **Model**: `gpt-5.3-codex`
+- **Reasoning effort**: `xhigh` by default for long-running, high-complexity tasks where quality and depth matter more than latency
+- **Daily-driver guidance**: prefer `high` or `medium` when you want faster responsiveness for routine work
+- **Model-dependent support**: valid reasoning effort levels depend on the selected model; check your model's supported levels before setting this value
 - **Approval policy**: `on-request`
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior

@@ -62,7 +62,7 @@ Wait for it to complete and find the branch name from the logs:
 ```bash
 gh run list --repo Chiropractic-CT-Cloud/<repo-name> --workflow="Create Patch Branch" --limit 1 --json databaseId,status,conclusion
 # Once complete:
-gh run view <run-id> --repo Chiropractic-CT-Cloud/<repo-name> --log 2>&1 | grep "PATCH-"
+gh run view <run-id> --repo Chiropractic-CT-Cloud/<repo-name> --log 2>&1 | rg "PATCH-"
 ```
 
 The branch name follows the pattern `PATCH-X.Y.Z` (e.g., `PATCH-1.158.X`).
@@ -82,7 +82,7 @@ Quick extraction pattern:
 
 ```bash
 RUN_ID=$(gh run list --repo Chiropractic-CT-Cloud/<repo-name> --workflow="Create Patch Branch" --limit 1 --json databaseId --jq '.[0].databaseId')
-PATCH_BRANCH=$(gh run view "$RUN_ID" --repo Chiropractic-CT-Cloud/<repo-name> --log 2>&1 | grep -Eo 'PATCH-[0-9]+\.[0-9]+\.X' | head -n1)
+PATCH_BRANCH=$(gh run view "$RUN_ID" --repo Chiropractic-CT-Cloud/<repo-name> --log 2>&1 | rg -o 'PATCH-[0-9]+\.[0-9]+\.X' | head -n1)
 ```
 
 If `PATCH_BRANCH` is empty, inspect the full run log manually before proceeding.
