@@ -17,7 +17,8 @@
       "Write(~/.claude/plans/**)",
       "Edit(~/.claude/plans/**)",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "Bash(curl * http://proxy/*)"
     ],
     "deny": [
       "Read(**/.env*)",
@@ -47,7 +48,6 @@
       "Bash(*npm unpublish *)",
       "Bash(*gh repo delete *)",
       "Bash(*sudo *)",
-      "Bash(*curl *)",
       "Bash(*wget *)",
       "Bash(*echo *>*)",
       "Bash(*printf *>*)",
@@ -145,6 +145,7 @@
       "Bash(gh pr close *)",
       "Bash(gh issue close *)",
       "Bash(git restore *)",
+      "Bash(*curl *)",
       "Bash(*chmod *)"
     ],
     "defaultMode": "default"
