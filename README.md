@@ -77,7 +77,7 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (29)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (30)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -101,7 +101,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
-| Skills (29) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Skills (30) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -114,7 +114,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (29)
+### Skills (30)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -133,6 +133,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
 | **kubernetes-specialist** | Deploying/managing K8s workloads, Helm charts, RBAC, troubleshooting pods |
 | **legacy-modernizer** | Incremental migrations, strangler fig patterns, dual-mode coexistence |
+| **mcp-vetting** | Security evaluation before installing or trusting any MCP server |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
