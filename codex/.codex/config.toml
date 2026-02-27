@@ -1,7 +1,7 @@
 model = "gpt-5.3-codex"
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 developer_instructions = """
 Use skills by default for non-trivial work (features, debugging, architecture, reviews, deployments):
 1) identify applicable skills from the available list,
