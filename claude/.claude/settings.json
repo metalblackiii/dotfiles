@@ -17,8 +17,7 @@
       "Write(~/.claude/plans/**)",
       "Edit(~/.claude/plans/**)",
       "WebFetch",
-      "WebSearch",
-      "Bash(curl * http://proxy/*)"
+      "WebSearch"
     ],
     "deny": [
       "Read(**/.env*)",
