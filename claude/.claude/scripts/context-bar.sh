@@ -100,14 +100,14 @@ max_k=$((max_context / 1000))
 pct=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 [[ $pct -gt 100 ]] && pct=100
 
-bar_width=5
+bar_width=10
 bar=""
 for ((i=0; i<bar_width; i++)); do
-    bar_start=$((i * 20))
+    bar_start=$((i * 10))
     progress=$((pct - bar_start))
-    if [[ $progress -ge 16 ]]; then
+    if [[ $progress -ge 8 ]]; then
         bar+="${C_ACCENT}█${C_RESET}"
-    elif [[ $progress -ge 6 ]]; then
+    elif [[ $progress -ge 3 ]]; then
         bar+="${C_ACCENT}▄${C_RESET}"
     else
         bar+="${C_BAR_EMPTY}░${C_RESET}"
@@ -116,14 +116,13 @@ done
 
 ctx="${bar} ${C_GRAY}${pct}% of ${max_k}k tokens"
 
-# Truncate branch name to 25 chars
-if [[ -n "$branch" && ${#branch} -gt 25 ]]; then
-    branch="${branch:0:24}…"
-fi
+# Truncate branch name for display
+branch_display="$branch"
+[[ ${#branch} -gt 25 ]] && branch_display="${branch:0:25}…"
 
 # Build output: Model | Dir | Context | Branch (uncommitted)
 output="${C_ACCENT}${model}${C_GRAY} | 📁${dir} | ${ctx}"
-[[ -n "$branch" ]] && output+=" | 🔀${branch} ${git_status}"
+[[ -n "$branch" ]] && output+=" | 🔀${branch_display} ${git_status}"
 output+="${C_RESET}"
 
 printf '%b\n' "$output"
@@ -131,8 +130,8 @@ printf '%b\n' "$output"
 # Get user's last message (text only, not tool results, skip unhelpful messages)
 if [[ -n "$transcript_path" && -f "$transcript_path" ]]; then
     # Calculate visible length (without ANSI codes) - 10 chars for bar + content
-    plain_output="${model} | 📁${dir} | xxxxx ${pct}% of ${max_k}k tokens"
-    [[ -n "$branch" ]] && plain_output+=" | 🔀${branch} ${git_status}"
+    plain_output="${model} | 📁${dir} | xxxxxxxxxx ${pct}% of ${max_k}k tokens"
+    [[ -n "$branch" ]] && plain_output+=" | 🔀${branch_display} ${git_status}"
     max_len=${#plain_output}
     last_user_msg=$(jq -rs '
         # Messages to skip (not useful as context)
