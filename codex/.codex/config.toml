@@ -9,6 +9,9 @@ Use skills by default for non-trivial work (features, debugging, architecture, r
 3) follow their workflow before responding.
 For trivial work (single-line fixes, typos, simple questions, file reads), proceed directly.
 `using-skills` is the canonical skill-usage policy.
+For skill authoring or skill-maintenance work in this repo, prefer `writing-skills` over system `skill-creator`.
+Use system `skill-creator` only as fallback when explicitly requested or when required guidance is missing from `writing-skills`.
+Do not rely on skill-name shadowing to override system skills.
 """
 
 [sandbox_workspace_write]
