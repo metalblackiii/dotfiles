@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Use when ending a session with work in progress, or when context usage is high and a fresh start would help.
+description: Use when ending a session with work in progress, or when context usage reaches 80% or more and a fresh start would help.
 ---
 
 Write or update a handoff document so the next agent with fresh context can continue this work.

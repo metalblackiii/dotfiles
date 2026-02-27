@@ -4,6 +4,8 @@ Personal configuration files for AI coding assistants, managed with Git and syml
 
 Currently supports **Codex** and **Claude Code**. Skills live in `codex/.agents/skills/` and instructions in `shared/INSTRUCTIONS.md` — both shared across platforms via symlinks.
 
+New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatomy, and adoption guide.
+
 ## Prerequisites
 
 [Codex](https://codex.openai.com/) and/or [Claude Code](https://docs.anthropic.com/en/docs/claude-code) must be installed. The following CLI tools are referenced in permissions and skills:
@@ -123,6 +125,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
+| **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
 | **gha** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
