@@ -104,6 +104,8 @@ Use these categories to evaluate PR changes comprehensively.
 ### 11. Performance
 
 - [ ] No N+1 query problems (use eager loading or batching)
+- [ ] No ORM/database queries inside loops — fetch data before the loop or use bulk operations
+- [ ] No sequential `await` in loops where iterations are independent — use `Promise.all` or batched concurrency
 - [ ] Database queries use indexes
 - [ ] Large collections paginated
 - [ ] Caching used where appropriate
