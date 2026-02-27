@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when creating or editing SKILL.md files, defining new skills, or modifying skill frontmatter
+description: Use when creating or updating skills in this repo, including SKILL.md/frontmatter edits, trigger-description tuning, skill resource layout (`references/`, `scripts/`, `assets/`), or optional `agents/openai.yaml` metadata maintenance.
 ---
 
 # Writing Skills
@@ -8,6 +8,12 @@ description: Use when creating or editing SKILL.md files, defining new skills, o
 ## Overview
 
 Skills are reusable methodology guides that agents load when relevant. Good skills are discoverable, concise, and actionable. The format follows the open [Agent Skills spec](https://agentskills.io/specification) — skills work across Claude Code, Codex, and other compatible agents.
+
+## Skill Precedence In This Repo
+
+- Treat this skill as the primary workflow for skill creation and maintenance in this repo.
+- Treat system `skill-creator` as fallback only if this skill is missing required guidance, or when explicitly requested.
+- Do not rely on name shadowing (creating another `skill-creator`) to override system behavior. Runtime precedence is implementation-dependent and may change.
 
 ## Frontmatter Reference
 
@@ -117,6 +123,44 @@ mkdir codex/.agents/skills/my-skill-name
 ```
 
 Both Claude and Codex share this directory — Claude accesses it via a symlink at `claude/.claude/skills`.
+
+## Codex-First Workflow (Replacement For System `skill-creator`)
+
+1. Define the trigger and boundary first
+   Write a trigger-only description beginning with "Use when...". Keep process details in the body.
+2. Create or update the canonical folder
+   Work only in `codex/.agents/skills/<skill-name>/` and keep `name` equal to the directory name.
+3. Keep SKILL.md lean, push heavy detail to resources
+   Put long reference material in `references/`, reusable code in `scripts/`, and templates/data in `assets/`.
+4. Maintain optional Codex UI metadata when used
+   If `agents/openai.yaml` exists for a skill, keep it aligned with SKILL.md semantics (`display_name`, `short_description`, `default_prompt`, and policy values).
+5. Run lightweight validation checks before completion
+   Confirm frontmatter parses, `name` matches folder, `description` starts with "Use when...", and referenced relative files exist.
+
+### Validation Snippets
+
+```bash
+# Ensure each skill has SKILL.md
+rg --files codex/.agents/skills | rg '/SKILL\.md$'
+
+# Ensure required frontmatter keys exist
+for f in codex/.agents/skills/*/SKILL.md; do
+  rg -q '^name: ' "$f" && rg -q '^description: ' "$f" || echo "Missing keys: $f"
+done
+
+# Ensure description follows trigger style
+for f in codex/.agents/skills/*/SKILL.md; do
+  rg -q '^description: Use when' "$f" || echo "Description style issue: $f"
+done
+
+# Ensure referenced relative files exist
+for f in codex/.agents/skills/*/SKILL.md; do
+  d=$(dirname "$f")
+  rg -o --no-filename '`(\.\./[^`]+|references/[^`]+|scripts/[^`]+|assets/[^`]+)`' "$f" | tr -d '`' | while read -r p; do
+    [ -e "$d/$p" ] || echo "Missing reference: $f -> $p"
+  done
+done
+```
 
 ## Directory Structure
 
