@@ -20,6 +20,7 @@ New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatom
 | `rg` (ripgrep) | Optional | `brew install ripgrep` | Fast shell fallback for text search when built-in tools are unavailable |
 | `fd` | Optional | `brew install fd` | Fast shell fallback for file discovery when built-in tools are unavailable |
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
+| `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
 
 ### Optional Security Tooling (Only for `security-reviewer` Scanner Mode)
@@ -77,7 +78,7 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (31)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (32)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -101,7 +102,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
-| Skills (31) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Skills (32) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -117,7 +118,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (31)
+### Skills (32)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -139,6 +140,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **mcp-vetting** | Security evaluation before installing or trusting any MCP server |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
+| **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **refactoring-guide** | Code smells, refactoring discipline, structural improvements |
@@ -155,7 +157,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **wrap-up** | End-of-session post-mortem — retro on what worked/didn't, propose config changes for approval |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
-Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/the-fool/references/`).
+Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/playwright-cli/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/the-fool/references/`).
 
 ## Shared Instructions
 

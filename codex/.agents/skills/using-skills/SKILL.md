@@ -47,6 +47,7 @@ To avoid trigger collisions:
 3. Use `secure-code-guardian` for implementing or remediating security controls in code.
 4. Use `self-documenting-code` for naming/readability in code, not documentation artifact generation.
 5. Use `handoff` to preserve WIP for the next session. Use `wrap-up` for a post-mortem on what we learned. They compose — use both when appropriate.
+6. Use `playwright-cli` for interactive browser automation (navigation, forms, scraping). Use `neb-playwright-expert` only for writing Playwright test files in neb-www.
 
 ## Red Flags
 
