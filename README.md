@@ -137,17 +137,16 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **handoff** | Ending sessions with work in progress or high context usage |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
 | **kubernetes-specialist** | Deploying/managing K8s workloads, Helm charts, RBAC, troubleshooting pods |
-| **legacy-modernizer** | Incremental migrations, strangler fig patterns, dual-mode coexistence |
 | **mcp-vetting** | Security evaluation before installing or trusting any MCP server |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
-| **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
-| **refactoring-guide** | Code smells, refactoring discipline, structural improvements |
+| **renovate-code** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
 | **security-reviewer** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
+| **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **self-review** | Pre-commit/pre-PR quality gate for local git changes |
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
@@ -157,8 +156,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **wrap-up** | End-of-session post-mortem — retro on what worked/didn't, propose config changes for approval |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
-
-Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/playwright-cli/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/the-fool/references/`).
 
 ## Shared Instructions
 

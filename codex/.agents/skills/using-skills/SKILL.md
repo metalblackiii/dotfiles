@@ -30,7 +30,7 @@ Skills compose naturally. Common sequences:
 
 - **Bugfix:** `systematic-debugging` → `test-driven-development` → `verification-before-completion`
 - **New feature:** `feature-forge` (or `analyzing-requirements`) → `test-driven-development` → `verification-before-completion`
-- **Refactor:** `refactoring-guide` → `verification-before-completion`
+- **Refactor:** `renovate-code` → `verification-before-completion`
 - **PR review:** `review` or `self-review` (these consume `analyzing-prs` internally)
 - **Security-sensitive implementation:** `feature-forge` (or `analyzing-requirements`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
 - **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)

@@ -85,5 +85,4 @@ Ask the user to let the user choose how to challenge their idea.
 
 ## Related Skills
 
-- **refactoring-guide** — for evaluating refactoring decisions and code smells
-- **legacy-modernizer** — for migration strategy decisions (pre-mortem mode is especially relevant)
+- **renovate-code** — for evaluating refactoring decisions, code smells, or migration strategy (pre-mortem mode is especially relevant)

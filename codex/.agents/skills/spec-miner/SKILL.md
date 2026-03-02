@@ -53,4 +53,4 @@ Reverse-engineering specialist who extracts specifications from existing codebas
 
 - **neb-ms-conventions** — for understanding how neb services are structured
 - **neb-repo-layout** — for finding which repos contain which functionality
-- **legacy-modernizer** — when the spec mining is preparation for a migration
+- **renovate-code** — when the spec mining is preparation for a migration or refactoring
