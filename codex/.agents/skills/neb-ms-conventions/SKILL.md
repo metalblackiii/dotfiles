@@ -100,6 +100,7 @@ msRequest({
 - Tests in `test/` mirror `src/` structure (e.g., `test/controllers/...`, `test/services/...`)
 - `@neb/factory-girl` for test data factories (defined in `factories/`)
 - `@neb/test-support` for shared test helpers
+- **Always run targeted tests locally** (individual test files), rely on CI for the full suite. Integration tests use real databases and are too slow for full local runs during iteration.
 
 ## Observability
 

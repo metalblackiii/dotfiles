@@ -34,7 +34,7 @@ Skills compose naturally. Common sequences:
 - **PR review:** `review` or `self-review` (these consume `analyzing-prs` internally)
 - **Security-sensitive implementation:** `feature-forge` (or `analyzing-requirements`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
 - **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)
-- **End of session:** `handoff` (if WIP remains) → `wrap-up` (if session produced learnings worth reviewing)
+- **End of session:** `handoff` (if WIP remains) → `reflect` (if session produced learnings worth reviewing)
 
 When multiple skills apply, invoke process skills first (debugging, planning), then implementation skills (domain-specific, testing).
 
@@ -46,7 +46,7 @@ To avoid trigger collisions:
 2. Use `security-reviewer` only for explicit security audits or deep security assessments.
 3. Use `secure-code-guardian` for implementing or remediating security controls in code.
 4. Use `self-documenting-code` for naming/readability in code, not documentation artifact generation.
-5. Use `handoff` to preserve WIP for the next session. Use `wrap-up` for a post-mortem on what we learned. They compose — use both when appropriate.
+5. Use `handoff` to preserve WIP for the next session. Use `reflect` for a post-mortem on what we learned. They compose — use both when appropriate.
 6. Use `playwright-cli` for interactive browser automation (navigation, forms, scraping). Use `neb-playwright-expert` only for writing Playwright test files in neb-www.
 
 ## Red Flags

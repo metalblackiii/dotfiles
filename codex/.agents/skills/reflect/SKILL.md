@@ -1,10 +1,10 @@
 ---
-name: wrap-up
-description: Use when user says "wrap up", "close session", "end session",
-  "wrap things up", "close out this task", or invokes /wrap-up
+name: reflect
+description: Use when user says "reflect", "wrap up", "close session", "end
+  session", "wrap things up", "close out this task", or invokes /reflect
 ---
 
-# Session Wrap-Up
+# Session Reflection
 
 End-of-session post-mortem. Review what happened, surface what we learned,
 and propose improvements. This is a conversation, not a monologue — ask
