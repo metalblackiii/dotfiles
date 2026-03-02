@@ -22,6 +22,7 @@ New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatom
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
+| `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
 
 ### Optional Security Tooling (Only for `security-reviewer` Scanner Mode)
 
@@ -189,6 +190,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 ### Hooks & Scripts
 
 - **session-start.sh** — Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
+- **rtk-rewrite.sh** — PreToolUse hook that transparently rewrites Bash commands through [RTK](https://github.com/rtk-ai/rtk) for token savings. Silently no-ops if `rtk` or `jq` aren't installed.
 - **context-bar.sh** — Status line showing model, git branch, uncommitted files, sync status, and context usage percentage.
 
 ### Permissions

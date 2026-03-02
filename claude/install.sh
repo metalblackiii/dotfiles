@@ -16,6 +16,7 @@ mkdir -p "$CLAUDE_TARGET"
 CLAUDE_ITEMS=(
     "CLAUDE.md"
     "settings.json"
+    "RTK.md"
     "hooks"
     "skills"
     "agents"

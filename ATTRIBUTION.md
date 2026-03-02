@@ -7,6 +7,7 @@ Skills in this repo were adapted from the following sources:
 - [PracticeTek-Common-Services/ptek-ai-playbook](https://github.com/PracticeTek-Common-Services/ptek-ai-playbook) — analyzing-prs skill, `/review` command
 - [ykdojo/claude-code-tips](https://github.com/ykdojo/claude-code-tips) — ast-grep-patterns, gha, handoff skills, status line
 - [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) — playwright-cli skill (SKILL.md + references)
+- [rtk-ai/rtk](https://github.com/rtk-ai/rtk) — RTK (Rust Token Killer) CLI proxy, PreToolUse hook, and RTK.md context file
 
 All other skills are original work or codified from standard practices.
 
