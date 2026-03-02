@@ -1,6 +1,6 @@
 ---
 name: self-documenting-code
-description: Use when encountering vague names (data, result, temp, handle*, process*), comments that explain 'what' code does instead of 'why', or readability problems solvable through better naming rather than more comments.
+description: Naming and comment quality criteria. Consumed by self-review for naming scans — not typically invoked directly.
 user-invocable: false
 ---
 
@@ -18,10 +18,10 @@ Comment instinct → Rename instead → Comment only if "why" remains unclear
 
 ## When This Applies
 
-**Invoke this skill when:**
+**Apply these criteria when:**
 - Writing new functions, classes, or modules
 - Editing existing code
-- Reviewing AI-generated code (including your own output)
+- Running a self-review naming scan (Step 7)
 - Tempted to add an explanatory comment
 
 ---

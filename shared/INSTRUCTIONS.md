@@ -77,6 +77,9 @@ Healthcare data context — HIPAA compliance matters.
 
 ## Self-Documenting Code
 
-Follow the `self-documenting-code` skill for naming conventions and comment survival criteria.
+- Every "what" comment is a naming failure. Try renaming before commenting.
+- Comments survive only for: WHY (business logic/regulatory), WARNING (non-obvious traps), TODO (with ticket number). Everything else dies.
+- Scan your output for vague names — `data`, `result`, `temp`, `handle*`, `process*`, `manager`, `helper`, `utils` — and rename to intent.
+- The name test: read the name aloud. If you need "which means..." to explain it, the name failed.
 
 @RTK.md

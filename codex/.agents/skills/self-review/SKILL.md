@@ -17,6 +17,7 @@ When editing this skill, check `../review/SKILL.md` and keep these aligned unles
 - `analyzing-prs` as the criteria source (`../analyzing-prs/SKILL.md`)
 - Severity taxonomy (`Critical`, `Important`, `Minor`)
 - Shared quality posture (broad category coverage and evidence-based findings)
+- `self-documenting-code` naming scan (self-review only — targets implementer blind spots, not applicable to external PR review)
 
 ## Input
 
@@ -84,7 +85,17 @@ These are high-value findings because they create bugs that are hard to diagnose
 - the user explicitly requests security depth, or
 - local changes hit high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 
-### Step 7: Report Findings
+### Step 7: Naming & Readability Scan
+
+Read `../self-documenting-code/SKILL.md` for detailed criteria, then scan changed code for:
+
+- **Vague names** — `data`, `result`, `temp`, `handle*`, `process*`, `manager`, `helper`, `utils` without specific intent
+- **"What" comments** — comments that narrate code (`// Loop through users`) instead of explaining why; these should be naming improvements
+- **Redundant comments** — comments that repeat the code (`// Return the result`, `// Set name`)
+
+Flag naming issues as Minor unless they create genuine ambiguity (Important).
+
+### Step 8: Report Findings
 
 ```markdown
 ## Self-Review: [1-line summary of what changed]
