@@ -17,6 +17,9 @@ Do not rely on skill-name shadowing to override system skills.
 [sandbox_workspace_write]
 network_access = true
 
+[features]
+multi_agent = true
+
 [analytics]
 enabled = false
 
