@@ -16,6 +16,7 @@ This configuration is managed via a dotfiles repo with symlinks.
 - Only commit or push when I explicitly ask — every commit and push requires my approval
 - Never auto-commit follow-up changes after an initial commit — always prompt again
 
+
 ## PR Defaults
 
 - Default reviewers: `Chiropractic-CT-Cloud/phoenix`
@@ -25,6 +26,10 @@ This configuration is managed via a dotfiles repo with symlinks.
 - Use `-r` with `gh pr create`:
   - team format: `org/team-slug` (for example `Chiropractic-CT-Cloud/phoenix`)
   - individual format: `username` (for example `daniel-goss_ptek`)
+
+## Documentation Tasks
+
+When asked to update or create documentation, only change documentation. Do not write implementation code, enter plan mode, or create implementation tasks unless explicitly asked. If something needs implementing, note it as a TODO in the doc instead.
 
 ## Skills
 
@@ -51,6 +56,8 @@ When touching code:
 - Prefer reversible decisions — hide third-party dependencies behind abstractions, prefer configuration over hardcoding
 
 Don't gold-plate. Don't add features nobody asked for. But don't leave code worse than you found it either.
+
+When asked to "simplify", that means reduce complexity — not restructure. Do not add plugin-style abstractions, path resolution systems, or multi-layer patterns unless explicitly requested.
 
 ## Security
 
