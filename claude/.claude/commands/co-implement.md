@@ -62,7 +62,7 @@ Display: "🔵 Claude → 🔴 Codex: handing off implementation"
 
 Run:
 ```bash
-codex exec --full-auto "$(cat .co-implement/spec.md)"
+codex exec --full-auto "$(<.co-implement/spec.md)"
 ```
 
 Capture output. Note any errors or warnings from Codex.
@@ -85,7 +85,7 @@ Evaluate against the acceptance criteria in the spec:
   [Constraints from original spec repeated]
   ```
   Continue to next iteration (back to Step 4 with followup as the prompt).
-- **Off the rails**: Codex modified files outside the spec's scope, or made sweeping unexpected changes. Run `git checkout -- .` only after confirming with user. Report what happened.
+- **Off the rails**: Codex modified files outside the spec's scope, or made sweeping unexpected changes. Run `git stash push -u -m "co-implement: off-rails changes"` to safely preserve the changes (including new files) for inspection, then report what happened. Only discard with user approval.
 
 Maximum 3 Codex passes. If still incomplete after 3, summarize what's done and what remains, then stop.
 
