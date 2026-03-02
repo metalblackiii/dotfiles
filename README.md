@@ -77,7 +77,7 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (31)
+│       └── skills/          # SOURCE OF TRUTH — actual skill files (32)
 │           ├── analyzing-prs/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
@@ -101,7 +101,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
-| Skills (31) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Skills (32) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -117,7 +117,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (31)
+### Skills (32)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -153,6 +153,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
 | **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
+| **wrap-up** | End-of-session post-mortem — retro on what worked/didn't, propose config changes for approval |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
 Several skills include reference libraries (e.g., `codex/.agents/skills/database-expert/references/`, `codex/.agents/skills/prompt-engineer/references/`, `codex/.agents/skills/the-fool/references/`).
