@@ -135,6 +135,7 @@ Note: some assets are inherently platform-specific and should NOT be flagged:
 - Empty `attribution` fields in settings.json — intentionally suppress default attribution behavior
 - Claude-only commands (`.claude/commands/`) that have shared skill equivalents — the command is kept for `/slash` invocation
 - Claude-only permission tuning and UX wiring (hooks/status line) without Codex or shared-policy impact
+- `@RTK.md` in `shared/INSTRUCTIONS.md` — RTK is Claude-only infrastructure; the `@` include is inert literal text on Codex with zero functional impact
 
 ## Output Format
 

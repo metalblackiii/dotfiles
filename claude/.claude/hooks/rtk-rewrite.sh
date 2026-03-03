@@ -205,14 +205,13 @@ fi
 ORIGINAL_INPUT=$(echo "$INPUT" | jq -c '.tool_input')
 UPDATED_INPUT=$(echo "$ORIGINAL_INPUT" | jq --arg cmd "$REWRITTEN" '.command = $cmd')
 
-# Output the rewrite instruction
+# Output the rewrite instruction — no permissionDecision so that
+# settings.json ask/deny rules still apply to the rewritten command
 jq -n \
   --argjson updated "$UPDATED_INPUT" \
   '{
     "hookSpecificOutput": {
       "hookEventName": "PreToolUse",
-      "permissionDecision": "allow",
-      "permissionDecisionReason": "RTK auto-rewrite",
       "updatedInput": $updated
     }
   }'

@@ -1,7 +1,6 @@
 ---
 name: reflect
-description: Use when user says "reflect", "wrap up", "close session", "end
-  session", "wrap things up", "close out this task", or invokes /reflect
+description: Use when the user requests a session retrospective — reflecting on what worked, what didn't, and what to improve. Triggers include "reflect", "wrap up", "retro", or /reflect.
 ---
 
 # Session Reflection
