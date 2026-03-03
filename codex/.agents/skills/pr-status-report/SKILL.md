@@ -1,12 +1,14 @@
 ---
 name: pr-status-report
-description: Use when you need a consolidated status dashboard for your open GitHub pull requests across repositories, including action buckets (needs action, waiting, ready, stale) and suggested next steps.
+description: Use when you need a consolidated status dashboard for your open GitHub pull requests across repositories, with active action buckets (needs action, waiting, ready, stale) plus a separate draft follow-up list.
 allowed-tools: Bash, Read, Glob, Grep
 ---
 
 # PR Status Report
 
 Generate a single report for your open PR queue so you can triage quickly.
+
+Draft PRs are intentionally excluded from active status buckets and listed in a separate "Draft Follow-up" section.
 
 ## When to Use
 
@@ -32,7 +34,7 @@ Generate a single report for your open PR queue so you can triage quickly.
    - Codex runtime path: `~/.agents/skills/personal/pr-status-report/scripts/pr-status-report.sh`
    - Claude runtime path: `~/.claude/skills/pr-status-report/scripts/pr-status-report.sh`
 3. Present the markdown report exactly, then add a short triage summary:
-   - Count by bucket
+   - Count by bucket (active buckets plus draft follow-up)
    - Top 3 highest-priority actions
 4. If requested, rerun with tighter filters (owner/repo/search/stale threshold).
 

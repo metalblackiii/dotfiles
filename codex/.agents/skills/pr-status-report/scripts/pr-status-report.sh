@@ -170,7 +170,7 @@ if [[ "$(jq 'length' <<< "$search_json")" -eq 0 ]]; then
       {
         generatedAt: $generatedAt,
         staleDays: $staleDays,
-        totals: { all: 0, needsAction: 0, waiting: 0, ready: 0, stale: 0 },
+        totals: { all: 0, active: 0, draftFollowUp: 0, needsAction: 0, waiting: 0, ready: 0, stale: 0 },
         rows: []
       }
     '
@@ -279,9 +279,11 @@ report_json="$(
       | ($checks.failed > 0) as $failing_checks
       | ($pr.isDraft == true) as $is_draft
       | (
-          if $has_conflicts or $changes_requested or $failing_checks or $is_behind then
+          if $is_draft then
+            "Draft follow-up"
+          elif $has_conflicts or $changes_requested or $failing_checks or $is_behind then
             "Needs your action"
-          elif ($pr.reviewDecision == "APPROVED" and $checks.failed == 0 and $checks.pending == 0 and ($is_draft | not) and ($has_conflicts | not)) then
+          elif ($pr.reviewDecision == "APPROVED" and $checks.failed == 0 and $checks.pending == 0 and ($has_conflicts | not)) then
             "Ready to merge"
           elif $is_stale then
             "Stale"
@@ -290,7 +292,9 @@ report_json="$(
           end
         ) as $bucket
       | (
-          if $bucket == "Stale" then
+          if $bucket == "Draft follow-up" then
+            "General follow-up: keep context updated; mark ready when unblocked"
+          elif $bucket == "Stale" then
             "Nudge reviewers or post a progress update"
           elif $has_conflicts then
             "Resolve conflicts (rebase or merge base branch)"
@@ -300,8 +304,6 @@ report_json="$(
             "Fix failing checks"
           elif $is_behind then
             "Update branch (rebase or merge base)"
-          elif $is_draft then
-            "Mark ready for review when prepared"
           elif $pr.reviewDecision == "APPROVED" then
             "Merge or enable auto-merge"
           elif $checks.pending > 0 then
@@ -337,6 +339,8 @@ report_json="$(
         staleDays: $stale_days,
         totals: {
           all: ($rows | length),
+          active: ($rows | map(select(.draft | not)) | length),
+          draftFollowUp: ($rows | map(select(.bucket == "Draft follow-up")) | length),
           needsAction: ($rows | map(select(.bucket == "Needs your action")) | length),
           waiting: ($rows | map(select(.bucket == "Waiting on others")) | length),
           ready: ($rows | map(select(.bucket == "Ready to merge")) | length),
@@ -348,7 +352,8 @@ report_json="$(
               if .bucket == "Needs your action" then 0
               elif .bucket == "Waiting on others" then 1
               elif .bucket == "Ready to merge" then 2
-              else 3
+              elif .bucket == "Stale" then 3
+              else 4
               end,
               -(.ageDays),
               .repo,
@@ -369,6 +374,8 @@ echo
 echo "- Generated: $(jq -r '.generatedAt' <<< "$report_json")"
 echo "- Author: \`$AUTHOR\`"
 echo "- Open PRs: $(jq -r '.totals.all' <<< "$report_json")"
+echo "- Active PRs (non-draft): $(jq -r '.totals.active' <<< "$report_json")"
+echo "- Draft follow-up (excluded from normal status): $(jq -r '.totals.draftFollowUp' <<< "$report_json")"
 echo "- Needs your action: $(jq -r '.totals.needsAction' <<< "$report_json")"
 echo "- Waiting on others: $(jq -r '.totals.waiting' <<< "$report_json")"
 echo "- Ready to merge: $(jq -r '.totals.ready' <<< "$report_json")"
@@ -378,3 +385,4 @@ print_markdown_section "$report_json" "Needs your action" "Needs Your Action"
 print_markdown_section "$report_json" "Waiting on others" "Waiting On Others"
 print_markdown_section "$report_json" "Ready to merge" "Ready To Merge"
 print_markdown_section "$report_json" "Stale" "Stale"
+print_markdown_section "$report_json" "Draft follow-up" "Draft Follow-up"
