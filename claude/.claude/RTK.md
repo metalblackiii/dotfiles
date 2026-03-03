@@ -27,3 +27,7 @@ All other commands are automatically rewritten by the Claude Code hook.
 Example: `git status` → `rtk git status` (transparent, 0 tokens overhead)
 
 Refer to CLAUDE.md for full command reference.
+
+## Known Limitations
+
+- `rtk kubectl` only supports subcommands `pods`, `services`, `logs` — standard kubectl flags like `-n <namespace>` are not supported. For full kubectl functionality, use the raw binary at `/Users/martinburch/.rd/bin/kubectl`.

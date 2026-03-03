@@ -142,6 +142,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
+| **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
 | **renovate-code** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
