@@ -77,6 +77,15 @@ Healthcare data context — HIPAA compliance matters.
 - Never log PHI, PII, or sensitive data (tokens, passwords, SSNs)
 - Error messages must not leak implementation details or patient data
 
+## Context Management
+
+When a session runs long, proactively run the `handoff` skill before autocompact kicks in. Signs you should trigger handoff:
+- Conversation has had many tool calls or substantial back-and-forth
+- You're working on a multi-step task that isn't yet complete
+- The session feels heavy — don't wait to be asked
+
+Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-context handoff is far more useful than a post-compact recovery.
+
 ## Self-Documenting Code
 
 - Every "what" comment is a naming failure. Try renaming before commenting.
