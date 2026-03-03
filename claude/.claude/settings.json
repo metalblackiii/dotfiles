@@ -169,6 +169,17 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/eslint-autofix.sh"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {

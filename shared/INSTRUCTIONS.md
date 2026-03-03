@@ -21,6 +21,8 @@ This configuration is managed via a dotfiles repo with symlinks.
 - Use **conventional commit** style unless the project specifies otherwise
 - Only commit or push when I explicitly ask — every commit and push requires my approval
 - Never auto-commit follow-up changes after an initial commit — always prompt again
+- Always use the branch name I specify. If I haven't specified one, ask before creating a branch.
+- When using gh CLI across repos, verify repo context (`gh repo view --json nameWithOwner -q .nameWithOwner`) before running commands.
 
 
 ## PR Defaults
