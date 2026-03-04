@@ -11,6 +11,7 @@ echo "Uninstalling Claude Code config..."
 CLAUDE_ITEMS=(
     "CLAUDE.md"
     "settings.json"
+    "RTK.md"
     "hooks"
     "skills"
     "agents"

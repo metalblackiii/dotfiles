@@ -4,7 +4,7 @@ A companion guide for teammates exploring this repo for the first time. See [REA
 
 ## Why Personal Config Matters
 
-Every time you switch between Cursor, Claude Code, and Codex, you lose context. Not just the technical context in the conversation window — the muscle memory of *how you work*. Which skill to invoke, what conventions your team follows, what patterns your codebase uses.
+Every time you switch between Claude Code and Codex, you lose context. Not just the technical context in the conversation window — the muscle memory of *how you work*. Which skill to invoke, what conventions your team follows, what patterns your codebase uses.
 
 A personal agent configuration solves this by encoding your workflow once and applying it everywhere. Instead of re-explaining "we use conventional commits" or "always check for applicable skills first" in every session, the agent already knows. The friction disappears and you spend your time on the actual problem.
 
@@ -155,13 +155,13 @@ This bundle does **not** require extra tooling to adopt. Teams can run in manual
 
 ## What This Repo Does Not Cover (Yet)
 
-This repo intentionally focuses on portable instructions + skills + symlinked platform config. Other valid approaches are out of scope for now:
+This repo intentionally focuses on portable instructions + skills + symlinked platform config. Other valid approaches are out of scope or only partially covered:
 
 - **MCP servers**: Model Context Protocol integrations for external tools and data sources. Useful, but not configured in this repo yet.
-- **Agentic programming / agent teams**: Orchestrating multiple agents with explicit role delegation and coordination loops.
+- **Agentic programming / agent teams**: Partially covered — the `co-implement` command delegates implementation to Codex CLI, and Codex has `multi_agent = true` enabled. Full multi-agent orchestration patterns are not yet codified.
 - **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)).
 
-These approaches can complement this repo later. For now, the priority is a robust baseline that works reliably across Codex and Claude Code with minimal moving parts.
+These approaches can complement this repo further. For now, the priority is a robust baseline that works reliably across Codex and Claude Code with minimal moving parts.
 
 ## How to Start Your Own
 

@@ -15,7 +15,7 @@ New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatom
 | `git` | Yes | Xcode CLT / `brew install git` | Core workflow |
 | `gh` | Yes | `brew install gh` | PR creation, issue management |
 | `node` / `npm` / `npx` | Yes | `brew install node` or nvm | Running and testing projects |
-| `docker` | Optional | [Docker Desktop](https://www.docker.com/products/docker-desktop/) | Container workflows |
+| `docker` | Optional | [Rancher Desktop](https://rancherdesktop.io/) or [colima](https://github.com/abiosoft/colima) | Container workflows |
 | `kubectl` | Optional | `brew install kubectl` | Read-only cluster access |
 | `rg` (ripgrep) | Optional | `brew install ripgrep` | Fast shell fallback for text search when built-in tools are unavailable |
 | `fd` | Optional | `brew install fd` | Fast shell fallback for file discovery when built-in tools are unavailable |
@@ -88,11 +88,14 @@ dotfiles/
 │   ├── uninstall.sh
 │   └── .claude/
 │       ├── CLAUDE.md        # Symlink → ../../shared/INSTRUCTIONS.md
+│       ├── RTK.md           # RTK usage reference (included via @RTK.md)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 3 custom subagents
-│       ├── hooks/           # Session-start hook
+│       ├── commands/        # Slash commands (co-implement)
+│       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
 │       ├── scripts/         # Status bar script
 │       └── skills           # Symlink → ../../codex/.agents/skills
+├── docs/                    # Research docs, postmortems, analysis artifacts
 ├── install.sh               # Orchestrator — runs */install.sh
 ├── uninstall.sh             # Orchestrator — runs */uninstall.sh
 └── .gitignore
@@ -185,18 +188,26 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 
 > **Neb-specific agents**: `neb-explorer` has the neb architecture knowledge (layers, environments, services, shared libraries) inlined directly and assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `claude/.claude/agents/neb-explorer.md`.
 
+### Commands
+
+| Command | Purpose |
+|---------|---------|
+| **co-implement** | Plan a feature, delegate implementation to Codex CLI, then supervise |
+
 ### Hooks & Scripts
 
-- **session-start.sh** — Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
+- **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
 - **rtk-rewrite.sh** — PreToolUse hook that transparently rewrites Bash commands through [RTK](https://github.com/rtk-ai/rtk) for token savings. Silently no-ops if `rtk` or `jq` aren't installed.
-- **context-bar.sh** — Status line showing model, git branch, uncommitted files, sync status, and context usage percentage.
+- **guard-sensitive-paths.sh** — PreToolUse hook that blocks Bash access to sensitive file paths (env files, secrets, credentials).
+- **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.
+- **context-bar.sh** — Status line script showing model, git branch, uncommitted files, sync status, and context usage percentage.
 
 ### Permissions
 
 The `settings.json` enforces strict guardrails:
 
-- **Denied**: shell aliases for tools with dedicated equivalents (`cat`, `grep`, `find`), `python -c` inline execution (use `jq` instead), env/secret files, destructive git operations, dangerous docker flags, package publishing
-- **Ask**: `git commit`, `git push`, `gh pr create/merge/close`
+- **Denied**: shell commands with dedicated tool equivalents (`sed`, `awk`, `xargs`), `python -c` inline execution, env/secret files, destructive git operations, dangerous docker flags, package publishing, destructive AWS/CDK/Terraform/Helm/kubectl write operations
+- **Ask**: `git commit`, `git push`, `git restore`, `gh pr create/merge/close`, `curl`, `chmod`
 - **Allowed**: standard dev tools, read-only kubectl, scoped web access
 
 ## Adding a New Platform

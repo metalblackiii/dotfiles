@@ -23,7 +23,6 @@
       "Read(**/.env*)",
       "Edit(**/.env*)",
       "Write(**/.env*)",
-      "Bash(*find *)",
       "Bash(*sed *)",
       "Bash(*awk *)",
       "Bash(*xargs *)",
