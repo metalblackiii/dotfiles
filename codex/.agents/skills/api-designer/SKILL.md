@@ -54,4 +54,4 @@ REST API design specialist for Express/Node.js services. Focuses on resource mod
 ## Related Skills
 
 - **neb-ms-conventions** — for implementation patterns (filesystem routing, controllerWrapper, `req.db`)
-- **renovate-code** — for staged API evolution during migrations, or refactoring service-layer code behind the API
+- **code-renovator** — for staged API evolution during migrations, or refactoring service-layer code behind the API

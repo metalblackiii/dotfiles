@@ -2,6 +2,7 @@
 name: self-documenting-code
 description: Naming and comment quality criteria. Consumed by self-review for naming scans — not typically invoked directly.
 user-invocable: false
+disable-model-invocation: true
 ---
 
 # Self-Documenting Code

@@ -43,7 +43,7 @@ Below the frontmatter is the skill body: the actual guidance, patterns, examples
 
 ### Sibling Dependencies
 
-Skills can reference each other. The `review` and `self-review` skills both consume `analyzing-prs` internally. This keeps skills focused — each one does one thing well and delegates the rest.
+Skills can reference each other. The `review` and `self-review` skills both consume `pr-analysis` internally. This keeps skills focused — each one does one thing well and delegates the rest.
 
 ## Why Skills Improve Agent Performance
 
@@ -87,7 +87,7 @@ Two skills, two purposes:
 - **`self-review`** — Pre-commit quality gate. Runs against local diffs only, no `gh` needed. Catches issues before they leave your machine.
 - **`review`** — Full PR review against a GitHub PR. Uses `gh` CLI. Catches issues before they reach teammates.
 
-Both consume `analyzing-prs` internally, so the review criteria are consistent whether you're reviewing your own work or someone else's.
+Both consume `pr-analysis` internally, so the review criteria are consistent whether you're reviewing your own work or someone else's.
 
 ### The Fool for Decisions
 
@@ -117,7 +117,7 @@ This bundle tightens quality gates before code reaches teammates:
 
 - `review` — Full GitHub PR review for architecture, tests, quality, and security.
 - `self-review` — Fresh-eyes local diff review before commit/PR, no `gh` required.
-- `analyzing-prs` — Shared review checklist criteria consumed by `review` and `self-review`.
+- `pr-analysis` — Shared review checklist criteria consumed by `review` and `self-review`.
 
 ### 3) Meta Bundle
 
@@ -132,7 +132,7 @@ These skills help you improve the system itself:
 Useful when the situation appears, with little ongoing overhead:
 
 - `handoff` — Capture session state when pausing or when context pressure is high.
-- `gha` — Investigate and improve GitHub Actions workflows and CI failures.
+- `the-fool` — Structured critical reasoning, pre-mortems, red teams for decisions.
 
 ### 5) Domain Skills (If It's Important to You)
 

@@ -67,7 +67,7 @@ After the table, add a **Top 7** ranked by value (highest impact, lowest effort 
 
 After presenting findings, suggest which skills would help execute the wins:
 
-- Dead code / code smells → `renovate-code`
+- Dead code / code smells → `code-renovator`
 - Test gaps → `test-driven-development`
 - Type safety / error handling → `systematic-debugging` (to understand current behavior first)
 - Config gaps → direct fix (usually trivial)

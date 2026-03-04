@@ -2,10 +2,10 @@
 
 Skills in this repo were adapted from the following sources:
 
-- [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) — prompt-engineer, database-expert (merged from sql-pro + database-optimizer), api-designer, feature-forge, kubernetes-specialist, renovate-code (merged from legacy-modernizer + refactoring-guide), spec-miner, the-fool, neb-playwright-expert (merged with neb-www docs), security-reviewer, secure-code-guardian
+- [jeffallan/claude-skills](https://github.com/jeffallan/claude-skills) — prompt-engineer, database-expert (merged from sql-pro + database-optimizer), api-designer, feature-forge, code-renovator (merged from legacy-modernizer + refactoring-guide), spec-miner, the-fool, neb-playwright-expert (merged with neb-www docs), security-reviewer, secure-code-guardian
 - [obra/superpowers](https://github.com/obra/superpowers) — systematic-debugging, test-driven-development, verification-before-completion, using-skills, session-start hook (heavily inspired by)
-- [PracticeTek-Common-Services/ptek-ai-playbook](https://github.com/PracticeTek-Common-Services/ptek-ai-playbook) — analyzing-prs skill, `/review` command
-- [ykdojo/claude-code-tips](https://github.com/ykdojo/claude-code-tips) — ast-grep-patterns, gha, handoff skills, status line
+- [PracticeTek-Common-Services/ptek-ai-playbook](https://github.com/PracticeTek-Common-Services/ptek-ai-playbook) — pr-analysis skill, `/review` command
+- [ykdojo/claude-code-tips](https://github.com/ykdojo/claude-code-tips) — ast-grep-patterns, handoff skills, status line
 - [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) — playwright-cli skill (SKILL.md + references)
 - [rtk-ai/rtk](https://github.com/rtk-ai/rtk) — RTK (Rust Token Killer) CLI proxy, PreToolUse hook, and RTK.md context file
 

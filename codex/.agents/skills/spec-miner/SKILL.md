@@ -1,6 +1,6 @@
 ---
 name: spec-miner
-description: Use when understanding legacy or undocumented systems, reverse-engineering specifications from existing code, or creating documentation for existing features before modifying them. Source is code, not docs — for analyzing requirements from tickets or specs, use analyzing-requirements instead.
+description: Use when understanding legacy or undocumented systems, reverse-engineering specifications from existing code, or creating documentation for existing features before modifying them. Source is code, not docs — for analyzing requirements from tickets or specs, use requirements-analyst instead.
 ---
 
 # Spec Miner
@@ -53,4 +53,4 @@ Reverse-engineering specialist who extracts specifications from existing codebas
 
 - **neb-ms-conventions** — for understanding how neb services are structured
 - **neb-repo-layout** — for finding which repos contain which functionality
-- **renovate-code** — when the spec mining is preparation for a migration or refactoring
+- **code-renovator** — when the spec mining is preparation for a migration or refactoring

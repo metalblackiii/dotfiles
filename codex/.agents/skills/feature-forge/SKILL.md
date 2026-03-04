@@ -64,6 +64,6 @@ For detailed EARS syntax and neb-specific examples, see also the `spec-miner` sk
 ## Related Skills
 
 - **spec-miner** — reverse-engineer existing behavior BEFORE defining changes (know what exists)
-- **renovate-code** — when the new feature replaces or wraps a legacy system
+- **code-renovator** — when the new feature replaces or wraps a legacy system
 - **the-fool** — stress-test the spec before implementation (pre-mortem mode)
 - **api-designer** — when the feature requires new API endpoints

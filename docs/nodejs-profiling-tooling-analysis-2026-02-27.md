@@ -2,7 +2,7 @@
 
 **Date**: 2026-02-27
 **Context**: Evaluating profiling/load-testing tools for neb microservices (Node.js/Express/Sequelize, Aurora/MySQL, Kafka, Docker/Kubernetes)
-**Motivation**: [Reddit discussion](https://www.reddit.com/r/ClaudeCode/comments/1rfz2rm/) on LLM-generated code optimizing for correctness over performance. Added review checks to `analyzing-prs` for sequential-await and loop-query patterns; now evaluating tooling for deeper performance visibility.
+**Motivation**: [Reddit discussion](https://www.reddit.com/r/ClaudeCode/comments/1rfz2rm/) on LLM-generated code optimizing for correctness over performance. Added review checks to `pr-analysis` for sequential-await and loop-query patterns; now evaluating tooling for deeper performance visibility.
 
 ---
 

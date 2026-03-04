@@ -1,5 +1,5 @@
 ---
-name: renovate-code
+name: code-renovator
 description: Use when improving existing code structure through refactoring, replacing legacy patterns incrementally, or planning structural changes before a feature. Not for greenfield implementation.
 ---
 

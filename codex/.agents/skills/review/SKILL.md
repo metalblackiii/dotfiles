@@ -12,7 +12,7 @@ Comprehensive pull request review using structured quality criteria.
 This skill intentionally mirrors core review policy language from `self-review` without extracting shared scaffolding.
 
 When editing this skill, check `../self-review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
-- `analyzing-prs` as the criteria source (`../analyzing-prs/SKILL.md`)
+- `pr-analysis` as the criteria source (`../pr-analysis/SKILL.md`)
 - Severity taxonomy (`Critical`, `Important`, `Minor`)
 - Shared quality posture (broad category coverage and evidence-based findings)
 
@@ -27,9 +27,9 @@ The user provides one of:
 
 ### Step 1: Load Review Criteria
 
-Read the `analyzing-prs` skill to load baseline review categories, healthcare addendum checks, and severity definitions:
+Read the `pr-analysis` skill to load baseline review categories, healthcare addendum checks, and severity definitions:
 
-- `../analyzing-prs/SKILL.md`
+- `../pr-analysis/SKILL.md`
 
 Use relative paths from this skill's location (sibling directory). Read the file directly — do not use platform-specific skill invocation.
 
@@ -64,7 +64,7 @@ For each changed file:
 
 ### Step 4: Apply Review Criteria
 
-Apply every applicable category from the `analyzing-prs` skill:
+Apply every applicable category from the `pr-analysis` skill:
 - Architecture compliance
 - Testing coverage
 - Code quality
@@ -82,7 +82,7 @@ Skip categories that don't apply to the PR (e.g., skip Database if no schema cha
 
 ### Security Escalation (When Needed)
 
-`review` includes baseline security checks via `analyzing-prs`. Escalate to `security-reviewer` only when:
+`review` includes baseline security checks via `pr-analysis`. Escalate to `security-reviewer` only when:
 - the user explicitly requests a security audit/deep-dive, or
 - the PR changes high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 

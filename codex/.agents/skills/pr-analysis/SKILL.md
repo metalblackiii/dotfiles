@@ -1,7 +1,8 @@
 ---
-name: analyzing-prs
+name: pr-analysis
 description: Domain knowledge for PR review checklists and quality criteria. Consumed by the review and self-review skills — not invoked directly.
 user-invocable: false
+disable-model-invocation: true
 ---
 
 # PR Analysis Skill
@@ -121,7 +122,7 @@ Use these categories to evaluate PR changes comprehensively.
 
 ## Security Deep Dive (Escalation Boundary)
 
-`analyzing-prs` provides baseline security checks for standard `review` and `self-review` workflows.
+`pr-analysis` provides baseline security checks for standard `review` and `self-review` workflows.
 
 For dedicated security audits and tool-assisted deep analysis, escalate to `security-reviewer`.
 

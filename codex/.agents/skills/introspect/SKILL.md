@@ -94,7 +94,7 @@ You may inspect `claude/.claude/skills/` in-repo to validate the symlink target,
 ### 6. Review Skill Coherence
 
 To prevent drift without structural extraction, compare `review` and `self-review` for coherence in shared policy language:
-- Both load review criteria from `../analyzing-prs/SKILL.md`
+- Both load review criteria from `../pr-analysis/SKILL.md`
 - Severity taxonomy remains aligned (`Critical`, `Important`, `Minor`)
 - Shared quality expectations stay consistent (category coverage and anti-hallucination posture)
 - Flag divergences unless the file explicitly documents an intentional reason

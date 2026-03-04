@@ -79,8 +79,8 @@ dotfiles/
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
-│       └── skills/          # SOURCE OF TRUTH — actual skill files (32)
-│           ├── analyzing-prs/SKILL.md
+│       └── skills/          # SOURCE OF TRUTH — actual skill files
+│           ├── pr-analysis/SKILL.md
 │           ├── systematic-debugging/SKILL.md
 │           └── ...
 ├── claude/                  # Claude Code configuration
@@ -128,26 +128,24 @@ Specialized methodologies that activate automatically when relevant tasks are de
 
 | Skill | When it activates |
 |-------|-------------------|
-| **analyzing-prs** | Reviewing PR diffs for quality, security, architecture, testing |
-| **analyzing-requirements** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
-| **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
+| **pr-analysis** | Reviewing PR diffs for quality, security, architecture, testing |
+| **requirements-analyst** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
+| **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
-| **gha** | GitHub Actions failures, CI/CD pipeline errors, flaky tests |
 | **handoff** | Ending sessions with work in progress or high context usage |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
-| **kubernetes-specialist** | Deploying/managing K8s workloads, Helm charts, RBAC, troubleshooting pods |
 | **mcp-vetting** | Security evaluation before installing or trusting any MCP server |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
-| **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
+| **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
-| **renovate-code** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
+| **code-renovator** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
 | **security-reviewer** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
@@ -159,7 +157,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
 | **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
-| **reflect** | End-of-session post-mortem — retro on what worked/didn't, propose config changes for approval |
 | **writing-skills** | Creating or editing SKILL.md files and frontmatter |
 
 ## Shared Instructions

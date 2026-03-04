@@ -14,7 +14,7 @@ This skill is local-only: use local `git` and filesystem inspection. Do **not** 
 This skill intentionally mirrors core review policy language from `review` without extracting shared scaffolding.
 
 When editing this skill, check `../review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
-- `analyzing-prs` as the criteria source (`../analyzing-prs/SKILL.md`)
+- `pr-analysis` as the criteria source (`../pr-analysis/SKILL.md`)
 - Severity taxonomy (`Critical`, `Important`, `Minor`)
 - Shared quality posture (broad category coverage and evidence-based findings)
 - `self-documenting-code` naming scan (self-review only — targets implementer blind spots, not applicable to external PR review)
@@ -34,9 +34,9 @@ If unspecified, default to `git diff --staged`. If staged is empty, fall back to
 
 ### Step 1: Load Review Criteria
 
-Read the `analyzing-prs` skill to load baseline review categories, healthcare addendum checks, and severity definitions:
+Read the `pr-analysis` skill to load baseline review categories, healthcare addendum checks, and severity definitions:
 
-- `../analyzing-prs/SKILL.md`
+- `../pr-analysis/SKILL.md`
 
 Use relative paths from this skill's location (sibling directory). Read the file directly — do not use platform-specific skill invocation.
 
@@ -57,7 +57,7 @@ For each changed file, read the **full file** (not just the diff) to understand 
 
 ### Step 5: Apply Review Criteria
 
-Use the `analyzing-prs` criteria. Only evaluate categories relevant to the changes — skip categories that don't apply.
+Use the `pr-analysis` criteria. Only evaluate categories relevant to the changes — skip categories that don't apply.
 
 Focus especially on things an implementer is likely to miss about their own code:
 - Assumptions that aren't validated
@@ -81,7 +81,7 @@ These are high-value findings because they create bugs that are hard to diagnose
 
 ### Security Escalation (When Needed)
 
-`self-review` includes baseline security checks via `analyzing-prs`. Escalate to `security-reviewer` only when:
+`self-review` includes baseline security checks via `pr-analysis`. Escalate to `security-reviewer` only when:
 - the user explicitly requests security depth, or
 - local changes hit high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 

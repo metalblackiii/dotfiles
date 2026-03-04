@@ -1,6 +1,6 @@
 ---
-name: analyzing-requirements
-description: Use when analyzing requirements from JIRA tickets, specs, or ad hoc descriptions to surface ambiguities, missing edge cases, and implementation risks before engineering work begins. Not for creating specs from scratch — use feature-forge for that.
+name: requirements-analyst
+description: Use when the user shares a ticket, spec, feature request, or ad hoc description and wants gaps, risks, edge cases, or ambiguities identified before starting implementation. Triggers on "look at this ticket", "what's missing", "review these requirements", or any feature description with unclear scope. Not for creating specs from scratch — use feature-forge for that.
 ---
 
 # Requirements Analyst

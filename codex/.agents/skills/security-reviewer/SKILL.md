@@ -11,7 +11,7 @@ Security deep-dive reviewer for application and infrastructure risk. This skill 
 
 This skill intentionally extends the review stack (`review` / `self-review`) for security depth.
 
-When editing this skill, check `../review/SKILL.md`, `../self-review/SKILL.md`, and `../analyzing-prs/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
+When editing this skill, check `../review/SKILL.md`, `../self-review/SKILL.md`, and `../pr-analysis/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
 - Severity taxonomy (`Critical`, `Important`, `Minor`) for findings
 - Evidence-based findings posture (file/line evidence, no speculation framed as fact)
 - Security scope boundary (baseline security in `review`/`self-review`, deep-dive here)

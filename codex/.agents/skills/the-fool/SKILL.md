@@ -85,4 +85,4 @@ Ask the user to let the user choose how to challenge their idea.
 
 ## Related Skills
 
-- **renovate-code** — for evaluating refactoring decisions, code smells, or migration strategy (pre-mortem mode is especially relevant)
+- **code-renovator** — for evaluating refactoring decisions, code smells, or migration strategy (pre-mortem mode is especially relevant)

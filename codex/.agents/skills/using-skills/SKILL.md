@@ -1,6 +1,7 @@
 ---
 name: using-skills
 description: Establishes how to discover and use skills. Loaded at session start — not invoked directly.
+disable-model-invocation: true
 ---
 
 # Using Skills
@@ -11,7 +12,7 @@ You have specialized skills installed. These represent personal development meth
 
 **Use the platform's skill invocation to invoke skills (`Skill` tool in Claude Code, `$skill` in Codex).** The platform lists available skills in system-reminder messages — check there first. When you invoke a skill, its full content is loaded and presented to you. Follow it directly.
 
-Prefer platform skill invocation over reading SKILL.md directly. Direct reading is allowed for meta-maintenance and audit tasks. Exception: if a parent skill explicitly instructs you to read a support skill by relative path (for example, `review`/`self-review` loading `analyzing-prs`), follow the parent skill's workflow.
+Prefer platform skill invocation over reading SKILL.md directly. Direct reading is allowed for meta-maintenance and audit tasks. Exception: if a parent skill explicitly instructs you to read a support skill by relative path (for example, `review`/`self-review` loading `pr-analysis`), follow the parent skill's workflow.
 
 ## When to Check for Skills
 
@@ -29,13 +30,13 @@ Prefer platform skill invocation over reading SKILL.md directly. Direct reading 
 Skills compose naturally. Common sequences:
 
 - **Bugfix:** `systematic-debugging` → `test-driven-development` → `verification-before-completion`
-- **New feature:** `feature-forge` (or `analyzing-requirements`) → `test-driven-development` → `verification-before-completion`
-- **Refactor:** `renovate-code` → `verification-before-completion`
-- **PR review:** `review` or `self-review` (these consume `analyzing-prs` internally)
-- **Security-sensitive implementation:** `feature-forge` (or `analyzing-requirements`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
+- **New feature:** `feature-forge` (or `requirements-analyst`) → `test-driven-development` → `verification-before-completion`
+- **Refactor:** `code-renovator` → `verification-before-completion`
+- **PR review:** `review` or `self-review` (these consume `pr-analysis` internally)
+- **Security-sensitive implementation:** `feature-forge` (or `requirements-analyst`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
 - **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)
-- **Quick wins:** `quick-wins` → `renovate-code` / `test-driven-development` (to act on findings)
-- **End of session:** `handoff` (if WIP remains) → `reflect` (if session produced learnings worth reviewing)
+- **Quick wins:** `quick-wins` → `code-renovator` / `test-driven-development` (to act on findings)
+- **End of session:** `handoff` (if WIP remains)
 
 When multiple skills apply, invoke process skills first (debugging, planning), then implementation skills (domain-specific, testing).
 
@@ -47,7 +48,7 @@ To avoid trigger collisions:
 2. Use `security-reviewer` only for explicit security audits or deep security assessments.
 3. Use `secure-code-guardian` for implementing or remediating security controls in code.
 4. Use `self-documenting-code` for naming/readability in code, not documentation artifact generation.
-5. Use `handoff` to preserve WIP for the next session. Use `reflect` for a post-mortem on what we learned. They compose — use both when appropriate.
+5. Use `handoff` to preserve WIP for the next session.
 6. Use `playwright-cli` for interactive browser automation (navigation, forms, scraping). Use `neb-playwright-expert` only for writing Playwright test files in neb-www.
 
 ## Red Flags
