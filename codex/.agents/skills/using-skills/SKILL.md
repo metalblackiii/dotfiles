@@ -34,6 +34,7 @@ Skills compose naturally. Common sequences:
 - **PR review:** `review` or `self-review` (these consume `analyzing-prs` internally)
 - **Security-sensitive implementation:** `feature-forge` (or `analyzing-requirements`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
 - **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)
+- **Quick wins:** `quick-wins` → `renovate-code` / `test-driven-development` (to act on findings)
 - **End of session:** `handoff` (if WIP remains) → `reflect` (if session produced learnings worth reviewing)
 
 When multiple skills apply, invoke process skills first (debugging, planning), then implementation skills (domain-specific, testing).

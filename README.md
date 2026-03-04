@@ -106,7 +106,7 @@ dotfiles/
 | Layer | Shared? | Where |
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
-| Skills (32) | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
+| Skills | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
@@ -122,7 +122,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (32)
+### Skills
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -146,6 +146,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
+| **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
 | **renovate-code** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
