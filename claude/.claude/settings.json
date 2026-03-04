@@ -24,7 +24,6 @@
       "Edit(**/.env*)",
       "Write(**/.env*)",
       "Bash(*find *)",
-      "Bash(*grep *)",
       "Bash(*sed *)",
       "Bash(*awk *)",
       "Bash(*xargs *)",
