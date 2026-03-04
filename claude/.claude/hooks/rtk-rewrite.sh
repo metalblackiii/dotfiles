@@ -126,7 +126,7 @@ elif echo "$MATCH_CMD" | grep -qE '^pnpm[[:space:]]+playwright([[:space:]]|$)'; 
 elif echo "$MATCH_CMD" | grep -qE '^(npx[[:space:]]+)?prisma([[:space:]]|$)'; then
   REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed -E 's/^(npx )?prisma/rtk prisma/')"
 
-# --- Containers (added: docker compose, docker run/build/exec, kubectl describe/apply) ---
+# --- Containers (docker compose, docker run/build/exec) ---
 elif echo "$MATCH_CMD" | grep -qE '^docker[[:space:]]'; then
   if echo "$MATCH_CMD" | grep -qE '^docker[[:space:]]+compose([[:space:]]|$)'; then
     COMPOSE_SUBCMD=$(echo "$MATCH_CMD" | sed -E 's/^docker[[:space:]]+compose[[:space:]]*//')
@@ -147,18 +147,6 @@ elif echo "$MATCH_CMD" | grep -qE '^docker[[:space:]]'; then
         ;;
     esac
   fi
-elif echo "$MATCH_CMD" | grep -qE '^kubectl[[:space:]]'; then
-  KUBE_SUBCMD=$(echo "$MATCH_CMD" | sed -E \
-    -e 's/^kubectl[[:space:]]+//' \
-    -e 's/(--context|--kubeconfig|--namespace|-n)[[:space:]]+[^[:space:]]+[[:space:]]*//g' \
-    -e 's/--[a-z-]+=[^[:space:]]+[[:space:]]*//g' \
-    -e 's/^[[:space:]]+//')
-  case "$KUBE_SUBCMD" in
-    get|get\ *|logs|logs\ *|describe|describe\ *|apply|apply\ *)
-      REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's/^kubectl /rtk kubectl /')"
-      ;;
-  esac
-
 # --- Network ---
 elif echo "$MATCH_CMD" | grep -qE '^curl[[:space:]]+'; then
   REWRITTEN="${ENV_PREFIX}$(echo "$CMD_BODY" | sed 's/^curl /rtk curl /')"

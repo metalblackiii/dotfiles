@@ -23,7 +23,6 @@
       "Read(**/.env*)",
       "Edit(**/.env*)",
       "Write(**/.env*)",
-      "Bash(*cat *)",
       "Bash(*find *)",
       "Bash(*grep *)",
       "Bash(*sed *)",
@@ -166,6 +165,15 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/rtk-rewrite.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-sensitive-paths.sh"
           }
         ]
       }
