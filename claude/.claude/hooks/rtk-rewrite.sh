@@ -26,9 +26,9 @@ case "$FIRST_CMD" in
   rtk\ *|*/rtk\ *) exit 0 ;;
 esac
 
-# Skip commands with heredocs, variable assignments as the whole command, etc.
+# Skip commands with heredocs or compound chains (rewriting partial segments is fragile)
 case "$FIRST_CMD" in
-  *'<<'*) exit 0 ;;
+  *'<<'*|*'&&'*|*';'*|*'||'*) exit 0 ;;
 esac
 
 # Strip leading env var assignments for pattern matching
