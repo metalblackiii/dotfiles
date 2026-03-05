@@ -15,9 +15,9 @@ This skill intentionally mirrors core review policy language from `review` witho
 
 When editing this skill, check `../review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
 - `pr-analysis` as the criteria source (`../pr-analysis/SKILL.md`)
+- `self-documenting-code` naming scan (`../self-documenting-code/SKILL.md`)
 - Severity taxonomy (`Critical`, `Important`, `Minor`)
 - Shared quality posture (broad category coverage and evidence-based findings)
-- `self-documenting-code` naming scan (self-review only — targets implementer blind spots, not applicable to external PR review)
 
 ## Input
 

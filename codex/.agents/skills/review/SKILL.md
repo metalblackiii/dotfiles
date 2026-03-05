@@ -13,6 +13,7 @@ This skill intentionally mirrors core review policy language from `self-review` 
 
 When editing this skill, check `../self-review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
 - `pr-analysis` as the criteria source (`../pr-analysis/SKILL.md`)
+- `self-documenting-code` naming scan (`../self-documenting-code/SKILL.md`)
 - Severity taxonomy (`Critical`, `Important`, `Minor`)
 - Shared quality posture (broad category coverage and evidence-based findings)
 
@@ -86,7 +87,17 @@ Skip categories that don't apply to the PR (e.g., skip Database if no schema cha
 - the user explicitly requests a security audit/deep-dive, or
 - the PR changes high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 
-### Step 5: Generate Review Report
+### Step 5: Naming & Readability Scan
+
+Read `../self-documenting-code/SKILL.md` for detailed criteria, then scan changed code for:
+
+- **Vague names** — `data`, `result`, `temp`, `handle*`, `process*`, `manager`, `helper`, `utils` without specific intent
+- **"What" comments** — comments that narrate code (`// Loop through users`) instead of explaining why; these should be naming improvements
+- **Redundant comments** — comments that repeat the code (`// Return the result`, `// Set name`)
+
+Flag naming issues as Minor unless they create genuine ambiguity (Important).
+
+### Step 6: Generate Review Report
 
 ```markdown
 # Pull Request Review: [PR Title]
@@ -174,11 +185,11 @@ Skip categories that don't apply to the PR (e.g., skip Database if no schema cha
 
 Omit any severity section that has no findings.
 
-### Step 6: Submit Review (Only When Asked)
+### Step 7: Submit Review (Only When Asked)
 
 Only if the user explicitly asks to submit the review to GitHub.
 
-#### 6.1 Comment Placement Policy (Default Behavior)
+#### 7.1 Comment Placement Policy (Default Behavior)
 
 When the user asks to "leave comments" or "submit review", place feedback by type:
 
@@ -189,7 +200,7 @@ When the user asks to "leave comments" or "submit review", place feedback by typ
 
 This avoids losing code-specific feedback in the Conversation-only surface.
 
-#### 6.2 Command Decision Table
+#### 7.2 Command Decision Table
 
 | Intent | Command pattern |
 |---|---|
@@ -198,7 +209,7 @@ This avoids losing code-specific feedback in the Conversation-only surface.
 | Request changes | `gh pr review <PR> --request-changes --body-file <file>` |
 | Approve | `gh pr review <PR> --approve --body-file <file>` |
 
-#### 6.3 Inline Review Payload Template
+#### 7.3 Inline Review Payload Template
 
 Use for code-anchored comments in `Files changed`:
 
