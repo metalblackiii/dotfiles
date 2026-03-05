@@ -140,7 +140,9 @@
       "Bash(*gh issue close *)",
       "Bash(*git restore *)",
       "Bash(*curl *)",
-      "Bash(*chmod *)"
+      "Bash(*chmod *)",
+      "Bash(*npm deprecate *)",
+      "Bash(*gh repo archive *)"
     ],
     "defaultMode": "default"
   },
