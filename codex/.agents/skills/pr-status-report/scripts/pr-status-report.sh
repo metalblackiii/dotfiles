@@ -158,11 +158,7 @@ for repo in "${REPOS[@]:-}"; do
   search_cmd+=(--repo "$repo")
 done
 
-if [[ -n "$SEARCH_QUERY" ]]; then
-  search_cmd+=(--search "$SEARCH_QUERY")
-fi
-
-search_json="$("${search_cmd[@]}")"
+search_json="$("${search_cmd[@]}" ${SEARCH_QUERY:+"$SEARCH_QUERY"})"
 
 if [[ "$(jq 'length' <<< "$search_json")" -eq 0 ]]; then
   if [[ "$OUTPUT_FORMAT" == "json" ]]; then

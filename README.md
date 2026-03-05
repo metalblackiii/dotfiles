@@ -64,6 +64,7 @@ To remove:
 # Or uninstall a single platform
 ./claude/uninstall.sh
 ./codex/uninstall.sh
+./git/uninstall.sh
 ```
 
 ## Structure
