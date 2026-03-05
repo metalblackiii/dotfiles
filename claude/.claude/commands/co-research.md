@@ -53,8 +53,10 @@ Launch all research streams simultaneously.
 For each repo, run via `Bash` tool with `run_in_background: true`. Derive a slug from the repo directory name (e.g., `neb-www`, `neb-ms-patients`).
 
 ```bash
-cd <repo-path> && codex exec --full-auto "<tailored survey prompt from plan>" | tee .co-research/codex-survey-<repo-slug>.md
+cd <repo-path> && codex exec --full-auto "<tailored survey prompt from plan>" | tee <absolute-path-to-working-dir>/.co-research/codex-survey-<repo-slug>.md
 ```
+
+**IMPORTANT:** The `tee` path must be absolute (pointing back to the working directory where `.co-research/` was created), not relative. Codex runs from `<repo-path>`, so a relative `.co-research/` would write to the wrong location.
 
 If only one repo, the slug is just the repo name (e.g., `codex-survey-neb-www.md`).
 
@@ -78,6 +80,8 @@ Each agent gets one research angle. Use `subagent_type: "general-purpose"` with 
 - Write findings to `.co-research/claude-<angle-slug>.md`
 - Include source URLs for every claim
 
+**IMPORTANT:** Agent prompts must be directive — tell agents to do the research and write findings immediately. Do NOT leave room for agents to ask for confirmation or propose a plan. End each prompt with: "Do the research now and write your findings. Do not ask for confirmation."
+
 Example agent prompts:
 - "Research the current ecosystem landscape for [topic]. Compare major tools/libraries, their adoption, maintenance status, and community sentiment. Write findings to `.co-research/claude-ecosystem.md` with source URLs."
 - "Research best practices and common pitfalls for [topic]. Focus on authoritative sources (official docs, well-known blog posts, conference talks). Write findings to `.co-research/claude-practices.md` with source URLs."
@@ -85,14 +89,17 @@ Example agent prompts:
 
 Wait for all dispatches to complete (Bash background tasks will notify on completion; Task agents return when done).
 
-## Step 3b — Correlation Dispatch
+## Step 3b — Correlation Dispatch (Conditional)
 
-Read all findings from Step 3a. Extract the key recommendations, tools, and patterns identified by web research.
+Read all findings from Step 3a. Evaluate whether a second Codex pass adds value:
 
-Dispatch Codex again (one per repo, `run_in_background: true`). Use the same repo slug convention:
+- **Do correlate** when the codebase survey reveals significant existing integration that needs comparing against best practices (e.g., the repo already uses the technology and you need to assess alignment with ecosystem recommendations).
+- **Skip to Step 4** when the research is primarily about external tooling/ecosystem options and the codebase survey already captured the current state clearly (e.g., "no integration exists" or "only uses feature X").
+
+If correlating, dispatch Codex again (one per repo, `run_in_background: true`). Use absolute paths for `tee`:
 
 ```bash
-cd <repo-path> && codex exec --full-auto "<correlation prompt>" | tee .co-research/codex-correlation-<repo-slug>.md
+cd <repo-path> && codex exec --full-auto "<correlation prompt>" | tee <absolute-path-to-working-dir>/.co-research/codex-correlation-<repo-slug>.md
 ```
 
 The correlation prompt:
@@ -168,4 +175,10 @@ Present the draft to the user.
 
 Ask: "Where should I save this? Default: `docs/research-<topic-slug>.md`"
 
-Wait for confirmation. Write the final document to the specified path. Clean up `.co-research/` working directory only if the user confirms.
+Wait for confirmation. Write the final document to the specified path.
+
+Tell the user the `.co-research/` working directory still exists and they can delete it manually if they want:
+```
+rm -rf .co-research/
+```
+Do NOT attempt to delete it yourself — this is a destructive operation the user should run.

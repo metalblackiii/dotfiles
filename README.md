@@ -2,7 +2,7 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Codex** and **Claude Code**. Skills live in `codex/.agents/skills/` and instructions in `shared/INSTRUCTIONS.md` — both shared across platforms via symlinks.
+Currently supports **Codex**, **Claude Code**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
 
 New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatomy, and adoption guide.
 
@@ -51,6 +51,7 @@ cd ~/repos/dotfiles
 # Or install a single platform
 ./claude/install.sh
 ./codex/install.sh
+./git/install.sh
 ```
 
 Original files are backed up with `.backup.TIMESTAMP` before symlinking.
@@ -71,6 +72,10 @@ To remove:
 
 ```
 dotfiles/
+├── git/                     # Git configuration
+│   ├── install.sh
+│   ├── uninstall.sh
+│   └── .gitignore_global    # Global gitignore → ~/.gitignore_global
 ├── shared/                  # Cross-platform sources of truth
 │   └── INSTRUCTIONS.md      # Agent conventions, rules, preferences
 ├── codex/                   # Codex configuration
@@ -143,6 +148,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
+| **pr-review-queue** | Consolidated dashboard for PRs where you are a reviewer, with action buckets and next-step triage |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
@@ -208,6 +214,26 @@ The `settings.json` enforces strict guardrails:
 - **Denied**: shell commands with dedicated tool equivalents (`sed`, `awk`, `xargs`), `python -c` inline execution, env/secret files, destructive git operations, dangerous docker flags, package publishing, destructive AWS/CDK/Terraform/Helm/kubectl write operations
 - **Ask**: `git commit`, `git push`, `git restore`, `gh pr create/merge/close`, `curl`, `chmod`
 - **Allowed**: standard dev tools, read-only kubectl, scoped web access
+
+## Git Configuration
+
+The `git/` directory manages some global Git settings that aren't project-specific.
+
+### Global Gitignore
+
+`git/.gitignore_global` is symlinked to `~/.gitignore_global` and registered via `core.excludesFile`. This is not a Git default — without it, Git has no global ignore file.
+
+To verify it's active:
+
+```bash
+git config --global core.excludesFile
+# Should output: /Users/<you>/.gitignore_global
+
+readlink ~/.gitignore_global
+# Should point to: .../dotfiles/git/.gitignore_global
+```
+
+Current global ignores: editor backup files (`*~`), `.DS_Store`, and agent working artifacts (`.co-research/`, `.co-implement/`, `HANDOFF.md`).
 
 ## Adding a New Platform
 

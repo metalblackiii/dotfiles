@@ -1,0 +1,8 @@
+# Editor backup files (vim, emacs create file.txt~ on save)
+*~
+.DS_Store
+
+# Agent working directories and artifacts
+.co-research/
+.co-implement/
+HANDOFF.md
