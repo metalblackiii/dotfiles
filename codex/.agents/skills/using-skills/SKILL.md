@@ -16,14 +16,14 @@ Prefer platform skill invocation over reading SKILL.md directly. Direct reading 
 
 ## When to Check for Skills
 
-**Non-trivial tasks** — features, debugging, architecture, reviews, deployments:
-1. Check which skills apply (scan the available skills list)
-2. Invoke the relevant skill(s) via platform skill invocation (`Skill` tool in Claude Code, `$skill` in Codex)
+**Before every task**, scan the available skills list. If any skill's description matches the request, invoke it — even if you believe you can answer without it. The skill exists because the unassisted answer isn't good enough.
+
+1. Scan descriptions for a match
+2. Invoke the matching skill(s) via platform skill invocation (`Skill` tool in Claude Code, `$skill` in Codex)
 3. Follow the skill's guidance
 4. THEN respond to the user
 
-**Trivial tasks** — single-line fixes, typos, simple questions, file reads:
-- Proceed directly. Skills add overhead here with no benefit.
+**Skip skills only for pure mechanical edits** — single-line typo fixes, variable renames, file reads with no judgment involved. If you're producing an answer that requires domain knowledge, check for skills first.
 
 ## Sequencing
 
@@ -62,4 +62,4 @@ If you're thinking any of these, stop and check for skills:
 
 ## The Iron Law
 
-Skills are not optional when applicable. Invoke first, work second. But don't invoke skills for work that genuinely doesn't benefit from them.
+Skills are not optional when a description matches. Invoke first, work second. "I already know how to do this" is not a reason to skip a skill — the skill contains project-specific standards, not just general knowledge.

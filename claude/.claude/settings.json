@@ -146,6 +146,7 @@
     ],
     "defaultMode": "default"
   },
+  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
@@ -194,5 +195,5 @@
     "type": "command",
     "command": "bash ~/.claude/scripts/context-bar.sh"
   },
-  "autoUpdatesChannel": "stable"
+  "autoUpdatesChannel": "latest"
 }

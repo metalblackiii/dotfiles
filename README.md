@@ -164,7 +164,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
 | **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
-| **writing-skills** | Creating or editing SKILL.md files and frontmatter |
+| **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 
 ## Shared Instructions
 

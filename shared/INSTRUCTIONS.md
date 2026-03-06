@@ -44,8 +44,8 @@ When asked to update or create documentation, only change documentation. Do not 
 Detailed skill usage workflow lives in `using-skills` and is the source of truth.
 
 - Use platform skill invocation (`Skill` tool in Claude Code, `$skill` in Codex). Direct SKILL.md reading is allowed for meta-maintenance and audit tasks.
-- For non-trivial tasks, identify relevant skills first and follow them before responding.
-- For trivial tasks (single-line fixes, typos, simple questions, file reads), proceed directly.
+- Before responding to any task, scan the available skills list. If a skill's description matches the request, invoke it — even if you could answer without it. The skill exists because the unassisted answer isn't good enough.
+- Skip skills only for pure mechanical edits: single-line typo fixes, variable renames, file reads with no judgment involved.
 - Skills are mandatory when applicable.
 
 ## Code Quality

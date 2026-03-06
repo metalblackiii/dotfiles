@@ -1,6 +1,9 @@
 ---
 name: writing-skills
-description: Use when creating or updating skills in this repo, including SKILL.md/frontmatter edits, trigger-description tuning, skill resource layout (`references/`, `scripts/`, `assets/`), or optional `agents/openai.yaml` metadata maintenance.
+description: >
+  Use when creating, updating, testing, or optimizing skills in this repo.
+  Covers SKILL.md authoring, frontmatter conventions, description tuning,
+  eval-driven iteration, and description quality for triggering accuracy.
 ---
 
 # Writing Skills
@@ -9,11 +12,12 @@ description: Use when creating or updating skills in this repo, including SKILL.
 
 Skills are reusable methodology guides that agents load when relevant. Good skills are discoverable, concise, and actionable. The format follows the open [Agent Skills spec](https://agentskills.io/specification) — skills work across Claude Code, Codex, and other compatible agents.
 
-## Skill Precedence In This Repo
+This skill covers the full lifecycle: authoring conventions, eval-driven iteration, and description optimization for triggering accuracy.
 
-- Treat this skill as the primary workflow for skill creation and maintenance in this repo.
-- Treat system `skill-creator` as fallback only if this skill is missing required guidance, or when explicitly requested.
-- Do not rely on name shadowing (creating another `skill-creator`) to override system behavior. Runtime precedence is implementation-dependent and may change.
+## Skill Precedence
+
+- This is the primary skill for all skill work in this repo — creation, maintenance, testing, and optimization.
+- Do not rely on name shadowing (e.g., creating a local `skill-creator`) to override system behavior. Runtime precedence is implementation-dependent and may change.
 
 ## Frontmatter Reference
 
@@ -60,7 +64,7 @@ When disabling auto-invocation, set `disable-model-invocation: true` in SKILL.md
 
 ## Description Best Practices
 
-The description determines when Claude loads your skill. Critical for discovery.
+The description determines when Claude loads your skill. It's the primary triggering mechanism.
 
 ```yaml
 # BAD: Summarizes workflow - Claude may follow description instead of reading skill
@@ -78,12 +82,15 @@ description: Use when encountering any bug, test failure, or unexpected behavior
 
 **Rules:**
 - Prefer starting with "Use when..." for user-invocable skills
-- Background/non-invocable skills may use concise declarative descriptions when they clearly include "not invoked directly" or equivalent boundary language
+- Background/non-invocable skills may use concise declarative descriptions with "not invoked directly" or equivalent boundary language
 - Describe triggers/symptoms, NOT what the skill does
 - Write in third person
 - Max 1024 characters (spec limit), aim for under 500
+- Claude tends to undertrigger — make descriptions slightly "pushy" to ensure skills activate when relevant. Include adjacent phrasings and edge-case contexts.
 
-## SKILL.md Structure
+**Triggering insight:** Skills appear in Claude's `available_skills` list by name + description. Claude only consults skills for tasks it can't easily handle alone — simple one-step queries may not trigger even with a perfect description match. Multi-step or specialized queries trigger reliably. Design descriptions (and trigger eval queries) accordingly.
+
+## SKILL.md Template
 
 ```markdown
 ---
@@ -114,29 +121,42 @@ Techniques, patterns, quick reference tables.
 Bullet list of warning signs.
 ```
 
+**Writing guidelines:**
+- Use imperative form in instructions
+- Explain the *why* behind instructions — reasoning is more effective than rigid MUSTs
+- Keep SKILL.md under 500 lines; push heavy reference to `references/`, reusable code to `scripts/`
+- For large reference files (>300 lines), include a table of contents
+- Make skills general, not narrow to specific examples — avoid overfitting
+
 ## Creating a New Skill
 
-Create a new skill directory directly in the canonical location:
+### Capture Intent
+
+1. What should this skill enable Claude to do?
+2. When should this skill trigger? (what user phrases/contexts)
+3. What's the expected output format?
+4. Should we set up test cases? Skills with objectively verifiable outputs (file transforms, code generation, fixed workflow steps) benefit most. Skills with subjective outputs (writing style, methodology) often don't need them.
+
+Proactively ask about edge cases, input/output formats, success criteria, and dependencies before writing.
+
+### Write the Skill
+
+Create the skill directory in the canonical location:
 
 ```bash
 mkdir codex/.agents/skills/my-skill-name
-# Then create SKILL.md with proper frontmatter (see template above)
+# Then create SKILL.md with proper frontmatter
 ```
 
 Both Claude and Codex share this directory — Claude accesses it via a symlink at `claude/.claude/skills`.
 
-## Codex-First Workflow (Replacement For System `skill-creator`)
+### Authoring Workflow
 
-1. Define the trigger and boundary first
-   Write a trigger-only description ("Use when..." is preferred). Keep process details in the body.
-2. Create or update the canonical folder
-   Work only in `codex/.agents/skills/<skill-name>/` and keep `name` equal to the directory name.
-3. Keep SKILL.md lean, push heavy detail to resources
-   Put long reference material in `references/`, reusable code in `scripts/`, and templates/data in `assets/`.
-4. Maintain optional Codex UI metadata when used
-   If `agents/openai.yaml` exists for a skill, keep it aligned with SKILL.md semantics (`display_name`, `short_description`, `default_prompt`, and policy values).
-5. Run lightweight validation checks before completion
-   Confirm frontmatter parses, `name` matches folder, description style matches intent (trigger-style for user-facing skills, declarative for clearly non-invocable/background skills), and referenced relative files exist.
+1. Define the trigger and boundary first — write a trigger-only description
+2. Create the canonical folder in `codex/.agents/skills/<skill-name>/` with `name` matching directory name
+3. Keep SKILL.md lean, push heavy detail to `references/`, reusable code to `scripts/`, templates to `assets/`
+4. Maintain optional Codex UI metadata when used — keep `agents/openai.yaml` aligned with SKILL.md semantics
+5. Run validation checks before completion
 
 ### Validation Snippets
 
@@ -191,15 +211,109 @@ codex/.agents/skills/         # Source of truth — all skills live here
 - [ ] README: if adding or removing a skill, update the skills table in repo root README
 - [ ] Size: <500 words for most skills, <200 for frequently-loaded
 
+---
+
+## Description Optimization
+
+After creating or improving a skill, validate the description for triggering accuracy using eval queries and manual testing.
+
+### Step 1: Generate trigger eval queries
+
+Create 20 eval queries — a mix of should-trigger (8-10) and should-not-trigger (8-10). Save as JSON:
+
+```json
+[
+  {"query": "the user prompt", "should_trigger": true},
+  {"query": "another prompt", "should_trigger": false}
+]
+```
+
+**Query quality matters.** Queries must be realistic — concrete, specific, with detail like file paths, personal context, column names, casual speech, typos, varied lengths. Focus on edge cases, not clear-cut matches.
+
+Bad: `"Format this data"`, `"Create a chart"`
+
+Good: `"ok so my boss just sent me this xlsx file (its in my downloads, called something like 'Q4 sales final FINAL v2.xlsx') and she wants me to add a column that shows the profit margin as a percentage"`
+
+**Should-trigger queries:** Different phrasings of the same intent — formal and casual. Include cases where the user doesn't explicitly name the skill but clearly needs it. Uncommon use cases and competitive triggers where this skill should win.
+
+**Should-not-trigger queries:** Near-misses are the most valuable — queries sharing keywords or concepts but needing something different. Adjacent domains, ambiguous phrasing where naive keyword matching would falsely trigger. Don't use obviously irrelevant queries.
+
+### Step 2: Review with user
+
+Present the eval set using the HTML template:
+
+1. Read `assets/eval_review.html`
+2. Replace `__EVAL_DATA_PLACEHOLDER__` with the JSON array, `__SKILL_NAME_PLACEHOLDER__` with the skill name, `__SKILL_DESCRIPTION_PLACEHOLDER__` with current description
+3. Write to a temp file and open it: `open /tmp/eval_review_<skill-name>.html`
+4. User edits queries, toggles triggers, clicks "Export Eval Set"
+5. Read the exported file from `~/Downloads/eval_set.json`
+
+### Step 3: Manual trigger testing
+
+Test a handful of should-trigger and should-not-trigger queries in a live interactive session. Observe whether the skill triggers or the agent answers directly. Focus on edge cases and near-misses — the queries you're least confident about.
+
+If a should-trigger query doesn't trigger, iterate on the description: add adjacent phrasings, make trigger conditions more explicit, or broaden the symptom language. Retest.
+
+### Step 4: Apply the result
+
+Update the skill's SKILL.md frontmatter with the improved description. Show the user before/after.
+
+---
+
+## Eval-Driven Iteration
+
+For skills with objectively verifiable outputs, run test prompts to measure quality and iterate.
+
+### When to use evals
+
+Use the full eval loop when a skill produces structured, verifiable output — file transforms, code generation, data extraction, fixed workflow steps. Skip it for subjective/methodology skills (debugging process, review checklists) where human judgment is the only meaningful evaluation.
+
+### The core loop
+
+1. Write 2-3 realistic test prompts (save to `evals/evals.json` — see `references/schemas.md`)
+2. Spawn subagent test runs: with-skill vs baseline, in parallel
+3. Grade outputs against assertions
+4. Launch the eval viewer for human review
+5. Read feedback, improve the skill, repeat
+
+For the detailed step-by-step workflow (workspace layout, subagent prompts, grading, benchmarking, viewer commands), read `references/eval-workflow.md`.
+
+### Improvement Philosophy
+
+When iterating on a skill based on eval feedback:
+
+1. **Generalize from feedback.** The few test cases help iterate fast, but the skill will be used across many different prompts. Avoid overfitting to specific examples — if something is stubbornly failing, try different approaches or metaphors rather than adding rigid constraints.
+
+2. **Keep the skill lean.** Read the test transcripts, not just final outputs. If the skill makes the agent waste time on unproductive steps, remove those instructions.
+
+3. **Explain the why.** Frame instructions around reasoning rather than rigid rules. ALWAYS/NEVER in caps is a yellow flag — reframe with the reasoning so the model understands what matters and can generalize.
+
+4. **Extract repeated work.** If all test runs independently build similar helper scripts or take the same multi-step approach, that's a signal to bundle the script in `scripts/` so future invocations don't reinvent it.
+
+---
+
+## Bundled Resources
+
+This skill includes infrastructure for eval-driven iteration:
+
+- `agents/` — Subagent instructions for grading (`grader.md`), blind comparison (`comparator.md`), and analysis (`analyzer.md`)
+- `eval-viewer/` — HTML viewer for reviewing test outputs (`viewer.html`)
+- `assets/` — Eval review HTML template for description optimization
+- `references/` — JSON schemas (`schemas.md`) and detailed eval workflow (`eval-workflow.md`)
+
 ## Cross-References
 
-**For description quality**, apply the `prompt-engineer` skill criteria when writing or reviewing descriptions. Skill descriptions are prompts — they determine when the model loads the skill. Evaluate each description for: trigger-only (no workflow summary), specificity (would the model match this to the right request?), overlap (does another skill's description match the same trigger?), and completeness (are common triggering scenarios covered?).
+**For description quality**, apply the `prompt-engineer` skill criteria when writing or reviewing descriptions. Skill descriptions are prompts — they determine when the model loads the skill.
 
-**For the open spec**, see [agentskills.io/specification](https://agentskills.io/specification). Standard fields work across all compatible agents. **For Claude Code extensions**, consult the `claude-code-guide` agent (Claude CLI only; it may not exist in Codex-focused repos) — Claude-specific fields may change between releases. Platform skill docs: [Claude Code](https://code.claude.com/docs/en/skills) | [Codex](https://developers.openai.com/codex/skills).
+**For introspect integration**, when `introspect` rates a description NEEDS WORK or WEAK, feed it into the Description Optimization workflow above.
+
+**For the open spec**, see [agentskills.io/specification](https://agentskills.io/specification). Platform skill docs: [Claude Code](https://code.claude.com/docs/en/skills) | [Codex](https://developers.openai.com/codex/skills).
 
 ## Anti-Patterns
 
-- **Workflow in description** - Claude follows description instead of reading skill
-- **Narrative examples** - "In session X, we found..." - not reusable
-- **Multi-language examples** - One excellent example beats many mediocre ones
-- **Generic names** - `helper`, `utils`, `process` - name by what you DO
+- **Workflow in description** — Claude follows description instead of reading skill
+- **Narrative examples** — "In session X, we found..." — not reusable
+- **Multi-language examples** — One excellent example beats many mediocre ones
+- **Generic names** — `helper`, `utils`, `process` — name by what you DO
+- **Overfitting to test cases** — Rigid constraints for specific examples rather than general principles
+- **Heavy-handed MUSTs** — Explain the reasoning instead of shouting
