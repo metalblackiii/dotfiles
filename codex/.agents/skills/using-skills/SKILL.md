@@ -50,6 +50,7 @@ To avoid trigger collisions:
 4. Use `self-documenting-code` for naming/readability in code, not documentation artifact generation.
 5. Use `handoff` to preserve WIP for the next session.
 6. Use `playwright-cli` for interactive browser automation (navigation, forms, scraping). Use `neb-playwright-expert` only for writing Playwright test files in neb-www.
+7. Use `snyk-scan` for running scans and applying fixes. Use `snyk-expert` for interpreting results, advisory, and configuration questions.
 
 ## Red Flags
 

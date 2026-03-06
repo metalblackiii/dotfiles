@@ -160,6 +160,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **self-review** | Pre-commit/pre-PR quality gate for local git changes |
 | **snyk-expert** | Interpreting Snyk scan results, CVE/CWE assessment, vulnerability prioritization, CLI config, container scanning, remediation strategy |
+| **snyk-scan** | Scanning repos for vulnerabilities and applying fixes — orchestrates scan, assess, approve, remediate, report |
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |

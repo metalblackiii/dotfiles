@@ -1,6 +1,6 @@
 ---
 name: snyk-expert
-description: Use when interpreting Snyk scan results, understanding CVEs or CWEs, prioritizing vulnerabilities, choosing Snyk CLI flags, configuring Snyk for a repo, evaluating dependency upgrade risk, assessing container base image security, or deciding whether to fix, ignore, or accept a vulnerability. Also triggers on "is this exploitable", "should I upgrade this package", "what does this snyk output mean", or general application security scanning questions.
+description: Use when interpreting Snyk scan results, understanding CVEs or CWEs, prioritizing vulnerabilities, choosing Snyk CLI flags, configuring Snyk for a repo, evaluating dependency upgrade risk, assessing container base image security, or deciding whether to fix, ignore, or accept a vulnerability. Also triggers on "is this exploitable", "should I upgrade this package", "what does this snyk output mean", or general application security scanning questions. Not for running scans or applying fixes — use snyk-scan for that.
 ---
 
 # Snyk Expert
@@ -21,7 +21,7 @@ Security scanning specialist for Node.js applications using Snyk CLI. Covers vul
 
 ## When NOT to Use
 
-- Running an automated scan-fix workflow — that's `snyk-scan` (future skill)
+- Running an automated scan-fix workflow — use `snyk-scan`
 - General code review without security focus — use `review` or `self-review`
 - Implementing security controls in code — use `secure-code-guardian`
 - Deep security audit of a system — use `security-reviewer`
@@ -104,7 +104,7 @@ snyk test --json | jq '[.vulnerabilities[] | select(.id == "SNYK-JS-EXAMPLE-123"
 
 ## Related Skills
 
-- **snyk-scan** — automated scan-fix workflow (future)
+- **snyk-scan** — automated scan-assess-fix workflow
 - **secure-code-guardian** — implementing security controls in application code
 - **security-reviewer** — deep security audits and threat modeling
 - **neb-ms-conventions** — neb service patterns (relevant for understanding dependency usage)
