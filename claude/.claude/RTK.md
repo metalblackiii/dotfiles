@@ -23,7 +23,7 @@ which rtk             # Verify correct binary
 
 ## Hook-Based Usage
 
-All other commands are automatically rewritten by the Claude Code hook.
-Example: `git status` → `rtk git status` (transparent, 0 tokens overhead)
+All other commands are automatically rewritten by the `rtk-rewrite.sh` PreToolUse hook.
+Example: `git status` → `rtk git status` (transparent, no extra tokens)
 
-Refer to CLAUDE.md for full command reference.
+No additional configuration needed — the hook handles rewriting transparently.

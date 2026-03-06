@@ -1,9 +1,6 @@
 ---
 name: writing-skills
-description: >
-  Use when creating, updating, testing, or optimizing skills in this repo.
-  Covers SKILL.md authoring, frontmatter conventions, description tuning,
-  eval-driven iteration, and description quality for triggering accuracy.
+description: Use when creating, updating, testing, or optimizing skills in this repo.
 ---
 
 # Writing Skills
