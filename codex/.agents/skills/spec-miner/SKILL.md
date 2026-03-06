@@ -1,6 +1,6 @@
 ---
 name: spec-miner
-description: Use when understanding legacy or undocumented systems, reverse-engineering specifications from existing code, or creating documentation for existing features before modifying them. Source is code, not docs — for analyzing requirements from tickets or specs, use requirements-analyst instead.
+description: Use when understanding legacy or undocumented systems, reverse-engineering specifications from existing code, or creating documentation for existing features before modifying them. Triggers on "reverse-engineer this feature", "document what this code does", "what does this system actually do", or "extract the spec from code". Source is code, not docs — for analyzing requirements from tickets or specs, use requirements-analyst instead.
 ---
 
 # Spec Miner

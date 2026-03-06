@@ -1,9 +1,13 @@
 ---
 name: neb-ms-conventions
-description: Use when implementing or modifying backend code in neb-ms-* or neb-microservice repositories and you need neb service conventions (routing, controller, model, service, messaging patterns). For debugging, refactoring, testing strategy, or review workflows, use the corresponding process skills first and apply this skill alongside them.
+description: Use when implementing or modifying backend code in neb-ms-* or neb-microservice repositories and you need neb service conventions (routing, controller, model, service, messaging patterns).
 ---
 
 # Neb Service Conventions
+
+## Sequencing
+
+For debugging, refactoring, testing strategy, or review workflows, use the corresponding process skills first (e.g., `systematic-debugging`, `code-renovator`, `test-driven-development`, `review`) and apply this skill alongside them for neb-specific conventions.
 
 ## Overview
 
