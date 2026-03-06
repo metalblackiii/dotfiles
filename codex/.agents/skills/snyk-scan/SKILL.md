@@ -62,6 +62,13 @@ Parse JSON results and build a unified assessment. Load `snyk-expert` knowledge 
 - Direct vs transitive dependency
 - Whether an upgrade path exists (`isUpgradable`)
 
+**Verify every upgrade path before presenting it.** Snyk's `isUpgradable` and `upgradePath` fields can be misleading — an "upgradable" transitive dependency may require a major version bump of its parent. For each fixable vuln:
+
+1. Check `.upgradePath` in the JSON — if it jumps a major version of any package in the chain, flag it as a major bump, not a safe upgrade
+2. For minor bumps spanning 3+ versions, check the changelog for breaking changes — semver compliance is not guaranteed
+3. For transitive deps locked behind `@neb/*` or other internal packages, mark as "blocked by upstream" rather than "fixable"
+4. Only label an upgrade "safe" if it is a direct dependency patch/minor bump with no documented breaking changes, or a transitive patch with a verified upgrade chain
+
 **SAST results — report only:**
 - File path + line number
 - CWE and rule ID
@@ -109,17 +116,17 @@ Parse JSON results and build a unified assessment. Load `snyk-expert` knowledge 
 Present each risk tier as a batch. The human approves, skips, or modifies each batch.
 
 ```
-Batch 1: Critical/High with safe upgrades (N packages)
-  - lodash 4.17.20 -> 4.17.21 (patch, fixes 2 CVEs)
-  - express 4.17.1 -> 4.18.2 (minor, fixes 1 CVE)
+Batch 1: Critical/High with verified safe upgrades (N packages)
+  - lodash 4.17.20 -> 4.17.21 (patch, fixes 2 CVEs) — VERIFIED: direct patch bump
+  - body-parser 1.20.3 -> 1.20.4 (patch, fixes qs) — VERIFIED: changelog reviewed
   Approve this batch? [y/n/edit]
 
 Batch 2: Medium severity (N packages)
   ...
 
-Batch 3: Major version bumps (N packages)
-  - axios 0.21.1 -> 1.7.0 (MAJOR — breaking changes expected)
-    Review changelog before approving.
+Batch 3: Major bumps / unverified upgrades (N packages)
+  - glob 10.5.0 -> 12.0.0 (MAJOR — breaking API changes confirmed)
+  - axios 1.7.9 -> 1.13.5 (minor but 6 versions gap — changelog review needed)
   ...
 
 Batch 4: Container base image upgrades
@@ -199,6 +206,7 @@ Offer to create the PR if the user wants.
 ### MUST DO
 - Verify Snyk CLI is installed and authenticated before scanning
 - Parse exit code 1 as "vulns found" not "error" — only exit code 2 is a real error
+- Verify every upgrade path before presenting it — check `.upgradePath` for hidden major bumps, review changelogs for multi-version minor jumps, and flag transitive deps blocked by internal packages
 - Present ALL findings before asking for approval — no partial assessments
 - Get explicit human approval before every remediation batch
 - Make each fix an atomic commit with CVE references
@@ -211,6 +219,7 @@ Offer to create the PR if the user wants.
 - Auto-fix SAST findings — code-level fixes require human judgment (only 5-11% of AI code fixes survive verification)
 - Batch multiple package upgrades into a single commit — atomic commits enable clean reverts
 - Continue after `snyk test` exit code 2 — that's a CLI error, investigate first
+- Present semver assumptions as verified facts — "minor bump" does not mean "safe" without checking the actual upgrade path and changelog
 - Assume container image names — read from Dockerfile or ask the user
 - Create branches without asking the user for the name first
 
