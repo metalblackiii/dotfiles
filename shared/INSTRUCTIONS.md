@@ -2,7 +2,7 @@
 
 This configuration is managed via a dotfiles repo with symlinks.
 
-**Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets. To find the repo root, use `git rev-parse --show-toplevel` from any file inside it, or follow a symlink (e.g., `readlink ~/.claude/skills`) back to the source.
+**IMPORTANT: Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets. To find the repo root, use `git rev-parse --show-toplevel` from any file inside it, or follow a symlink (e.g., `readlink ~/.claude/skills`) back to the source.
 
 ## Subagent Model Defaults
 
@@ -19,7 +19,7 @@ This configuration is managed via a dotfiles repo with symlinks.
 ## Git Preferences
 
 - Use **conventional commit** style unless the project specifies otherwise
-- Only commit or push when I explicitly ask — every commit and push requires my approval
+- **IMPORTANT:** Only commit or push when I explicitly ask — every commit and push requires my approval
 - Never auto-commit follow-up changes after an initial commit — always prompt again
 - Always use the branch name I specify. If I haven't specified one, ask before creating a branch.
 - When using gh CLI across repos, verify repo context (`gh repo view --json nameWithOwner -q .nameWithOwner`) before running commands.
@@ -46,7 +46,7 @@ Detailed skill usage workflow lives in `using-skills` and is the source of truth
 - Use platform skill invocation (`Skill` tool in Claude Code, `$skill` in Codex). Direct SKILL.md reading is allowed for meta-maintenance and audit tasks.
 - Before responding to any task, scan the available skills list. If a skill's description matches the request, invoke it — even if you could answer without it. The skill exists because the unassisted answer isn't good enough.
 - Skip skills only for pure mechanical edits: single-line typo fixes, variable renames, file reads with no judgment involved.
-- Skills are mandatory when applicable.
+- **IMPORTANT:** Skills are mandatory when applicable.
 
 ## Code Quality
 
@@ -65,13 +65,13 @@ When touching code:
 
 Don't gold-plate. Don't add features nobody asked for. But don't leave code worse than you found it either.
 
-When asked to "simplify", that means reduce complexity — not restructure. Do not add plugin-style abstractions, path resolution systems, or multi-layer patterns unless explicitly requested.
+Don't add plugin-style abstractions, path resolution systems, or multi-layer patterns unless explicitly requested.
 
 ## Security
 
 Healthcare data context — HIPAA compliance matters.
 
-- Never output real PII (names, emails, SSNs, phone numbers) in examples or test data
+- **IMPORTANT:** Never output real PII (names, emails, SSNs, phone numbers) in examples or test data
 - Use placeholder data like `john.doe@example.com` or `555-0100`
 - Never hardcode credentials, API keys, or secrets — use environment variables or secret management
 - Never log PHI, PII, or sensitive data (tokens, passwords, SSNs)

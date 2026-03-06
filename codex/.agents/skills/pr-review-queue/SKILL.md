@@ -1,6 +1,6 @@
 ---
 name: pr-review-queue
-description: Use when you need a consolidated dashboard of GitHub pull requests where you are a requested or active reviewer, with action buckets (needs review, waiting on author, approved, stale) plus draft and watching sections.
+description: Use when you need to see what PRs need your review. Triggers on "review queue", "what needs my review", "pending reviews", or "PRs I'm a reviewer on".
 allowed-tools: Bash, Read, Glob, Grep
 ---
 

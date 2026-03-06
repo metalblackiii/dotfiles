@@ -1,6 +1,6 @@
 ---
 command: co-implement
-description: Plan a feature, delegate implementation to Codex CLI, then supervise
+description: Use when implementation effort is high enough to delegate to Codex. Plans the feature, hands off to Codex, then reviews the result.
 argument-hint: <feature description or path(s) to existing spec doc(s)>
 ---
 

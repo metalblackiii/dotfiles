@@ -1,6 +1,6 @@
 ---
 command: co-research
-description: Dispatch Claude agents and Codex in parallel for deep research, then synthesize into a structured reference document
+description: Use when a topic needs multi-angle deep research before a decision. Dispatches parallel agents and Codex, then synthesizes into a reference document.
 argument-hint: <research topic as a phrase>
 ---
 
