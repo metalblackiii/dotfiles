@@ -189,25 +189,27 @@ Omit any severity section that has no findings.
 
 Only if the user explicitly asks to submit the review to GitHub.
 
-#### 7.1 Comment Placement Policy (Default Behavior)
+#### 7.1 Comment Placement Policy (Iron Rule)
 
-When the user asks to "leave comments" or "submit review", place feedback by type:
+**Inline comments are the default for all code feedback. `gh pr review --comment` is almost never the right tool.**
 
-- **Inline review comments** for findings tied to specific changed code (`file:line`).
-- **Top-level review body** for cross-cutting/general feedback without a clear diff anchor.
-- If both exist, submit a single `COMMENTED` review containing inline comments plus a short top-level summary.
-- Do **not** use `gh pr comment` unless the user explicitly asks for a conversation comment (not a review).
+When the user asks to "leave comments" or "submit review":
 
-This avoids losing code-specific feedback in the Conversation-only surface.
+- **Every finding that has a file:line anchor MUST be an inline review comment** — use `gh api` with the `comments` array. This includes criticals, importants, minors, and suggestions. If you can point to a line, it goes inline.
+- **Top-level review body only** for feedback that genuinely has no code anchor — e.g., "I can't review this without more context on the approach" or a one-sentence overall verdict. This is rare.
+- If you have both, submit a single `COMMENTED` review with inline comments and a minimal top-level body. Do not duplicate inline content in the top-level body.
+- **Never use `gh pr review --comment`** for findings. It posts to the Conversation tab only and loses the file/line context entirely. Only use it if explicitly asked for a conversation-only comment.
+
+Submitted reviews cannot be deleted. Get it right the first time.
 
 #### 7.2 Command Decision Table
 
 | Intent | Command pattern |
 |---|---|
-| Top-level review comment only | `gh pr review <PR> --comment --body-file <file>` |
-| Inline review comments (with or without summary) | `gh api -X POST repos/<org>/<repo>/pulls/<PR>/reviews --input <json>` |
-| Request changes | `gh pr review <PR> --request-changes --body-file <file>` |
+| Inline comments (default for all findings) | `gh api -X POST repos/<org>/<repo>/pulls/<PR>/reviews --input <json>` |
 | Approve | `gh pr review <PR> --approve --body-file <file>` |
+| Request changes | `gh pr review <PR> --request-changes --body-file <file>` |
+| Conversation-only comment (rare, explicit request only) | `gh pr review <PR> --comment --body-file <file>` |
 
 #### 7.3 Inline Review Payload Template
 
