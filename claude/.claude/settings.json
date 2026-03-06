@@ -142,7 +142,8 @@
       "Bash(*curl *)",
       "Bash(*chmod *)",
       "Bash(*npm deprecate *)",
-      "Bash(*gh repo archive *)"
+      "Bash(*gh repo archive *)",
+      "Bash(*brew *)"
     ],
     "defaultMode": "default"
   },
