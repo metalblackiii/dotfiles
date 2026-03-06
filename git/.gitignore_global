@@ -7,3 +7,6 @@
 .co-implement/
 .codex-review/
 HANDOFF.md
+
+# Claude Code local settings (per-user, not committed)
+.claude/settings.local.json
