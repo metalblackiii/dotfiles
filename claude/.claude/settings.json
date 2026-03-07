@@ -177,6 +177,15 @@
             "command": "~/.claude/hooks/guard-sensitive-paths.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/guard-git-ops.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
