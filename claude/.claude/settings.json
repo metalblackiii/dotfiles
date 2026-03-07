@@ -197,5 +197,6 @@
   },
   "autoUpdatesChannel": "stable",
   "minimumVersion": "2.1.70",
+  "autoMemoryEnabled": false,
   "effortLevel": "high"
 }
