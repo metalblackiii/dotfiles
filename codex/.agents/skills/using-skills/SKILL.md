@@ -36,6 +36,7 @@ Skills compose naturally. Common sequences:
 - **Security-sensitive implementation:** `feature-forge` (or `requirements-analyst`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
 - **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)
 - **Quick wins:** `quick-wins` → `code-renovator` / `test-driven-development` (to act on findings)
+- **Multi-repo batch:** `batch-repo-ops` → `verification-before-completion`
 - **End of session:** `handoff` (if WIP remains)
 
 When multiple skills apply, invoke process skills first (debugging, planning), then implementation skills (domain-specific, testing).
@@ -51,6 +52,7 @@ To avoid trigger collisions:
 5. Use `handoff` to preserve WIP for the next session.
 6. Use `playwright-cli` for interactive browser automation (navigation, forms, scraping). Use `neb-playwright-expert` only for writing Playwright test files in neb-www.
 7. Use `snyk-scan` for running scans and applying fixes. Use `snyk-expert` for interpreting results, advisory, and configuration questions.
+8. Use `batch-repo-ops` for applying the same operation across multiple repos. Use `co-implement` for single-repo delegation to Codex. Use `co-research` for multi-repo research/survey (not changes).
 
 ## Red Flags
 

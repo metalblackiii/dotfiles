@@ -140,6 +140,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
+| **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
