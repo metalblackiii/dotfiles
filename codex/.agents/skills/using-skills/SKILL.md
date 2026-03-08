@@ -41,19 +41,6 @@ Skills compose naturally. Common sequences:
 
 When multiple skills apply, invoke process skills first (debugging, planning), then implementation skills (domain-specific, testing).
 
-## Overlap Precedence
-
-To avoid trigger collisions:
-
-1. If the user asks for "review", default to `review` or `self-review`.
-2. Use `security-reviewer` only for explicit security audits or deep security assessments.
-3. Use `secure-code-guardian` for implementing or remediating security controls in code.
-4. Use `self-documenting-code` for naming/readability in code, not documentation artifact generation.
-5. Use `handoff` to preserve WIP for the next session.
-6. Use `playwright-cli` for interactive browser automation (navigation, forms, scraping). Use `neb-playwright-expert` only for writing Playwright test files in neb-www.
-7. Use `snyk-scan` for running scans and applying fixes. Use `snyk-expert` for interpreting results, advisory, and configuration questions.
-8. Use `batch-repo-ops` for applying the same operation across multiple repos. Use `co-implement` for single-repo delegation to Codex. Use `co-research` for multi-repo research/survey (not changes).
-
 ## Red Flags
 
 If you're thinking any of these, stop and check for skills:

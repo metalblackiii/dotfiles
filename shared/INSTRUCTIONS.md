@@ -6,14 +6,28 @@ This configuration is managed via a dotfiles repo with symlinks.
 
 ## Subagent Model Defaults
 
+### Claude Code
+
 - Default to `model: "sonnet"` for Explore and general-purpose subagents
 - Use `model: "haiku"` for trivial search/lookup tasks
 - Only use Opus for subagents when complex reasoning is explicitly needed
 
+### Codex
+
+N/A — Codex does not support subagent model selection.
+
 ## Tool Preferences
+
+### Claude Code
 
 - **Prefer built-in tools over Bash equivalents** — `Read` not `cat`, `Glob` not `find`/`ls`, `Grep` not `grep`/`rg`.
 - **Fallback preference when shell is needed** — use `rg` for text search and `fd` (or `rg --files`) for file discovery.
+- `head`/`tail` are allowed for quick peeking. Never attempt to work around deny rules.
+
+### Codex
+
+- Prefer platform-native tools when available in the active Codex runtime.
+- In shell-first Codex environments, use `rg` for text search and `fd` (or `rg --files`) for file discovery.
 - `head`/`tail` are allowed for quick peeking. Never attempt to work around deny rules.
 
 ## Git Preferences
