@@ -6,6 +6,7 @@
 .co-research/
 .co-implement/
 .codex-review/
+.prd-loop/
 HANDOFF.md
 
 # Claude Code local settings (per-user, not committed)
