@@ -51,7 +51,6 @@
       "Write(~/.claude/scripts/**)",
       "Write(~/.claude/agents/**)"
     ],
-    "ask": [],
     "defaultMode": "default"
   },
   "hooks": {

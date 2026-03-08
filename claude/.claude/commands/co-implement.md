@@ -115,7 +115,22 @@ Maximum 3 Codex passes per spec. If still incomplete after 3, summarize what's d
 
 Track cumulative results: files changed, criteria met/unmet, and pass count per spec.
 
-## Step 6 — Stage Gate
+## Step 6 — Automated Peer Review
+
+After all specs pass acceptance criteria, dispatch an isolated peer review before presenting to the user.
+
+Invoke the `peer-review` skill with `git diff` (unstaged changes from Codex). The skill handles context isolation, criteria loading, and reviewer dispatch.
+
+If peer-review returns **Critical** findings:
+- Present findings to the user
+- Ask: "Peer review found critical issues. Fix before staging, or proceed anyway?"
+- If fixing: write a focused follow-up spec addressing the critical findings and return to Step 4 (counts against the 3-pass limit for the current spec)
+
+If peer-review returns only **Important** or **Minor** findings (or none):
+- Include findings in the Stage Gate summary (Step 7) for user awareness
+- Proceed to Step 7
+
+## Step 7 — Stage Gate
 
 Show the user a combined summary:
 - For multi-spec runs, list results per spec:
