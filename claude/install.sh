@@ -17,6 +17,7 @@ CLAUDE_ITEMS=(
     "CLAUDE.md"
     "settings.json"
     "RTK.md"
+    "GUARD.md"
     "hooks"
     "skills"
     "agents"

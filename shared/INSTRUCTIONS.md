@@ -109,3 +109,4 @@ Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-cont
 - The name test: read the name aloud. If you need "which means..." to explain it, the name failed.
 
 @RTK.md
+@GUARD.md
