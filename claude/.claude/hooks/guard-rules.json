@@ -1,0 +1,158 @@
+{
+  "deny": [
+    {
+      "commands": ["rm -rf", "rm -r", "chown"],
+      "category": "destructive filesystem"
+    },
+    {
+      "commands": ["kill", "killall", "pkill", "launchctl"],
+      "category": "process management"
+    },
+    {
+      "commands": ["sudo"],
+      "category": "privilege escalation"
+    },
+    {
+      "regex": "\\bpython3?\\s+-c\\b",
+      "category": "arbitrary code execution"
+    },
+    {
+      "commands": ["xargs"],
+      "category": "unpredictable scope",
+      "nudge": "Use targeted commands with explicit arguments instead."
+    },
+    {
+      "commands": ["wget"],
+      "category": "insecure fetch",
+      "nudge": "Use curl (with ask approval) or the WebFetch tool instead."
+    },
+    {
+      "regex": "\\bsed\\s+",
+      "category": "tool preference",
+      "nudge": "Use the Edit tool instead."
+    },
+    {
+      "regex": "\\bawk\\s+",
+      "category": "tool preference",
+      "nudge": "Use the Edit tool instead."
+    },
+    {
+      "regex": "\\becho\\s+.*>",
+      "category": "tool preference (no redirect)",
+      "nudge": "Use the Write tool to create files instead of shell redirects."
+    },
+    {
+      "regex": "\\bprintf\\s+.*>",
+      "category": "tool preference (no redirect)",
+      "nudge": "Use the Write tool to create files instead of shell redirects."
+    },
+    {
+      "commands": ["npm publish", "npm unpublish"],
+      "category": "package registry"
+    },
+    {
+      "commands": ["gh repo delete"],
+      "category": "GitHub destructive"
+    },
+    {
+      "commands": ["docker run --privileged"],
+      "category": "Docker privileged"
+    },
+    {
+      "regex": "\\bdocker\\s+run\\s+-v\\s+/:/host",
+      "category": "Docker privileged"
+    },
+    {
+      "regex": "\\bdocker\\s+run\\s+-v\\s+/var/run/docker\\.sock:",
+      "category": "Docker privileged"
+    },
+    {
+      "regex": "\\baws\\s+[a-z-]+\\s+(delete|put|create|update|terminate|remove|modify|start|stop|invoke)\\b",
+      "category": "AWS mutations"
+    },
+    {
+      "commands": ["aws s3 rm", "aws s3 cp", "aws s3 mv", "aws s3 sync"],
+      "category": "AWS mutations"
+    },
+    {
+      "commands": [
+        "cdk deploy", "cdk destroy", "cdk bootstrap", "npx cdk",
+        "terraform apply", "terraform destroy",
+        "npm run deploy", "npm run destroy",
+        "serverless deploy", "sls deploy", "serverless remove", "sls remove"
+      ],
+      "category": "infrastructure as code"
+    },
+    {
+      "commands": [
+        "helm install", "helm upgrade", "helm delete", "helm uninstall", "helm rollback",
+        "kubectl apply", "kubectl delete", "kubectl create", "kubectl replace",
+        "kubectl patch", "kubectl scale", "kubectl rollout", "kubectl exec",
+        "kubectl edit", "kubectl drain", "kubectl cordon", "kubectl taint"
+      ],
+      "category": "Kubernetes / Helm"
+    },
+    {
+      "commands": ["git reset --hard", "git push --force", "git push -f", "git branch -D"],
+      "category": "destructive git"
+    },
+    {
+      "regex": "\\bgit\\s+clean\\s+-f",
+      "category": "destructive git"
+    },
+    {
+      "regex": "\\bgit\\s+checkout\\s+--\\s+",
+      "category": "destructive git"
+    }
+  ],
+
+  "paths": [
+    {
+      "regex": "(^|\\s)\\.env($|\\s|[^a-zA-Z0-9])",
+      "category": ".env files"
+    },
+    {
+      "regex": "(^|\\s)[^ ]*/\\.env($|\\s|[^a-zA-Z0-9])",
+      "category": ".env files"
+    },
+    {
+      "regex": "/secrets/",
+      "category": "secrets directory"
+    },
+    {
+      "regex": "[^. ][^ ]*\\.(pem|key)($|\\s)",
+      "category": "certificate/key files"
+    },
+    {
+      "regex": "(^|\\s)(~|__HOME__)/\\.aws/",
+      "category": "home credentials"
+    },
+    {
+      "regex": "(^|\\s)(~|__HOME__)/\\.ssh/",
+      "category": "home credentials"
+    },
+    {
+      "regex": "(^|\\s)(~|__HOME__)/\\.(zshrc|bashrc|bash_profile|gitconfig)($|\\s)",
+      "category": "shell/git config"
+    }
+  ],
+
+  "ask": [
+    {
+      "commands": ["git commit", "git push", "git stash drop", "git restore"],
+      "category": "git mutation"
+    },
+    {
+      "commands": ["gh pr create", "gh pr merge", "gh pr close", "gh issue close"],
+      "category": "GitHub"
+    },
+    {
+      "commands": ["npm deprecate", "gh repo archive"],
+      "category": "registry/repo"
+    },
+    {
+      "commands": ["curl", "chmod", "brew"],
+      "category": "system tools"
+    }
+  ]
+}
