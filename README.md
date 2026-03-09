@@ -95,12 +95,13 @@ dotfiles/
 │   ├── uninstall.sh
 │   └── .claude/
 │       ├── CLAUDE.md        # Symlink → ../../shared/INSTRUCTIONS.md
+│       ├── GUARD.md         # Guard-rules context (included via @GUARD.md)
 │       ├── RTK.md           # RTK usage reference (included via @RTK.md)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 3 custom subagents
-│       ├── commands/        # Slash commands (co-implement)
+│       ├── commands/        # Slash commands (co-implement, co-research, prd-loop)
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
-│       ├── scripts/         # Status bar script
+│       ├── scripts/         # Status bar, prd-loop orchestration
 │       └── skills           # Symlink → ../../codex/.agents/skills
 ├── docs/                    # Research docs, postmortems, analysis artifacts
 ├── install.sh               # Orchestrator — runs */install.sh
@@ -121,15 +122,14 @@ dotfiles/
 
 Codex owns the canonical skill directory (`codex/.agents/skills/`), which is symlinked to `~/.agents/skills/personal` at install time. Its platform-specific file is `config.toml`:
 
-- **Model**: `gpt-5.3-codex`
-- **Reasoning effort**: `xhigh` by default for long-running, high-complexity tasks where quality and depth matter more than latency
-- **Daily-driver guidance**: prefer `high` or `medium` when you want faster responsiveness for routine work
-- **Model-dependent support**: valid reasoning effort levels depend on the selected model; check your model's supported levels before setting this value
+- **Model**: configured per preference (see `config.toml`)
+- **Reasoning effort**: configured per preference; valid levels depend on the selected model
 - **Approval policy**: `on-request`
+- **Sandbox mode**: `workspace-write` with network access enabled (required for `gh` commands, web searches, and API calls)
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills
+### Skills (45)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -140,15 +140,26 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
+| **bash-script-generator** | Create, generate, or scaffold bash/shell scripts, automation, or CLI tools |
+| **bash-script-validator** | Validate, lint, audit, or fix bash/shell scripts via ShellCheck |
 | **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
+| **create-prd** | Define what to build before a prd-loop run, formalize a feature idea, or convert a ticket into an implementation-ready PRD |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
+| **dockerfile-generator** | Create, generate, or write Dockerfiles and multi-stage Docker images |
+| **dockerfile-validator** | Validate, lint, audit, or scan a Dockerfile for security and best practices |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
+| **github-actions-generator** | Create, generate, or scaffold GitHub Actions workflows and CI/CD pipelines |
+| **github-actions-validator** | Validate, lint, audit, fix GitHub Actions workflows |
 | **handoff** | Ending sessions with work in progress or high context usage |
+| **helm-generator** | Create, scaffold, or generate Helm charts, Chart.yaml, values.yaml, templates |
+| **helm-validator** | Validate, lint, audit Helm charts — Chart.yaml, templates, values.yaml, CRDs, schemas |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
+| **k8s-debug** | Diagnose and fix Kubernetes pods, CrashLoopBackOff, Pending, DNS, networking, storage, and rollout failures |
 | **mcp-vetting** | Security evaluation before installing or trusting any MCP server |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
+| **peer-review** | Context-isolated review gate for automated workflows (co-implement, prd-loop). Not for manual review — use self-review instead |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **pr-review-queue** | Consolidated dashboard for PRs where you are a reviewer, with action buckets and next-step triage |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
@@ -202,14 +213,17 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 | Command | Purpose |
 |---------|---------|
 | **co-implement** | Plan a feature, delegate implementation to Codex CLI, then supervise |
+| **co-research** | Dispatch parallel research agents and Codex, then synthesize findings |
+| **prd-loop** | Decompose a PRD into reviewable phases and execute them |
 
 ### Hooks & Scripts
 
 - **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
 - **rtk-rewrite.sh** — PreToolUse hook that transparently rewrites Bash commands through [RTK](https://github.com/rtk-ai/rtk) for token savings. Silently no-ops if `rtk` or `jq` aren't installed.
-- **guard-sensitive-paths.sh** — PreToolUse hook that blocks Bash access to sensitive file paths (env files, secrets, credentials).
+- **guard.sh** + **guard-rules.json** — PreToolUse hook that blocks Bash access to sensitive file paths (env files, secrets, credentials). Rules are externalized to JSON for easy editing.
 - **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.
 - **context-bar.sh** — Status line script showing model, git branch, uncommitted files, sync status, and context usage percentage.
+- **prd-loop.sh** + **prd-loop-prompts/** — Script and prompt templates that power the `/prd-loop` command's phase decomposition and execution.
 
 ### Permissions
 

@@ -45,6 +45,32 @@ Below the frontmatter is the skill body: the actual guidance, patterns, examples
 
 Skills can reference each other. The `review` and `self-review` skills both consume `pr-analysis` internally. This keeps skills focused — each one does one thing well and delegates the rest.
 
+## Review Workflow in Practice
+
+This is how a typical code review session looks when the skills are wired up. It ties together several skills from the [Review Bundle](#2-review-bundle) into a repeatable flow.
+
+### 1. PR Review (Remote)
+
+Start with `/review <PR-url>`. This invokes the [`review`](codex/.agents/skills/review/SKILL.md) skill, which internally loads [`pr-analysis`](codex/.agents/skills/pr-analysis/) for consistent review criteria and [`self-documenting-code`](codex/.agents/skills/self-documenting-code/) for naming quality checks. You get a structured baseline covering architecture, tests, quality, and security.
+
+From there, go back and forth with the agent — challenge assumptions, ask whether something is greenfield or incremental, probe how important a finding really is. The baseline is a starting point, not a verdict.
+
+### 2. Domain-Specific Passes
+
+If the PR touches database logic (schema changes, complex queries, index impact), ask the agent to run the [`database-expert`](codex/.agents/skills/database-expert/) skill as a follow-up pass. This surfaces optimization and correctness issues that a general review misses.
+
+The same idea applies to any domain skill — `api-designer` for contract changes, `neb-playwright-expert` for E2E test changes. Stack domain passes on top of the general review when the diff warrants it.
+
+### 3. Local Self-Review (Before Commit)
+
+For your own code, open a shell in the same directory as your git changes and run `/self-review`. This uses the [`self-review`](codex/.agents/skills/self-review/SKILL.md) skill, which reviews your local diffs without needing `gh` or a remote PR. It shares the same `pr-analysis` and `self-documenting-code` criteria as the full review, so the bar is consistent.
+
+Self-review works best as a pre-commit gate — catch issues before they leave your machine rather than after a teammate flags them.
+
+### Platform Note
+
+Both Claude Code and Codex can run this workflow. The skills are shared via symlinks, so the same guidance runs on either platform. Invocation syntax differs: Claude Code uses `/review` and `/self-review`, while Codex uses `$review` and `$self-review`. (`/review` also works in Codex since it's registered as a command there.) Claude Code tends to produce slightly more detailed output; Codex is faster for batch work. Use whichever fits the moment.
+
 ## Why Skills Improve Agent Performance
 
 ### Progressive Disclosure Beats Prompt Bloat
@@ -81,18 +107,6 @@ In Codex, the `developer_instructions` field in `config.toml` runs on every sess
 
 Even if you don't adopt the full skill set, adding a skills-first reminder to your agent's always-on instructions is high-value with low effort.
 
-### Review / Self-Review Pair
-
-Two skills, two purposes:
-- **`self-review`** — Pre-commit quality gate. Runs against local diffs only, no `gh` needed. Catches issues before they leave your machine.
-- **`review`** — Full PR review against a GitHub PR. Uses `gh` CLI. Catches issues before they reach teammates.
-
-Both consume `pr-analysis` internally, so the review criteria are consistent whether you're reviewing your own work or someone else's.
-
-### The Fool for Decisions
-
-The `the-fool` skill provides structured critical reasoning — devil's advocate, pre-mortem, red team, assumption auditing. Invoke it before committing to a design or plan. It's surprisingly effective at surfacing blind spots that you're too close to see.
-
 ### ATTRIBUTION.md Culture
 
 When you adapt someone's skill, credit them. When someone adapts yours, they credit you. The `ATTRIBUTION.md` file tracks where skills came from. This creates a healthy sharing ecosystem where people feel safe publishing their work because they know they'll get credit.
@@ -113,11 +127,12 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), this bundle
 
 ### 2) Review Bundle
 
-This bundle tightens quality gates before code reaches teammates:
+This bundle tightens quality gates before code reaches teammates. See [Review Workflow in Practice](#review-workflow-in-practice) for how these skills fit together in a typical session.
 
 - `review` — Full GitHub PR review for architecture, tests, quality, and security.
 - `self-review` — Fresh-eyes local diff review before commit/PR, no `gh` required.
 - `pr-analysis` — Shared review checklist criteria consumed by `review` and `self-review`.
+- `self-documenting-code` — Naming and comment quality criteria. Not invoked directly — consumed by `review` and `self-review` during their naming scan step.
 
 ### 3) Meta Bundle
 
@@ -126,13 +141,14 @@ These skills help you improve the system itself:
 - `writing-skills` — Create/edit SKILL.md files and frontmatter conventions.
 - `introspect` — Audit agent configuration for conflicts, redundancy, and stale guidance.
 - `audit-skills` — Measure skill adoption and find dormant skills.
+- `prompt-engineer` — Design prompts, optimize model performance, build evaluation frameworks, and implement advanced prompting techniques.
 
 ### 4) Niche Skills (Low-Cost One-Offs)
 
 Useful when the situation appears, with little ongoing overhead:
 
 - `handoff` — Capture session state when pausing or when context pressure is high.
-- `the-fool` — Structured critical reasoning, pre-mortems, red teams for decisions.
+- `the-fool` — Structured critical reasoning: devil's advocate, pre-mortems, red teams, assumption auditing. Invoke it before committing to a design or plan — it's surprisingly effective at surfacing blind spots you're too close to see.
 
 ### 5) Domain Skills (If It's Important to You)
 
@@ -153,15 +169,33 @@ Treat security as an opt-in escalation lane, not baseline complexity:
 
 This bundle does **not** require extra tooling to adopt. Teams can run in manual mode first (threat-focused code review + remediation guidance), then add scanner tooling later if they want deeper automation.
 
-## What This Repo Does Not Cover (Yet)
+### 7) Snyk Security Bundle (Tooling-Backed)
 
-This repo intentionally focuses on portable instructions + skills + symlinked platform config. Other valid approaches are out of scope or only partially covered:
+For teams that use Snyk CLI for vulnerability scanning:
+
+- `snyk-scan` — Scan repos for security vulnerabilities in dependencies, source code, and container images, then apply fixes.
+- `snyk-expert` — Interpret scan results, prioritize CVEs/CWEs, evaluate upgrade risk, and decide whether to fix, ignore, or accept a vulnerability.
+
+`snyk-scan` runs the scans and applies fixes; `snyk-expert` advises on the results. Use them together or independently. Requires Snyk CLI to be installed and authenticated.
+
+---
+
+These bundles are **curated highlights**, not an exhaustive list. The repo contains 45 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
+
+## What This Repo Does Not Cover
+
+This repo focuses on portable instructions + skills + symlinked platform config. Some adjacent approaches are partially covered or out of scope:
 
 - **MCP servers**: Model Context Protocol integrations for external tools and data sources. Useful, but not configured in this repo yet.
-- **Agentic programming / agent teams**: Partially covered — the `co-implement` command delegates implementation to Codex CLI, and Codex has `multi_agent = true` enabled. Full multi-agent orchestration patterns are not yet codified.
-- **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)).
+- **Agentic programming / agent teams**: Partially covered. Three Claude Code commands exist today:
+  - `/co-implement` — Plans a feature, delegates implementation to Codex CLI, then reviews the result.
+  - `/co-research` — Dispatches parallel research agents and Codex, then synthesizes findings.
+  - `/prd-loop` — Decomposes a PRD into reviewable phases and executes them.
 
-These approaches can complement this repo further. For now, the priority is a robust baseline that works reliably across Codex and Claude Code with minimal moving parts.
+  Codex also runs with `multi_agent = true`. Full multi-agent orchestration patterns are evolving but not yet fully codified as reusable skills.
+- **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)). The `prd-loop` command above is a step in this direction.
+
+These approaches complement the baseline. As patterns stabilize, they may graduate into proper skills.
 
 ## How to Start Your Own
 
