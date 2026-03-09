@@ -129,7 +129,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (45)
+### Skills (42)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -140,20 +140,17 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
-| **bash-script-generator** | Create, generate, or scaffold bash/shell scripts, automation, or CLI tools |
-| **bash-script-validator** | Validate, lint, audit, or fix bash/shell scripts via ShellCheck |
+| **bash-expert** | Create, generate, validate, lint, audit, or fix bash/shell scripts |
 | **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
 | **create-prd** | Define what to build before a prd-loop run, formalize a feature idea, or convert a ticket into an implementation-ready PRD |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
-| **dockerfile-generator** | Create, generate, or write Dockerfiles and multi-stage Docker images |
-| **dockerfile-validator** | Validate, lint, audit, or scan a Dockerfile for security and best practices |
+| **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
 | **feature-forge** | Defining new features, requirements workshops, writing specifications |
 | **github-actions-generator** | Create, generate, or scaffold GitHub Actions workflows and CI/CD pipelines |
 | **github-actions-validator** | Validate, lint, audit, fix GitHub Actions workflows |
 | **handoff** | Ending sessions with work in progress or high context usage |
-| **helm-generator** | Create, scaffold, or generate Helm charts, Chart.yaml, values.yaml, templates |
-| **helm-validator** | Validate, lint, audit Helm charts — Chart.yaml, templates, values.yaml, CRDs, schemas |
+| **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
 | **k8s-debug** | Diagnose and fix Kubernetes pods, CrashLoopBackOff, Pending, DNS, networking, storage, and rollout failures |
 | **mcp-vetting** | Security evaluation before installing or trusting any MCP server |

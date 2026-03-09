@@ -8,7 +8,7 @@ Skills in this repo were adapted from the following sources:
 - [ykdojo/claude-code-tips](https://github.com/ykdojo/claude-code-tips) — ast-grep-patterns, handoff skills, status line
 - [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) — playwright-cli skill (SKILL.md + references)
 - [rtk-ai/rtk](https://github.com/rtk-ai/rtk) — RTK (Rust Token Killer) CLI proxy, PreToolUse hook, and RTK.md context file
-- [akin-ozer/cc-devops-skills](https://github.com/akin-ozer/cc-devops-skills) — bash-script-generator, bash-script-validator, dockerfile-generator, dockerfile-validator, github-actions-generator, github-actions-validator, helm-generator, helm-validator, k8s-debug
+- [akin-ozer/cc-devops-skills](https://github.com/akin-ozer/cc-devops-skills) — bash-expert (merged from bash-script-generator + bash-script-validator), dockerfile-expert (merged from dockerfile-generator + dockerfile-validator), github-actions-generator, github-actions-validator, helm-expert (merged from helm-generator + helm-validator), k8s-debug
 
 All other skills are original work or codified from standard practices.
 
