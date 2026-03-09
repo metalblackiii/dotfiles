@@ -102,6 +102,7 @@ When a session runs long, proactively run the `handoff` skill before autocompact
 Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-context handoff is far more useful than a post-compact recovery.
 
 ## Self-Documenting Code
+<!-- Sync: baseline of codex/.agents/skills/self-documenting-code/SKILL.md -->
 
 - Every "what" comment is a naming failure. Try renaming before commenting.
 - Comments survive only for: WHY (business logic/regulatory), WARNING (non-obvious traps), TODO (with ticket number). Everything else dies.

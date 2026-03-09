@@ -1,6 +1,6 @@
 ---
 command: prd-loop
-description: Decompose a PRD into implementation phases, review and approve, then hand off to the execution loop.
+description: Use when you have a PRD ready for implementation and want to decompose it into reviewable phases before execution.
 argument-hint: <path-to-prd.md>
 ---
 

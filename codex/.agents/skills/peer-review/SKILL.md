@@ -1,6 +1,6 @@
 ---
 name: peer-review
-description: Context-isolated review of local git changes. Used manually for bias-free review, or as an automated post-implementation gate (e.g., co-implement Step 6). Dispatches an isolated agent with self-review criteria — no implementation context bias.
+description: Context-isolated review gate for automated workflows (e.g., co-implement Step 6, prd-loop). Dispatches a fresh agent with self-review criteria and no implementation context. For manual review, use self-review in a fresh terminal instead.
 argument-hint: [diff-command]
 ---
 

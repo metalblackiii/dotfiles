@@ -1,6 +1,6 @@
 ---
 name: create-prd
-description: Create a lean PRD structured for prd-loop execution. Interviews the user, explores the codebase, and produces a phased-implementation-ready PRD.
+description: Use when defining what to build before a prd-loop run, formalizing a feature idea, or converting a ticket into an implementation-ready PRD.
 ---
 
 # Create PRD
