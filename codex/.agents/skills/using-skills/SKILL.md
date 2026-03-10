@@ -30,10 +30,10 @@ Prefer platform skill invocation over reading SKILL.md directly. Direct reading 
 Skills compose naturally. Common sequences:
 
 - **Bugfix:** `systematic-debugging` → `test-driven-development` → `verification-before-completion`
-- **New feature:** `feature-forge` (or `requirements-analyst`) → `test-driven-development` → `verification-before-completion`
+- **New feature:** `create-prd` (or `requirements-analyst`) → `test-driven-development` → `verification-before-completion`
 - **Refactor:** `code-renovator` → `verification-before-completion`
 - **PR review:** `review` or `self-review` (these consume `pr-analysis` internally)
-- **Security-sensitive implementation:** `feature-forge` (or `requirements-analyst`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
+- **Security-sensitive implementation:** `create-prd` (or `requirements-analyst`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
 - **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)
 - **Quick wins:** `quick-wins` → `code-renovator` / `test-driven-development` (to act on findings)
 - **Multi-repo batch:** `batch-repo-ops` → `verification-before-completion`

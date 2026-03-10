@@ -142,11 +142,10 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
 | **bash-expert** | Create, generate, validate, lint, audit, or fix bash/shell scripts |
 | **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
-| **create-prd** | Define what to build before a prd-loop run, formalize a feature idea, or convert a ticket into an implementation-ready PRD |
+| **create-prd** | Define what to build before a prd-loop run, formalize a feature idea, convert a ticket into an implementation-ready PRD, or write feature specs with structured requirements |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
 | **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
-| **feature-forge** | Defining new features, requirements workshops, writing specifications |
 | **github-actions-generator** | Create, generate, or scaffold GitHub Actions workflows and CI/CD pipelines |
 | **github-actions-validator** | Validate, lint, audit, fix GitHub Actions workflows |
 | **handoff** | Ending sessions with work in progress or high context usage |

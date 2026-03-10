@@ -1,6 +1,6 @@
 ---
 name: create-prd
-description: Use when defining what to build before a prd-loop run, formalizing a feature idea, or converting a ticket into an implementation-ready PRD.
+description: Use when defining what to build before a prd-loop run, formalizing a feature idea, converting a ticket into an implementation-ready PRD, or writing feature specifications with structured requirements and acceptance criteria.
 ---
 
 # Create PRD
@@ -12,6 +12,14 @@ Interview-driven PRD generator. Produces lean PRDs optimized for decomposition a
 - Defining what to build before kicking off a prd-loop run
 - Converting a ticket, spec, or conversation into a structured PRD
 - When you have a feature idea but need to formalize scope, requirements, and acceptance criteria
+
+## Reference Guide
+
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Interview Questions | `references/interview-questions.md` | Neb-specific questions, structured elicitation techniques, PM/Dev hat question banks |
+| Specification Template | `references/specification-template.md` | Neb-specific spec sections (feature gating, cross-service impact, Kafka events) |
+| Acceptance Criteria | `references/acceptance-criteria.md` | Writing Given/When/Then acceptance criteria with neb examples |
 
 ## Step 1 — Seed
 
@@ -53,6 +61,8 @@ Conduct a focused interview. Ask questions **one topic at a time** — not a wal
 - What verification commands exist? (test suites, build, lint)
 - What must NOT break?
 
+For neb features touching multi-tenant, feature gating, or cross-service concerns, load `references/interview-questions.md` for deeper question banks and structured elicitation guidance.
+
 Use **structured choices** when answers have a finite set (priority, scope level, auth approach). Use **open-ended** questions for problem description, user journey, edge cases.
 
 After each round, summarize what you heard and confirm before moving on.
@@ -61,7 +71,7 @@ After each round, summarize what you heard and confirm before moving on.
 
 Derive a slug from the feature name (e.g., `phx-confetti`). Propose a branch name based on the slug — default to the slug itself (e.g., `phx-confetti`). The user can override either. Write to the path: `docs/prd-<slug>.md`.
 
-Use this lean format — optimized for prd-loop decomposition:
+Use this lean format — optimized for prd-loop decomposition. For neb features needing feature gating tables, cross-service impact matrices, or Kafka event mappings, load `references/specification-template.md` for expanded section templates.
 
 ```markdown
 # PRD: [Feature Title]
@@ -110,7 +120,7 @@ where and how to implement.]
 
 ## Acceptance Criteria
 
-Each criterion must be objectively testable:
+Each criterion must be objectively testable. Load `references/acceptance-criteria.md` for Given/When/Then patterns and neb-specific examples (feature gating, authorization, legacy compat).
 
 - **AC-1**: Given [precondition], when [action], then [expected result]
 - **AC-2**: Given [precondition], when [action], then [expected result]
@@ -182,7 +192,7 @@ Or directly in terminal:
 ## Constraints
 
 - **Interview before writing** — do not generate a PRD from assumptions
-- **Lean format only** — do not add sections beyond the template (no rollout plans, metrics dashboards, approval logs)
+- **Lean format by default** — do not add rollout plans, metrics dashboards, or approval logs. For neb features, reference files may expand existing sections (e.g., feature gating detail within Scope, cross-service impact within Codebase Context) but do not add top-level sections that the template doesn't define
 - **Codebase-grounded** — every codebase context entry must reference real files you've verified exist
 - **EARS format** for functional requirements — keeps them parseable and unambiguous
 - **One PRD per invocation** — if the feature is too large, suggest splitting into multiple PRDs

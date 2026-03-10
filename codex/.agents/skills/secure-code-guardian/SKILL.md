@@ -41,7 +41,7 @@ Security-first implementation skill for building and fixing controls in applicat
 
 ## Integration Rules
 
-- Use after requirements/design are clear (`feature-forge` or `requirements-analyst`).
+- Use after requirements/design are clear (`create-prd` or `requirements-analyst`).
 - Pair with `test-driven-development` for abuse-case tests before implementation.
 - Run `verification-before-completion` before claiming remediation is done.
 - If changes imply broader risk posture questions, escalate to `security-reviewer`.

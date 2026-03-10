@@ -110,4 +110,4 @@ Before interview, launch in parallel:
 Collect findings → Use them to inform interview questions
 ```
 
-This is especially valuable when feature-forge is invoked after codebase exploration — existing findings feed directly into more grounded interview questions.
+This is especially valuable when create-prd is invoked after codebase exploration — existing findings feed directly into more grounded interview questions.

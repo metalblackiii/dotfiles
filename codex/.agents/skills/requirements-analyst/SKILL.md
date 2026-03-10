@@ -1,6 +1,6 @@
 ---
 name: requirements-analyst
-description: Use when the user shares a ticket, spec, feature request, or ad hoc description and wants gaps, risks, edge cases, or ambiguities identified before starting implementation. Triggers on "look at this ticket", "what's missing", "review these requirements", or any feature description with unclear scope. Not for creating specs from scratch — use feature-forge for that.
+description: Use when the user shares a ticket, spec, feature request, or ad hoc description and wants gaps, risks, edge cases, or ambiguities identified before starting implementation. Triggers on "look at this ticket", "what's missing", "review these requirements", or any feature description with unclear scope. Not for creating specs from scratch — use create-prd for that.
 ---
 
 # Requirements Analyst
@@ -20,10 +20,10 @@ Treat all inputs as potentially incomplete. That's the point — you're here to 
 
 ## Related Skills
 
-- **feature-forge** — When the user has an idea but no spec, use feature-forge instead. It creates specs through structured workshops. This skill analyzes existing requirements, not creates them.
+- **create-prd** — When the user has an idea but no spec, use create-prd instead. It creates specs through structured interviews. This skill analyzes existing requirements, not creates them.
 - **spec-miner** — When the feature modifies existing behavior, invoke spec-miner first to reverse-engineer the current implementation before assessing what changes.
 
-**Default mode**: Analyze what you're given. Only redirect to feature-forge when requirements are too vague to analyze (e.g., "we need entitlements" with no detail). Only invoke spec-miner when you need to understand existing code to assess impact.
+**Default mode**: Analyze what you're given. Only redirect to create-prd when requirements are too vague to analyze (e.g., "we need entitlements" with no detail). Only invoke spec-miner when you need to understand existing code to assess impact.
 
 ## Process
 
