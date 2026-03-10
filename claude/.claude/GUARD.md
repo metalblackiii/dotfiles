@@ -4,8 +4,9 @@ All Bash deny/ask rules live in `~/.claude/hooks/guard-rules.json` (single sourc
 
 To add a rule, add an entry to the appropriate layer in `guard-rules.json`:
 - **deny**: blocked unconditionally, reason shown to Claude
-- **ask**: forces user confirmation prompt
 - **paths**: blocks commands referencing sensitive file patterns
+- **allow**: auto-accepts commands matching trusted patterns (bypasses ask)
+- **ask**: forces user confirmation prompt
 
 Rule formats:
 - `"commands": ["git stash drop"]` — human-readable, auto-converted to regex

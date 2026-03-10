@@ -137,6 +137,13 @@
     }
   ],
 
+  "allow": [
+    {
+      "regex": "\\b(rtk[[:space:]]+)?curl\\b.*[[:space:]]['\"]?https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?([/'\"[:space:]]|$)",
+      "category": "local dev testing"
+    }
+  ],
+
   "ask": [
     {
       "commands": ["git commit", "git push", "git stash drop", "git restore"],

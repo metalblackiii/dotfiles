@@ -111,7 +111,32 @@ while IFS= read -r regex; do
 done < <(jq -r '.paths // [] | .[].regex' "$RULES_FILE")
 
 # ---------------------------------------------------------------------------
-# Layer 3: ASK — forces user confirmation for all matches
+# Layer 3: ALLOW — auto-accept trusted patterns (exit silently to bypass ask)
+# ---------------------------------------------------------------------------
+
+while IFS=$'\t' read -r value entry_type _; do
+  [[ -z "$value" ]] && continue
+  if [[ "$entry_type" == "command" ]]; then
+    allow_pattern=$(command_to_regex "$value")
+  else
+    allow_pattern="$value"
+  fi
+  if echo "$CMD_CLEAN" | grep -qE "$allow_pattern"; then
+    exit 0  # no output = allow
+  fi
+done < <(
+  jq -r '
+    .allow // [] | .[] |
+    if has("commands") then
+      .commands[] | [., "command", ""] | join("\t")
+    else
+      [.regex, "regex", ""] | join("\t")
+    end
+  ' "$RULES_FILE"
+)
+
+# ---------------------------------------------------------------------------
+# Layer 4: ASK — forces user confirmation for all matches
 # Reason is shown to the user (not Claude), so no evasion hints leak.
 # ---------------------------------------------------------------------------
 
