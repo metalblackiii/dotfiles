@@ -26,6 +26,40 @@ type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 type Result = UnwrapPromise<Promise<string>>; // string
 ```
 
+## `const` Type Parameters (TS 5.0+)
+
+```typescript
+// Without const: literals widen
+declare function getRoutes<T extends readonly string[]>(routes: T): T;
+const r1 = getRoutes(["home", "about"]); // string[]
+
+// With const: literals preserved without call-site `as const`
+declare function getRoutes<const T extends readonly string[]>(routes: T): T;
+const r2 = getRoutes(["home", "about"]); // readonly ["home", "about"]
+
+// Practical API: type-safe event emitter
+function createEmitter<const T extends Record<string, (...args: any[]) => void>>(
+  events: T
+) {
+  return {
+    on<K extends keyof T>(event: K, handler: T[K]) { /* ... */ },
+    emit<K extends keyof T>(event: K, ...args: Parameters<T[K]>) { /* ... */ },
+  };
+}
+
+const emitter = createEmitter({
+  click: (x: number, y: number) => {},
+  resize: (width: number, height: number) => {},
+});
+// emitter.on("click", ...) is fully typed — event names are literal union
+```
+
+**When to use:** generic APIs where callers pass inline object/array literals and you want literal/tuple/readonly precision without requiring `as const` at every call site.
+
+**Constraint tip:** use `readonly` in the constraint (`const T extends readonly string[]`) to preserve tuple inference. Without `readonly`, TS may fall back to the mutable array type.
+
+**When NOT to use:** if the generic parameter is already constrained to a non-literal type, or callers always pass variables (already widened — `const` can't re-literalize them).
+
 ## Conditional Types
 
 ```typescript

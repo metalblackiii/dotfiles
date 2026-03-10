@@ -336,6 +336,31 @@ if (is('string', someValue)) {
 }
 ```
 
+## Inferred Type Predicates (TS 5.5+)
+
+Since TypeScript 5.5, the compiler auto-infers type predicates for simple guard functions and array filters. This reduces boilerplate for common narrowing patterns.
+
+```typescript
+// Before TS 5.5 — manual type predicate required
+const items: (string | null)[] = ["a", null, "b"];
+const strings = items.filter((x): x is string => x != null);
+
+// After TS 5.5 — auto-inferred, no annotation needed
+const strings = items.filter(x => x != null);
+// strings is string[] — TS infers the predicate automatically
+
+// Also works with named functions
+function isNonNull<T>(value: T | null | undefined) {
+  return value != null;
+}
+// TS 5.5 infers: value is T (type predicate)
+
+const values = [1, null, 2, undefined, 3].filter(isNonNull);
+// values is number[]
+```
+
+**When you still need explicit predicates:** complex guards, multi-property checks, branded type validation, or when TS can't infer the narrowing (e.g., external API calls, regex-based checks). Prefer `!= null` over truthiness checks — `x != null` correctly narrows while `!!x` would exclude `0`, `""`, and `false`.
+
 ## Quick Reference
 
 | Pattern | Use Case |

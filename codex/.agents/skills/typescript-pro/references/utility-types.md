@@ -311,6 +311,53 @@ type TrimLeft<S extends string> =
 type Trimmed = TrimLeft<'  hello'>; // 'hello'
 ```
 
+## `NoInfer<T>` (TS 5.4+)
+
+```typescript
+// Problem: defaultValue widens the generic, allowing invalid values
+function createFSM<S extends string>(config: {
+  initial: S;
+  states: S[];
+}) {}
+
+createFSM({
+  initial: "idle",
+  states: ["idle", "loading", "done"],
+});
+// Without NoInfer, adding a typo to `initial` silently widens S
+
+// Solution: block inference from the position that should conform, not define
+function createFSM<S extends string>(config: {
+  initial: NoInfer<S>;
+  states: S[];
+}) {}
+
+createFSM({
+  initial: "idle",
+  states: ["idle", "loading", "done"],
+}); // OK — S inferred from `states` only
+
+createFSM({
+  initial: "typo",
+  states: ["idle", "loading", "done"],
+}); // Error — "typo" is not assignable to "idle" | "loading" | "done"
+
+// Canonical pattern: default value must come from a known set
+function pickColor<C extends string>(
+  colors: C[],
+  defaultColor: NoInfer<C>,
+): C {
+  return defaultColor;
+}
+
+pickColor(["red", "green", "blue"], "red");   // OK
+pickColor(["red", "green", "blue"], "white"); // Error
+```
+
+**When to use:** one argument defines the type universe, another must conform to it without influencing inference. Common in config objects, FSMs, and default-value APIs.
+
+**Not a general-purpose trick:** `NoInfer` only blocks inference — the underlying type is unchanged. Use it at API boundaries, not scattered through implementation code.
+
 ## Quick Reference
 
 | Utility | Purpose |

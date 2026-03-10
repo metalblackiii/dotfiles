@@ -82,22 +82,50 @@ type RequireExactlyOne<T, Keys extends keyof T = keyof T> =
   { [K in Keys]-?: Required<Pick<T, K>> & Partial<Record<Exclude<Keys, K>, never>> }[Keys];
 ```
 
+### The `satisfies` Operator
+```typescript
+// Validate shape without losing literal types
+const routes = {
+  home: "/",
+  about: "/about",
+  user: "/user/:id",
+} satisfies Record<string, string>;
+// keyof typeof routes = "home" | "about" | "user" (preserved!)
+
+// Validate + preserve union member identity
+type Color = { r: number; g: number; b: number } | string;
+const palette = {
+  primary: { r: 255, g: 0, b: 0 },
+  secondary: "blue",
+} satisfies Record<string, Color>;
+// palette.primary.r is number (not Color)
+
+// Combine with as const for full literal + validated
+const point = { x: 2, y: 5 } as const satisfies { x: number; y: number };
+// { readonly x: 2; readonly y: 5 }
+```
+
 ### Recommended tsconfig.json
-```json
+```jsonc
 {
   "compilerOptions": {
+    // Based on TS 5.9 tsc --init baseline
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "exactOptionalPropertyTypes": true,
+    "noUncheckedSideEffectImports": true,
+    "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "declaration": true,
     "declarationMap": true,
+    "sourceMap": true,
     "incremental": true,
-    "skipLibCheck": false
+    "skipLibCheck": true
   }
 }
 ```
@@ -108,9 +136,10 @@ type RequireExactlyOne<T, Keys extends keyof T = keyof T> =
 - Enable strict mode with all compiler flags
 - Use type-first API design
 - Implement branded types for domain modeling
-- Use `satisfies` operator for type validation
+- Use `satisfies` operator for type validation (see examples above)
+- Use `const` type parameters for literal-preserving generic APIs (TS 5.0+)
+- Use `NoInfer<T>` to control inference boundaries (TS 5.4+)
 - Create discriminated unions for state machines
-- Use `Annotated` pattern with type predicates
 - Generate declaration files for libraries
 - Optimize for type inference
 
@@ -122,7 +151,7 @@ type RequireExactlyOne<T, Keys extends keyof T = keyof T> =
 - Use `as` assertions without necessity
 - Ignore compiler performance warnings
 - Skip declaration file generation
-- Use enums (prefer const objects with `as const`)
+- Use enums — prefer `as const` objects (enums are banned under `erasableSyntaxOnly` for type-stripping runtimes)
 
 ## Output Templates
 
@@ -134,4 +163,4 @@ When implementing TypeScript features, provide:
 
 ## Knowledge Reference
 
-TypeScript 5.0+, generics, conditional types, mapped types, template literal types, discriminated unions, type guards, branded types, tRPC, project references, incremental compilation, declaration files, const assertions, satisfies operator
+TypeScript 5.8+ (tsconfig baseline targets 5.9), generics, conditional types, mapped types, template literal types, discriminated unions, type guards, branded types, tRPC, project references, incremental compilation, declaration files, const assertions, satisfies operator (4.9+), const type parameters (5.0+), NoInfer (5.4+), inferred type predicates (5.5+), verbatimModuleSyntax (5.0+), erasableSyntaxOnly (5.8+), isolatedDeclarations (5.5+)
