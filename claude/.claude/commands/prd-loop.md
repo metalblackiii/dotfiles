@@ -4,93 +4,37 @@ description: Use when you have a PRD ready for implementation and want to decomp
 argument-hint: <path-to-prd.md>
 ---
 
-# PRD Loop: Decompose → Approve → Execute
+# PRD Loop: Decompose, Approve, Execute
 
-## Step 1 — Load PRD
+Run the prd-loop orchestrator. It decomposes a PRD into phases, asks for approval, then executes each phase through plan → implement → review cycles.
 
-Read the PRD at `$ARGUMENTS`. If the path doesn't exist, ask the user for the correct path.
-
-If `.prd-loop/state.json` already exists, show current status and ask:
-- "Resume execution from existing state?" → display the `prd-loop --resume` command
-- "Start fresh?" → confirm, then delete `.prd-loop/` and continue
-
-## Step 2 — Explore Codebase
-
-Before decomposing, explore the areas of the codebase relevant to the PRD:
-
-1. Identify key files, patterns, and conventions
-2. Check existing test infrastructure and verification commands
-3. Note anything that affects phase sizing or ordering
-
-## Step 3 — Decompose into Phases
-
-Break the PRD into sequential implementation phases. Each phase must be:
-
-- **Small**: ≤12 files changed, ≤400 lines of new/modified code
-- **Self-contained**: clear inputs, outputs, and acceptance criteria
-- **Ordered**: later phases build on earlier ones — no circular dependencies
-- **Testable**: each phase has a verification command
-
-Present the phases as a numbered list with title and description for each.
-
-## Step 4 — Review and Approve
-
-Ask: "Does this phase breakdown look right? You can ask me to split, merge, reorder, or adjust any phase."
-
-Iterate until the user approves. This is the key decision boundary — take time to get it right.
-
-## Step 5 — Write State
-
-Once approved, create the loop state:
+## Usage
 
 ```bash
-mkdir -p .prd-loop/plans .prd-loop/specs
+node ~/repos/prd-loop/dist/cli.js $ARGUMENTS
 ```
 
-Write `.prd-loop/state.json`:
-```json
-{
-  "version": "1",
-  "prd_path": "<absolute path to PRD>",
-  "created_at": "<ISO timestamp>",
-  "updated_at": "<ISO timestamp>",
-  "consecutive_failures": 0,
-  "phases": [
-    {
-      "id": "phase-1",
-      "title": "<title>",
-      "description": "<description>",
-      "status": "pending",
-      "failed_count": 0,
-      "started_at": null,
-      "completed_at": null,
-      "error": null
-    }
-  ]
-}
+If no arguments are provided, ask the user for the path to their PRD.
+
+## Flags
+
+Pass these flags through if the user requests them:
+
+- `--auto` — skip the human approval gate (preflight checks still run)
+- `--lazy-planning` — defer spec generation to right before each phase executes
+- `--dry-run` — use stub dispatchers, no external calls
+
+## Resume / Status
+
+If the user wants to resume or check status:
+
+```bash
+node ~/repos/prd-loop/dist/cli.js --resume
+node ~/repos/prd-loop/dist/cli.js --status
 ```
 
-Write `.prd-loop/progress.txt`:
-```
-# PRD Loop Progress
-PRD: <path>
-Started: <timestamp>
+## Notes
 
----
-```
-
-## Step 6 — Hand Off
-
-Display:
-
-```
-Phase plan saved to .prd-loop/state.json
-
-To start the execution loop:
-  ~/.claude/scripts/prd-loop.sh --resume
-
-To check status later:
-  ~/.claude/scripts/prd-loop.sh --status
-```
-
-Do NOT start executing phases. The execution loop runs in a separate terminal with fresh context per phase.
+- The CLI handles everything: preflight checks, decomposition, approval gate, execution loop, git lifecycle, and PR creation.
+- State lives in `.prd-loop/state.json` — editable between runs.
+- Config: project `.prd-loop/config.json` or global `~/.prd-loop/config.json`.
