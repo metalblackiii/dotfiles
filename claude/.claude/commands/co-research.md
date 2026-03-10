@@ -30,12 +30,17 @@ Decompose the topic into 3-5 research angles. Write to `.co-research/plan.md`:
 # Research Plan: [Topic]
 
 ## Angles
-1. **[Angle name]** — [What to investigate. Who handles it: Claude or Codex]
+1. **[Angle name]** — [What to investigate. Both Claude and Codex research each angle.]
 2. **[Angle name]** — [...]
 3. **[Angle name]** — [...]
 
 ## Codex Survey Prompt
 [Tailored prompt for first Codex pass — specific files, configs, patterns to look for]
+
+## Codex Web Search Prompts
+1. **[Angle name]** — [Focused web search prompt for this angle]
+2. **[Angle name]** — [...]
+3. **[Angle name]** — [...]
 
 ## Additional Repos
 - [repo path] (if any, otherwise "Current repo only")
@@ -53,7 +58,7 @@ Launch all research streams simultaneously.
 For each repo, run via `Bash` tool with `run_in_background: true`. Derive a slug from the repo directory name (e.g., `neb-www`, `neb-ms-patients`).
 
 ```bash
-cd <repo-path> && codex exec --full-auto "<tailored survey prompt from plan>" | tee <absolute-path-to-working-dir>/.co-research/codex-survey-<repo-slug>.md
+set -o pipefail && cd <repo-path> && codex exec --full-auto "<tailored survey prompt from plan>" | tee <absolute-path-to-working-dir>/.co-research/codex-survey-<repo-slug>.md
 ```
 
 **IMPORTANT:** The `tee` path must be absolute (pointing back to the working directory where `.co-research/` was created), not relative. Codex runs from `<repo-path>`, so a relative `.co-research/` would write to the wrong location.
@@ -73,9 +78,32 @@ Report the following:
 Write your findings as structured markdown.
 ```
 
-**Claude Subagents — Web Research** (2-3 via Task tool, parallel):
+**Codex — Web Research** (one per angle, parallel):
 
-Each agent gets one research angle. Use `subagent_type: "general-purpose"` with `model: "sonnet"`. Each agent should:
+For each research angle, run via `Bash` tool with `run_in_background: true`. Derive a slug from the angle name (e.g., `ecosystem`, `practices`, `experiences`).
+
+```bash
+set -o pipefail && codex exec --full-auto -c 'web_search="live"' "<web search prompt for this angle from plan>" | tee <absolute-path-to-working-dir>/.co-research/codex-web-<angle-slug>.md
+```
+
+**IMPORTANT:** The `tee` path must be absolute. The `-c 'web_search="live"'` flag enables Codex's native web search tool (the `--search` shorthand only works on the root `codex` command, not `codex exec`). Prompts should be self-contained and request structured markdown with source URLs.
+
+The Codex web search prompt must be self-contained. Structure it as:
+```
+Research [specific angle] for [topic].
+
+Report the following as structured markdown:
+- Key findings with source URLs for every claim
+- Comparison of major options/approaches where applicable
+- Notable community sentiment or adoption trends
+- Any caveats, risks, or common pitfalls
+
+Include source URLs inline next to each finding.
+```
+
+**Claude Subagents — Web Research** (one per angle via Agent tool, parallel):
+
+Each agent gets one research angle — launch one Claude subagent per angle so every angle gets dual coverage (Claude + Codex). Use `subagent_type: "general-purpose"`. Each agent should:
 - Use `WebSearch` and `WebFetch` to research its angle
 - Write findings to `.co-research/claude-<angle-slug>.md`
 - Include source URLs for every claim
@@ -99,7 +127,7 @@ Read all findings from Step 3a. Evaluate whether a second Codex pass adds value:
 If correlating, dispatch Codex again (one per repo, `run_in_background: true`). Use absolute paths for `tee`:
 
 ```bash
-cd <repo-path> && codex exec --full-auto "<correlation prompt>" | tee <absolute-path-to-working-dir>/.co-research/codex-correlation-<repo-slug>.md
+set -o pipefail && cd <repo-path> && codex exec --full-auto "<correlation prompt>" | tee <absolute-path-to-working-dir>/.co-research/codex-correlation-<repo-slug>.md
 ```
 
 The correlation prompt:
@@ -123,12 +151,17 @@ Wait for all background tasks to complete.
 
 ## Step 4 — Synthesize
 
-Read all files in `.co-research/`. Merge into a single document at `.co-research/draft.md` using this structure:
+Read all files in `.co-research/`. When merging, cross-reference Claude and Codex web findings per angle:
+- **Both agree** → high-confidence finding, state it as established
+- **Only one found it** → include it but note the single source
+- **They contradict** → flag the disagreement and present both sides for user judgment
+
+Merge into a single document at `.co-research/draft.md` using this structure:
 
 ```markdown
 # [Topic]: Research Summary
 
-> Researched [date]. Based on web research and codebase analysis of [repo name(s)].
+> Researched [date]. Based on web research (Claude + Codex) and codebase analysis of [repo name(s)].
 
 ## Executive Summary
 [3-5 sentences. What the research found, the key takeaway, and the recommended direction.]
