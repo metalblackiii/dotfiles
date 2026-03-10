@@ -114,7 +114,35 @@ done < <(jq -r '.paths // [] | .[].regex' "$RULES_FILE")
 # Layer 3: ALLOW — auto-accept trusted patterns (exit silently to bypass ask)
 # ---------------------------------------------------------------------------
 
-while IFS=$'\t' read -r value entry_type _; do
+# Resolve the effective git directory from the command.
+# If the command contains "cd <path> &&", use the last cd target;
+# otherwise fall back to cwd. Lazy — only called when a rule needs it.
+_GIT_DIR=""
+effective_git_dir() {
+  if [[ -z "$_GIT_DIR" ]]; then
+    local cd_target
+    cd_target=$(printf '%s' "$CMD_CLEAN" | grep -oE '\bcd[[:space:]]+[^&;|]+' | tail -1 | sed 's/^cd[[:space:]]*//' | sed 's/[[:space:]]*$//')
+    if [[ -n "$cd_target" ]]; then
+      # Expand ~ to $HOME
+      _GIT_DIR="${cd_target/#\~/$HOME}"
+    else
+      _GIT_DIR="."
+    fi
+  fi
+  printf '%s' "$_GIT_DIR"
+}
+
+_CURRENT_BRANCH=""
+current_branch() {
+  if [[ -z "$_CURRENT_BRANCH" ]]; then
+    local git_dir
+    git_dir=$(effective_git_dir)
+    _CURRENT_BRANCH=$(git -C "$git_dir" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+  fi
+  printf '%s' "$_CURRENT_BRANCH"
+}
+
+while IFS=$'\t' read -r value entry_type branch_regex; do
   [[ -z "$value" ]] && continue
   if [[ "$entry_type" == "command" ]]; then
     allow_pattern=$(command_to_regex "$value")
@@ -122,15 +150,22 @@ while IFS=$'\t' read -r value entry_type _; do
     allow_pattern="$value"
   fi
   if echo "$CMD_CLEAN" | grep -qE "$allow_pattern"; then
+    # If rule has a branch condition, verify it before allowing
+    if [[ -n "$branch_regex" ]]; then
+      branch=$(current_branch)
+      [[ -z "$branch" ]] && continue
+      echo "$branch" | grep -qE "$branch_regex" || continue
+    fi
     exit 0  # no output = allow
   fi
 done < <(
   jq -r '
     .allow // [] | .[] |
+    .branch // "" as $branch |
     if has("commands") then
-      .commands[] | [., "command", ""] | join("\t")
+      .commands[] | [., "command", $branch] | join("\t")
     else
-      [.regex, "regex", ""] | join("\t")
+      [.regex, "regex", $branch] | join("\t")
     end
   ' "$RULES_FILE"
 )

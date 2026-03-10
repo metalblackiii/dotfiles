@@ -12,3 +12,4 @@ Rule formats:
 - `"commands": ["git stash drop"]` — human-readable, auto-converted to regex
 - `"regex": "\\bsome\\s+pattern"` — escape hatch for complex patterns
 - `"nudge": "Use X instead."` — optional, shown to Claude on deny (guides toward the right tool)
+- `"branch": "^mjb-pho-"` — optional (allow layer only), rule only fires when current git branch matches (lazy lookup, resolves cd targets)

@@ -103,6 +103,20 @@
     {
       "regex": "\\bgit\\s+checkout\\s+--\\s+",
       "category": "destructive git"
+    },
+    {
+      "commands": ["git push --delete"],
+      "category": "destructive git"
+    },
+    {
+      "regex": "\\bgit\\s+push\\b.*\\bHEAD:",
+      "category": "destructive git",
+      "nudge": "Pushing via HEAD:<ref> refspec is not allowed. Push to your feature branch instead."
+    },
+    {
+      "regex": "\\bgit\\s+push\\b.*:\\s*(main|master)\\b",
+      "category": "destructive git",
+      "nudge": "Pushing to main/master via refspec is not allowed. Push to your feature branch instead."
     }
   ],
 
@@ -141,6 +155,16 @@
     {
       "regex": "\\b(rtk[[:space:]]+)?curl\\b.*[[:space:]]['\"]?https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?([/'\"[:space:]]|$)",
       "category": "local dev testing"
+    },
+    {
+      "regex": "\\b(rtk[[:space:]]+)?git[[:space:]]+(commit|push)\\b",
+      "branch": "^mjb-pho-NEB-",
+      "category": "personal feature branch"
+    },
+    {
+      "regex": "\\b(rtk[[:space:]]+)?gh[[:space:]]+pr[[:space:]]+create\\b",
+      "branch": "^mjb-pho-NEB-",
+      "category": "personal feature branch"
     }
   ],
 
