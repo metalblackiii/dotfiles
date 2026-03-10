@@ -32,6 +32,9 @@ INPUT=$(cat)
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 [[ -z "$CMD" ]] && exit 0
 
+# Strip /dev/null redirects so they don't false-positive on redirect-detection rules
+CMD_CLEAN=$(printf '%s' "$CMD" | sed -E 's/[0-9]*&?>[[:space:]]*\/dev\/null//g; s/[0-9]*>&[0-9]+//g')
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -67,7 +70,7 @@ check_layer() {
     else
       pattern="$value"
     fi
-    if echo "$CMD" | grep -qE "$pattern"; then
+    if echo "$CMD_CLEAN" | grep -qE "$pattern"; then
       emit_decision "$decision" "${nudge:-$default_reason}"
     fi
   done < <(
@@ -101,7 +104,7 @@ HOME_ESC=$(printf '%s' "$HOME_DIR" | sed 's/[.[\*^$()+?{|\\]/\\&/g')
 while IFS= read -r regex; do
   [[ -z "$regex" ]] && continue
   local_pattern="${regex//__HOME__/$HOME_ESC}"
-  if echo "$CMD" | grep -qE "$local_pattern"; then
+  if echo "$CMD_CLEAN" | grep -qE "$local_pattern"; then
     emit_decision "deny" \
       "Sensitive files (.env, secrets, keys, credentials, shell config) are off-limits."
   fi
