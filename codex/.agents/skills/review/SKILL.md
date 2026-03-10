@@ -13,6 +13,7 @@ This skill intentionally mirrors core review policy language from `self-review` 
 
 When editing this skill, check `../self-review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
 - `pr-analysis` as the criteria source (`../pr-analysis/SKILL.md`)
+- Defensive Code Audit (empty catches, silent fallbacks, unchecked null, ignored rejections)
 - `self-documenting-code` naming scan (`../self-documenting-code/SKILL.md`)
 - Severity taxonomy (`Critical`, `Important`, `Minor`)
 - Shared quality posture (broad category coverage and evidence-based findings)
@@ -81,13 +82,24 @@ Apply every applicable category from the `pr-analysis` skill:
 
 Skip categories that don't apply to the PR (e.g., skip Database if no schema changes).
 
+### Step 5: Defensive Code Audit
+
+In addition to the standard criteria, specifically scan for:
+
+- **Empty catch blocks** — `catch (e) { }` or `catch { }` that silently swallow errors
+- **Silent fallbacks** — `data || DEFAULT` patterns that mask missing data rather than surfacing it
+- **Unchecked null/undefined** — property access without validation on values that could be absent
+- **Ignored promise rejections** — async calls without `.catch()` or try/catch
+
+These are high-value findings because they create bugs that are hard to diagnose later.
+
 ### Security Escalation (When Needed)
 
 `review` includes baseline security checks via `pr-analysis`. Escalate to `security-reviewer` only when:
 - the user explicitly requests a security audit/deep-dive, or
 - the PR changes high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 
-### Step 5: Naming & Readability Scan
+### Step 6: Naming & Readability Scan
 
 Read `../self-documenting-code/SKILL.md` for detailed criteria, then scan changed code for:
 
@@ -97,7 +109,7 @@ Read `../self-documenting-code/SKILL.md` for detailed criteria, then scan change
 
 Flag naming issues as Minor unless they create genuine ambiguity (Important).
 
-### Step 6: Generate Review Report
+### Step 7: Generate Review Report
 
 ```markdown
 # Pull Request Review: [PR Title]
@@ -185,11 +197,11 @@ Flag naming issues as Minor unless they create genuine ambiguity (Important).
 
 Omit any severity section that has no findings.
 
-### Step 7: Submit Review (Only When Asked)
+### Step 8: Submit Review (Only When Asked)
 
 Only if the user explicitly asks to submit the review to GitHub.
 
-#### 7.1 Comment Placement Policy (Iron Rule)
+#### 8.1 Comment Placement Policy (Iron Rule)
 
 **Inline comments are the default for all code feedback. `gh pr review --comment` is almost never the right tool.**
 
@@ -202,7 +214,7 @@ When the user asks to "leave comments" or "submit review":
 
 Submitted reviews cannot be deleted. Get it right the first time.
 
-#### 7.2 Command Decision Table
+#### 8.2 Command Decision Table
 
 | Intent | Command pattern |
 |---|---|
@@ -211,7 +223,7 @@ Submitted reviews cannot be deleted. Get it right the first time.
 | Request changes | `gh pr review <PR> --request-changes --body-file <file>` |
 | Conversation-only comment (rare, explicit request only) | `gh pr review <PR> --comment --body-file <file>` |
 
-#### 7.3 Inline Review Payload Template
+#### 8.3 Inline Review Payload Template
 
 Use for code-anchored comments in `Files changed`:
 
