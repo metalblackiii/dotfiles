@@ -151,6 +151,16 @@ Present a summary table:
 
 If any repos failed, suggest next steps (manual fix, re-run with adjusted params, etc.).
 
+## Branch Safety
+
+Always branch from `main` unless the user explicitly specifies a different base. Before creating a branch in each repo, verify the current base:
+
+```bash
+git checkout main && git pull origin main
+```
+
+Sub-agents that branch from a stale or wrong base (e.g., an existing feature branch) can silently inherit unrelated changes and cause cascading test failures across the batch.
+
 ## Sub-Agent Prompt Template
 
 Each sub-agent prompt must be self-contained. Template:

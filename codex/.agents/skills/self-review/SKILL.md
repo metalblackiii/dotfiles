@@ -50,7 +50,7 @@ Before line-level review, assess the diff as a whole:
 
 ### Step 3: Get the Diff
 
-Run the specified git diff command. Parse the output to list all modified, added, and deleted files.
+Always run `git diff` and `git diff --cached` first to confirm what's actually changed — never review stale context. Then run the specified git diff command. Parse the output to list all modified, added, and deleted files.
 
 ### Step 4: Read Changed Files
 

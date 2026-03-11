@@ -314,3 +314,4 @@ This skill includes infrastructure for eval-driven iteration:
 - **Generic names** — `helper`, `utils`, `process` — name by what you DO
 - **Overfitting to test cases** — Rigid constraints for specific examples rather than general principles
 - **Heavy-handed MUSTs** — Explain the reasoning instead of shouting
+- **Routing/delegation patterns** — Skills should be self-contained reference files, not routers that point to external SKILL.md files. If content is shared, inline it or use `references/` subdirectories.

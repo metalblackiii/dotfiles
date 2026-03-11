@@ -36,6 +36,7 @@ N/A — Codex does not support subagent model selection.
 - **IMPORTANT:** Only commit or push when I explicitly ask — every commit and push requires my approval
 - Never auto-commit follow-up changes after an initial commit — always prompt again
 - Always use the branch name I specify. If I haven't specified one, ask before creating a branch.
+- After edits and before committing, run `git status` to catch unstaged content edits alongside renames or moves.
 - When using gh CLI across repos, verify repo context (`gh repo view --json nameWithOwner -q .nameWithOwner`) before running commands.
 
 
@@ -100,6 +101,11 @@ When a session runs long, proactively run the `handoff` skill before autocompact
 - The session feels heavy — don't wait to be asked
 
 Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-context handoff is far more useful than a post-compact recovery.
+
+## Shell Hygiene
+
+- If a command is blocked by a guard hook, ask for guidance rather than retrying blocked patterns.
+- When npm/shell commands fail due to cwd, use `--prefix <path>` or `cd <path> &&` immediately — don't retry the broken approach.
 
 ## Self-Documenting Code
 <!-- Sync: baseline of codex/.agents/skills/self-documenting-code/SKILL.md -->
