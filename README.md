@@ -23,6 +23,7 @@ New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatom
 | `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
 | `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
+| `codebase-memory-mcp` | Optional | `./setup/install-codebase-memory-mcp.sh` | Knowledge graph MCP for structural code search (v0.3.1 pinned) |
 | `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
 
 ### Optional Security Tooling (Only for `security-reviewer` Scanner Mode)
@@ -103,6 +104,9 @@ dotfiles/
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
 │       ├── scripts/         # Status bar, prd-loop orchestration
 │       └── skills           # Symlink → ../../codex/.agents/skills
+├── setup/                   # Tool installers (version-pinned, not part of symlink flow)
+│   ├── install-codebase-memory-mcp.sh
+│   └── uninstall-codebase-memory-mcp.sh
 ├── docs/                    # Research docs, postmortems, analysis artifacts
 ├── install.sh               # Orchestrator — runs */install.sh
 ├── uninstall.sh             # Orchestrator — runs */uninstall.sh
@@ -129,7 +133,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (42)
+### Skills (46)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -161,6 +165,10 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
+| **codebase-memory-exploring** | Codebase orientation via knowledge graph — architecture, functions, routes, structure |
+| **codebase-memory-quality** | Dead code detection, fan-in/fan-out analysis, refactor candidates, change coupling |
+| **codebase-memory-reference** | Tool reference for codebase-memory-mcp — Cypher syntax, edge types, node labels |
+| **codebase-memory-tracing** | Call chain tracing, cross-service HTTP calls, impact analysis via knowledge graph |
 | **code-renovator** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |

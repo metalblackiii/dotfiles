@@ -9,6 +9,7 @@ Skills in this repo were adapted from the following sources:
 - [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) — playwright-cli skill (SKILL.md + references)
 - [rtk-ai/rtk](https://github.com/rtk-ai/rtk) — RTK (Rust Token Killer) CLI proxy, PreToolUse hook, and RTK.md context file
 - [akin-ozer/cc-devops-skills](https://github.com/akin-ozer/cc-devops-skills) — bash-expert (merged from bash-script-generator + bash-script-validator), dockerfile-expert (merged from dockerfile-generator + dockerfile-validator), github-actions-generator, github-actions-validator, helm-expert (merged from helm-generator + helm-validator), k8s-debug
+- [DeusData/codebase-memory-mcp](https://github.com/DeusData/codebase-memory-mcp) — codebase-memory-exploring, codebase-memory-quality, codebase-memory-reference, codebase-memory-tracing (auto-installed by `codebase-memory-mcp install`, with fixes for regex alternation and incorrect query guidance)
 
 All other skills are original work or codified from standard practices.
 
