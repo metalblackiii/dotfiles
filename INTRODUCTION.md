@@ -51,7 +51,7 @@ This is how a typical code review session looks when the skills are wired up. It
 
 ### 1. PR Review (Remote)
 
-Start with `/review <PR-url>`. This invokes the [`review`](codex/.agents/skills/review/SKILL.md) skill, which internally loads [`pr-analysis`](codex/.agents/skills/pr-analysis/) for consistent review criteria and [`self-documenting-code`](codex/.agents/skills/self-documenting-code/) for naming quality checks. You get a structured baseline covering architecture, tests, quality, and security.
+Start with `/review <PR-url>`. This invokes the [`review`](codex/.agents/skills/review/SKILL.md) skill, which internally loads [`pr-analysis`](codex/.agents/skills/pr-analysis/) for consistent review criteria. You get a structured baseline covering architecture, tests, quality, and security.
 
 From there, go back and forth with the agent — challenge assumptions, ask whether something is greenfield or incremental, probe how important a finding really is. The baseline is a starting point, not a verdict.
 
@@ -63,7 +63,7 @@ The same idea applies to any domain skill — `api-designer` for contract change
 
 ### 3. Local Self-Review (Before Commit)
 
-For your own code, open a shell in the same directory as your git changes and run `/self-review`. This uses the [`self-review`](codex/.agents/skills/self-review/SKILL.md) skill, which reviews your local diffs without needing `gh` or a remote PR. It shares the same `pr-analysis` and `self-documenting-code` criteria as the full review, so the bar is consistent.
+For your own code, open a shell in the same directory as your git changes and run `/self-review`. This uses the [`self-review`](codex/.agents/skills/self-review/SKILL.md) skill, which reviews your local diffs without needing `gh` or a remote PR. It shares the same `pr-analysis` criteria as the full review, so the bar is consistent.
 
 Self-review works best as a pre-commit gate — catch issues before they leave your machine rather than after a teammate flags them.
 
@@ -132,8 +132,6 @@ This bundle tightens quality gates before code reaches teammates. See [Review Wo
 - `review` — Full GitHub PR review for architecture, tests, quality, and security.
 - `self-review` — Fresh-eyes local diff review before commit/PR, no `gh` required.
 - `pr-analysis` — Shared review checklist criteria consumed by `review` and `self-review`.
-- `self-documenting-code` — Naming and comment quality criteria. Not invoked directly — consumed by `review` and `self-review` during their naming scan step.
-
 ### 3) Meta Bundle
 
 These skills help you improve the system itself:
@@ -180,7 +178,7 @@ For teams that use Snyk CLI for vulnerability scanning:
 
 ---
 
-These bundles are **curated highlights**, not an exhaustive list. The repo contains 45 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
+These bundles are **curated highlights**, not an exhaustive list. The repo contains 46 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
 
 ## What This Repo Does Not Cover
 

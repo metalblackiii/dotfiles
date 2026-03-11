@@ -2,7 +2,7 @@
 
 This configuration is managed via a dotfiles repo with symlinks.
 
-**IMPORTANT: Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets. To find the repo root, use `git rev-parse --show-toplevel` from any file inside it, or follow a symlink (e.g., `readlink ~/.claude/skills`) back to the source.
+**IMPORTANT: Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets. The canonical location for skills is `codex/.agents/skills/` within this repo. Both Claude Code (`~/.claude/skills/`) and Codex (`~/.agents/skills/`) symlink to it — all skills are shared across platforms. To find the repo root, use `git rev-parse --show-toplevel` from any file inside it, or follow a symlink (e.g., `readlink ~/.claude/skills`) back to the source.
 
 ## Subagent Model Defaults
 
@@ -108,7 +108,6 @@ Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-cont
 - When npm/shell commands fail due to cwd, use `--prefix <path>` or `cd <path> &&` immediately — don't retry the broken approach.
 
 ## Self-Documenting Code
-<!-- Sync: baseline of codex/.agents/skills/self-documenting-code/SKILL.md -->
 
 - Every "what" comment is a naming failure. Try renaming before commenting.
 - Comments survive only for: WHY (business logic/regulatory), WARNING (non-obvious traps), TODO (with ticket number). Everything else dies.

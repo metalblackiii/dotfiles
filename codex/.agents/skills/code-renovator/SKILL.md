@@ -124,7 +124,6 @@ Apply the strangler fig pattern: wrap the old, build the new, migrate callers, r
 
 ## Related Skills
 
-- **self-documenting-code** — for naming and readability, not structural changes
 - **test-driven-development** — for characterization tests before refactoring or migration test strategy
 - **api-designer** — for request/response contract evolution during migration
 - **neb-ms-conventions** — for implementation patterns in neb services

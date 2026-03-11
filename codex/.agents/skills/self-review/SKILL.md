@@ -16,7 +16,7 @@ This skill intentionally mirrors core review policy language from `review` witho
 When editing this skill, check `../review/SKILL.md` and keep these aligned unless divergence is intentional and documented inline:
 - `pr-analysis` as the criteria source (`../pr-analysis/SKILL.md`)
 - Defensive Code Audit (empty catches, silent fallbacks, unchecked null, ignored rejections)
-- `self-documenting-code` naming scan (`../self-documenting-code/SKILL.md`)
+- Naming & readability scan (vague names, "what" comments, redundant comments)
 - Severity taxonomy (`Critical`, `Important`, `Minor`)
 - Shared quality posture (broad category coverage and evidence-based findings)
 
@@ -88,7 +88,7 @@ These are high-value findings because they create bugs that are hard to diagnose
 
 ### Step 7: Naming & Readability Scan
 
-Read `../self-documenting-code/SKILL.md` for detailed criteria, then scan changed code for:
+Scan changed code for:
 
 - **Vague names** — `data`, `result`, `temp`, `handle*`, `process*`, `manager`, `helper`, `utils` without specific intent
 - **"What" comments** — comments that narrate code (`// Loop through users`) instead of explaining why; these should be naming improvements

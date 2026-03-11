@@ -146,6 +146,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
 | **bash-expert** | Create, generate, validate, lint, audit, or fix bash/shell scripts |
 | **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
+| **cli-developer** | Building CLI tools, argument parsing, interactive prompts, shell completions |
 | **create-prd** | Define what to build before a prd-loop run, formalize a feature idea, convert a ticket into an implementation-ready PRD, or write feature specs with structured requirements |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
@@ -173,7 +174,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
 | **security-reviewer** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
-| **self-documenting-code** | Naming quality reviews, comment hygiene, readability refactors |
 | **self-review** | Pre-commit/pre-PR quality gate for local git changes |
 | **snyk-expert** | Interpreting Snyk scan results, CVE/CWE assessment, vulnerability prioritization, CLI config, container scanning, remediation strategy |
 | **snyk-scan** | Scanning repos for vulnerabilities and applying fixes — orchestrates scan, assess, approve, remediate, report |
@@ -181,6 +181,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
 | **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
+| **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
 | **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |

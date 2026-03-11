@@ -89,7 +89,7 @@ Use these categories to evaluate PR changes comprehensively.
 
 - [ ] Architecture docs updated if patterns changed
 - [ ] README updated if setup changed
-- [ ] Comments explain WHY/WARNING/TODO only — no "what" comments (per self-documenting-code rule)
+- [ ] Comments explain WHY/WARNING/TODO only — no "what" comments
 - [ ] API documentation updated
 
 ### 10. Security
