@@ -2,51 +2,48 @@
 
 ## Strict Mode Configuration
 
-```json
+All strict sub-flags are included by `"strict": true`. Listed individually here for reference — you do not need to set them separately.
+
+```jsonc
 {
   "compilerOptions": {
-    // Strict type checking
+    // strict: true enables all of these:
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
+    //   "noImplicitAny": true,
+    //   "strictNullChecks": true,
+    //   "strictFunctionTypes": true,
+    //   "strictBindCallApply": true,
+    //   "strictPropertyInitialization": true,
+    //   "noImplicitThis": true,
+    //   "alwaysStrict": true,
 
-    // Additional checks
+    // Additional checks (not included in strict)
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "exactOptionalPropertyTypes": true
+  }
+}
+```
 
-    // Module resolution
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "allowImportingTsExtensions": true,
+## Bundled Web App Example (Vite / esbuild / webpack)
 
-    // Emit
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "removeComments": false,
-    "importHelpers": true,
-
-    // Interop
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-
-    // Target
+```jsonc
+{
+  "compilerOptions": {
     "target": "ES2022",
+    "module": "Preserve",
+    "moduleResolution": "bundler",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-
-    // Skip checking
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
     "skipLibCheck": true
   }
 }
@@ -91,36 +88,74 @@
 }
 ```
 
-## Module Resolution Strategies
+## Module Resolution Decision Tree
 
-```json
-// Node16/NodeNext (recommended for Node.js)
+Pick based on where your code **actually runs**:
+
+| Scenario | `module` | `moduleResolution` | Why |
+|----------|----------|-------------------|-----|
+| **Node.js app** | `"NodeNext"` | `"NodeNext"` | Enforces Node's ESM/CJS rules; type checking differs from bundler even when emitted JS looks similar |
+| **Node.js, pinned version** | `"Node18"` or `"Node20"` | (implied) | Stable semantics; `NodeNext` is a moving target tracking latest Node |
+| **Bundled app (Vite, etc.)** | `"Preserve"` or `"ESNext"` | `"bundler"` | Matches bundler semantics; pair with `noEmit`, `allowImportingTsExtensions`, `verbatimModuleSyntax` |
+| **Library** | `"NodeNext"` | `"NodeNext"` | Code valid under Node rules works in bundlers; `bundler` admits imports only bundlers accept |
+
+**Avoid:** `"Classic"`, `"node"` / `"node10"` — deprecated, will error in TS 7.
+
+```jsonc
+// Node.js app or library
 {
   "compilerOptions": {
     "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "esModuleInterop": true
+    "moduleResolution": "NodeNext"
   }
 }
 
-// Bundler (for bundlers like Vite, esbuild)
+// Bundler-first app (Vite, esbuild, webpack)
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "Preserve",
     "moduleResolution": "bundler",
+    "noEmit": true,
     "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
     "moduleDetection": "force"
   }
 }
+```
 
-// Classic (legacy, avoid)
+## Node Type-Stripping Workflow (TS 5.8+)
+
+Node can run `.ts` files directly via built-in type stripping (`--experimental-strip-types` flag in Node 22.6+, enabled by default since 22.18.0 and 23.6.0). It only erases type annotations — no enums, no namespaces, no parameter properties, no `import =`. To ensure your code is compatible:
+
+```jsonc
+// tsconfig.json for Node type-stripping compatibility
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "node"
+    "erasableSyntaxOnly": true,              // (5.8) Ban non-erasable TS syntax
+    "verbatimModuleSyntax": true,            // (5.0) Explicit import/export elision
+    "rewriteRelativeImportExtensions": true, // (5.7) .ts → .js in emitted output
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "strict": true
   }
 }
 ```
+
+**What `erasableSyntaxOnly` bans:**
+- `enum` declarations → use `as const` objects instead
+- `namespace` declarations (non-`declare`) → use ES modules
+- Parameter properties (`constructor(public x: number)`) → use explicit assignment
+- `import =` / `export =` → use standard ESM syntax
+
+**Why `rewriteRelativeImportExtensions`:** Node requires explicit file extensions in imports. This flag lets you write `import "./foo.ts"` in source while `tsc` emits `import "./foo.js"` — bridging the gap between author-time and runtime resolution.
+
+**Workflow:**
+1. Enable `erasableSyntaxOnly` + `verbatimModuleSyntax` + `rewriteRelativeImportExtensions` in tsconfig
+2. Run `tsc --noEmit` to catch non-erasable syntax
+3. Fix violations (usually enum → `as const`)
+4. Code can now run via `node src/index.ts` (22.18.0+ / 23.6.0+) or `node --experimental-strip-types src/index.ts` (22.6–22.17)
+5. `tsx` remains the better dev runner (handles `.tsx`, respects `tsconfig`, supports watch mode)
 
 ## Path Mapping
 
@@ -432,14 +467,20 @@ npx @typescript/analyze-trace trace
 | Option | Purpose |
 |--------|---------|
 | `strict` | Enable all strict checks |
+| `verbatimModuleSyntax` | (5.0) Explicit import type / export type elision |
+| `isolatedModules` | Each file can be transpiled separately |
+| `erasableSyntaxOnly` | (5.8) Ban non-erasable syntax for Node type-stripping |
+| `noUncheckedSideEffectImports` | (5.6) Catch typos in side-effect imports |
+| `moduleDetection: "force"` | Treat all files as modules |
+| `exactOptionalPropertyTypes` | Distinguish `undefined` from missing |
+| `noUncheckedIndexedAccess` | Index access returns `T \| undefined` |
 | `composite` | Enable project references |
 | `incremental` | Enable incremental compilation |
 | `skipLibCheck` | Skip .d.ts checking for faster builds |
-| `esModuleInterop` | Better CommonJS interop |
-| `moduleResolution` | How modules are resolved |
+| `moduleResolution` | How modules are resolved (`NodeNext` or `bundler`) |
 | `paths` | Path mapping for imports |
 | `declaration` | Generate .d.ts files |
 | `sourceMap` | Generate source maps |
 | `noEmit` | Don't emit output (type check only) |
-| `isolatedModules` | Each file can be transpiled separately |
-| `allowImportingTsExtensions` | Import .ts files directly |
+| `allowImportingTsExtensions` | Import .ts files directly (bundler mode) |
+| `isolatedDeclarations` | (5.5) Parallel declaration emit without full type resolution |

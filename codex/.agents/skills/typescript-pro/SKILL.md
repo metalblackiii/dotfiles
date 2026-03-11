@@ -26,6 +26,7 @@ Load detailed guidance based on context:
 | Utility Types | `references/utility-types.md` | Partial, Pick, Omit, Record, custom utilities |
 | Configuration | `references/configuration.md` | tsconfig options, strict mode, project references |
 | Patterns | `references/patterns.md` | Builder pattern, factory pattern, type-safe APIs |
+| Tooling | `references/tooling.md` | Linting, testing, build tools, type-checking adjuncts |
 
 ## Code Examples
 
