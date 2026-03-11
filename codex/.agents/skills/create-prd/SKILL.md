@@ -5,7 +5,7 @@ description: Use when defining what to build before a prd-loop run, formalizing 
 
 # Create PRD
 
-Interview-driven PRD generator. Produces lean PRDs optimized for decomposition and phased AI implementation via `prd-loop.sh`.
+Interview-driven PRD generator. Produces lean PRDs optimized for decomposition and phased AI implementation via the `prd-loop` CLI.
 
 ## When to Use
 
@@ -183,10 +183,7 @@ After confirmation, display next steps:
 PRD saved to: docs/prd-<slug>.md
 
 To decompose and execute:
-  /prd-loop docs/prd-<slug>.md                        (interactive decompose + approve)
-
-Or directly in terminal:
-  ~/.claude/scripts/prd-loop.sh docs/prd-<slug>.md    (non-interactive: full run)
+  prd-loop docs/prd-<slug>.md
 ```
 
 ## Constraints

@@ -187,13 +187,11 @@ These bundles are **curated highlights**, not an exhaustive list. The repo conta
 This repo focuses on portable instructions + skills + symlinked platform config. Some adjacent approaches are partially covered or out of scope:
 
 - **MCP servers**: Model Context Protocol integrations for external tools and data sources. Useful, but not configured in this repo yet.
-- **Agentic programming / agent teams**: Partially covered. Three Claude Code commands exist today:
-  - `/co-implement` — Plans a feature, delegates implementation to Codex CLI, then reviews the result.
+- **Agentic programming / agent teams**: Partially covered. One Claude Code command exists today:
   - `/co-research` — Dispatches parallel research agents and Codex, then synthesizes findings.
-  - `/prd-loop` — Decomposes a PRD into reviewable phases and executes them.
 
-  Codex also runs with `multi_agent = true`. Full multi-agent orchestration patterns are evolving but not yet fully codified as reusable skills.
-- **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)). The `prd-loop` command above is a step in this direction.
+  The standalone [`prd-loop` CLI](https://github.com/metalblackiii/prd-loop) handles phased PRD implementation (previously `/prd-loop` and `/co-implement` commands). Codex also runs with `multi_agent = true`. Full multi-agent orchestration patterns are evolving but not yet fully codified as reusable skills.
+- **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)). The `prd-loop` CLI is a step in this direction.
 
 These approaches complement the baseline. As patterns stabilize, they may graduate into proper skills.
 

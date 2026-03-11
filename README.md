@@ -100,9 +100,9 @@ dotfiles/
 │       ├── RTK.md           # RTK usage reference (included via @RTK.md)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 3 custom subagents
-│       ├── commands/        # Slash commands (co-implement, co-research, prd-loop)
+│       ├── commands/        # Slash commands (co-research)
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
-│       ├── scripts/         # Status bar, prd-loop orchestration
+│       ├── scripts/         # Status bar, hooks
 │       └── skills           # Symlink → ../../codex/.agents/skills
 ├── setup/                   # Tool installers (version-pinned, not part of symlink flow)
 │   ├── install-codebase-memory-mcp.sh
@@ -216,9 +216,9 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 
 | Command | Purpose |
 |---------|---------|
-| **co-implement** | Plan a feature, delegate implementation to Codex CLI, then supervise |
 | **co-research** | Dispatch parallel research agents and Codex, then synthesize findings |
-| **prd-loop** | Decompose a PRD into reviewable phases and execute them |
+
+> `prd-loop` and `co-implement` were retired as Claude commands — use the standalone [`prd-loop` CLI](https://github.com/metalblackiii/prd-loop) directly instead.
 
 ### Hooks & Scripts
 
@@ -227,7 +227,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 - **guard.sh** + **guard-rules.json** — PreToolUse hook that blocks Bash access to sensitive file paths (env files, secrets, credentials). Rules are externalized to JSON for easy editing.
 - **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.
 - **context-bar.sh** — Status line script showing model, git branch, uncommitted files, sync status, and context usage percentage.
-- **prd-loop.sh** + **prd-loop-prompts/** — Script and prompt templates that power the `/prd-loop` command's phase decomposition and execution.
+
 
 ### Permissions
 
