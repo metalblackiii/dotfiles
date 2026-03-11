@@ -25,7 +25,7 @@ Load detailed guidance based on context:
 | Type Guards | `references/type-guards.md` | Type narrowing, discriminated unions, assertion functions |
 | Utility Types | `references/utility-types.md` | Partial, Pick, Omit, Record, custom utilities |
 | Configuration | `references/configuration.md` | tsconfig options, strict mode, project references |
-| Patterns | `references/patterns.md` | Builder pattern, factory pattern, type-safe APIs |
+| Patterns | `references/patterns.md` | Schema-first validation, factory functions, pattern status guidance |
 | Tooling | `references/tooling.md` | Linting, testing, build tools, type-checking adjuncts |
 
 ## Code Examples

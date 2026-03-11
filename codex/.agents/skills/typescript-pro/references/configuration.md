@@ -195,7 +195,7 @@ import type { User } from '@types';
 
 ## Declaration Files
 
-```json
+```jsonc
 {
   "compilerOptions": {
     // Generate .d.ts files
@@ -210,6 +210,41 @@ import type { User } from '@types';
     "stripInternal": true
   }
 }
+```
+
+### Isolated Declarations (TS 5.5+)
+
+`isolatedDeclarations` enables external tools (tsdown, Oxc, etc.) to generate `.d.ts` files without running the full type checker — each file's declarations are self-contained. This unlocks parallel declaration emit and faster builds.
+
+```jsonc
+{
+  "compilerOptions": {
+    "declaration": true,
+    "isolatedDeclarations": true
+  }
+}
+```
+
+**What it requires:** all exported functions, classes, and variables must have explicit return types and type annotations. The compiler will error on implicit types that cross file boundaries.
+
+```typescript
+// Error under isolatedDeclarations — inferred return type
+export function createUser(name: string) {
+  return { id: crypto.randomUUID(), name };
+}
+
+// Fixed — explicit return type
+export function createUser(name: string): { id: string; name: string } {
+  return { id: crypto.randomUUID(), name };
+}
+```
+
+**When to adopt:**
+- Library authors using tsdown/Oxc for declaration emit
+- Monorepos where parallel declaration generation matters
+- Projects already following "explicit return types on public APIs"
+
+**When to skip:** application code where declaration files aren't published. The annotation burden isn't worth it if you're not distributing types.
 ```
 
 ```typescript

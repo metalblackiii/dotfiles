@@ -1,133 +1,125 @@
 # TypeScript Patterns
 
-## Builder Pattern
+## Parse, Don't Validate (Schema-First)
+
+**Status: dominant methodology** — the primary pattern for handling external data in modern TypeScript.
+
+Instead of accepting `unknown` and sprinkling type assertions or manual checks, define a schema that parses input into a validated, typed value — or fails with a structured error. This is the "Parse, Don't Validate" principle: once data crosses a trust boundary, parse it into a known type immediately.
 
 ```typescript
-// Type-safe builder with progressive types
-class UserBuilder {
-  private data: Partial<User> = {};
+import { z } from "zod";
 
-  setName(name: string): this {
-    this.data.name = name;
-    return this;
-  }
+// Define the schema — this IS the type definition
+const UserSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1),
+  email: z.string().email(),
+  role: z.enum(["admin", "member", "guest"]),
+});
 
-  setEmail(email: string): this {
-    this.data.email = email;
-    return this;
-  }
+// Derive the TypeScript type from the schema
+type User = z.infer<typeof UserSchema>;
 
-  setAge(age: number): this {
-    this.data.age = age;
-    return this;
-  }
-
-  build(): User {
-    if (!this.data.name || !this.data.email) {
-      throw new Error('Name and email are required');
-    }
-    return this.data as User;
-  }
+// Parse at system boundaries — API handlers, file reads, env vars
+function handleRequest(body: unknown): User {
+  return UserSchema.parse(body); // throws ZodError on invalid input
 }
 
-// Fluent API with type safety
-const user = new UserBuilder()
-  .setName('John')
-  .setEmail('john@example.com')
-  .setAge(30)
-  .build();
+// Safe parse for when you want to handle errors explicitly
+function tryParseUser(body: unknown) {
+  const result = UserSchema.safeParse(body);
+  if (!result.success) {
+    return { ok: false as const, error: result.error.flatten() };
+  }
+  return { ok: true as const, user: result.data };
+}
+```
 
-// Advanced builder with compile-time validation
-type Builder<T, K extends keyof T = never> = {
-  [P in keyof T as `set${Capitalize<string & P>}`]: (
-    value: T[P]
-  ) => Builder<T, K | P>;
-} & {
-  build: K extends keyof T ? () => T : never;
-};
+```typescript
+// Valibot — tree-shakeable alternative to Zod
+import * as v from "valibot";
 
-function createBuilder<T>(): Builder<T> {
-  const data = {} as T;
+const UserSchema = v.object({
+  id: v.pipe(v.string(), v.uuid()),
+  name: v.pipe(v.string(), v.minLength(1)),
+  email: v.pipe(v.string(), v.email()),
+  role: v.picklist(["admin", "member", "guest"]),
+});
 
-  return new Proxy({} as Builder<T>, {
-    get(_, prop: string) {
-      if (prop === 'build') {
-        return () => data;
-      }
-      if (prop.startsWith('set')) {
-        const key = prop.slice(3).toLowerCase();
-        return (value: any) => {
-          (data as any)[key] = value;
-          return this;
-        };
-      }
-    }
-  });
+type User = v.InferOutput<typeof UserSchema>;
+```
+
+**When to use:** API request/response boundaries, environment variables, config files, form data, database results, anything from `unknown` or `any`. Define the schema once, derive the type, parse at the boundary, then trust the type downstream.
+
+**Zod vs Valibot:** Zod has broader ecosystem adoption and richer API. Valibot is tree-shakeable and produces smaller bundles — better for client-side code where bundle size matters.
+
+## Builder Pattern
+
+**Status: declining** — prefer option objects with `satisfies` for most config/construction needs. Builders add ceremony without adding safety when the alternative is a typed options bag.
+
+```typescript
+// Preferred: typed options object
+interface UserOptions {
+  name: string;
+  email: string;
+  age?: number;
+  role?: "admin" | "member";
+}
+
+function createUser(options: UserOptions): User {
+  return { id: crypto.randomUUID(), role: "member", ...options };
+}
+
+const user = createUser({ name: "Jane", email: "jane@example.com" });
+```
+
+Builders still make sense for progressive construction where intermediate states are meaningful (e.g., query builders, request pipelines), but not for one-shot object creation.
+
+```typescript
+// Builder still appropriate: progressive query construction
+class QueryBuilder<T> {
+  private conditions: Array<(item: T) => boolean> = [];
+
+  where<K extends keyof T>(key: K, value: T[K]): this {
+    this.conditions.push(item => item[key] === value);
+    return this;
+  }
+
+  execute(items: T[]): T[] {
+    return items.filter(item =>
+      this.conditions.every(condition => condition(item))
+    );
+  }
 }
 ```
 
 ## Factory Pattern
 
+**Status: prefer factory functions** — class-heavy Abstract Factory is rarely needed in TypeScript. Factory functions returning plain objects are the modern default.
+
 ```typescript
-// Abstract factory with type safety
+// Factory function — the modern default
 interface Logger {
   log(message: string): void;
 }
 
-class ConsoleLogger implements Logger {
-  log(message: string): void {
-    console.log(message);
+type LoggerConfig =
+  | { type: "console" }
+  | { type: "file"; filename: string };
+
+function createLogger(config: LoggerConfig): Logger {
+  switch (config.type) {
+    case "console":
+      return { log: (msg) => console.log(msg) };
+    case "file":
+      return { log: (msg) => { /* write to config.filename */ } };
   }
 }
 
-class FileLogger implements Logger {
-  constructor(private filename: string) {}
-
-  log(message: string): void {
-    // Write to file
-  }
-}
-
-type LoggerType = 'console' | 'file';
-type LoggerConfig<T extends LoggerType> = T extends 'file'
-  ? { type: T; filename: string }
-  : { type: T };
-
-class LoggerFactory {
-  static create<T extends LoggerType>(config: LoggerConfig<T>): Logger {
-    switch (config.type) {
-      case 'console':
-        return new ConsoleLogger();
-      case 'file':
-        return new FileLogger(config.filename);
-      default:
-        throw new Error('Unknown logger type');
-    }
-  }
-}
-
-const consoleLogger = LoggerFactory.create({ type: 'console' });
-const fileLogger = LoggerFactory.create({ type: 'file', filename: 'app.log' });
-
-// Generic factory with dependency injection
-type Constructor<T> = new (...args: any[]) => T;
-
-class Container {
-  private instances = new Map<Constructor<any>, any>();
-
-  register<T>(token: Constructor<T>, instance: T): void {
-    this.instances.set(token, instance);
-  }
-
-  resolve<T>(token: Constructor<T>): T {
-    const instance = this.instances.get(token);
-    if (!instance) {
-      throw new Error(`No instance registered for ${token.name}`);
-    }
-    return instance;
-  }
-}
+const logger = createLogger({ type: "console" });
 ```
+
+Use discriminated unions for config variants instead of class hierarchies. The factory function returns an interface — callers don't need to know or care about internals.
 
 ## Repository Pattern
 
@@ -304,54 +296,54 @@ manager.dispatch({ type: 'SUCCESS', data: {} }); // 'success'
 
 ## Decorator Pattern
 
-```typescript
-// Method decorators with type safety
-function Log(
-  target: any,
-  propertyKey: string,
-  descriptor: PropertyDescriptor
-) {
-  const originalMethod = descriptor.value;
+**Status: framework-specific** — decorators are mainly relevant in NestJS, Angular, and similar class/DI-heavy frameworks. Outside those, prefer plain functions and composition.
 
-  descriptor.value = function (...args: any[]) {
-    console.log(`Calling ${propertyKey} with`, args);
-    const result = originalMethod.apply(this, args);
+TypeScript 5.0 standardized TC39 decorators. These are **not** compatible with legacy `experimentalDecorators` — they have different signatures, no parameter decorators, and no `emitDecoratorMetadata`. If migrating, it's a rewrite.
+
+```typescript
+// Standard decorator (TS 5.0+) — note the new signature
+function Log<This, Args extends any[], Return>(
+  target: (this: This, ...args: Args) => Return,
+  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>,
+) {
+  return function (this: This, ...args: Args): Return {
+    console.log(`Calling ${String(context.name)} with`, args);
+    const result = target.call(this, ...args);
     console.log(`Result:`, result);
     return result;
   };
-
-  return descriptor;
-}
-
-function Memoize(
-  target: any,
-  propertyKey: string,
-  descriptor: PropertyDescriptor
-) {
-  const originalMethod = descriptor.value;
-  const cache = new Map<string, any>();
-
-  descriptor.value = function (...args: any[]) {
-    const key = JSON.stringify(args);
-    if (cache.has(key)) {
-      return cache.get(key);
-    }
-    const result = originalMethod.apply(this, args);
-    cache.set(key, result);
-    return result;
-  };
-
-  return descriptor;
 }
 
 class Calculator {
   @Log
-  @Memoize
-  fibonacci(n: number): number {
-    if (n <= 1) return n;
-    return this.fibonacci(n - 1) + this.fibonacci(n - 2);
+  add(a: number, b: number): number {
+    return a + b;
   }
 }
+```
+
+**When to use standard decorators:**
+- NestJS controllers/services (NestJS is migrating to standard decorators)
+- Angular components/services (Angular still uses legacy decorators as of v19)
+- Libraries exposing decorator-based APIs
+
+**When NOT to use:** general application code. A higher-order function achieves the same thing without class coupling:
+
+```typescript
+// Prefer: higher-order function
+function withLogging<Args extends unknown[], R>(
+  name: string,
+  fn: (...args: Args) => R,
+): (...args: Args) => R {
+  return (...args) => {
+    console.log(`Calling ${name} with`, args);
+    const result = fn(...args);
+    console.log(`Result:`, result);
+    return result;
+  };
+}
+
+const add = withLogging("add", (a: number, b: number) => a + b);
 ```
 
 ## Result/Either Pattern
@@ -428,57 +420,36 @@ class Either<L, R> {
 
 ## Singleton Pattern
 
+**Status: antipattern in JS/TS** — a class with a single instance is just a module-scoped object. TypeScript's own docs note this. Use ES module scope for singleton behavior.
+
 ```typescript
-// Type-safe singleton
-class Database {
-  private static instance: Database;
-  private constructor() {
-    // Private constructor prevents instantiation
-  }
+// Antipattern: class-based singleton
+// class Database { private static instance: Database; ... }
 
-  static getInstance(): Database {
-    if (!Database.instance) {
-      Database.instance = new Database();
-    }
-    return Database.instance;
-  }
+// Preferred: module-scoped instance
+// db.ts
+const pool = createPool({ connectionString: process.env.DATABASE_URL });
 
-  query<T>(sql: string): Promise<T[]> {
-    // Execute query
-    return Promise.resolve([]);
-  }
+export function query<T>(sql: string, params?: unknown[]): Promise<T[]> {
+  return pool.query(sql, params);
 }
 
-const db = Database.getInstance();
-
-// Generic singleton factory
-function singleton<T>(factory: () => T): () => T {
-  let instance: T | undefined;
-  return () => {
-    if (!instance) {
-      instance = factory();
-    }
-    return instance;
-  };
-}
-
-const getConfig = singleton(() => ({
-  apiUrl: process.env.API_URL,
-  apiKey: process.env.API_KEY
-}));
+// Consumers import the module — the module IS the singleton
+import { query } from "./db.ts";
 ```
+
+In DI-framework contexts (Angular, NestJS), singleton behavior comes from the container (`providedIn: 'root'`, `@Injectable({ scope: Scope.DEFAULT })`), not from manual Singleton classes.
 
 ## Quick Reference
 
-| Pattern | Use Case |
-|---------|----------|
-| Builder | Construct complex objects step by step |
-| Factory | Create objects without specifying exact class |
-| Repository | Abstract data access layer |
-| API Client | Type-safe HTTP requests |
-| State Machine | Manage state transitions |
-| Decorator | Add behavior to methods |
-| Result/Either | Type-safe error handling |
-| Singleton | Ensure single instance |
-| Query Builder | Type-safe database queries |
-| Container | Dependency injection |
+| Pattern | Status | Use Case |
+|---------|--------|----------|
+| Parse, Don't Validate | **dominant** | Schema-first boundary validation (Zod, Valibot) |
+| Factory (functions) | **preferred** | Create objects via functions, not class hierarchies |
+| Result/Either | **recommended** | Type-safe error handling without exceptions |
+| State Machine | **recommended** | Manage typed state transitions |
+| Repository | **stable** | Abstract data access layer |
+| API Client | **stable** | Type-safe HTTP requests |
+| Decorator | **framework-specific** | NestJS/Angular only; prefer HOFs elsewhere |
+| Builder | **declining** | Only for progressive construction; prefer option objects |
+| Singleton | **antipattern** | Use module scope or DI container instead |
