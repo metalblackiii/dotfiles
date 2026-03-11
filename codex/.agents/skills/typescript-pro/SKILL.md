@@ -125,7 +125,6 @@ const point = { x: 2, y: 5 } as const satisfies { x: number; y: number };
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "incremental": true,
     "skipLibCheck": true
   }
 }

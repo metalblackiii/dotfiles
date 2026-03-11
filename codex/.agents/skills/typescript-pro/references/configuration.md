@@ -183,12 +183,13 @@ import type { User } from '@types';
 
 ## Incremental Compilation
 
+Only use `incremental` in configs that **emit output** (`outDir` set, no `noEmit`). Do not add it to a base tsconfig that is extended by build configs — `tsc` may silently skip emit when the `.tsbuildinfo` is missing or stale from a clean.
+
 ```json
 {
   "compilerOptions": {
     "incremental": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "composite": true
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   }
 }
 ```
@@ -266,58 +267,50 @@ export function createUser(name: string, email: string): User {
 
 ## Build Optimization
 
-```json
+```jsonc
 {
   "compilerOptions": {
     // Performance
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
 
-    // Faster builds
+    // Faster builds (only in configs that emit output — see Incremental Compilation)
     "incremental": true,
-    "assumeChangesOnlyAffectDirectDependencies": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
 
     // Smaller output
     "removeComments": true,
-    "importHelpers": true,
-
-    // Tree shaking support
-    "module": "ESNext",
-    "target": "ES2020"
+    "importHelpers": true
   }
 }
 ```
 
 ## Multiple Configurations
 
-```json
-// tsconfig.json (base)
+Use a build-specific tsconfig to exclude test files from compiled output while keeping full type coverage during development. Vitest and other modern test runners use the base tsconfig directly — a separate `tsconfig.test.json` is unnecessary.
+
+**Important:** Always include an explicit `include` in the build config. When only `exclude` is specified in a child config, `tsc` may silently produce no output.
+
+```jsonc
+// tsconfig.json (base — used by typecheck, IDE, and test runner)
 {
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": "src",
     "strict": true,
-    "target": "ES2022"
-  }
+    // ... full compiler options
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
 
-// tsconfig.build.json (production)
+// tsconfig.build.json (emit — excludes test files from dist/)
 {
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "sourceMap": false,
-    "removeComments": true,
-    "declaration": true
-  },
-  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
-}
-
-// tsconfig.test.json (testing)
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "types": ["jest", "node"],
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*.test.ts", "src/**/*.spec.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }
 ```
 
@@ -370,11 +363,13 @@ export function createUser(name: string, email: string): User {
     "target": "ES2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
     "lib": ["ES2022"],
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
@@ -510,7 +505,7 @@ npx @typescript/analyze-trace trace
 | `exactOptionalPropertyTypes` | Distinguish `undefined` from missing |
 | `noUncheckedIndexedAccess` | Index access returns `T \| undefined` |
 | `composite` | Enable project references |
-| `incremental` | Enable incremental compilation |
+| `incremental` | Incremental compilation — only in emit configs, not base tsconfig |
 | `skipLibCheck` | Skip .d.ts checking for faster builds |
 | `moduleResolution` | How modules are resolved (`NodeNext` or `bundler`) |
 | `paths` | Path mapping for imports |
