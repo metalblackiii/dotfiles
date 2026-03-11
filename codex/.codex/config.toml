@@ -26,4 +26,22 @@ enabled = false
 
 [feedback]
 enabled = false
+
+[projects."/Users/martinburch/repos/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-registry"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/platform-ops"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-www"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/prd-loop"]
+trust_level = "trusted"
 # Model migration: gpt-5.3-codex → gpt-5.4
+
+[mcp_servers.codebase-memory-mcp]
+command = "/Users/martinburch/.local/bin/codebase-memory-mcp"
