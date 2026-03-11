@@ -51,22 +51,17 @@ Wait for confirmation.
 
 ## Step 3a — Parallel First Dispatch
 
-Launch all research streams simultaneously.
+Launch all research streams simultaneously. All Codex dispatches use `~/.claude/scripts/codex-research.sh` — never inline `codex exec` commands.
 
 **Codex — Codebase Survey** (one per repo):
 
 For each repo, run via `Bash` tool with `run_in_background: true`. Derive a slug from the repo directory name (e.g., `neb-www`, `neb-ms-patients`).
 
 ```bash
-set -o pipefail && cd <repo-path> && codex exec --full-auto "<tailored survey prompt from plan>" | tee <absolute-path-to-working-dir>/.co-research/codex-survey-<repo-slug>.md
-```
-
-**IMPORTANT:** The `tee` path must be absolute (pointing back to the working directory where `.co-research/` was created), not relative. Codex runs from `<repo-path>`, so a relative `.co-research/` would write to the wrong location.
-
-If only one repo, the slug is just the repo name (e.g., `codex-survey-neb-www.md`).
-
-The Codex prompt must be self-contained (no conversation context). Structure it as:
-```
+~/.claude/scripts/codex-research.sh \
+  --repo <repo-path> \
+  --output <absolute-path-to-working-dir>/.co-research/codex-survey-<repo-slug>.md \
+  <<'PROMPT'
 Survey this codebase for [specific topic elements].
 
 Report the following:
@@ -76,20 +71,22 @@ Report the following:
 - Gaps or inconsistencies you notice
 
 Write your findings as structured markdown.
+PROMPT
 ```
+
+If only one repo, the slug is just the repo name (e.g., `codex-survey-neb-www.md`).
+
+The Codex prompt must be self-contained (no conversation context). Tailor the template above to the specific survey from the research plan.
 
 **Codex — Web Research** (one per angle, parallel):
 
 For each research angle, run via `Bash` tool with `run_in_background: true`. Derive a slug from the angle name (e.g., `ecosystem`, `practices`, `experiences`).
 
 ```bash
-set -o pipefail && codex exec --full-auto -c 'web_search="live"' "<web search prompt for this angle from plan>" | tee <absolute-path-to-working-dir>/.co-research/codex-web-<angle-slug>.md
-```
-
-**IMPORTANT:** The `tee` path must be absolute. The `-c 'web_search="live"'` flag enables Codex's native web search tool (the `--search` shorthand only works on the root `codex` command, not `codex exec`). Prompts should be self-contained and request structured markdown with source URLs.
-
-The Codex web search prompt must be self-contained. Structure it as:
-```
+~/.claude/scripts/codex-research.sh \
+  --web-search \
+  --output <absolute-path-to-working-dir>/.co-research/codex-web-<angle-slug>.md \
+  <<'PROMPT'
 Research [specific angle] for [topic].
 
 Report the following as structured markdown:
@@ -99,7 +96,10 @@ Report the following as structured markdown:
 - Any caveats, risks, or common pitfalls
 
 Include source URLs inline next to each finding.
+PROMPT
 ```
+
+The Codex prompt must be self-contained and request structured markdown with source URLs. Tailor the template above to the specific angle from the research plan.
 
 **Claude Subagents — Web Research** (one per angle via Agent tool, parallel):
 
@@ -124,14 +124,13 @@ Read all findings from Step 3a. Evaluate whether a second Codex pass adds value:
 - **Do correlate** when the codebase survey reveals significant existing integration that needs comparing against best practices (e.g., the repo already uses the technology and you need to assess alignment with ecosystem recommendations).
 - **Skip to Step 4** when the research is primarily about external tooling/ecosystem options and the codebase survey already captured the current state clearly (e.g., "no integration exists" or "only uses feature X").
 
-If correlating, dispatch Codex again (one per repo, `run_in_background: true`). Use absolute paths for `tee`:
+If correlating, dispatch Codex again (one per repo, `run_in_background: true`):
 
 ```bash
-set -o pipefail && cd <repo-path> && codex exec --full-auto "<correlation prompt>" | tee <absolute-path-to-working-dir>/.co-research/codex-correlation-<repo-slug>.md
-```
-
-The correlation prompt:
-```
+~/.claude/scripts/codex-research.sh \
+  --repo <repo-path> \
+  --output <absolute-path-to-working-dir>/.co-research/codex-correlation-<repo-slug>.md \
+  <<'PROMPT'
 Based on these ecosystem findings, analyze how this codebase compares:
 
 Key recommendations from research:
@@ -145,6 +144,7 @@ For each recommendation, report:
 - Effort: what would it take to adopt? (files to change, dependencies to add/remove)
 
 Write your findings as structured markdown.
+PROMPT
 ```
 
 Wait for all background tasks to complete.
