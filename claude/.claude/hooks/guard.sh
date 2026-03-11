@@ -33,7 +33,7 @@ CMD=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 [[ -z "$CMD" ]] && exit 0
 
 # Strip /dev/null redirects so they don't false-positive on redirect-detection rules
-CMD_CLEAN=$(printf '%s' "$CMD" | sed -E 's/[0-9]*&?>[[:space:]]*\/dev\/null//g; s/[0-9]*>&[0-9]+//g')
+CMD_CLEAN=$(printf '%s' "$CMD" | jq -Rr 'gsub("[0-9]*&?>[[:space:]]*/dev/null"; "") | gsub("[0-9]*>&[0-9]+"; "")')
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -49,10 +49,30 @@ emit_decision() {
   exit 0
 }
 
+# Escape regex metacharacters in a literal string for use with grep -E.
+regex_escape() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//./\\.}"
+  s="${s//\[/\\[}"
+  s="${s//\*/\\*}"
+  s="${s//^/\\^}"
+  s="${s//\$/\\$}"
+  s="${s//\(/\\(}"
+  s="${s//\)/\\)}"
+  s="${s//+/\\+}"
+  s="${s//\?/\\?}"
+  s="${s//\{/\\{}"
+  s="${s//|/\\|}"
+  printf '%s' "$s"
+}
+
 # Convert "git commit" → \bgit\s+commit\b
 command_to_regex() {
-  printf '%s' "$1" \
-    | sed 's/[.[\*^$()+?{|\\]/\\&/g; s/ /\\s+/g; s/^/\\b/; s/$/\\b/'
+  local escaped
+  escaped=$(regex_escape "$1")
+  escaped="${escaped// /\\s+}"
+  printf '%s' "\\b${escaped}\\b"
 }
 
 # Check a layer's rules against $CMD.
@@ -99,7 +119,7 @@ check_layer "deny" "deny" \
 # ---------------------------------------------------------------------------
 
 HOME_DIR="${HOME:-$(eval echo ~)}"
-HOME_ESC=$(printf '%s' "$HOME_DIR" | sed 's/[.[\*^$()+?{|\\]/\\&/g')
+HOME_ESC=$(regex_escape "$HOME_DIR")
 
 while IFS= read -r regex; do
   [[ -z "$regex" ]] && continue
@@ -121,7 +141,12 @@ _GIT_DIR=""
 effective_git_dir() {
   if [[ -z "$_GIT_DIR" ]]; then
     local cd_target
-    cd_target=$(printf '%s' "$CMD_CLEAN" | grep -oE '\bcd[[:space:]]+[^&;|]+' | tail -1 | sed 's/^cd[[:space:]]*//' | sed 's/[[:space:]]*$//')
+    local cd_line
+    cd_line=$(printf '%s' "$CMD_CLEAN" | grep -oE '\bcd[[:space:]]+[^&;|]+' | tail -1)
+    cd_target=""
+    if [[ "$cd_line" =~ ^cd[[:space:]]+(.*[^[:space:]]) ]]; then
+      cd_target="${BASH_REMATCH[1]}"
+    fi
     if [[ -n "$cd_target" ]]; then
       # Expand ~ to $HOME
       _GIT_DIR="${cd_target/#\~/$HOME}"
