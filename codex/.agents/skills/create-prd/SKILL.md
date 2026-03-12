@@ -1,6 +1,6 @@
 ---
 name: create-prd
-description: Use when defining what to build before a prd-loop run, formalizing a feature idea, converting a ticket into an implementation-ready PRD, or writing feature specifications with structured requirements and acceptance criteria.
+description: ALWAYS invoke when defining what to build before a prd-loop run, formalizing a feature idea, converting a ticket into an implementation-ready PRD, or writing feature specifications with structured requirements and acceptance criteria. Not for analyzing existing tickets or specs — use requirements-analyst.
 ---
 
 # Create PRD

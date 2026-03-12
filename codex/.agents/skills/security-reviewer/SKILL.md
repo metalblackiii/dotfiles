@@ -1,6 +1,6 @@
 ---
 name: security-reviewer
-description: Use when a dedicated security assessment is requested (security audit, compliance review, threat model, vulnerability triage, or incident security analysis) beyond normal PR or local code review.
+description: ALWAYS invoke when a dedicated security assessment is requested (security audit, compliance review, threat model, vulnerability triage, or incident security analysis) beyond normal PR or local code review.
 ---
 
 # Security Reviewer

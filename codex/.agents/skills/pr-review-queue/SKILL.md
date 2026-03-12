@@ -1,6 +1,6 @@
 ---
 name: pr-review-queue
-description: Use when you need to see what PRs need your review. Triggers on "review queue", "what needs my review", "pending reviews", or "PRs I'm a reviewer on".
+description: ALWAYS invoke to see what PRs need your review. Triggers on "review queue", "what needs my review", "pending reviews", or "PRs I'm a reviewer on".
 allowed-tools: Bash, Read, Glob, Grep
 ---
 

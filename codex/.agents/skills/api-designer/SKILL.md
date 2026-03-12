@@ -1,6 +1,6 @@
 ---
 name: api-designer
-description: Use when designing new REST API endpoints, planning API versioning strategy, defining request/response contracts, or evolving existing APIs with breaking changes
+description: ALWAYS invoke when designing new REST API endpoints, planning API versioning strategy, defining request/response contracts, or evolving existing APIs with breaking changes
 ---
 
 # API Designer

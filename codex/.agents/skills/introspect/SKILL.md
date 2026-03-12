@@ -1,6 +1,6 @@
 ---
 name: introspect
-description: Use when reviewing agent configuration for conflicts, redundancy, staleness, or prompt quality issues, with platform-aware prioritization plus cross-platform capability parity checks.
+description: ALWAYS invoke when reviewing agent configuration for conflicts, redundancy, staleness, or prompt quality issues, with platform-aware prioritization plus cross-platform capability parity checks.
 allowed-tools: Read, Glob, Grep, Bash
 ---
 
@@ -61,15 +61,20 @@ Instructions that may be obsolete:
 
 ### 4. Prompt Quality Audit
 
-For each skill, evaluate the **description** field. Read the `prompt-engineer` skill (sibling directory at `../prompt-engineer/SKILL.md`) for criteria, then assess:
+For each skill, evaluate the **description** field. Read the `writing-skills` skill (sibling directory at `../writing-skills/SKILL.md`) for description pattern criteria — specifically the "Description Best Practices" section. Then assess:
 
+- **Directive prefix?** Does it start with "ALWAYS invoke"? This is the primary activation criterion — passive descriptions ("Use when...") achieve ~77% activation vs 100% for directive ones.
 - **Trigger-only?** Does it say WHEN to use, not HOW it works? Descriptions containing process steps cause agents to follow the brief summary instead of reading the full skill.
 - **Specific enough?** Would a model reliably match this description to the right user request?
 - **Overlap detection:** Do any two descriptions match the same user request? If so, which one wins and is the precedence clear?
 - **Completeness:** Are there common triggering scenarios the description misses?
-- **Active platform/model reliability:** Would this description be selected reliably by the active runtime in this session (Codex vs Claude Code)?
 
 Rate each: **STRONG** / **NEEDS WORK** / **WEAK**, with a one-line explanation.
+
+Rating criteria:
+- **STRONG:** Has "ALWAYS invoke" prefix + clear trigger conditions. Negative constraints ("Do not X directly") and boundaries ("Not for...") are desirable polish that strengthen the description, but their absence alone does not downgrade a rating.
+- **NEEDS WORK:** Missing "ALWAYS invoke" prefix, or triggers are vague/overlapping with another skill without clear precedence.
+- **WEAK:** Passive description + vague triggers, or actively misleading (describes process instead of triggers).
 
 Prompt-quality platform rule:
 - Rate primarily through the active platform/model lens.

@@ -1,6 +1,6 @@
 ---
 name: database-expert
-description: Use when writing SQL queries, optimizing database performance, designing schemas, planning Aurora migrations, troubleshooting Sequelize queries, designing indexes, or analyzing execution plans. Covers SQL language, ORM patterns, and engine-specific optimization for MySQL/Aurora/PostgreSQL.
+description: ALWAYS invoke for writing SQL queries, optimizing database performance, designing schemas, planning Aurora migrations, troubleshooting Sequelize queries, designing indexes, or analyzing execution plans. Covers SQL language, ORM patterns, and engine-specific optimization for MySQL/Aurora/PostgreSQL.
 ---
 
 # Database Expert

@@ -1,6 +1,6 @@
 ---
 name: snyk-scan
-description: Use when scanning a repository for security vulnerabilities and applying fixes. Triggers on "run snyk", "scan for vulnerabilities", "fix security issues", "remediate dependencies", "snyk scan", "security scan this repo", or any request to find and fix known vulnerabilities in dependencies, container images, or source code. Not for interpreting results or advisory — use snyk-expert for that.
+description: ALWAYS invoke for scanning a repository for security vulnerabilities and applying fixes. Triggers on "run snyk", "scan for vulnerabilities", "fix security issues", "remediate dependencies", "snyk scan", "security scan this repo", or any request to find and fix known vulnerabilities in dependencies, container images, or source code. Not for interpreting results or advisory — use snyk-expert for that.
 ---
 
 # Snyk Scan

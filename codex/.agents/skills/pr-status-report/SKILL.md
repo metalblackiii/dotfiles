@@ -1,6 +1,6 @@
 ---
 name: pr-status-report
-description: Use when you need a status overview of your open pull requests. Triggers on "my PR status", "open PRs", "what PRs am I waiting on", or "PR dashboard".
+description: ALWAYS invoke for a status overview of your open pull requests. Triggers on "my PR status", "open PRs", "what PRs am I waiting on", or "PR dashboard".
 allowed-tools: Bash, Read, Glob, Grep
 ---
 

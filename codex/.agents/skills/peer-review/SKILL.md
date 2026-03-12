@@ -1,6 +1,7 @@
 ---
 name: peer-review
 description: Context-isolated review gate for automated workflows (e.g., co-implement Step 6, prd-loop). Dispatches a fresh agent with self-review criteria and no implementation context. For manual review, use self-review in a fresh terminal instead.
+disable-model-invocation: true
 argument-hint: [diff-command]
 ---
 

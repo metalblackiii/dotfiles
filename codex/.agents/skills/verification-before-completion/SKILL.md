@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Use immediately before making any success claim (for example, "fixed", "tests pass", "build succeeds", or "ready to commit/PR") to verify the claim with fresh command evidence.
+description: ALWAYS invoke immediately before claiming success ("fixed", "tests pass", "build succeeds", "ready to commit/PR"). Do not make completion claims without fresh command evidence. Not for intermediate progress updates or status checks during ongoing work.
 ---
 
 # Verification Before Completion

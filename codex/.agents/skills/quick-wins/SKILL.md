@@ -1,6 +1,6 @@
 ---
 name: quick-wins
-description: Use when scanning a repo for low-risk improvement opportunities without making changes. Triggers include "quick wins", "low-hanging fruit", "what can we improve", or "repo health check".
+description: ALWAYS invoke for scanning a repo for low-risk improvement opportunities without making changes. Triggers include "quick wins", "low-hanging fruit", "what can we improve", or "repo health check".
 ---
 
 # Quick Wins

@@ -1,6 +1,6 @@
 ---
 name: k8s-debug
-description: Diagnose and fix Kubernetes pods, CrashLoopBackOff, Pending, DNS, networking, storage, and rollout failures with kubectl.
+description: ALWAYS invoke to diagnose and fix Kubernetes pods, CrashLoopBackOff, Pending, DNS, networking, storage, and rollout failures with kubectl.
 ---
 
 # Kubernetes Debugging Skill

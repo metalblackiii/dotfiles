@@ -1,6 +1,6 @@
 ---
 name: bash-expert
-description: Create, generate, validate, lint, audit, or fix bash/shell scripts (.sh). Covers script generation, ShellCheck analysis, POSIX compliance, and shell automation. Triggers on "create bash script", "validate shell script", "lint .sh file", "ShellCheck", "POSIX compliance", or any bash/shell scripting request.
+description: ALWAYS invoke to create, generate, validate, lint, audit, or fix bash/shell scripts (.sh). Covers script generation, ShellCheck analysis, POSIX compliance, and shell automation. Triggers on "create bash script", "validate shell script", "lint .sh file", "ShellCheck", "POSIX compliance", or any bash/shell scripting request. Not for CLI tool frameworks (commander, click, cobra) — use cli-developer.
 ---
 
 # Bash Expert

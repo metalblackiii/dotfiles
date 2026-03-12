@@ -1,6 +1,6 @@
 ---
 name: snyk-expert
-description: Use when interpreting Snyk scan results, understanding CVEs or CWEs, prioritizing vulnerabilities, choosing Snyk CLI flags, configuring Snyk for a repo, evaluating dependency upgrade risk, assessing container base image security, or deciding whether to fix, ignore, or accept a vulnerability. Also triggers on "is this exploitable", "should I upgrade this package", "what does this snyk output mean", or general application security scanning questions. Not for running scans or applying fixes — use snyk-scan for that.
+description: ALWAYS invoke for interpreting Snyk scan results, understanding CVEs or CWEs, prioritizing vulnerabilities, choosing Snyk CLI flags, configuring Snyk for a repo, evaluating dependency upgrade risk, assessing container base image security, or deciding whether to fix, ignore, or accept a vulnerability. Also triggers on "is this exploitable", "should I upgrade this package", "what does this snyk output mean", or general application security scanning questions. Not for running scans or applying fixes — use snyk-scan for that.
 ---
 
 # Snyk Expert

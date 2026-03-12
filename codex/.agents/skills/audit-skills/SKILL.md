@@ -1,6 +1,6 @@
 ---
 name: audit-skills
-description: Use when reviewing skill adoption, finding dormant skills, or evaluating skill-discovery effectiveness across recent sessions on Claude Code or Codex.
+description: ALWAYS invoke when reviewing skill adoption, finding dormant skills, or evaluating skill-discovery effectiveness across recent sessions on Claude Code or Codex.
 allowed-tools: Bash, Read, Glob, Grep
 ---
 

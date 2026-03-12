@@ -1,6 +1,6 @@
 ---
 name: secure-code-guardian
-description: Use when implementing or remediating security controls in code (authn/authz, input validation, secrets handling, encryption, session/cookie policy, security headers). Not for generic code review.
+description: ALWAYS invoke when implementing or remediating security controls (authn/authz, input validation, secrets handling, encryption, session/cookie policy, security headers). Do not implement security controls directly. Not for generic code review or security audits (use security-reviewer).
 ---
 
 # Secure Code Guardian

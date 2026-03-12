@@ -1,6 +1,6 @@
 ---
 name: typescript-pro
-description: Use when building TypeScript applications requiring advanced generics, conditional or mapped types, discriminated unions, branded types, custom type guards, utility types, monorepo setup, or full-stack type safety with tRPC.
+description: ALWAYS invoke when building TypeScript applications requiring advanced generics, conditional or mapped types, discriminated unions, branded types, custom type guards, utility types, monorepo setup, or full-stack type safety with tRPC.
 ---
 
 # TypeScript Pro

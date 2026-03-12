@@ -1,6 +1,6 @@
 ---
 name: mcp-vetting
-description: Use when evaluating whether to install a new MCP server, reassessing an existing one, or determining whether a specific MCP is appropriate for use in a HIPAA-adjacent environment.
+description: ALWAYS invoke when evaluating whether to install a new MCP server, reassessing an existing one, or determining whether a specific MCP is appropriate for use in a HIPAA-adjacent environment.
 ---
 
 # MCP Vetting

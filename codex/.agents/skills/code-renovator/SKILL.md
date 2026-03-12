@@ -1,6 +1,6 @@
 ---
 name: code-renovator
-description: Use when improving existing code structure through refactoring, replacing legacy patterns incrementally, or planning structural changes before a feature. Not for greenfield implementation.
+description: ALWAYS invoke for refactoring, restructuring legacy code, replacing outdated patterns, or planning structural changes before a feature. Do not refactor directly. Not for greenfield implementation or new feature builds.
 ---
 
 # Renovate Code

@@ -1,6 +1,6 @@
 ---
 name: github-actions-validator
-description: Validate, lint, audit, fix GitHub Actions workflows (.github/workflows).
+description: ALWAYS invoke to validate, lint, audit, fix GitHub Actions workflows (.github/workflows). Not for creating new workflows from scratch — use github-actions-generator.
 ---
 
 # GitHub Actions Validator

@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when creating, updating, testing, or optimizing skills in this repo.
+description: ALWAYS invoke when creating, updating, testing, or optimizing skills in this repo.
 ---
 
 # Writing Skills
@@ -70,29 +70,30 @@ description: Use for TDD - write test first, watch it fail, write minimal code
 # BAD: Too vague
 description: For debugging
 
-# GOOD: Triggering conditions only, no workflow summary
-description: Use when implementing any feature or bugfix, before writing implementation code
-
-# GOOD: Specific symptoms
+# BAD: Passive "Use when" - achieves ~77% activation (650-trial study)
 description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+
+# GOOD: Directive + negative constraint - achieves 100% activation
+description: ALWAYS invoke for bugs, test failures, flaky tests, or unexpected behavior with a non-obvious root cause. Do not debug directly. Not for typos or single-line fixes where the cause is already clear.
 ```
 
 **Rules:**
-- Prefer starting with "Use when..." for user-invocable skills
+- Start with "ALWAYS invoke for..." for user-invocable skills
+- Include a negative constraint ("Do not X directly") to block the model's default path of answering without the skill
+- End with "Not for..." to define the boundary and prevent overtriggering
 - Background/non-invocable skills may use concise declarative descriptions with "not invoked directly" or equivalent boundary language
 - Describe triggers/symptoms, NOT what the skill does
-- Write in third person
 - Max 1024 characters (spec limit), aim for under 500
-- Claude tends to undertrigger — make descriptions slightly "pushy" to ensure skills activate when relevant. Include adjacent phrasings and edge-case contexts.
+- Include adjacent phrasings and edge-case contexts to cover how users actually ask
 
-**Triggering insight:** Skills appear in Claude's `available_skills` list by name + description. Claude only consults skills for tasks it can't easily handle alone — simple one-step queries may not trigger even with a perfect description match. Multi-step or specialized queries trigger reliably. Design descriptions (and trigger eval queries) accordingly.
+**Why this works:** Passive descriptions leave the model a choice; directive descriptions with negative constraints close the escape hatch. For the full evidence base (650-trial study, academic research, root cause analysis), see `references/research-skill-invocation.md`.
 
 ## SKILL.md Template
 
 ```markdown
 ---
 name: skill-name
-description: Use when [triggering conditions]
+description: ALWAYS invoke for [triggering conditions]. Do not [action] directly. Not for [boundary].
 ---
 
 # Skill Name
@@ -171,7 +172,7 @@ for f in codex/.agents/skills/*/SKILL.md; do
   if rg -q '^user-invocable:[[:space:]]*false' "$f" || rg -q '^description: .*not invoked directly' "$f"; then
     continue
   fi
-  rg -q '^description: Use ' "$f" || echo "Description style issue (expected trigger-style): $f"
+  rg -q '^description: ALWAYS invoke' "$f" || echo "Description style issue (expected 'ALWAYS invoke' prefix): $f"
 done
 
 # Ensure referenced relative files exist
@@ -201,7 +202,7 @@ codex/.agents/skills/         # Source of truth — all skills live here
 ## Quick Checklist
 
 - [ ] Name: required, must match directory name, lowercase/numbers/hyphens only, no leading/trailing/consecutive hyphens
-- [ ] Description: trigger-style for user-facing skills (prefer "Use when..."); declarative style allowed for clearly non-invocable/background skills
+- [ ] Description: "ALWAYS invoke for..." for user-facing skills; declarative style allowed for clearly non-invocable/background skills
 - [ ] Overview: core principle in 1-2 sentences
 - [ ] Content: actionable, scannable (tables, bullets)
 - [ ] For discipline skills: Iron Law, rationalizations table, red flags
@@ -299,8 +300,6 @@ This skill includes infrastructure for eval-driven iteration:
 - `references/` — JSON schemas (`schemas.md`) and detailed eval workflow (`eval-workflow.md`)
 
 ## Cross-References
-
-**For description quality**, apply the `prompt-engineer` skill criteria when writing or reviewing descriptions. Skill descriptions are prompts — they determine when the model loads the skill.
 
 **For introspect integration**, when `introspect` rates a description NEEDS WORK or WEAK, feed it into the Description Optimization workflow above.
 

@@ -1,6 +1,6 @@
 ---
 name: self-review
-description: Use when checking local changes before committing or opening a PR. Triggers on "check my changes", "review before commit", "pre-commit check". Local git only (no `gh`). For dedicated security audits, use `security-reviewer`.
+description: ALWAYS invoke when checking local changes before committing or opening a PR. Triggers on "check my changes", "review before commit", "pre-commit check". Local git only (no `gh`). For dedicated security audits, use `security-reviewer`.
 ---
 
 # Self-Review Skill

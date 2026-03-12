@@ -1,6 +1,6 @@
 ---
 name: review
-description: Use when reviewing a GitHub pull request for architecture compliance, testing coverage, code quality, and baseline security checks. For dedicated security audits or deep security assessments, use `security-reviewer`. Requires working `gh` CLI auth/context. Accepts a PR number, URL, or empty for the current branch.
+description: ALWAYS invoke for PR reviews, code review requests, "review this PR", "check this PR", or pull request quality assessments. Do not review PRs directly without this skill. Not for dedicated security audits (use security-reviewer) or local uncommitted change reviews (use self-review). Requires working gh CLI. Accepts a PR number, URL, or empty for the current branch.
 ---
 
 # PR Review Skill

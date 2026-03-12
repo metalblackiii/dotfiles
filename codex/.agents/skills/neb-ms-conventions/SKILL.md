@@ -1,6 +1,6 @@
 ---
 name: neb-ms-conventions
-description: Use when implementing or modifying backend code in neb-ms-* or neb-microservice repositories and you need neb service conventions (routing, controller, model, service, messaging patterns).
+description: ALWAYS invoke when implementing or modifying backend code in neb-ms-* or neb-microservice repositories and you need neb service conventions (routing, controller, model, service, messaging patterns).
 ---
 
 # Neb Service Conventions

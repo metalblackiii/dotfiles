@@ -1,6 +1,6 @@
 ---
 name: github-actions-generator
-description: Create, generate, or scaffold GitHub Actions workflows, action.yml, or .github/workflows CI/CD pipelines.
+description: ALWAYS invoke to create, generate, or scaffold GitHub Actions workflows, action.yml, or .github/workflows CI/CD pipelines. Not for validating or fixing existing workflows — use github-actions-validator.
 ---
 
 # GitHub Actions Generator

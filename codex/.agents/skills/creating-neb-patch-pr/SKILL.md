@@ -1,6 +1,6 @@
 ---
 name: creating-neb-patch-pr
-description: Use when a user asks to create a patch PR for a merged main PR in a neb-ms-* repo or neb-www. Input is typically a PR URL or number of the just-merged main PR.
+description: ALWAYS invoke when a user asks to create a patch PR for a merged main PR in a neb-ms-* repo or neb-www. Input is typically a PR URL or number of the just-merged main PR.
 ---
 
 # Creating Neb Patch PR

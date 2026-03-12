@@ -1,6 +1,6 @@
 ---
 name: dockerfile-expert
-description: Create, generate, validate, lint, scan, audit, or optimize Dockerfiles, container images, multi-stage builds, and .dockerignore files. Triggers on "create Dockerfile", "validate Dockerfile", "containerize", "Docker best practices", "optimize Docker image", or any Dockerfile request.
+description: ALWAYS invoke to create, generate, validate, lint, scan, audit, or optimize Dockerfiles, container images, multi-stage builds, and .dockerignore files. Triggers on "create Dockerfile", "validate Dockerfile", "containerize", "Docker best practices", "optimize Docker image", or any Dockerfile request.
 ---
 
 # Dockerfile Expert

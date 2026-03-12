@@ -1,6 +1,6 @@
 ---
 name: systematic-debugging
-description: Use when a bug, test failure, or unexpected behavior has a non-obvious root cause. Not for typos or single-line fixes where the cause is already clear.
+description: ALWAYS invoke for bugs, test failures, flaky tests, environment-dependent failures, or unexpected behavior with a non-obvious root cause. Do not debug directly. Not for typos or single-line fixes where the cause is already clear.
 ---
 
 # Systematic Debugging

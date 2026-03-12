@@ -1,6 +1,6 @@
 ---
 name: helm-expert
-description: Create, scaffold, generate, validate, lint, audit, or check Helm charts, Chart.yaml, values.yaml, templates, CRDs, and schemas. Triggers on "create Helm chart", "validate Helm chart", "lint chart", "scaffold chart", "Helm templates", or any Helm request.
+description: ALWAYS invoke to create, scaffold, generate, validate, lint, audit, or check Helm charts, Chart.yaml, values.yaml, templates, CRDs, and schemas. Triggers on "create Helm chart", "validate Helm chart", "lint chart", "scaffold chart", "Helm templates", or any Helm request.
 ---
 
 # Helm Expert

@@ -1,6 +1,6 @@
 ---
 name: requirements-analyst
-description: Use when the user shares a ticket, spec, feature request, or ad hoc description and wants gaps, risks, edge cases, or ambiguities identified before starting implementation. Triggers on "look at this ticket", "what's missing", "review these requirements", or any feature description with unclear scope. Not for creating specs from scratch — use create-prd for that.
+description: ALWAYS invoke when the user shares a ticket, spec, feature request, or ad hoc description and wants gaps, risks, edge cases, or ambiguities identified before starting implementation. Triggers on "look at this ticket", "what's missing", "review these requirements", or any feature description with unclear scope. Not for creating specs from scratch — use create-prd for that.
 ---
 
 # Requirements Analyst
