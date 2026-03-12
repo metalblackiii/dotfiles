@@ -42,6 +42,3 @@ trust_level = "trusted"
 [projects."/Users/martinburch/repos/prd-loop"]
 trust_level = "trusted"
 # Model migration: gpt-5.3-codex → gpt-5.4
-
-[mcp_servers.codebase-memory-mcp]
-command = "/Users/martinburch/.local/bin/codebase-memory-mcp"
