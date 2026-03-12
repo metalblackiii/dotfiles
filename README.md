@@ -19,6 +19,8 @@ New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatom
 | `kubectl` | Optional | `brew install kubectl` | Read-only cluster access |
 | `rg` (ripgrep) | Optional | `brew install ripgrep` | Fast shell fallback for text search when built-in tools are unavailable |
 | `fd` | Optional | `brew install fd` | Fast shell fallback for file discovery when built-in tools are unavailable |
+| `actionlint` | Optional | `brew install actionlint` | `github-actions-validator` skill (GitHub Actions static analysis) |
+| `act` | Optional | `brew install act` | `github-actions-validator` skill (local GitHub Actions execution) |
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
