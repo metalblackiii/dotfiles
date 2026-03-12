@@ -4,18 +4,6 @@ This configuration is managed via a dotfiles repo with symlinks.
 
 **IMPORTANT: Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets. The canonical location for skills is `codex/.agents/skills/` within this repo. Both Claude Code (`~/.claude/skills/`) and Codex (`~/.agents/skills/`) symlink to it — all skills are shared across platforms. To find the repo root, use `git rev-parse --show-toplevel` from any file inside it, or follow a symlink (e.g., `readlink ~/.claude/skills`) back to the source.
 
-## Subagent Model Defaults
-
-### Claude Code
-
-- Default to `model: "sonnet"` for Explore and general-purpose subagents
-- Use `model: "haiku"` for trivial search/lookup tasks
-- Only use Opus for subagents when complex reasoning is explicitly needed
-
-### Codex
-
-N/A — Codex does not support subagent model selection.
-
 ## Tool Preferences
 
 ### Claude Code

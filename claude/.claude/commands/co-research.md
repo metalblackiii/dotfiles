@@ -103,7 +103,7 @@ The Codex prompt must be self-contained and request structured markdown with sou
 
 **Claude Subagents — Web Research** (one per angle via Agent tool, parallel):
 
-Each agent gets one research angle — launch one Claude subagent per angle so every angle gets dual coverage (Claude + Codex). Use `subagent_type: "general-purpose"`. Each agent should:
+Each agent gets one research angle — launch one Claude subagent per angle so every angle gets dual coverage (Claude + Codex). Use `subagent_type: "research"`. Each agent should:
 - Use `WebSearch` and `WebFetch` to research its angle
 - Write findings to `.co-research/claude-<angle-slug>.md`
 - Include source URLs for every claim
