@@ -1,6 +1,6 @@
 ---
 name: batch-repo-ops
-description: ALWAYS invoke when performing any operation — change, check, audit, upgrade, or migration — across multiple repositories. Triggers on "update all neb-ms-* repos", "check X in every repo", "batch upgrade", "apply across services", "do this for every repo", "create PRs for all repos", "run this across all microservices", "what version of X in each repo", "check the status of Y across repos", or any request to repeat, check, or verify something across a set of repositories. Even simple read-only checks across repos benefit from structured discovery, batching, and reporting. Not for single-repo work — use co-implement or direct implementation for those.
+description: ALWAYS invoke when performing any operation — change, check, audit, upgrade, or migration — across multiple repositories. Triggers on "update all neb-ms-* repos", "check X in every repo", "batch upgrade", "apply across services", "do this for every repo", "create PRs for all repos", "run this across all microservices", "what version of X in each repo", "check the status of Y across repos", or any request to repeat, check, or verify something across a set of repositories. Even simple read-only checks across repos benefit from structured discovery, batching, and reporting. Not for single-repo work.
 ---
 
 # Batch Repo Ops
@@ -16,7 +16,7 @@ Orchestrate the same operation across multiple repositories using parallel sub-a
 
 ## When NOT to Use
 
-- Single-repo work — use `co-implement` for heavy delegation or just do it directly
+- Single-repo work — just do it directly
 - Research across repos — use `co-research` with multi-repo survey
 - Reviewing PRs across repos — use `pr-review-queue`
 

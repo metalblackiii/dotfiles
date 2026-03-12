@@ -139,7 +139,6 @@ These skills help you improve the system itself:
 - `writing-skills` — Create/edit SKILL.md files and frontmatter conventions.
 - `introspect` — Audit agent configuration for conflicts, redundancy, and stale guidance.
 - `audit-skills` — Measure skill adoption and find dormant skills.
-- `prompt-engineer` — Design prompts, optimize model performance, build evaluation frameworks, and implement advanced prompting techniques.
 
 ### 4) Niche Skills (Low-Cost One-Offs)
 
