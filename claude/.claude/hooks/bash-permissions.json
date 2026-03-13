@@ -1,4 +1,40 @@
 {
+  "allow": [
+    {
+      "regex": "\\b(rtk[[:space:]]+)?curl\\b.*[[:space:]]['\"]?https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?([/'\"[:space:]]|$)",
+      "category": "local dev testing"
+    },
+    {
+      "regex": "\\b(rtk[[:space:]]+)?git[[:space:]]+(commit|push)\\b",
+      "branch": "^mjb-pho-NEB-",
+      "category": "personal feature branch"
+    },
+    {
+      "regex": "\\b(rtk[[:space:]]+)?gh[[:space:]]+pr[[:space:]]+create\\b",
+      "branch": "^mjb-pho-NEB-",
+      "category": "personal feature branch"
+    }
+  ],
+
+  "ask": [
+    {
+      "commands": ["git commit", "git push", "git stash drop", "git restore"],
+      "category": "git mutation"
+    },
+    {
+      "commands": ["gh pr create", "gh pr merge", "gh pr close", "gh issue close"],
+      "category": "GitHub"
+    },
+    {
+      "commands": ["npm deprecate", "gh repo archive"],
+      "category": "registry/repo"
+    },
+    {
+      "commands": ["curl", "chmod", "brew"],
+      "category": "system tools"
+    }
+  ],
+
   "deny": [
     {
       "commands": ["rm -rf", "rm -r", "chown"],
@@ -148,42 +184,6 @@
     {
       "regex": "(^|\\s)(~|__HOME__)/\\.(zshrc|bashrc|bash_profile|gitconfig)($|\\s)",
       "category": "shell/git config"
-    }
-  ],
-
-  "allow": [
-    {
-      "regex": "\\b(rtk[[:space:]]+)?curl\\b.*[[:space:]]['\"]?https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?([/'\"[:space:]]|$)",
-      "category": "local dev testing"
-    },
-    {
-      "regex": "\\b(rtk[[:space:]]+)?git[[:space:]]+(commit|push)\\b",
-      "branch": "^mjb-pho-NEB-",
-      "category": "personal feature branch"
-    },
-    {
-      "regex": "\\b(rtk[[:space:]]+)?gh[[:space:]]+pr[[:space:]]+create\\b",
-      "branch": "^mjb-pho-NEB-",
-      "category": "personal feature branch"
-    }
-  ],
-
-  "ask": [
-    {
-      "commands": ["git commit", "git push", "git stash drop", "git restore"],
-      "category": "git mutation"
-    },
-    {
-      "commands": ["gh pr create", "gh pr merge", "gh pr close", "gh issue close"],
-      "category": "GitHub"
-    },
-    {
-      "commands": ["npm deprecate", "gh repo archive"],
-      "category": "registry/repo"
-    },
-    {
-      "commands": ["curl", "chmod", "brew"],
-      "category": "system tools"
     }
   ]
 }

@@ -8,11 +8,12 @@ CLAUDE_TARGET="$HOME/.claude"
 
 echo "Uninstalling Claude Code config..."
 
+LEGACY_SYMLINKS=("GUARD.md")
 CLAUDE_ITEMS=(
     "CLAUDE.md"
     "settings.json"
     "RTK.md"
-    "GUARD.md"
+    "BASH-PERMISSIONS.md"
     "hooks"
     "skills"
     "agents"
@@ -20,7 +21,7 @@ CLAUDE_ITEMS=(
     "commands"
 )
 
-for item in "${CLAUDE_ITEMS[@]}"; do
+for item in "${LEGACY_SYMLINKS[@]}" "${CLAUDE_ITEMS[@]}"; do
     target_path="$CLAUDE_TARGET/$item"
 
     if [ -L "$target_path" ]; then

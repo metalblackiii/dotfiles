@@ -37,11 +37,15 @@
       "Edit(~/.bash_profile)",
       "Edit(~/.gitconfig)",
       "Edit(~/.claude/CLAUDE.md)",
+      "Edit(~/.claude/BASH-PERMISSIONS.md)",
+      "Edit(~/.claude/RTK.md)",
       "Edit(~/.claude/settings.json)",
       "Edit(~/.claude/skills/**)",
       "Edit(~/.claude/commands/**)",
       "Edit(~/.claude/hooks/**)",
       "Write(~/.claude/CLAUDE.md)",
+      "Write(~/.claude/BASH-PERMISSIONS.md)",
+      "Write(~/.claude/RTK.md)",
       "Write(~/.claude/settings.json)",
       "Write(~/.claude/skills/**)",
       "Write(~/.claude/commands/**)",
@@ -71,7 +75,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/guard.sh"
+            "command": "~/.claude/hooks/bash-permissions.sh"
           }
         ]
       },

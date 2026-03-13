@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Guard hook — enforces deny/ask/path rules from guard-rules.json.
+# Bash permissions hook — enforces deny/ask/path rules from bash-permissions.json.
 #
 # WHY: Claude Code's glob-based permission matching is unreliable for compound
 # commands and heredocs. This hook uses regex against the full command string
 # and emits structured JSON decisions via the PreToolUse hook API.
 #
-# Rules live in guard-rules.json (single source of truth). Each rule is either:
+# Rules live in bash-permissions.json (single source of truth). Each rule is either:
 #   "commands": ["git commit", "rm -rf"]  — human-readable, converted to regex
 #   "regex": "\\baws\\s+[a-z-]+\\s+delete\\b"  — raw regex escape hatch
 #
@@ -22,7 +22,7 @@ set -euo pipefail
 command -v jq &>/dev/null || exit 0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-RULES_FILE="${SCRIPT_DIR}/guard-rules.json"
+RULES_FILE="${SCRIPT_DIR}/bash-permissions.json"
 [[ -f "$RULES_FILE" ]] || exit 0
 
 # Fail open on malformed rules to avoid blocking all commands
@@ -201,6 +201,6 @@ done < <(
 # ---------------------------------------------------------------------------
 
 check_layer "ask" "ask" \
-  "Guard hook: protected command pattern matched."
+  "Bash permissions hook: protected command pattern matched."
 
 exit 0

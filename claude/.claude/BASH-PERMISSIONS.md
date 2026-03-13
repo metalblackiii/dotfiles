@@ -1,8 +1,8 @@
 ## Bash Permissions
 
-All Bash deny/ask rules live in `~/.claude/hooks/guard-rules.json` (single source of truth). Do not add Bash rules to settings.json deny/ask arrays — the guard hook is the sole enforcer.
+All Bash deny/ask rules live in `~/.claude/hooks/bash-permissions.json` (single source of truth). Do not add Bash rules to settings.json deny/ask arrays — the bash-permissions hook is the sole enforcer.
 
-To add a rule, add an entry to the appropriate layer in `guard-rules.json`:
+To add a rule, add an entry to the appropriate layer in `bash-permissions.json`:
 - **deny**: blocked unconditionally, reason shown to Claude
 - **paths**: blocks commands referencing sensitive file patterns
 - **allow**: auto-accepts commands matching trusted patterns (bypasses ask)

@@ -83,7 +83,7 @@ Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-cont
 
 ## Shell Hygiene
 
-- If a command is blocked by a guard hook, ask for guidance rather than retrying blocked patterns.
+- If a command is blocked by the bash-permissions hook, ask for guidance rather than retrying blocked patterns.
 - When npm/shell commands fail due to cwd, use `--prefix <path>` or `cd <path> &&` immediately — don't retry the broken approach.
 
 ## Self-Documenting Code
@@ -94,4 +94,4 @@ Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-cont
 - The name test: read the name aloud. If you need "which means..." to explain it, the name failed.
 
 @RTK.md
-@GUARD.md
+@BASH-PERMISSIONS.md

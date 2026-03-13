@@ -97,7 +97,7 @@ dotfiles/
 │   ├── uninstall.sh
 │   └── .claude/
 │       ├── CLAUDE.md        # Symlink → ../../shared/INSTRUCTIONS.md
-│       ├── GUARD.md         # Guard-rules context (included via @GUARD.md)
+│       ├── BASH-PERMISSIONS.md # Bash permissions context (included via @BASH-PERMISSIONS.md)
 │       ├── RTK.md           # RTK usage reference (included via @RTK.md)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 3 custom subagents
@@ -212,24 +212,49 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 |---------|---------|
 | **co-research** | Dispatch parallel research agents and Codex, then synthesize findings |
 
-> `prd-loop` and `co-implement` were retired as Claude commands — use the standalone [`prd-loop` CLI](https://github.com/metalblackiii/prd-loop) directly instead.
-
 ### Hooks & Scripts
 
 - **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
 - **rtk-rewrite.sh** — PreToolUse hook that transparently rewrites Bash commands through [RTK](https://github.com/rtk-ai/rtk) for token savings. Silently no-ops if `rtk` or `jq` aren't installed.
-- **guard.sh** + **guard-rules.json** — PreToolUse hook that blocks Bash access to sensitive file paths (env files, secrets, credentials). Rules are externalized to JSON for easy editing.
+- **bash-permissions.sh** + **bash-permissions.json** — PreToolUse hook that enforces layered Bash permission rules (deny, sensitive paths, branch-conditional allow, ask). Rules are externalized to JSON for easy editing.
 - **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.
 - **context-bar.sh** — Status line script showing model, git branch, uncommitted files, sync status, and context usage percentage.
 
 
 ### Permissions
 
-The `settings.json` enforces strict guardrails:
+Claude Code permissions are split across two layers that handle different tool types. (Codex uses `approval_policy` in `config.toml` — see [Codex Configuration](#codex-configuration).)
 
-- **Denied**: shell commands with dedicated tool equivalents (`sed`, `awk`, `xargs`), `python -c` inline execution, env/secret files, destructive git operations, dangerous docker flags, package publishing, destructive AWS/CDK/Terraform/Helm/kubectl write operations
-- **Ask**: `git commit`, `git push`, `git restore`, `gh pr create/merge/close`, `curl`, `chmod`
-- **Allowed**: standard dev tools, read-only kubectl, scoped web access
+#### Non-Bash Tools (`settings.json`)
+
+The `permissions` block in `settings.json` controls Claude Code's built-in tools (Read, Edit, Write, Glob, Grep, WebFetch, WebSearch). These use glob-based path matching:
+
+- **Allowed**: all built-in tools, `Bash(*)`, scoped web access
+- **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
+
+#### Bash Commands (`bash-permissions.sh` + `bash-permissions.json`)
+
+All Bash permission rules are enforced by a PreToolUse hook — not by `settings.json`. The hook runs regex against the full command string, which is more reliable than glob matching for compound commands, pipes, and heredocs.
+
+Rules live in `bash-permissions.json` and are evaluated in four layers. The script processes layers in a fixed order (deny → paths → allow → ask); the JSON key order is cosmetic.
+
+| Layer | Decision | Purpose |
+|-------|----------|---------|
+| **deny** | Block | Unconditionally blocked. Optional `"nudge"` message guides Claude toward the right tool. |
+| **paths** | Block | Blocks commands referencing sensitive file patterns (`.env`, `/secrets/`, `.pem`, `~/.aws/`, `~/.ssh/`, shell configs). Uses `__HOME__` placeholder expanded at runtime. |
+| **allow** | Auto-approve | Bypasses the ask layer for trusted patterns. Supports optional `"branch"` condition — rule only fires when the current git branch matches the regex (e.g., `^mjb-pho-NEB-` auto-approves `git commit`, `git push`, and `gh pr create` on personal feature branches). |
+| **ask** | Prompt user | Forces confirmation for `git commit/push`, `gh pr create/merge/close`, `curl`, `chmod`, `brew`, etc. |
+
+First match wins. If no layer matches, the command is allowed.
+
+Each rule uses one of two formats:
+- `"commands": ["git commit", "rm -rf"]` — human-readable, auto-converted to `\b...\b` word-boundary regex
+- `"regex": "\\baws\\s+[a-z-]+\\s+delete\\b"` — raw regex for complex patterns
+
+**Design choices:**
+- **Fail-open**: missing `jq`, missing rules file, or malformed JSON all silently allow (avoids blocking all commands on a broken config)
+- **Command cleaning**: `/dev/null` redirects are stripped before matching to prevent false positives
+- **Lazy git resolution**: branch conditions resolve the effective git directory from `cd <path> &&` prefixes in the command, falling back to cwd
 
 ## Git Configuration
 
@@ -266,6 +291,7 @@ If you fork this repo, update these team/environment-specific values:
 |------|-------|---------|
 | Neb repo base path | `claude/.claude/agents/neb-explorer.md` | `~/repos/` |
 | PR default reviewers | `shared/INSTRUCTIONS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
+| Feature branch pattern | `claude/.claude/hooks/bash-permissions.json` → allow layer `"branch"` | `^mjb-pho-NEB-` |
 
 ## Attribution
 

@@ -13,11 +13,21 @@ echo "Installing Claude Code config..."
 
 mkdir -p "$CLAUDE_TARGET"
 
+# Clean up renamed files from previous installs
+LEGACY_SYMLINKS=("GUARD.md")
+for legacy in "${LEGACY_SYMLINKS[@]}"; do
+    legacy_path="$CLAUDE_TARGET/$legacy"
+    if [ -L "$legacy_path" ]; then
+        echo "  Removing legacy symlink $legacy_path"
+        rm "$legacy_path"
+    fi
+done
+
 CLAUDE_ITEMS=(
     "CLAUDE.md"
     "settings.json"
     "RTK.md"
-    "GUARD.md"
+    "BASH-PERMISSIONS.md"
     "hooks"
     "skills"
     "agents"
