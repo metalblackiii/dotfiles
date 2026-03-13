@@ -752,4 +752,4 @@ jobs:
 4. Handle errors gracefully: Timeouts, cleanup, notifications
 5. Follow conventions: Standard naming, proper versioning, community practices
 
-Always validate workflows with the github-actions-validator skill before deploying.
+Always validate workflows with the gha-expert validation workflow before deploying.

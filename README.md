@@ -19,8 +19,8 @@ New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatom
 | `kubectl` | Optional | `brew install kubectl` | Read-only cluster access |
 | `rg` (ripgrep) | Optional | `brew install ripgrep` | Fast shell fallback for text search when built-in tools are unavailable |
 | `fd` | Optional | `brew install fd` | Fast shell fallback for file discovery when built-in tools are unavailable |
-| `actionlint` | Optional | `brew install actionlint` | `github-actions-validator` skill (GitHub Actions static analysis) |
-| `act` | Optional | `brew install act` | `github-actions-validator` skill (local GitHub Actions execution) |
+| `actionlint` | Optional | `brew install actionlint` | `gha-expert` skill (GitHub Actions static analysis) |
+| `act` | Optional | `brew install act` | `gha-expert` skill (local GitHub Actions execution) |
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
@@ -131,7 +131,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (42)
+### Skills (41)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -149,8 +149,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
 | **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
-| **github-actions-generator** | Create, generate, or scaffold GitHub Actions workflows and CI/CD pipelines |
-| **github-actions-validator** | Validate, lint, audit, fix GitHub Actions workflows |
+| **gha-expert** | Create, generate, validate, lint, audit, fix, or diagnose GitHub Actions workflows and CI/CD pipeline failures |
 | **handoff** | Ending sessions with work in progress or high context usage |
 | **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |

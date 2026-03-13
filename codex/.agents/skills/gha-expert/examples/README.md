@@ -1,6 +1,6 @@
-# GitHub Actions Generator Examples
+# GHA Expert Examples
 
-This directory contains example workflows and actions generated using the github-actions-generator skill.
+This directory contains example workflows and actions generated using the gha-expert skill.
 
 ## Workflows
 
@@ -124,15 +124,15 @@ Composite action for Node.js setup demonstrating:
 These examples can be used as:
 1. **Templates** - Copy and modify for your own projects
 2. **Learning Resources** - Study best practices and patterns
-3. **Testing** - Validate with github-actions-validator skill
+3. **Testing** - Validate with gha-expert validation workflow
 
 ## Testing Examples
 
 To validate any of these examples:
 
 ```bash
-cd devops-skills-plugin/skills/github-actions-validator
-bash scripts/validate_workflow.sh ../../github-actions-generator/examples/workflows/nodejs-ci.yml
+SKILL_DIR="~/.claude/skills/gha-expert"
+bash "$SKILL_DIR/scripts/validate_workflow.sh" examples/workflows/nodejs-ci.yml
 ```
 
 ## Best Practices Demonstrated

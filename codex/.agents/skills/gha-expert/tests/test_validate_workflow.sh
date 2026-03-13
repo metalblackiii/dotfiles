@@ -116,7 +116,7 @@ assert_not_contains() {
     fi
 }
 
-echo "Running github-actions-validator regression tests..."
+echo "Running gha-expert validation regression tests..."
 echo ""
 
 echo "[P0] actionlint missing + target outside .github/workflows must fail"

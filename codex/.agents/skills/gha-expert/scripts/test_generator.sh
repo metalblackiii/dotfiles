@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Regression test suite for github-actions-generator
+# Regression test suite for gha-expert generation artifacts
 #
 # Tests:
 #   1. YAML syntax validity   — all templates and examples parse without errors
