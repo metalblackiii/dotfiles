@@ -43,4 +43,10 @@ for item in "${CLAUDE_ITEMS[@]}"; do
     fi
 done
 
+# RTK config (dependency of rtk-rewrite hook)
+RTK_INSTALLER="$DOTFILES_DIR/rtk/install.sh"
+if [ -x "$RTK_INSTALLER" ]; then
+    bash "$RTK_INSTALLER"
+fi
+
 echo "Claude Code config installed."

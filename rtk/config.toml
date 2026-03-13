@@ -1,0 +1,7 @@
+[telemetry]
+enabled = false
+
+[hooks]
+# Commands to exclude from auto-rewrite (e.g. ["curl", "helm"])
+# Use this when a rewritten command misbehaves.
+exclude_commands = []
