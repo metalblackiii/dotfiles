@@ -22,5 +22,8 @@ claude/.claude/settings.local.json
 # Session handoff files
 HANDOFF.md
 
+# Research docs live in research-vault (private repo)
+docs/
+
 # Exclude turbo caching
 .turbo
