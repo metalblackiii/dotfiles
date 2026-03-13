@@ -33,9 +33,9 @@ find ~/repos -maxdepth 1 -type d -name "neb-ms-*" 2>/dev/null
 
 **Remote discovery** — via GitHub API:
 ```bash
-gh repo list <org> --limit 200 --json name,url -q '.[].name' | grep '<pattern>'
+gh repo list <org> --limit 200 --json nameWithOwner -q '.[].nameWithOwner' | grep '<pattern>'
 ```
-The default `gh repo list` limit is 30 — always set `--limit` high enough to capture all matching repos.
+The default `gh repo list` limit is 30 — always set `--limit` high enough to capture all matching repos. Always query `nameWithOwner` (not just `name`) — the sub-agent template requires the full `owner/repo` slug for `gh -R`.
 
 If the user says "all neb-ms-*" or similar, try local first. Fall back to remote if local yields nothing. Always present the discovered list for confirmation.
 
@@ -72,15 +72,17 @@ Wait for explicit approval before continuing. If the user edits the plan, incorp
 
 #### Light operations — Sequential Bash loop
 
-Run directly in a loop. No sub-agents needed.
+Run directly in a loop. No sub-agents needed. Use absolute paths or subshells to avoid cwd drift.
 
 ```bash
 for repo in <repo-list>; do
-  cd "$repo"
-  <command>
-  cd -
+  (cd "$repo" && <command>)
 done
 ```
+
+WARNING: Never use `cd "$repo"` / `cd -` without a subshell — if `cd -` fails or the command changes cwd, subsequent iterations run in the wrong directory. The subshell `(cd ... && ...)` guarantees cwd resets.
+
+For npm specifically, prefer `npm --prefix "$repo" <command>` over cd-based approaches.
 
 Collect output per repo. Move to Phase 5.
 
@@ -161,23 +163,44 @@ git checkout main && git pull origin main
 
 Sub-agents that branch from a stale or wrong base (e.g., an existing feature branch) can silently inherit unrelated changes and cause cascading test failures across the batch.
 
+**Branch naming for auto-allow:** If bash-permissions rules auto-allow git/gh operations on branches matching a pattern (e.g., `^mjb-pho-NEB-`), use that pattern for batch branch names. This avoids a user confirmation prompt for every commit/push/PR across N repos. Ask the user for the branch name prefix before starting — a batch of 20 repos hitting the `ask` layer 3 times each means 60 prompts.
+
+## CWD Discipline
+
+After a batch operation touches many repos, the orchestrator's working directory may be anywhere. All follow-up commands — especially `gh` — must be repo-explicit.
+
+**Rules for post-batch commands:**
+- For repo-scoped `gh` commands (`pr`, `issue`, `repo view`, `run`, etc.), always use `-R owner/repo` — never bare `gh pr view 123` (it resolves against cwd, which is likely the wrong repo)
+- If the user asks about a specific PR by number, resolve the repo from context (batch results table, conversation history) and use `-R`
+- If repo can't be determined, ask — don't guess from cwd
+- After the batch report, consider resetting cwd to the user's original working directory or a neutral location
+
+**This also applies to the user's follow-up questions.** After a batch op, if the user says "check PR 142" without specifying a repo, look at the batch results table to find which repo created PR #142 and use `-R` accordingly. PR numbers are only unique within a repo, not across repos.
+
 ## Sub-Agent Prompt Template
 
-Each sub-agent prompt must be self-contained. Template:
+Each sub-agent prompt must be self-contained. Sub-agents don't inherit CLAUDE.md, so every safeguard must be spelled out in the prompt.
+
+Template:
 
 ```
 You are operating on the repository at: [repo path]
+GitHub repo slug: [owner/repo]
 
 ## Task
 [Operation description — what to do]
 
 ## Steps
-1. [Step 1]
-2. [Step 2]
+1. cd [repo path] && git checkout main && git pull origin main
+2. cd [repo path] && git checkout -b [branch-name]
+3. cd [repo path] && [Step N — the actual work]
 ...
+
+IMPORTANT: Every step must start with `cd [repo path] &&` because cwd does not persist between tool calls.
 
 ## Branch
 Create branch: [branch-name]
+Base: always main. The `cd && git checkout main && git pull` in step 1 ensures this. Never branch from whatever HEAD happens to be — it may be a stale feature branch with unrelated changes.
 
 ## Success Criteria
 - [ ] [Criterion 1]
@@ -185,8 +208,11 @@ Create branch: [branch-name]
 
 ## Constraints
 - Do not modify files outside the scope of this task
+- Every shell command must begin with `cd [repo path] &&` — cwd does not persist between tool calls
+- For npm commands, use `cd [repo path] && npm ...` or `npm --prefix [repo path] ...`
 - Run tests after changes: [test command]
 - If tests fail, attempt to fix up to 2 times before reporting failure
+- For repo-scoped `gh` commands (`pr`, `issue`, `run`, etc.), use the repo slug: `gh ... -R [owner/repo]` — do not rely on cwd for repo resolution
 
 ## On Completion
 Report back with:
@@ -195,6 +221,8 @@ Report back with:
 - PR URL (if created)
 - Any issues encountered
 ```
+
+The orchestrator must fill in both `[repo path]` (local filesystem path) and `[owner/repo]` (GitHub slug, e.g., `Chiropractic-CT-Cloud/neb-ms-billing`) before dispatching each sub-agent. Resolve slugs during Phase 1 (DISCOVER) using `gh repo view --json nameWithOwner -q .nameWithOwner` in each repo, or derive from the `gh repo list` output if using remote discovery.
 
 Adapt the template based on the operation. Light operations don't need all sections.
 

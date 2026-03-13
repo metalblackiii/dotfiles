@@ -25,7 +25,7 @@ This configuration is managed via a dotfiles repo with symlinks.
 - Never auto-commit follow-up changes after an initial commit — always prompt again
 - Always use the branch name I specify. If I haven't specified one, ask before creating a branch.
 - After edits and before committing, run `git status` to catch unstaged content edits alongside renames or moves.
-- When using gh CLI across repos, verify repo context (`gh repo view --json nameWithOwner -q .nameWithOwner`) before running commands.
+- **IMPORTANT:** For repo-scoped `gh` commands (`pr`, `issue`, `repo view`, `run`, etc.), when the target repo is known from batch results, conversation context, or user input, always use `-R owner/repo` — do not rely on cwd. When operating in a single repo and cwd is trustworthy, verify with `gh repo view --json nameWithOwner -q .nameWithOwner` before running `gh` commands. After multi-repo operations, cwd is never trustworthy — always use `-R`.
 
 
 ## PR Defaults
