@@ -157,7 +157,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **mcp-vetting** | Security evaluation before installing or trusting any MCP server |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
-| **peer-review** | Context-isolated review gate for automated workflows (co-implement, prd-loop). Not for manual review — use self-review instead |
+| **peer-review** | Context-isolated review gate for automated workflows (e.g., prd-loop). Not for manual review — use self-review instead |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **pr-review-queue** | Consolidated dashboard for PRs where you are a reviewer, with action buckets and next-step triage |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |

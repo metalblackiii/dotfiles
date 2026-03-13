@@ -72,7 +72,7 @@ For each skill, evaluate the **description** field. Read the `writing-skills` sk
 Rate each: **STRONG** / **NEEDS WORK** / **WEAK**, with a one-line explanation.
 
 Rating criteria:
-- **STRONG:** Has "ALWAYS invoke" prefix + clear trigger conditions. Negative constraints ("Do not X directly") and boundaries ("Not for...") are desirable polish that strengthen the description, but their absence alone does not downgrade a rating.
+- **STRONG:** Has "ALWAYS invoke" prefix + clear trigger conditions.
 - **NEEDS WORK:** Missing "ALWAYS invoke" prefix, or triggers are vague/overlapping with another skill without clear precedence.
 - **WEAK:** Passive description + vague triggers, or actively misleading (describes process instead of triggers).
 
