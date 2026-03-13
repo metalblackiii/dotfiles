@@ -4,8 +4,6 @@
 
 # Agent working directories and artifacts
 .co-research/
-.co-implement/
-.codex-review/
 .prd-loop/
 HANDOFF.md
 

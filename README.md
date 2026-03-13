@@ -274,7 +274,7 @@ readlink ~/.gitignore_global
 # Should point to: .../dotfiles/git/.gitignore_global
 ```
 
-Current global ignores: editor backup files (`*~`), `.DS_Store`, and agent working artifacts (`.co-research/`, `.co-implement/`, `HANDOFF.md`).
+Current global ignores: editor backup files (`*~`), `.DS_Store`, and agent working artifacts (`.co-research/`, `.prd-loop/`, `HANDOFF.md`).
 
 ## Adding a New Platform
 
