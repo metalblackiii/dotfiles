@@ -133,8 +133,8 @@ eval "$(zoxide init zsh)"
 
 #export AWS_DEFAULT_PROFILE=<in private env vars>
 
-[[ -f ~/repos/ptek-eng-toolbox/scripts/aws-sso-helper/aws-sso-profiles.sh ]] && \
-  source ~/repos/ptek-eng-toolbox/scripts/aws-sso-helper/aws-sso-profiles.sh
+[[ -f "${${:-$HOME/.zshrc}:A:h}/aws-sso-profiles.sh" ]] && \
+  source "${${:-$HOME/.zshrc}:A:h}/aws-sso-profiles.sh"
 
 
 
