@@ -1,6 +1,6 @@
 ---
 name: ratchet
-description: ALWAYS invoke for autonomous metric-driven iteration on a measurable goal. Do not iterate on metrics directly. Not for subjective goals without a mechanical proxy or one-shot changes.
+description: Autonomous metric-driven iteration. Define a measurable goal, then loop — change, verify, keep or restore, repeat. Interviews to validate inputs, never touches git, hands off for review when done. Invoke with /ratchet.
 disable-model-invocation: true
 ---
 

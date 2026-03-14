@@ -55,7 +55,7 @@ When available in a Codex runtime, these fields live in `agents/openai.yaml` ins
 | `interface.display_name` | User-facing skill name in the Codex app |
 | `interface.short_description` | User-facing description |
 
-When disabling auto-invocation, set `disable-model-invocation: true` in SKILL.md frontmatter (Claude Code) and, when `agents/openai.yaml` is supported, set `allow_implicit_invocation: false` there for cross-platform consistency.
+**Repo policy: disabling auto-invocation requires both platforms.** When setting `disable-model-invocation: true` in SKILL.md, always also create `agents/openai.yaml` with `allow_implicit_invocation: false`. Claude Code reads the frontmatter; Codex reads the YAML when supported. Omitting either may leave the skill auto-invocable on that platform. This is a repo convention to ensure consistent behavior — not a universal runtime guarantee, since Codex support for `agents/openai.yaml` varies by environment.
 
 **Max frontmatter size:** 1024 characters total
 
@@ -153,7 +153,7 @@ Both Claude and Codex share this directory — Claude accesses it via a symlink 
 1. Define the trigger and boundary first — write a trigger-only description
 2. Create the canonical folder in `codex/.agents/skills/<skill-name>/` with `name` matching directory name
 3. Keep SKILL.md lean, push heavy detail to `references/`, reusable code to `scripts/`, templates to `assets/`
-4. Maintain optional Codex UI metadata when used — keep `agents/openai.yaml` aligned with SKILL.md semantics
+4. If `disable-model-invocation: true`, also create `agents/openai.yaml` with `allow_implicit_invocation: false` (repo policy — see Codex extensions above)
 5. Run validation checks before completion
 
 ### Validation Snippets
@@ -168,11 +168,24 @@ for f in codex/.agents/skills/*/SKILL.md; do
 done
 
 # Ensure description style matches intended invocability
+# Skills with disable-model-invocation: true use declarative style (no "ALWAYS invoke")
 for f in codex/.agents/skills/*/SKILL.md; do
   if rg -q '^user-invocable:[[:space:]]*false' "$f" || rg -q '^description: .*not invoked directly' "$f"; then
     continue
   fi
+  if rg -q '^disable-model-invocation:[[:space:]]*true' "$f"; then
+    continue  # manual-only skills use declarative descriptions
+  fi
   rg -q '^description: ALWAYS invoke' "$f" || echo "Description style issue (expected 'ALWAYS invoke' prefix): $f"
+done
+
+# Ensure disable-model-invocation skills have agents/openai.yaml (repo policy)
+for f in codex/.agents/skills/*/SKILL.md; do
+  if rg -q '^disable-model-invocation:[[:space:]]*true' "$f"; then
+    d=$(dirname "$f")
+    [ -f "$d/agents/openai.yaml" ] && rg -q 'allow_implicit_invocation:[[:space:]]*false' "$d/agents/openai.yaml" \
+      || echo "Missing or incomplete agents/openai.yaml: $f (disable-model-invocation requires both)"
+  fi
 done
 
 # Ensure referenced relative files exist

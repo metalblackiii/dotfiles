@@ -147,7 +147,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-#### Skills (42)
+#### Skills (43)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -156,6 +156,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **pr-analysis** | Reviewing PR diffs for quality, security, architecture, testing |
 | **requirements-analyst** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
+| **auto-review** | Automated PR review with domain-expert panel, batch comment approval, and 30-minute re-review loop. Manual invoke only (`/auto-review`) |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
 | **bash-expert** | Create, generate, validate, lint, audit, or fix bash/shell scripts |
