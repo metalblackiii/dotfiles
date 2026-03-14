@@ -32,12 +32,22 @@
     {
       "commands": ["curl", "chmod", "brew"],
       "category": "system tools"
+    },
+    {
+      "commands": ["rm -rf", "rm -r", "rm"],
+      "category": "destructive filesystem (rm)"
     }
   ],
 
   "deny": [
     {
-      "commands": ["rm -rf", "rm -r", "chown"],
+      "commands": ["rm -rf", "rm -r", "rm"],
+      "category": "destructive filesystem (rm)",
+      "exempt_when_path": "~/repos/",
+      "exempt_decision": "ask"
+    },
+    {
+      "commands": ["chown"],
       "category": "destructive filesystem"
     },
     {

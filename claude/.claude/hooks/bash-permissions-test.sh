@@ -261,6 +261,160 @@ while IFS= read -r line; do
   fi
 done < "$CASES_FILE"
 
+# ---------------------------------------------------------------------------
+# Integration tests: path exemption (exempt_when_path)
+#
+# These run the actual hook as a subprocess with controlled cwd and command,
+# verifying the full deny → exempt → ask downgrade behavior.
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Derive safe path and test directory from bash-permissions.json so tests
+# are portable across forks with different repo layouts (~/repos/, ~/src/, etc.)
+# ---------------------------------------------------------------------------
+
+EXEMPT_PATH=$(jq -r '.deny[] | select(.exempt_when_path) | .exempt_when_path' "$RULES_FILE" | head -1)
+
+if [[ -z "$EXEMPT_PATH" ]]; then
+  printf '\n%b--- Path Exemption Integration (SKIPPED — no exempt_when_path rules) ---%b\n' "$YELLOW" "$NC"
+else
+  printf '\n%b--- Path Exemption Integration ---%b\n' "$BOLD" "$NC"
+
+  HOOK_SCRIPT="${SCRIPT_DIR}/bash-permissions.sh"
+
+  # Expand ~ and ensure trailing slash
+  SAFE_DIR="${EXEMPT_PATH/#\~/$HOME}"
+  [[ "$SAFE_DIR" != */ ]] && SAFE_DIR="${SAFE_DIR}/"
+
+  # Find a real subdirectory under the safe path to use as test cwd.
+  # Falls back to a temp dir created under the safe path if none exists.
+  # Creates parent dirs if needed so the test works on fresh clones.
+  SAFE_CWD=""
+  if [[ -d "$SAFE_DIR" ]]; then
+    SAFE_CWD=$(find "$SAFE_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)
+  fi
+  CLEANUP_SAFE_CWD=false
+  if [[ -z "$SAFE_CWD" ]]; then
+    mkdir -p "$SAFE_DIR" 2>/dev/null || true
+    if [[ -d "$SAFE_DIR" ]]; then
+      SAFE_CWD=$(mktemp -d "${SAFE_DIR}exempt-test-XXXXXX")
+      CLEANUP_SAFE_CWD=true
+    fi
+  fi
+
+  if [[ -z "$SAFE_CWD" ]]; then
+    printf '  %bSKIP%b  cannot create test dir under %s — skipping exemption tests\n' "$YELLOW" "$NC" "$SAFE_DIR"
+  else
+
+  # Relative form for cd-based tests (e.g., ~/repos/dotfiles)
+  SAFE_CWD_TILDE="${SAFE_CWD/#$HOME/~}"
+
+  test_hook_decision() {
+    local expect="$1" cwd="$2" cmd="$3"
+    local input
+    input=$(jq -n --arg cmd "$cmd" '{"tool_input":{"command":$cmd}}')
+    local output
+    output=$(cd "$cwd" 2>/dev/null && printf '%s' "$input" | bash "$HOOK_SCRIPT" 2>/dev/null) || true
+    local actual
+    if [[ -z "$output" ]]; then
+      actual="allow"
+    else
+      actual=$(printf '%s' "$output" | jq -r '.hookSpecificOutput.permissionDecision // "allow"')
+    fi
+    total=$((total + 1))
+    if [[ "$actual" == "$expect" ]]; then
+      pass=$((pass + 1))
+      printf "${GREEN}  OK${NC}  %-5s %-22s cwd=%-30s %s\n" "$expect" "[exempt]" "$cwd" "$cmd"
+    else
+      fail=$((fail + 1))
+      printf "${RED}FAIL${NC}  expected=%-5s got=%-5s %-22s cwd=%-30s %s\n" "$expect" "$actual" "[exempt]" "$cwd" "$cmd"
+    fi
+  }
+
+  # rm inside safe path (cwd-based) → ask
+  test_hook_decision "ask" "$SAFE_CWD" "rm -rf dist"
+  test_hook_decision "ask" "$SAFE_CWD" "rm -r node_modules"
+  test_hook_decision "ask" "$SAFE_CWD" "rm file.txt"
+
+  # rm with explicit safe path reference → ask (regardless of cwd)
+  test_hook_decision "ask" "/tmp" "rm -rf ${SAFE_CWD}/dist"
+  test_hook_decision "ask" "/tmp" "rm -r ${SAFE_CWD}/node_modules"
+  test_hook_decision "ask" "/tmp" "rm ${SAFE_CWD}/old-file.txt"
+
+  # rm via cd into safe path → ask (effective cwd detection)
+  test_hook_decision "ask" "/tmp" "cd ${SAFE_CWD_TILDE} && rm -rf dist"
+  test_hook_decision "ask" "/tmp" "cd ${SAFE_CWD} && rm -r build"
+
+  # rm outside safe path → deny
+  test_hook_decision "deny" "/tmp" "rm -rf /tmp/something"
+  test_hook_decision "deny" "/tmp" "rm file.txt"
+  test_hook_decision "deny" "$HOME" "rm -rf something"
+  test_hook_decision "deny" "$HOME/Documents" "rm -r old-folder"
+
+  # rm with mixed safe/unsafe paths → deny (conservative)
+  test_hook_decision "deny" "$SAFE_CWD" "rm -rf ${SAFE_CWD}/dist /etc/bad"
+  test_hook_decision "deny" "$SAFE_CWD" "rm -rf dist /tmp/other"
+
+  # rm with path traversal → deny (.. can escape safe directory)
+  test_hook_decision "deny" "$SAFE_CWD" "rm -rf ../../Documents"
+  test_hook_decision "deny" "$SAFE_CWD" "rm -rf ../../../etc"
+  test_hook_decision "deny" "$SAFE_CWD" "rm -r foo/../../../tmp"
+
+  # rm with quoted absolute paths → deny (quotes don't hide unsafe paths)
+  test_hook_decision "deny" "$SAFE_CWD" "rm -rf \"/tmp/something\""
+  test_hook_decision "deny" "$SAFE_CWD" "rm -rf '/etc/bad'"
+
+  # rm with $HOME expanded to unsafe path → deny
+  test_hook_decision "deny" "$SAFE_CWD" 'rm -rf $HOME/Documents'
+  test_hook_decision "deny" "$SAFE_CWD" 'rm -rf ${HOME}/Documents'
+
+  # rm with $HOME expanded to safe path → ask (expansion resolves correctly)
+  test_hook_decision "ask" "$SAFE_CWD" "rm -rf \$HOME${SAFE_DIR#$HOME}subdir/dist"
+
+  # rm with unresolved shell variables → deny (can't verify target)
+  test_hook_decision "deny" "$SAFE_CWD" 'rm -rf $TMPDIR/something'
+  test_hook_decision "deny" "$SAFE_CWD" 'rm -rf $XDG_DATA_HOME/app'
+  test_hook_decision "deny" "$SAFE_CWD" 'rm -rf ${SOME_VAR}/path'
+
+  # chown → always deny (no exemption, separate rule)
+  test_hook_decision "deny" "$SAFE_CWD" "chown root file.txt"
+
+  # Non-rm commands remain unaffected by exemption
+  test_hook_decision "deny" "$SAFE_CWD" "sudo ls"
+  test_hook_decision "deny" "$SAFE_CWD" "kill 1234"
+
+  # git commit messages containing deny-layer words → not denied (prose, not commands)
+  # Covers both command-format rules (rm, chown, sudo) and regex-format rules (awk, sed, git clean)
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -m "removed old rm logic"'
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -m "fix: rm cleanup and $HOME expansion"'
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -m "chown and sudo references in docs"'
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -m "docs: use awk instead of grep"'
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -m "docs: mention git clean -f and git checkout -- usage"'
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -m "refactor: replace sed -i with Edit tool"'
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit --message "docs: use awk instead of grep"'
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -am "docs: mention git clean -f usage"'
+
+  # Known limitation: semicolons in message text disable the simple-commit
+  # skip (regex can't distinguish prose ; from command separators). When
+  # combined with $HOME (which expands to an absolute path outside the safe
+  # root), the exemption also fails → hard deny. This specific combo requires
+  # manual commit or rephrasing.
+  test_hook_decision "ask" "$SAFE_CWD" 'git commit -m "fix: rm old logic; update tests"'
+  test_hook_decision "deny" "$SAFE_CWD" 'git commit -m "rm and $HOME expansion; updated"'
+
+  # git commit without inline message → deny/paths layers still enforced
+  test_hook_decision "deny" "$SAFE_CWD" 'git commit -F ~/.gitconfig'
+  test_hook_decision "deny" "$SAFE_CWD" 'git commit --template ~/.aws/credentials'
+  test_hook_decision "deny" "$SAFE_CWD" 'git commit --amend --no-edit ~/.ssh/id_rsa'
+
+  # Clean up temp dir if we created one
+  if $CLEANUP_SAFE_CWD && [[ -d "$SAFE_CWD" ]]; then
+    rmdir "$SAFE_CWD" 2>/dev/null || true
+  fi
+
+  fi  # end SAFE_CWD availability check
+fi
+
 printf '\nResults: %d/%d passed' "$pass" "$total"
 if [[ "$fail" -gt 0 ]]; then
   printf ", ${RED}%d FAILED${NC}" "$fail"
