@@ -1,0 +1,96 @@
+# PR Comment Voice Profile
+
+Use this template to define your personal PR comment voice. Fill in each section
+based on patterns from your own real PR comments. The review skills (`review`,
+`self-review`, `auto-review`) load `pr-voice.md` from this directory when writing
+comments on your behalf.
+
+To activate: copy this file to `pr-voice.md` in the same directory and fill it in.
+`pr-voice.md` is gitignored — your voice stays local.
+
+## How to generate your voice profile
+
+Don't fill this in by hand -- let AI derive it from your actual PR comments.
+
+Ask your AI assistant (Claude Code, Codex, etc.):
+
+> Pull my PR review comments from the last year using `gh`, analyze the patterns,
+> and fill in the pr-voice.md.example template. Save the result as pr-voice.md.
+
+It will use `gh api` to fetch your comments across repos, identify recurring
+patterns in tone, phrasing, and structure, and populate each section with real
+examples from your history. Review the output and tweak anything that feels off,
+but the LLM will catch patterns you wouldn't think to articulate yourself.
+
+The more comments it pulls, the more accurate the profile. ~100+ comments across
+multiple repos works well.
+
+---
+
+## Core Tone
+
+<!-- How do your comments read? Direct? Diplomatic? Terse? Chatty? -->
+<!-- Examples: "Direct, casual, technically precise" / "Diplomatic, thorough, question-oriented" -->
+
+-
+
+## Comment Length
+
+<!-- When do you write one-liners vs paragraphs? -->
+
+**Short (1 line)** when:
+- Example: ""
+
+**Medium (2-5 sentences)** for:
+- Example: ""
+
+**Long (paragraph+)** for:
+- Example: ""
+
+## Sentence Starters & Transitions
+
+Commonly used:
+-
+
+Never used:
+-
+
+## Hedging & Softening
+
+<!-- How do you soften suggestions or flag uncertainty? -->
+-
+
+## Questions
+
+<!-- How do you phrase questions in reviews? Conversational? Formal? -->
+- Example: ""
+
+## Approvals & Conditions
+
+<!-- How do you approve with caveats? -->
+-
+
+## Pushback & Disagreement
+
+<!-- How do you push back? Do you explain reasoning? -->
+-
+
+## Follow-up Tracking
+
+<!-- How do you defer non-blocking items? -->
+-
+
+## Formatting
+
+<!-- Double dashes vs em dashes? Bullet lists? Code blocks? Abbreviations? -->
+-
+
+## Explaining Own Changes
+
+<!-- When commenting on your own PRs, how do you explain decisions? -->
+-
+
+## Anti-patterns (never do these)
+
+<!-- What should the agent avoid when writing as you? -->
+-

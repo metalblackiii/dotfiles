@@ -189,6 +189,10 @@ Issues that:
 - Note style inconsistencies
 - Recommend additional documentation
 
+## Comment Voice
+
+If `references/pr-voice.md` exists, read it and apply its tone, phrasing, and formatting rules when writing review comments. If the file is absent, use your default professional tone.
+
 ## Anti-Patterns
 
 - Reviewing only the diff without understanding surrounding context
