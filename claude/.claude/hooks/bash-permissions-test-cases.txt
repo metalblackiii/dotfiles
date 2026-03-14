@@ -1,0 +1,87 @@
+# Regression tests for bash-permissions.json deny-layer regex patterns.
+# Format: EXPECT<tab>PATTERN_NAME<tab>COMMAND
+# EXPECT: DENY or PASS
+# Run with: bash bash-permissions-test.sh
+#
+# -------------------------------------------------------------------
+# sed — (^|[|;&(])\s*(env\s+)?([A-Z_]+=\S*\s+)*sed\s+
+# Denies sed in command position (with optional env/env-var prefixes).
+# Passes when "sed" appears inside strings, arguments, or filenames.
+# -------------------------------------------------------------------
+# Should DENY: sed in command position
+DENY	sed	sed -i 's/foo/bar/' file.txt
+DENY	sed	sed -E 's/old/new/g' input.txt
+DENY	sed	cat file | sed 's/x/y/'
+DENY	sed	cat file |sed 's/x/y/'
+DENY	sed	cd dir && sed -i 's/a/b/' f
+DENY	sed	grep foo file; sed 's/a/b/' file
+DENY	sed	$(sed 's/old/new/' file)
+DENY	sed	result=$(sed -n '5p' file)
+DENY	sed	(sed 's/foo/bar/' file)
+DENY	sed	cat f | sed -n '/start/,/end/p'
+DENY	sed	cat file | grep pattern | sed 's/old/new/'
+# Should DENY: env-var prefixed sed
+DENY	sed	LC_ALL=C sed -i '' 's/foo/bar/' file
+DENY	sed	VAR=val sed -i 's/a/b/' file
+DENY	sed	LANG=en_US.UTF-8 LC_ALL=C sed -i 's/x/y/' f
+DENY	sed	cat f | LC_ALL=C sed 's/a/b/'
+# Should DENY: env command prefix
+DENY	sed	env VAR=1 sed -n '1p' file
+DENY	sed	env LC_ALL=C sed -i 's/a/b/' file
+DENY	sed	cat f | env LANG=C sed 's/x/y/'
+# Should PASS: sed inside strings, arguments, filenames
+PASS	sed	git commit -m "replaced sed with Edit tool"
+PASS	sed	git commit -m "use sed for stream editing"
+PASS	sed	git commit -m "refactor: replace sed -i with Edit tool for safer edits"
+PASS	sed	npm test -- --grep "sed replacement"
+PASS	sed	grep -r "sed" docs/
+PASS	sed	ls docs/sed-reference.md
+PASS	sed	cat CHANGELOG.md
+PASS	sed	man sed
+PASS	sed	git log --format="%H sed changes"
+PASS	sed	npm install --save-dev @types/sed-like-pkg
+#
+# -------------------------------------------------------------------
+# echo > — \becho\s+[^;&|]*>
+# Denies echo with a direct redirect to file.
+# Passes when the redirect belongs to a later command after a separator.
+# -------------------------------------------------------------------
+# Should DENY: echo with direct redirect
+DENY	echo	echo "hello world" > file.txt
+DENY	echo	echo "content" >> output.log
+DENY	echo	echo 'data' > /tmp/test.txt
+DENY	echo	echo -e "line1\nline2" > multi.txt
+DENY	echo	echo "${VAR}" > config.txt
+DENY	echo	echo foo>bar.txt
+DENY	echo	for f in *.txt; do echo "header" > "$f"; done
+# Known limitation: literal > inside quotes is indistinguishable from a
+# redirect via regex. These are false positives we accept because shell
+# quoting cannot be parsed reliably without a full parser.
+DENY	echo	echo "a > b"
+# Should PASS: no redirect, or redirect after a command separator
+PASS	echo	echo "Building..." && npm test > output.log
+PASS	echo	echo "status" ; command > file
+PASS	echo	echo "status" | cat > file
+PASS	echo	echo "hello world"
+PASS	echo	echo "Running tests..."
+PASS	echo	echo "step 1 done" && echo "step 2" && npm run build > build.log
+PASS	echo	echo "done"; npm run lint > lint-results.txt
+PASS	echo	echo "compiling" && gcc main.c -o main > compile.log
+PASS	echo	node -e "console.log('echo test')"
+#
+# -------------------------------------------------------------------
+# printf > — \bprintf\s+[^;&|]*>
+# Denies printf with a direct redirect to file.
+# Passes when the redirect belongs to a later command after a separator.
+# -------------------------------------------------------------------
+# Should DENY: printf with direct redirect
+DENY	printf	printf '%s\n' "hello" > file.txt
+DENY	printf	printf "content" >> output.log
+DENY	printf	printf '%d items' 5 > count.txt
+DENY	printf	$(printf '%s' "data" > /tmp/out)
+# Should PASS: no redirect, or redirect after a command separator
+PASS	printf	printf "Building..." && npm test > output.log
+PASS	printf	printf "status" ; command > file
+PASS	printf	printf "status" | cat > file
+PASS	printf	printf '%s\n' "hello"
+PASS	printf	printf "Running tests..."

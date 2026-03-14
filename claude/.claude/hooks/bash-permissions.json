@@ -63,22 +63,22 @@
       "nudge": "Use curl (with ask approval) or the WebFetch tool instead."
     },
     {
-      "regex": "\\bsed\\s+",
+      "regex": "(^|[|;&(])\\s*(env\\s+)?([A-Z_]+=\\S*\\s+)*sed\\s+",
       "category": "tool preference",
       "nudge": "Use the Edit tool instead."
     },
     {
       "regex": "\\bawk\\s+",
       "category": "tool preference",
-      "nudge": "Use the Edit tool instead."
+      "nudge": "Use the Grep or Read tool instead."
     },
     {
-      "regex": "\\becho\\s+.*>",
+      "regex": "\\becho\\s+[^;&|]*>",
       "category": "tool preference (no redirect)",
       "nudge": "Use the Write tool to create files instead of shell redirects."
     },
     {
-      "regex": "\\bprintf\\s+.*>",
+      "regex": "\\bprintf\\s+[^;&|]*>",
       "category": "tool preference (no redirect)",
       "nudge": "Use the Write tool to create files instead of shell redirects."
     },
