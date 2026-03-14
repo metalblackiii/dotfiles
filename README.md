@@ -44,7 +44,7 @@ dotfiles/
 │       ├── BASH-PERMISSIONS.md # Bash permissions context (included via @BASH-PERMISSIONS.md)
 │       ├── RTK.md           # RTK usage reference (included via @RTK.md)
 │       ├── settings.json    # Permissions, hooks, env vars
-│       ├── agents/          # 3 custom subagents
+│       ├── agents/          # 4 custom subagents
 │       ├── commands/        # Slash commands (co-research)
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
 │       ├── scripts/         # Status bar, hooks
@@ -52,7 +52,8 @@ dotfiles/
 ├── zsh/                     # Zsh shell configuration (personal)
 │   ├── install.sh
 │   ├── uninstall.sh
-│   └── .zshrc               # Shell config → ~/.zshrc
+│   ├── .zshrc               # Shell config → ~/.zshrc
+│   └── .p10k.zsh            # Powerlevel10k prompt config → ~/.p10k.zsh
 ├── docs/                    # Research docs, postmortems, analysis artifacts
 └── .gitignore
 ```
@@ -269,7 +270,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 
 #### Hooks & Scripts
 
-- **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
+- **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Injects the `using-skills` guidance and enforces skill-first workflow.
 - **rtk-rewrite.sh** — PreToolUse hook that transparently rewrites Bash commands through [RTK](https://github.com/rtk-ai/rtk) for token savings. Silently no-ops if `rtk` or `jq` aren't installed.
 - **bash-permissions.sh** + **bash-permissions.json** — PreToolUse hook that enforces layered Bash permission rules (deny, sensitive paths, branch-conditional allow, ask). Rules are externalized to JSON for easy editing.
 - **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.
@@ -331,7 +332,7 @@ readlink ~/.gitignore_global
 # Should point to: .../dotfiles/git_ai/.gitignore_global
 ```
 
-Current global ignores: editor backup files (`*~`), `.DS_Store`, and agent working artifacts (`.co-research/`, `.prd-loop/`, `HANDOFF.md`).
+Current global ignores are defined in `git_ai/.gitignore_global`. Keep the README high-level and treat that file as the source of truth.
 
 #### Personal Git Config
 

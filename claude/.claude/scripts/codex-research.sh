@@ -15,19 +15,16 @@ set -euo pipefail
 #   --output PATH    Required. Where to write the markdown output.
 #   --web-search     Enable Codex web search tool.
 #   --repo PATH      cd to this repo before running (for codebase surveys).
-#   --timeout SECS   Max runtime in seconds (default: 300).
 
 output=""
 web_search=false
 repo=""
-timeout_secs=300
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --output)   output="$2"; shift 2 ;;
         --web-search) web_search=true; shift ;;
         --repo)     repo="$2"; shift 2 ;;
-        --timeout)  timeout_secs="$2"; shift 2 ;;
         *)          echo "Unknown flag: $1" >&2; exit 1 ;;
     esac
 done

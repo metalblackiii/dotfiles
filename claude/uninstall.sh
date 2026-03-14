@@ -29,4 +29,10 @@ for item in "${LEGACY_SYMLINKS[@]}" "${CLAUDE_ITEMS[@]}"; do
     remove_symlink "$CLAUDE_TARGET/$item"
 done
 
+# RTK config is installed as a Claude dependency.
+RTK_UNINSTALLER="$DOTFILES_DIR/rtk/uninstall.sh"
+if [ -x "$RTK_UNINSTALLER" ]; then
+    bash "$RTK_UNINSTALLER"
+fi
+
 echo "Claude Code config uninstalled."
