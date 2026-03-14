@@ -120,8 +120,9 @@ export PATH="/Users/martinburch/.rd/bin:$PATH"
 
 source $ZSH/oh-my-zsh.sh
 
-# Smart directory jumping cd is now smart (or use still use z)
-eval "$(zoxide init zsh --cmd cd)"
+# Can configure z (now) or override cd
+# eval "$(zoxide init zsh --cmd cd)"
+eval "$(zoxide init zsh)"
 
 # Private env vars (API keys, tokens, credentials)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
