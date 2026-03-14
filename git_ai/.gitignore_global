@@ -5,6 +5,7 @@
 # Agent working directories and artifacts
 .co-research/
 .prd-loop/
+.ratchet-log.tsv
 HANDOFF.md
 
 # Claude Code local settings (per-user, not committed)

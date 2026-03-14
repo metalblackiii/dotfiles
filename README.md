@@ -147,7 +147,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-#### Skills (41)
+#### Skills (42)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -179,6 +179,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
+| **ratchet** | Autonomous metric-driven iteration — interview, loop (change → verify → keep/restore), hand off for review. Manual invoke only (`/ratchet`) |
 | **code-renovator** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
