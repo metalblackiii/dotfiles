@@ -6,72 +6,6 @@ Currently supports **Codex**, **Claude Code**, and some **Git** configurations. 
 
 New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatomy, and adoption guide.
 
-## Prerequisites
-
-[Codex](https://codex.openai.com/) and/or [Claude Code](https://docs.anthropic.com/en/docs/claude-code) must be installed. The following CLI tools are referenced in permissions and skills:
-
-| Tool | Required | Install | Used by |
-|------|----------|---------|---------|
-| `git` | Yes | Xcode CLT / `brew install git` | Core workflow |
-| `gh` | Yes | `brew install gh` | PR creation, issue management |
-| `node` / `npm` / `npx` | Yes | `brew install node` or nvm | Running and testing projects |
-| `docker` | Optional | [Rancher Desktop](https://rancherdesktop.io/) or [colima](https://github.com/abiosoft/colima) | Container workflows |
-| `kubectl` | Optional | `brew install kubectl` | Read-only cluster access |
-| `rg` (ripgrep) | Optional | `brew install ripgrep` | Fast shell fallback for text search when built-in tools are unavailable |
-| `fd` | Optional | `brew install fd` | Fast shell fallback for file discovery when built-in tools are unavailable |
-| `actionlint` | Optional | `brew install actionlint` | `gha-expert` skill (GitHub Actions static analysis) |
-| `act` | Optional | `brew install act` | `gha-expert` skill (local GitHub Actions execution) |
-| `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
-| `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
-| `jq` | Optional | `brew install jq` | JSON processing in scripts |
-| `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
-| `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
-
-### Optional Security Tooling (Only for `security-reviewer` Scanner Mode)
-
-The security skills work without additional installs. Extra tooling is optional and only used for deeper scan automation.
-
-Scanner-mode tools that use `pip` assume `python3` and `pip` are installed (or use `pipx` equivalents).
-
-| Tool | Required | Install | Used by |
-|------|----------|---------|---------|
-| `gitleaks` | No | `brew install gitleaks` | Secret scanning workflows |
-| `semgrep` | No | `pip install semgrep` | Static security pattern scanning |
-| `trivy` | No | `brew install trivy` | Dependency/config/container security checks |
-| `checkov` | No | `pip install checkov` | IaC security checks |
-
-If these tools are unavailable, `security-reviewer` falls back to manual review and reports which scans were not executed.
-
-## Installation
-
-```bash
-git clone https://github.com/metalblackiii/dotfiles.git ~/repos/dotfiles
-cd ~/repos/dotfiles
-
-# Install AI tool config (Claude Code, Codex, RTK, global gitignore)
-./install-ai.sh
-
-# Or install a single module
-./claude/install.sh
-./codex/install.sh
-./git/install.sh
-```
-
-Original files are backed up with `.backup.TIMESTAMP` before symlinking.
-
-To remove:
-
-```bash
-./uninstall-ai.sh
-
-# Or uninstall a single module
-./claude/uninstall.sh
-./codex/uninstall.sh
-./git/uninstall.sh
-```
-
-Personal config (shell, editor, etc.) has separate installers — see [Personal Configuration](#personal-configuration).
-
 ## Structure
 
 ```
@@ -80,6 +14,7 @@ dotfiles/
 ├── uninstall-ai.sh          # AI tool config uninstaller
 ├── install-personal.sh      # Personal config installer (shell, editor)
 ├── uninstall-personal.sh    # Personal config uninstaller
+├── Brewfile                  # Homebrew manifest (formulae, casks, VSCode extensions)
 ├── git/                     # Git configuration
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -118,6 +53,76 @@ dotfiles/
 └── .gitignore
 ```
 
+---
+
+## AI Tooling
+
+The AI tool configuration is designed to be shareable. It covers agent platforms (Claude Code, Codex), shared instructions, skills, hooks, and permissions.
+
+### Prerequisites
+
+[Codex](https://codex.openai.com/) and/or [Claude Code](https://docs.anthropic.com/en/docs/claude-code) must be installed. The following CLI tools are referenced in permissions and skills:
+
+| Tool | Required | Install | Used by |
+|------|----------|---------|---------|
+| `git` | Yes | Xcode CLT / `brew install git` | Core workflow |
+| `gh` | Yes | `brew install gh` | PR creation, issue management |
+| `node` / `npm` / `npx` | Yes | `brew install node` or nvm | Running and testing projects |
+| `docker` | Optional | [Rancher Desktop](https://rancherdesktop.io/) or [colima](https://github.com/abiosoft/colima) | Container workflows |
+| `kubectl` | Optional | `brew install kubectl` | Read-only cluster access |
+| `rg` (ripgrep) | Optional | `brew install ripgrep` | Fast shell fallback for text search when built-in tools are unavailable |
+| `fd` | Optional | `brew install fd` | Fast shell fallback for file discovery when built-in tools are unavailable |
+| `actionlint` | Optional | `brew install actionlint` | `gha-expert` skill (GitHub Actions static analysis) |
+| `act` | Optional | `brew install act` | `gha-expert` skill (local GitHub Actions execution) |
+| `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
+| `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
+| `jq` | Optional | `brew install jq` | JSON processing in scripts |
+| `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
+| `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
+
+#### Optional Security Tooling (Only for `security-reviewer` Scanner Mode)
+
+The security skills work without additional installs. Extra tooling is optional and only used for deeper scan automation.
+
+Scanner-mode tools that use `pip` assume `python3` and `pip` are installed (or use `pipx` equivalents).
+
+| Tool | Required | Install | Used by |
+|------|----------|---------|---------|
+| `gitleaks` | No | `brew install gitleaks` | Secret scanning workflows |
+| `semgrep` | No | `pip install semgrep` | Static security pattern scanning |
+| `trivy` | No | `brew install trivy` | Dependency/config/container security checks |
+| `checkov` | No | `pip install checkov` | IaC security checks |
+
+If these tools are unavailable, `security-reviewer` falls back to manual review and reports which scans were not executed.
+
+### Installation
+
+```bash
+git clone https://github.com/metalblackiii/dotfiles.git ~/repos/dotfiles
+cd ~/repos/dotfiles
+
+# Install AI tool config (Claude Code, Codex, RTK, global gitignore)
+./install-ai.sh
+
+# Or install a single module
+./claude/install.sh
+./codex/install.sh
+./git/install.sh
+```
+
+Original files are backed up with `.backup.TIMESTAMP` before symlinking.
+
+To remove:
+
+```bash
+./uninstall-ai.sh
+
+# Or uninstall a single module
+./claude/uninstall.sh
+./codex/uninstall.sh
+./git/uninstall.sh
+```
+
 ### What's Shared vs Platform-Specific
 
 | Layer | Shared? | Where |
@@ -127,7 +132,7 @@ dotfiles/
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
-## Codex Configuration
+### Codex Configuration
 
 Codex owns the canonical skill directory (`codex/.agents/skills/`), which is symlinked to `~/.agents/skills/personal` at install time. Its platform-specific file is `config.toml`:
 
@@ -138,7 +143,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-### Skills (41)
+#### Skills (41)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -186,7 +191,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 
-## Shared Instructions
+### Shared Instructions
 
 `shared/INSTRUCTIONS.md` is the single source of truth for agent conventions. It's symlinked as `CLAUDE.md` (for Claude Code) and `AGENTS.md` (for Codex), so both platforms get the same rules:
 
@@ -197,11 +202,11 @@ Specialized methodologies that activate automatically when relevant tasks are de
 - **Self-documenting code** — rename over comment, only "why" comments
 - **Skill usage** — check skills before non-trivial tasks
 
-## Claude Code Configuration
+### Claude Code Configuration
 
 Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via another (`claude/.claude/CLAUDE.md` → `shared/INSTRUCTIONS.md`). It adds platform-specific features on top.
 
-### Agents (3)
+#### Agents (4)
 
 Custom subagents spawned via the Task tool for parallel or specialized work.
 
@@ -209,17 +214,18 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 |-------|---------|
 | **analysis-writer** | Produce structured analysis documents for team decision-making |
 | **neb-explorer** | Explore feature implementations across neb microservices |
+| **research** | General-purpose research, web fetching, codebase investigation, multi-step tasks |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |
 
 > **Neb-specific agents**: `neb-explorer` has the neb architecture knowledge (layers, environments, services, shared libraries) inlined directly and assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `claude/.claude/agents/neb-explorer.md`.
 
-### Commands
+#### Commands
 
 | Command | Purpose |
 |---------|---------|
 | **co-research** | Dispatch parallel research agents and Codex, then synthesize findings |
 
-### Hooks & Scripts
+#### Hooks & Scripts
 
 - **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Lists all installed skills and enforces skill-first workflow.
 - **rtk-rewrite.sh** — PreToolUse hook that transparently rewrites Bash commands through [RTK](https://github.com/rtk-ai/rtk) for token savings. Silently no-ops if `rtk` or `jq` aren't installed.
@@ -227,19 +233,18 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 - **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.
 - **context-bar.sh** — Status line script showing model, git branch, uncommitted files, sync status, and context usage percentage.
 
-
-### Permissions
+#### Permissions
 
 Claude Code permissions are split across two layers that handle different tool types. (Codex uses `approval_policy` in `config.toml` — see [Codex Configuration](#codex-configuration).)
 
-#### Non-Bash Tools (`settings.json`)
+##### Non-Bash Tools (`settings.json`)
 
 The `permissions` block in `settings.json` controls Claude Code's built-in tools (Read, Edit, Write, Glob, Grep, WebFetch, WebSearch). These use glob-based path matching:
 
 - **Allowed**: all built-in tools, `Bash(*)`, scoped web access
 - **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), private local overrides (`~/.*.local`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
 
-#### Bash Commands (`bash-permissions.sh` + `bash-permissions.json`)
+##### Bash Commands (`bash-permissions.sh` + `bash-permissions.json`)
 
 All Bash permission rules are enforced by a PreToolUse hook — not by `settings.json`. The hook runs regex against the full command string, which is more reliable than glob matching for compound commands, pipes, and heredocs.
 
@@ -263,11 +268,11 @@ Each rule uses one of two formats:
 - **Command cleaning**: `/dev/null` redirects are stripped before matching to prevent false positives
 - **Lazy git resolution**: branch conditions resolve the effective git directory from `cd <path> &&` prefixes in the command, falling back to cwd
 
-## Git Configuration
+### Git Configuration
 
 The `git/` directory manages some global Git settings that aren't project-specific.
 
-### Global Gitignore
+#### Global Gitignore
 
 `git/.gitignore_global` is symlinked to `~/.gitignore_global` and registered via `core.excludesFile`. This is not a Git default — without it, Git has no global ignore file.
 
@@ -283,14 +288,14 @@ readlink ~/.gitignore_global
 
 Current global ignores: editor backup files (`*~`), `.DS_Store`, and agent working artifacts (`.co-research/`, `.prd-loop/`, `HANDOFF.md`).
 
-## Adding a New Module
+### Adding a New Module
 
 1. Create a directory: `module-name/`
 2. Add `install.sh` and `uninstall.sh`
 3. For AI tool modules: symlink skills → `codex/.agents/skills/` and add to `install-ai.sh`
 4. For personal config modules: add to `install-personal.sh`
 
-## Customization
+### Customization
 
 If you fork this repo, update these team/environment-specific values:
 
@@ -299,6 +304,12 @@ If you fork this repo, update these team/environment-specific values:
 | Neb repo base path | `claude/.claude/agents/neb-explorer.md` | `~/repos/` |
 | PR default reviewers | `shared/INSTRUCTIONS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 | Feature branch pattern | `claude/.claude/hooks/bash-permissions.json` → allow layer `"branch"` | `^mjb-pho-NEB-` |
+
+## Attribution
+
+See [ATTRIBUTION.md](ATTRIBUTION.md) for skill sources and credits.
+
+---
 
 ## Personal Configuration
 
@@ -309,6 +320,25 @@ Personal config (shell, editor, etc.) is separated from AI tool config. These mo
 ./uninstall-personal.sh  # Remove all personal config
 ```
 
+### Brewfile
+
+A `Brewfile` at the repo root tracks all Homebrew formulae, casks, and VSCode extensions.
+
+```bash
+cd ~/repos/dotfiles
+
+# Install everything in the Brewfile
+brew bundle
+
+# Check what's missing vs the Brewfile
+brew bundle check
+
+# Re-dump current state (after manually installing something)
+brew bundle dump --force
+```
+
+When adding a new tool, add it to the Brewfile and run `brew bundle` rather than `brew install` directly — this keeps the manifest in sync.
+
 ### Zsh
 
 `zsh/.zshrc` is symlinked to `~/.zshrc`. Machine-specific secrets (API keys, tokens, credentials) go in `~/.zshrc.local`, which is:
@@ -316,7 +346,3 @@ Personal config (shell, editor, etc.) is separated from AI tool config. These mo
 - Sourced by `.zshrc` after oh-my-zsh init
 - Excluded from the repo via `*.local` in `.gitignore`
 - Protected from agent access via `settings.json` deny rules and bash-permissions path rules
-
-## Attribution
-
-See [ATTRIBUTION.md](ATTRIBUTION.md) for skill sources and credits.
