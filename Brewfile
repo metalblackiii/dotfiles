@@ -36,6 +36,18 @@ cask "iterm2"
 cask "rancher"
 cask "zed"
 
+# Adopted from manual installs
+cask "appcleaner"
+cask "chatgpt"
+cask "dbeaver-community"
+cask "firefox"
+cask "google-chrome"
+cask "lens"
+cask "openvpn-connect"
+cask "redis-insight"
+cask "sourcetree"
+cask "visual-studio-code"
+
 # VSCode extensions
 vscode "alefragnani.project-manager"
 vscode "anthropic.claude-code"
