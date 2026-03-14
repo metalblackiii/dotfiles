@@ -6,6 +6,16 @@ argument-hint: <research topic as a phrase>
 
 # Co-Research: Claude Explores, Codex Surveys, You Decide
 
+## File Writing Rules
+
+- **Main agent**: Use the `Write` tool for all `.co-research/` files (plan.md, draft.md, final output). Never use `cat`, `echo`, or heredoc redirects via Bash.
+- **Subagents**: Cannot Write to files they haven't Read. Before dispatching subagents, pre-create empty placeholder files for every expected output using Bash `touch`. Then instruct each subagent to `Read` its target file before `Write`-ing to it.
+- **Pre-dispatch setup** (run once before Step 3a): create an empty placeholder for each Claude subagent output file. One `touch` per angle from the research plan:
+  ```
+  touch .co-research/claude-<angle1-slug>.md .co-research/claude-<angle2-slug>.md ...
+  ```
+  Match the number of angles (3-5) and slugs to the actual research plan.
+
 ## Step 1 — Assess Clarity
 
 Read `$ARGUMENTS` as a research topic phrase.
@@ -24,7 +34,7 @@ Record the working directory and any additional repo paths.
 
 ## Step 2 — Research Plan
 
-Decompose the topic into 3-5 research angles. Write to `.co-research/plan.md`:
+Decompose the topic into 3-5 research angles. Use the `Write` tool to create `.co-research/plan.md`:
 
 ```markdown
 # Research Plan: [Topic]
@@ -108,12 +118,14 @@ Each agent gets one research angle — launch one Claude subagent per angle so e
 - Write findings to `.co-research/claude-<angle-slug>.md`
 - Include source URLs for every claim
 
-**IMPORTANT:** Agent prompts must be directive — tell agents to do the research and write findings immediately. Do NOT leave room for agents to ask for confirmation or propose a plan. End each prompt with: "Do the research now and write your findings. Do not ask for confirmation."
+**IMPORTANT:** Agent prompts must be directive — tell agents to do the research and write findings immediately. Do NOT leave room for agents to ask for confirmation or propose a plan. End each prompt with: "Read the output file first with the Read tool, then write your findings with the Write tool. Do the research now. Do not ask for confirmation."
 
-Example agent prompts:
-- "Research the current ecosystem landscape for [topic]. Compare major tools/libraries, their adoption, maintenance status, and community sentiment. Write findings to `.co-research/claude-ecosystem.md` with source URLs."
-- "Research best practices and common pitfalls for [topic]. Focus on authoritative sources (official docs, well-known blog posts, conference talks). Write findings to `.co-research/claude-practices.md` with source URLs."
-- "Research real-world case studies and migration stories for [topic]. What did teams learn? What surprised them? Write findings to `.co-research/claude-experiences.md` with source URLs."
+**IMPORTANT:** Each agent prompt MUST include this file-writing instruction: "IMPORTANT: Before writing, use the Read tool on your output file (it exists as an empty placeholder). Then use the Write tool to save your findings. Do NOT use Bash cat/echo/heredoc redirects."
+
+Example agent prompts (each must include the Read-then-Write instruction from above):
+- "Research the current ecosystem landscape for [topic]. Compare major tools/libraries, their adoption, maintenance status, and community sentiment. IMPORTANT: Before writing, use the Read tool on `.co-research/claude-ecosystem.md` (it exists as an empty placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
+- "Research best practices and common pitfalls for [topic]. Focus on authoritative sources (official docs, well-known blog posts, conference talks). IMPORTANT: Before writing, use the Read tool on `.co-research/claude-practices.md` (it exists as an empty placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
+- "Research real-world case studies and migration stories for [topic]. What did teams learn? What surprised them? IMPORTANT: Before writing, use the Read tool on `.co-research/claude-experiences.md` (it exists as an empty placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
 
 Wait for all dispatches to complete (Bash background tasks will notify on completion; Task agents return when done).
 
@@ -156,7 +168,7 @@ Read all files in `.co-research/`. When merging, cross-reference Claude and Code
 - **Only one found it** → include it but note the single source
 - **They contradict** → flag the disagreement and present both sides for user judgment
 
-Merge into a single document at `.co-research/draft.md` using this structure:
+Use the `Write` tool to create `.co-research/draft.md` using this structure:
 
 ```markdown
 # [Topic]: Research Summary
@@ -208,7 +220,7 @@ Present the draft to the user.
 
 Ask: "Where should I save this? Default: `docs/research-<topic-slug>.md`"
 
-Wait for confirmation. Write the final document to the specified path.
+Wait for confirmation. Use the `Write` tool to save the final document to the specified path.
 
 Tell the user the `.co-research/` working directory still exists and they can delete it manually if they want:
 ```
