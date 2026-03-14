@@ -4,6 +4,10 @@ set -euo pipefail
 # Codex uninstaller
 # Removes symlinks created by install.sh (leaves backups untouched)
 
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source-path=SCRIPTDIR source=../lib/dotfiles.sh
+source "$DOTFILES_DIR/lib/dotfiles.sh"
+
 CODEX_TARGET="$HOME/.codex"
 
 echo "Uninstalling Codex config..."
@@ -14,19 +18,9 @@ CODEX_ITEMS=(
 )
 
 for item in "${CODEX_ITEMS[@]}"; do
-    target_path="$CODEX_TARGET/$item"
-
-    if [ -L "$target_path" ]; then
-        echo "  Removing symlink $target_path"
-        rm "$target_path"
-    fi
+    remove_symlink "$CODEX_TARGET/$item"
 done
 
-# Remove shared skills symlink
-SKILLS_LINK="$HOME/.agents/skills/personal"
-if [ -L "$SKILLS_LINK" ]; then
-    echo "  Removing symlink $SKILLS_LINK"
-    rm "$SKILLS_LINK"
-fi
+remove_symlink "$HOME/.agents/skills/personal"
 
 echo "Codex config uninstalled."

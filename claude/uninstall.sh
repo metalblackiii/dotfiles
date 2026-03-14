@@ -4,6 +4,10 @@ set -euo pipefail
 # Claude Code uninstaller
 # Removes symlinks created by install.sh (leaves backups untouched)
 
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source-path=SCRIPTDIR source=../lib/dotfiles.sh
+source "$DOTFILES_DIR/lib/dotfiles.sh"
+
 CLAUDE_TARGET="$HOME/.claude"
 
 echo "Uninstalling Claude Code config..."
@@ -22,12 +26,7 @@ CLAUDE_ITEMS=(
 )
 
 for item in "${LEGACY_SYMLINKS[@]}" "${CLAUDE_ITEMS[@]}"; do
-    target_path="$CLAUDE_TARGET/$item"
-
-    if [ -L "$target_path" ]; then
-        echo "  Removing symlink $target_path"
-        rm "$target_path"
-    fi
+    remove_symlink "$CLAUDE_TARGET/$item"
 done
 
 echo "Claude Code config uninstalled."

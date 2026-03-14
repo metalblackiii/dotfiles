@@ -4,15 +4,12 @@ set -euo pipefail
 # Zsh config uninstaller
 # Removes symlink created by install.sh (leaves backups untouched)
 
-ZSH_TARGET="$HOME/.zshrc"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source-path=SCRIPTDIR source=../lib/dotfiles.sh
+source "$DOTFILES_DIR/lib/dotfiles.sh"
 
 echo "Uninstalling Zsh config..."
 
-if [ -L "$ZSH_TARGET" ]; then
-    echo "  Removing symlink $ZSH_TARGET"
-    rm "$ZSH_TARGET"
-elif [ -e "$ZSH_TARGET" ]; then
-    echo "  $ZSH_TARGET is not a symlink, skipping (remove manually if desired)"
-fi
+remove_symlink "$HOME/.zshrc"
 
 echo "Zsh config uninstalled."
