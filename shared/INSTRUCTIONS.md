@@ -1,9 +1,5 @@
 # Agent Configuration
 
-This configuration is managed via a dotfiles repo with symlinks.
-
-**IMPORTANT: Always edit files in the dotfiles repo** — never edit via symlinked paths (`~/.claude/`, `~/.codex/`, `~/.agents/`). Those are deployment targets. The canonical location for skills is `codex/.agents/skills/` within this repo. Both Claude Code (`~/.claude/skills/`) and Codex (`~/.agents/skills/`) symlink to it — all skills are shared across platforms. To find the repo root, use `git rev-parse --show-toplevel` from any file inside it, or follow a symlink (e.g., `readlink ~/.claude/skills`) back to the source.
-
 ## Tool Preferences
 
 ### Claude Code
@@ -88,7 +84,7 @@ Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-cont
 
 ## Shell Hygiene
 
-- If a command is blocked by the bash-permissions hook, ask for guidance rather than retrying blocked patterns.
+- If a blocked command appears to come from a project-level hook or permission system, ask for guidance rather than retrying.
 - When npm/shell commands fail due to cwd, use `--prefix <path>` or `cd <path> &&` immediately — don't retry the broken approach.
 
 ## Self-Documenting Code
@@ -97,6 +93,3 @@ Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-cont
 - Comments survive only for: WHY (business logic/regulatory), WARNING (non-obvious traps), TODO (with ticket number). Everything else dies.
 - Scan your output for vague names — `data`, `result`, `temp`, `handle*`, `process*`, `manager`, `helper`, `utils` — and rename to intent.
 - The name test: read the name aloud. If you need "which means..." to explain it, the name failed.
-
-@RTK.md
-@BASH-PERMISSIONS.md

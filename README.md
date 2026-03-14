@@ -23,8 +23,10 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .gitconfig.shared    # Included via [include] in ~/.gitconfig
+├── AGENTS.md                # Project-level rules (dotfiles-specific)
+├── CLAUDE.md                # Symlink → AGENTS.md
 ├── shared/                  # Cross-platform sources of truth
-│   └── INSTRUCTIONS.md      # Agent conventions, rules, preferences
+│   └── INSTRUCTIONS.md      # Global agent conventions, rules, preferences
 ├── codex/                   # Codex configuration
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -40,9 +42,9 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .claude/
-│       ├── CLAUDE.md        # Symlink → ../../shared/INSTRUCTIONS.md
-│       ├── BASH-PERMISSIONS.md # Bash permissions context (included via @BASH-PERMISSIONS.md)
-│       ├── RTK.md           # RTK usage reference (included via @RTK.md)
+│       ├── CLAUDE.md        # Symlink → ../../shared/INSTRUCTIONS.md (global rules)
+│       ├── BASH-PERMISSIONS.md # Bash permissions context (included via project AGENTS.md)
+│       ├── RTK.md           # RTK usage reference (included via project AGENTS.md)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 4 custom subagents
 │       ├── commands/        # Slash commands (co-research)
@@ -198,16 +200,21 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 
-### Shared Instructions
+### Instructions (Two Layers)
 
-`shared/INSTRUCTIONS.md` is the single source of truth for agent conventions. It's symlinked as `CLAUDE.md` (for Claude Code) and `AGENTS.md` (for Codex), so both platforms get the same rules:
+**Global** — `shared/INSTRUCTIONS.md` is symlinked as `claude/.claude/CLAUDE.md` and `codex/AGENTS.md`, loaded in every repo:
 
 - **Git preferences** — conventional commits, explicit commit/push approval
 - **PR defaults** — reviewers, gh flags
 - **Code quality** — preparatory refactoring, Rule of Three, fix broken windows
 - **Security** — HIPAA context, no PII in examples, no hardcoded secrets
 - **Self-documenting code** — rename over comment, only "why" comments
-- **Skill usage** — check skills before non-trivial tasks
+
+**Project-level** — `AGENTS.md` (with `CLAUDE.md` symlinked to it) at the repo root, loaded only in the dotfiles repo:
+
+- **Canonical editing** — always edit in the dotfiles repo, never via symlinked paths
+- **Bash permissions** — rule format, layers, test suite for `bash-permissions.json`
+- **RTK** — Rust Token Killer usage reference
 
 ### MCP Servers
 
