@@ -104,9 +104,11 @@ plugins=(
   docker-compose
   F-Sy-H
   fzf
+  fzf-tab
   git
   helm
   kubectl
+  sudo
   timer
   you-should-use
   zsh-autosuggestions
