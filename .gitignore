@@ -22,8 +22,9 @@ claude/.claude/settings.local.json
 # Session handoff files
 HANDOFF.md
 
-# Research docs live in research-vault (private repo, symlinked here)
+# Research vault content (private repo, symlinked here)
 docs
+profiles
 
 # Private/secrets files (never commit)
 *.local
