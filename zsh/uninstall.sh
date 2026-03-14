@@ -11,5 +11,6 @@ source "$DOTFILES_DIR/lib/dotfiles.sh"
 echo "Uninstalling Zsh config..."
 
 remove_symlink "$HOME/.zshrc"
+remove_symlink "$HOME/.p10k.zsh"
 
 echo "Zsh config uninstalled."

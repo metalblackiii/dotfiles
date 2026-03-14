@@ -11,5 +11,6 @@ source "$DOTFILES_DIR/lib/dotfiles.sh"
 echo "Installing Zsh config..."
 
 symlink_with_backup "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
+symlink_with_backup "$DOTFILES_DIR/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
 
 echo "Zsh config installed."
