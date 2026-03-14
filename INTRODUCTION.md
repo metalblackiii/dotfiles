@@ -197,7 +197,7 @@ These approaches complement the baseline. As patterns stabilize, they may gradua
 ### Option A: Fork and Customize
 
 1. Fork this repo
-2. Run `./install.sh` to get the symlinks in place
+2. Run `./install-ai.sh` to get the symlinks in place
 3. Delete skills you don't need
 4. Modify remaining skills to match your preferences
 5. Add your own domain-specific skills

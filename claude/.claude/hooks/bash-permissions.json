@@ -184,6 +184,10 @@
     {
       "regex": "(^|\\s)(~|__HOME__)/\\.(zshrc|bashrc|bash_profile|gitconfig)($|\\s)",
       "category": "shell/git config"
+    },
+    {
+      "regex": "(^|\\s)(~|__HOME__)/\\.[a-z]+\\.local($|\\s)",
+      "category": "private local config"
     }
   ]
 }

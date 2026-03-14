@@ -25,5 +25,8 @@ HANDOFF.md
 # Research docs live in research-vault (private repo, symlinked here)
 docs
 
+# Private/secrets files (never commit)
+*.local
+
 # Exclude turbo caching
 .turbo

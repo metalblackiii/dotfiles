@@ -48,10 +48,10 @@ If these tools are unavailable, `security-reviewer` falls back to manual review 
 git clone https://github.com/metalblackiii/dotfiles.git ~/repos/dotfiles
 cd ~/repos/dotfiles
 
-# Install everything
-./install.sh
+# Install AI tool config (Claude Code, Codex, RTK, global gitignore)
+./install-ai.sh
 
-# Or install a single platform
+# Or install a single module
 ./claude/install.sh
 ./codex/install.sh
 ./git/install.sh
@@ -62,19 +62,24 @@ Original files are backed up with `.backup.TIMESTAMP` before symlinking.
 To remove:
 
 ```bash
-# Uninstall everything
-./uninstall.sh
+./uninstall-ai.sh
 
-# Or uninstall a single platform
+# Or uninstall a single module
 ./claude/uninstall.sh
 ./codex/uninstall.sh
 ./git/uninstall.sh
 ```
 
+Personal config (shell, editor, etc.) has separate installers — see [Personal Configuration](#personal-configuration).
+
 ## Structure
 
 ```
 dotfiles/
+├── install-ai.sh            # AI tool config installer
+├── uninstall-ai.sh          # AI tool config uninstaller
+├── install-personal.sh      # Personal config installer (shell, editor)
+├── uninstall-personal.sh    # Personal config uninstaller
 ├── git/                     # Git configuration
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -105,9 +110,11 @@ dotfiles/
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
 │       ├── scripts/         # Status bar, hooks
 │       └── skills           # Symlink → ../../codex/.agents/skills
+├── zsh/                     # Zsh shell configuration (personal)
+│   ├── install.sh
+│   ├── uninstall.sh
+│   └── .zshrc               # Shell config → ~/.zshrc
 ├── docs/                    # Research docs, postmortems, analysis artifacts
-├── install.sh               # Orchestrator — runs */install.sh
-├── uninstall.sh             # Orchestrator — runs */uninstall.sh
 └── .gitignore
 ```
 
@@ -230,7 +237,7 @@ Claude Code permissions are split across two layers that handle different tool t
 The `permissions` block in `settings.json` controls Claude Code's built-in tools (Read, Edit, Write, Glob, Grep, WebFetch, WebSearch). These use glob-based path matching:
 
 - **Allowed**: all built-in tools, `Bash(*)`, scoped web access
-- **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
+- **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), private local overrides (`~/.*.local`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
 
 #### Bash Commands (`bash-permissions.sh` + `bash-permissions.json`)
 
@@ -276,12 +283,12 @@ readlink ~/.gitignore_global
 
 Current global ignores: editor backup files (`*~`), `.DS_Store`, and agent working artifacts (`.co-research/`, `.prd-loop/`, `HANDOFF.md`).
 
-## Adding a New Platform
+## Adding a New Module
 
-1. Create a directory: `platform-name/`
+1. Create a directory: `module-name/`
 2. Add `install.sh` and `uninstall.sh`
-3. Symlink `platform-name/.config/skills/` → `codex/.agents/skills/`
-4. The top-level orchestrator picks up `*/install.sh` automatically
+3. For AI tool modules: symlink skills → `codex/.agents/skills/` and add to `install-ai.sh`
+4. For personal config modules: add to `install-personal.sh`
 
 ## Customization
 
@@ -292,6 +299,23 @@ If you fork this repo, update these team/environment-specific values:
 | Neb repo base path | `claude/.claude/agents/neb-explorer.md` | `~/repos/` |
 | PR default reviewers | `shared/INSTRUCTIONS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 | Feature branch pattern | `claude/.claude/hooks/bash-permissions.json` → allow layer `"branch"` | `^mjb-pho-NEB-` |
+
+## Personal Configuration
+
+Personal config (shell, editor, etc.) is separated from AI tool config. These modules contain machine-specific settings and are not required for the AI tools to function.
+
+```bash
+./install-personal.sh    # Install all personal config
+./uninstall-personal.sh  # Remove all personal config
+```
+
+### Zsh
+
+`zsh/.zshrc` is symlinked to `~/.zshrc`. Machine-specific secrets (API keys, tokens, credentials) go in `~/.zshrc.local`, which is:
+
+- Sourced by `.zshrc` after oh-my-zsh init
+- Excluded from the repo via `*.local` in `.gitignore`
+- Protected from agent access via `settings.json` deny rules and bash-permissions path rules
 
 ## Attribution
 
