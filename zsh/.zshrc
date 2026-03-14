@@ -102,7 +102,7 @@ plugins=(
   command-not-found
   docker
   docker-compose
-  F-Sy-H
+  zsh-syntax-highlighting
   fzf
   fzf-tab
   git
@@ -112,6 +112,7 @@ plugins=(
   timer
   you-should-use
   zsh-autosuggestions
+  zsh-history-substring-search
   zsh-better-npm-completion
 )
 
