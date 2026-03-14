@@ -15,10 +15,14 @@ dotfiles/
 ├── install-personal.sh      # Personal config installer (shell, editor)
 ├── uninstall-personal.sh    # Personal config uninstaller
 ├── Brewfile                  # Homebrew manifest (formulae, casks, VSCode extensions)
-├── git/                     # Git configuration
+├── git_ai/                  # Git AI config (shared/forkable)
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .gitignore_global    # Global gitignore → ~/.gitignore_global
+├── git_personal/            # Git personal config (delta, merge style)
+│   ├── install.sh
+│   ├── uninstall.sh
+│   └── .gitconfig.shared    # Included via [include] in ~/.gitconfig
 ├── shared/                  # Cross-platform sources of truth
 │   └── INSTRUCTIONS.md      # Agent conventions, rules, preferences
 ├── codex/                   # Codex configuration
@@ -107,7 +111,7 @@ cd ~/repos/dotfiles
 # Or install a single module
 ./claude/install.sh
 ./codex/install.sh
-./git/install.sh
+./git_ai/install.sh
 ```
 
 Original files are backed up with `.backup.TIMESTAMP` before symlinking.
@@ -120,7 +124,7 @@ To remove:
 # Or uninstall a single module
 ./claude/uninstall.sh
 ./codex/uninstall.sh
-./git/uninstall.sh
+./git_ai/uninstall.sh
 ```
 
 ### What's Shared vs Platform-Specific
@@ -270,11 +274,14 @@ Each rule uses one of two formats:
 
 ### Git Configuration
 
-The `git/` directory manages some global Git settings that aren't project-specific.
+Git config is split into two modules:
+
+- **`git_ai/`** — Global gitignore (controls what AI agents see in repos). Installed by `install-ai.sh`.
+- **`git_personal/`** — Delta pager, merge style, and other human-facing defaults. Installed by `install-personal.sh` via `[include]` in `~/.gitconfig`.
 
 #### Global Gitignore
 
-`git/.gitignore_global` is symlinked to `~/.gitignore_global` and registered via `core.excludesFile`. This is not a Git default — without it, Git has no global ignore file.
+`git_ai/.gitignore_global` is symlinked to `~/.gitignore_global` and registered via `core.excludesFile`. This is not a Git default — without it, Git has no global ignore file.
 
 To verify it's active:
 
@@ -283,10 +290,14 @@ git config --global core.excludesFile
 # Should output: /Users/<you>/.gitignore_global
 
 readlink ~/.gitignore_global
-# Should point to: .../dotfiles/git/.gitignore_global
+# Should point to: .../dotfiles/git_ai/.gitignore_global
 ```
 
 Current global ignores: editor backup files (`*~`), `.DS_Store`, and agent working artifacts (`.co-research/`, `.prd-loop/`, `HANDOFF.md`).
+
+#### Personal Git Config
+
+`git_personal/.gitconfig.shared` is included in `~/.gitconfig` via `[include]`. This keeps personal identity and credentials in your local `~/.gitconfig` while sharing tool config (delta, merge style) from the dotfiles repo. Delta only activates on TTYs — AI agents running git over pipes get plain diffs automatically.
 
 ### Adding a New Module
 

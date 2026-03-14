@@ -8,7 +8,7 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Installing AI tool config from $DOTFILES_DIR"
 echo ""
 
-for module in claude codex git; do
+for module in claude codex git_ai; do
     installer="$DOTFILES_DIR/$module/install.sh"
     if [ -x "$installer" ]; then
         bash "$installer"

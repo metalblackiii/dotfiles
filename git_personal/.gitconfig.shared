@@ -1,0 +1,17 @@
+# Personal git config — human-facing defaults
+# Included via [include] path in ~/.gitconfig
+
+[core]
+    editor = code --wait
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    line-numbers = true
+    syntax-theme = Dracula
+
+[merge]
+    conflictstyle = zdiff3
