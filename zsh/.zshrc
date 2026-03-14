@@ -103,6 +103,7 @@ plugins=(
   docker
   docker-compose
   F-Sy-H
+  fzf
   git
   helm
   kubectl
