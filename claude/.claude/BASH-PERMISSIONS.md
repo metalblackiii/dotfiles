@@ -13,3 +13,9 @@ Rule formats:
 - `"regex": "\\bsome\\s+pattern"` — escape hatch for complex patterns
 - `"nudge": "Use X instead."` — optional, shown to Claude on deny (guides toward the right tool)
 - `"branch": "^mjb-pho-"` — optional (allow layer only), rule only fires when current git branch matches (lazy lookup, resolves cd targets)
+
+After any change to `bash-permissions.json` or `bash-permissions.sh`, run the regression suite:
+```
+bash ~/.claude/hooks/bash-permissions-test.sh
+```
+151+ test cases cover deny, paths, and allow layers. Add test cases to `bash-permissions-test-cases.txt` for any new or modified rule before committing.

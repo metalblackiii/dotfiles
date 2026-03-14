@@ -121,14 +121,26 @@ check_layer "deny" "deny" \
 HOME_DIR="${HOME:-$(eval echo ~)}"
 HOME_ESC=$(regex_escape "$HOME_DIR")
 
-while IFS= read -r regex; do
-  [[ -z "$regex" ]] && continue
-  local_pattern="${regex//__HOME__/$HOME_ESC}"
-  if echo "$CMD_CLEAN" | grep -qE "$local_pattern"; then
-    emit_decision "deny" \
-      "Sensitive files (.env, secrets, keys, credentials, shell config) are off-limits."
-  fi
-done < <(jq -r '.paths // [] | .[].regex' "$RULES_FILE")
+# WHY: Commit messages are prose — path patterns false-positive on filenames
+# mentioned in the message text (e.g., "updated ~/.gitconfig"). Skip paths
+# layer for simple git commit commands. Compound commands (&&, |, ;) are NOT
+# skipped to prevent hiding real file access after a commit.
+_skip_paths=false
+if printf '%s' "$CMD_CLEAN" | grep -qE '^\s*(rtk\s+)?git\s+commit\b' && \
+   ! printf '%s' "$CMD_CLEAN" | grep -qE '[;&|]'; then
+  _skip_paths=true
+fi
+
+if [[ "$_skip_paths" == "false" ]]; then
+  while IFS= read -r regex; do
+    [[ -z "$regex" ]] && continue
+    local_pattern="${regex//__HOME__/$HOME_ESC}"
+    if echo "$CMD_CLEAN" | grep -qE "$local_pattern"; then
+      emit_decision "deny" \
+        "Sensitive files (.env, secrets, keys, credentials, shell config) are off-limits."
+    fi
+  done < <(jq -r '.paths // [] | .[].regex' "$RULES_FILE")
+fi
 
 # ---------------------------------------------------------------------------
 # Layer 3: ALLOW — auto-accept trusted patterns (exit silently to bypass ask)

@@ -1,6 +1,21 @@
-# Regression tests for bash-permissions.json deny-layer regex patterns.
-# Format: EXPECT<tab>PATTERN_NAME<tab>COMMAND
-# EXPECT: DENY or PASS
+# Regression tests for bash-permissions.json regex patterns.
+#
+# Deny/Paths layers — 3 columns:
+#   EXPECT<tab>PATTERN_NAME<tab>COMMAND
+#   EXPECT: DENY or PASS
+#
+# Allow layer — 4 columns:
+#   EXPECT<tab>PATTERN_NAME<tab>BRANCH<tab>COMMAND
+#   EXPECT: ALLOW or ASK
+#   BRANCH: simulated branch name (- for branchless rules)
+#
+# Pattern name prefixes determine the layer:
+#   path_*  → paths layer (sensitive file detection)
+#   allow_* → allow layer (auto-accept on matching branch)
+#   (other) → deny layer (tool preference enforcement)
+#
+# __HOME__ in commands is expanded to $HOME at runtime.
+#
 # Run with: bash bash-permissions-test.sh
 #
 # -------------------------------------------------------------------
@@ -85,3 +100,194 @@ PASS	printf	printf "status" ; command > file
 PASS	printf	printf "status" | cat > file
 PASS	printf	printf '%s\n' "hello"
 PASS	printf	printf "Running tests..."
+#
+# ===================================================================
+# PATHS LAYER — sensitive file access detection (security critical)
+# False negatives are security gaps.
+# ===================================================================
+#
+# -------------------------------------------------------------------
+# path_env_bare — (^|\s)\.env($|\s|[^a-zA-Z0-9])
+# Catches bare .env references. The [^a-zA-Z0-9] alternate catches
+# .env.production, .env.local, etc. (dot is non-alphanumeric).
+# -------------------------------------------------------------------
+# Should DENY: bare .env and .env.* variants
+DENY	path_env_bare	cat .env
+DENY	path_env_bare	source .env
+DENY	path_env_bare	cp .env .env.bak
+DENY	path_env_bare	ls -la .env
+DENY	path_env_bare	cat .env.production
+DENY	path_env_bare	rm .env.local
+DENY	path_env_bare	docker run --env-file .env app
+# Should PASS: similarly-named files that aren't .env
+PASS	path_env_bare	cat .envrc
+PASS	path_env_bare	ls .environment
+PASS	path_env_bare	cat .env2
+PASS	path_env_bare	source .envextra
+#
+# -------------------------------------------------------------------
+# path_env_pathed — (^|\s)[^ ]*/\.env($|\s|[^a-zA-Z0-9])
+# Catches pathed .env references (absolute, relative, nested).
+# -------------------------------------------------------------------
+# Should DENY: pathed .env references
+DENY	path_env_pathed	cat /app/.env
+DENY	path_env_pathed	cat ./config/.env
+DENY	path_env_pathed	source /home/deploy/.env.production
+DENY	path_env_pathed	cp ../project/.env .
+DENY	path_env_pathed	ls /opt/app/.env.local
+# Should PASS: pathed non-.env files
+PASS	path_env_pathed	cat /app/.envrc
+PASS	path_env_pathed	ls ./config/.environment
+PASS	path_env_pathed	cat /tmp/.env2
+#
+# -------------------------------------------------------------------
+# path_secrets — /secrets/
+# Catches any reference to a /secrets/ directory.
+# -------------------------------------------------------------------
+# Should DENY: paths containing /secrets/
+DENY	path_secrets	cat /app/secrets/db.yml
+DENY	path_secrets	ls /secrets/api-key
+DENY	path_secrets	cp config/secrets/token.json .
+DENY	path_secrets	cat ./secrets/password.txt
+# Should PASS: "secrets" without directory separators
+PASS	path_secrets	cat secretsfile.txt
+PASS	path_secrets	grep secrets README.md
+PASS	path_secrets	ls /my-other-dir/
+#
+# -------------------------------------------------------------------
+# path_cert_key — [^. ][^ ]*\.(pem|key)($|\s)
+# Catches certificate and private key files. Requires at least one
+# non-dot, non-space character before the extension to avoid matching
+# bare .pem or .key (which aren't real filenames).
+# -------------------------------------------------------------------
+# Should DENY: certificate/key file references
+DENY	path_cert_key	cat server.pem
+DENY	path_cert_key	cat id_rsa.key
+DENY	path_cert_key	openssl x509 -in cert.pem -text
+DENY	path_cert_key	cp my.key /backup/
+DENY	path_cert_key	ls *.pem
+DENY	path_cert_key	scp primary.key user@host:/tmp/
+# Should PASS: not cert/key files
+PASS	path_cert_key	cat .pem
+PASS	path_cert_key	cat .key
+PASS	path_cert_key	grep key config.yml
+PASS	path_cert_key	echo "primary key lookup"
+PASS	path_cert_key	cat monkey.txt
+PASS	path_cert_key	cat server.pemfile
+#
+# -------------------------------------------------------------------
+# path_aws — (^|\s)(~|__HOME__)/\.aws/
+# Catches AWS credential directory access via ~ or $HOME.
+# -------------------------------------------------------------------
+# Should DENY: home-relative .aws access
+DENY	path_aws	cat ~/.aws/credentials
+DENY	path_aws	cat ~/.aws/config
+DENY	path_aws	ls ~/.aws/
+DENY	path_aws	cat __HOME__/.aws/credentials
+DENY	path_aws	ls __HOME__/.aws/config
+# Should PASS: non-home .aws or unrelated commands
+PASS	path_aws	cat .aws/credentials
+PASS	path_aws	aws configure list
+PASS	path_aws	echo "check aws settings"
+#
+# -------------------------------------------------------------------
+# path_ssh — (^|\s)(~|__HOME__)/\.ssh/
+# Catches SSH key/config directory access via ~ or $HOME.
+# -------------------------------------------------------------------
+# Should DENY: home-relative .ssh access
+DENY	path_ssh	cat ~/.ssh/id_rsa
+DENY	path_ssh	ssh-keygen -f ~/.ssh/id_ed25519
+DENY	path_ssh	ls ~/.ssh/
+DENY	path_ssh	cat __HOME__/.ssh/authorized_keys
+DENY	path_ssh	chmod 600 ~/.ssh/config
+# Should PASS: non-home .ssh or unrelated commands
+PASS	path_ssh	cat .ssh/config
+PASS	path_ssh	ssh user@host
+PASS	path_ssh	echo "ssh key rotation"
+#
+# -------------------------------------------------------------------
+# path_shell_config — (^|\s)(~|__HOME__)/\.(zshrc|bashrc|bash_profile|gitconfig)($|\s)
+# Catches shell and git config file access in home directory.
+# -------------------------------------------------------------------
+# Should DENY: home shell/git config files
+DENY	path_shell_config	cat ~/.zshrc
+DENY	path_shell_config	vim ~/.bashrc
+DENY	path_shell_config	source ~/.bash_profile
+DENY	path_shell_config	cat ~/.gitconfig
+DENY	path_shell_config	cat __HOME__/.zshrc
+# Should PASS: non-home or suffixed variants
+PASS	path_shell_config	cat ~/.zshrc.bak
+PASS	path_shell_config	cat .zshrc
+PASS	path_shell_config	git config --global user.name
+PASS	path_shell_config	cat ~/.zshenv
+#
+# -------------------------------------------------------------------
+# path_local_config — (^|\s)(~|__HOME__)/\.[a-z]+\.local($|\s)
+# Catches private *.local override files in home directory.
+# These contain machine-specific secrets/config that shouldn't be shared.
+# -------------------------------------------------------------------
+# Should DENY: home *.local dotfiles
+DENY	path_local_config	cat ~/.zshrc.local
+DENY	path_local_config	cat ~/.gitconfig.local
+DENY	path_local_config	source ~/.bashrc.local
+DENY	path_local_config	cat __HOME__/.npmrc.local
+DENY	path_local_config	cat ~/.vimrc.local
+# Should PASS: non-.local or non-home
+PASS	path_local_config	cat ~/.zshrc
+PASS	path_local_config	cat .zshrc.local
+PASS	path_local_config	cat ~/something.local
+PASS	path_local_config	cat ~/.Foo.local
+#
+# ===================================================================
+# ALLOW LAYER — auto-accept trusted patterns (UX critical)
+# ALLOW = hook exits 0 silently (auto-accepted).
+# ASK = rule doesn't match; falls through to ask layer.
+# ===================================================================
+#
+# -------------------------------------------------------------------
+# allow_curl_local — localhost/127.0.0.1 curl requests
+# No branch condition — always allowed.
+# -------------------------------------------------------------------
+# Should ALLOW: curl to localhost/loopback
+ALLOW	allow_curl_local	-	curl http://localhost:3000/api/health
+ALLOW	allow_curl_local	-	curl https://localhost:8080/
+ALLOW	allow_curl_local	-	curl 'http://127.0.0.1:9090/status'
+ALLOW	allow_curl_local	-	curl "http://localhost/path"
+ALLOW	allow_curl_local	-	curl http://localhost:3000
+ALLOW	allow_curl_local	-	curl -v http://localhost:3000/
+ALLOW	allow_curl_local	-	rtk curl http://localhost:3000/api
+# Should ASK: non-localhost curl or non-curl commands
+ASK	allow_curl_local	-	curl https://example.com/api
+ASK	allow_curl_local	-	curl http://production-server:3000/
+ASK	allow_curl_local	-	curl http://localhostevil.com/
+#
+# -------------------------------------------------------------------
+# allow_git_ops — git commit/push on personal feature branches
+# Branch condition: ^mjb-pho-NEB-
+# -------------------------------------------------------------------
+# Should ALLOW: git commit/push on matching branch
+ALLOW	allow_git_ops	mjb-pho-NEB-1234	git commit -m "fix: resolve issue"
+ALLOW	allow_git_ops	mjb-pho-NEB-5678	git push
+ALLOW	allow_git_ops	mjb-pho-NEB-9999	git push origin mjb-pho-NEB-9999
+ALLOW	allow_git_ops	mjb-pho-NEB-1234	rtk git commit -m "fix"
+# Should ASK: git commit/push on non-matching branch
+ASK	allow_git_ops	main	git commit -m "fix"
+ASK	allow_git_ops	develop	git push
+ASK	allow_git_ops	feature/other	git commit -m "test"
+# Should ASK: non-commit/push git commands on any branch
+ASK	allow_git_ops	mjb-pho-NEB-1234	git stash drop
+ASK	allow_git_ops	mjb-pho-NEB-1234	git rebase main
+#
+# -------------------------------------------------------------------
+# allow_gh_pr — gh pr create on personal feature branches
+# Branch condition: ^mjb-pho-NEB-
+# -------------------------------------------------------------------
+# Should ALLOW: gh pr create on matching branch
+ALLOW	allow_gh_pr	mjb-pho-NEB-1234	gh pr create --title "feat: new feature"
+ALLOW	allow_gh_pr	mjb-pho-NEB-5678	rtk gh pr create --body "description"
+# Should ASK: gh pr create on non-matching branch
+ASK	allow_gh_pr	main	gh pr create --title "fix"
+ASK	allow_gh_pr	develop	gh pr create
+# Should ASK: other gh commands on matching branch
+ASK	allow_gh_pr	mjb-pho-NEB-1234	gh pr merge
+ASK	allow_gh_pr	mjb-pho-NEB-1234	gh issue close 42
