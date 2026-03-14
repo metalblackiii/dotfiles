@@ -206,6 +206,42 @@ Specialized methodologies that activate automatically when relevant tasks are de
 - **Self-documenting code** — rename over comment, only "why" comments
 - **Skill usage** — check skills before non-trivial tasks
 
+### MCP Servers
+
+MCP servers are configured in `~/.claude.json` (user scope), **not** in `settings.json` or the dotfiles repo. This file is machine-local — it contains absolute paths and may reference credentials via environment variables. Think of it like `~/.gitconfig` for MCP: personal, untracked.
+
+To add a server:
+
+```bash
+claude mcp add -s user <name> -- <command> [args...]
+```
+
+To list or remove:
+
+```bash
+claude mcp list
+claude mcp remove -s user <name>
+```
+
+#### Permissions for MCP Tools
+
+MCP tools follow the same permission model as built-in tools. With `defaultMode: "default"`, all MCP tools prompt for confirmation unless explicitly allowed or denied in `settings.json`.
+
+Read-only MCP tools can be added to the `permissions.allow` list in `settings.json` to skip the confirmation prompt. Write tools (update, comment, create) should stay at the default to require confirmation before making changes visible to others.
+
+```json
+"allow": [
+  "mcp__server-name__readTool",
+  "mcp__server-name__anotherReadTool"
+]
+```
+
+#### Current Servers
+
+| Server | Source | Profile | Allowed | Ask |
+|--------|--------|---------|---------|-----|
+| **ptek-jira** | [ptek-eng-toolbox](../ptek-eng-toolbox) | `jira` | getJiraTicket, searchJiraIssuesUsingJql, getJiraIssueContext, getJiraAttachments, getJiraDefectSummary | updateJiraTicket, addCommentToJiraTicket |
+
 ### Claude Code Configuration
 
 Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via another (`claude/.claude/CLAUDE.md` → `shared/INSTRUCTIONS.md`). It adds platform-specific features on top.
