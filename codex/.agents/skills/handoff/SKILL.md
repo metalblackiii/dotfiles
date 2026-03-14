@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: ALWAYS invoke when ending a session with work in progress, or when context usage reaches 80% or exceeds 250K tokens (whichever comes first) and a fresh start would help.
+description: ALWAYS invoke when ending a session with work in progress, or when context usage exceeds 400K tokens and a fresh start would help.
 ---
 
 Write or update a handoff document so the next agent with fresh context can continue this work.

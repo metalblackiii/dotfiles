@@ -79,7 +79,7 @@ Healthcare data context — HIPAA compliance matters.
 ## Context Management
 
 When a session runs long, proactively run the `handoff` skill before autocompact kicks in. Signs you should trigger handoff:
-- Context usage reaches 80% or exceeds 250K tokens, whichever comes first
+- Context usage exceeds 400K tokens
 - Conversation has had many tool calls or substantial back-and-forth
 - You're working on a multi-step task that isn't yet complete
 - The session feels heavy — don't wait to be asked
