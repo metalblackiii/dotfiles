@@ -39,6 +39,10 @@ This configuration is managed via a dotfiles repo with symlinks.
   - team format: `org/team-slug` (for example `Chiropractic-CT-Cloud/phoenix`)
   - individual format: `username` (for example `daniel-goss_ptek`)
 
+## Output Preferences
+
+- When listing URLs (PR links, run links, etc.), default to a plain newline-separated list — no bullets, no tables. Optimized for copy-paste into Slack/Teams.
+
 ## Documentation Tasks
 
 When asked to update or create documentation, only change documentation. Do not write implementation code, enter plan mode, or create implementation tasks unless explicitly asked. If something needs implementing, note it as a TODO in the doc instead.
