@@ -43,6 +43,16 @@
 
 When asked to update or create documentation, only change documentation. Do not write implementation code, enter plan mode, or create implementation tasks unless explicitly asked. If something needs implementing, note it as a TODO in the doc instead.
 
+## Security
+
+Healthcare data context — HIPAA compliance matters.
+
+- **IMPORTANT:** Never output real PII (names, emails, SSNs, phone numbers) in examples or test data
+- Use placeholder data like `john.doe@example.com` or `555-0100`
+- Never hardcode credentials, API keys, or secrets — use environment variables or secret management
+- Never log PHI, PII, or sensitive data (tokens, passwords, SSNs)
+- Error messages must not leak implementation details or patient data
+
 ## Code Quality
 
 Quality code is a first-class priority, not an afterthought.
@@ -61,16 +71,6 @@ When touching code:
 Don't gold-plate. Don't add features nobody asked for. But don't leave code worse than you found it either.
 
 Don't add plugin-style abstractions, path resolution systems, or multi-layer patterns unless explicitly requested.
-
-## Security
-
-Healthcare data context — HIPAA compliance matters.
-
-- **IMPORTANT:** Never output real PII (names, emails, SSNs, phone numbers) in examples or test data
-- Use placeholder data like `john.doe@example.com` or `555-0100`
-- Never hardcode credentials, API keys, or secrets — use environment variables or secret management
-- Never log PHI, PII, or sensitive data (tokens, passwords, SSNs)
-- Error messages must not leak implementation details or patient data
 
 ## Context Management
 
