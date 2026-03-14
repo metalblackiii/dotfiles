@@ -109,13 +109,19 @@ plugins=(
   kubectl
   timer
   you-should-use
-  z
   zsh-autosuggestions
   zsh-better-npm-completion
   zsh-nvm
 )
 
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/martinburch/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
 source $ZSH/oh-my-zsh.sh
+
+# Smart directory jumping cd is now smart (or use still use z)
+eval "$(zoxide init zsh --cmd cd)"
 
 # Private env vars (API keys, tokens, credentials)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
@@ -202,7 +208,4 @@ load-nvmrc() {
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/martinburch/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 export PATH="$HOME/.local/bin:$PATH"
