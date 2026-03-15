@@ -173,7 +173,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **handoff** | Ending sessions with work in progress or high context usage |
 | **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
-| **k8s-debug** | Diagnose and fix Kubernetes pods, CrashLoopBackOff, Pending, DNS, networking, storage, and rollout failures |
+| **k8s-expert** | Diagnose, troubleshoot, and fix Kubernetes clusters, pods, networking, storage, and rollout failures |
 | **mcp-vetting** | Security evaluation before installing or trusting any MCP server |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |

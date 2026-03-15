@@ -1,9 +1,9 @@
 ---
-name: k8s-debug
-description: ALWAYS invoke to diagnose and fix Kubernetes pods, CrashLoopBackOff, Pending, DNS, networking, storage, and rollout failures with kubectl.
+name: k8s-expert
+description: ALWAYS invoke to diagnose, troubleshoot, or fix Kubernetes clusters, pods, networking, storage, and rollout failures with kubectl. Covers CrashLoopBackOff, Pending, OOMKilled, DNS, NetworkPolicy, PVC, and deployment debugging. Triggers on "pod is crashing", "debug K8s", "cluster health", "kubectl troubleshoot", or any Kubernetes runtime issue. Not for Helm charts (use helm-expert) or GitHub Actions (use gha-expert).
 ---
 
-# Kubernetes Debugging Skill
+# Kubernetes Expert
 
 ## Overview
 
@@ -21,7 +21,9 @@ Use this skill when requests resemble:
 
 ## Prerequisites
 
-Run from the skill directory (`~/.claude/skills/k8s-debug`) so relative script paths work as written.
+Run from the skill directory so relative script paths work as written:
+- Claude runtime path: `~/.claude/skills/k8s-expert`
+- Codex runtime path: `~/.agents/skills/personal/k8s-expert`
 
 ### Required
 - `kubectl` installed and configured.

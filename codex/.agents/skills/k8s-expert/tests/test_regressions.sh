@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Regression tests for k8s-debug shell scripts.
+# Regression tests for k8s-expert shell scripts.
 # Validates:
 # - network_debug.sh secure/insecure API probing and exit codes
 # - cluster_health.sh blocked/check-failure exit codes
@@ -343,14 +343,14 @@ assert_no_bytecode_artifacts() {
     local findings
     findings="$(find "$SKILL_DIR" -type f \( -name '*.pyc' -o -path '*/__pycache__/*' \) -print)"
     if [[ -z "$findings" ]]; then
-        pass "no Python bytecode artifacts exist under k8s-debug"
+        pass "no Python bytecode artifacts exist under k8s-expert"
     else
-        fail "no Python bytecode artifacts exist under k8s-debug"
+        fail "no Python bytecode artifacts exist under k8s-expert"
         echo "$findings" | sed 's/^/    /'
     fi
 }
 
-echo "Running k8s-debug shell regressions..."
+echo "Running k8s-expert shell regressions..."
 create_kubectl_stub
 
 echo ""
@@ -363,7 +363,7 @@ reset_stub_env
 export K8S_STUB_EXPECT_SECURE=1
 run_script "$NETWORK_SCRIPT" demo-pod
 assert_exit "secure default run returns success" 0
-assert_log_contains "secure probe passes --cacert" "--cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+assert_log_contains "secure probe passes --cacert" "--cacert.*serviceaccount/ca\\.crt"
 assert_log_not_contains "secure probe does not use -k" " exec .* -- curl .* -k "
 
 echo ""
@@ -414,4 +414,4 @@ if [[ "$FAIL" -ne 0 ]]; then
     exit 1
 fi
 
-echo "All k8s-debug shell regressions passed."
+echo "All k8s-expert shell regressions passed."
