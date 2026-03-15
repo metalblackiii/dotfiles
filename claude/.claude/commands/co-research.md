@@ -222,8 +222,7 @@ Ask: "Where should I save this? Default: `docs/research-<topic-slug>.md`"
 
 Wait for confirmation. Use the `Write` tool to save the final document to the specified path.
 
-Tell the user the `.co-research/` working directory still exists and they can delete it manually if they want:
+Clean up the working directory:
 ```
 rm -rf .co-research/
 ```
-Do NOT attempt to delete it yourself — this is a destructive operation the user should run.
