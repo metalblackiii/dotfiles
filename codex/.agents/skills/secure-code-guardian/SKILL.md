@@ -60,3 +60,26 @@ Security-first implementation skill for building and fixing controls in applicat
 - Expose PHI/PII in logs or error responses.
 - Hardcode credentials, tokens, or cryptographic material.
 - Bypass controls for convenience in production paths.
+
+## Validation Checkpoints
+
+After implementation, verify these before claiming done:
+
+| Control | Verification |
+|---------|-------------|
+| Brute-force protection | Rate limiter active on auth endpoints; lockout triggers after threshold |
+| Privilege escalation | No path lets a lower-role user reach admin-only operations |
+| SQL injection | Parameterized queries only — search for string interpolation in queries |
+| XSS | User-supplied data is encoded in HTML/JSON output; CSP header present |
+| Secrets exposure | No tokens, keys, or PHI in logs, error responses, or client payloads |
+| Transport | HSTS, Secure cookie flag, no mixed content |
+| JWT validation | Algorithm allowlist enforced; issuer + audience claims verified; secret from env |
+
+## Output Checklist
+
+When delivering security implementation work, include:
+
+1. Secure implementation code (with references to patterns in `references/`)
+2. Security considerations — what threats this addresses and residual risks
+3. Configuration requirements — env vars, secrets, infrastructure dependencies
+4. Testing recommendations — abuse-case tests to add

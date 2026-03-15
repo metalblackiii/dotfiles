@@ -74,12 +74,12 @@ Apply the strangler fig pattern: wrap the old, build the new, migrate callers, r
 
 ### Core Workflow
 
-1. **Assess** — Audit all call sites. Categorize by migration type (mechanical, logic change, architecture change). Map dependencies.
-2. **Facade** — Build the new API as a wrapper that delegates to legacy. Callers adopt immediately with zero behavior change.
-3. **Gate** — Feature flags for per-tenant or per-environment rollout. Flag off = passthrough to legacy.
-4. **Migrate** — Convert call sites incrementally, one PR per logical group. Each independently reversible.
+1. **Assess** — Audit all call sites. Categorize by migration type (mechanical, logic change, architecture change). Map dependencies. *Checkpoint: all external integrations and data contracts documented before proceeding.*
+2. **Facade** — Build the new API as a wrapper that delegates to legacy. Callers adopt immediately with zero behavior change. *Checkpoint: facade passes characterization test suite green on unmodified legacy system.*
+3. **Gate** — Feature flags for per-tenant or per-environment rollout. Flag off = passthrough to legacy. *Checkpoint: each phase has a defined rollback trigger.*
+4. **Migrate** — Convert call sites incrementally, one PR per logical group. Each independently reversible. Ramp traffic gradually (5% → 25% → 50% → 100%). *Checkpoint: error rates and latency within baseline thresholds after each increment.*
 5. **Validate** — Verify each migration preserves behavior for all flag states. Test both paths.
-6. **Retire** — All callers on new API + zero legacy traffic = remove legacy code. Point of no return.
+6. **Retire** — All callers on new API + zero legacy traffic = remove legacy code. Point of no return. *Checkpoint: new path stable at 100% traffic for at least one release cycle before removing legacy.*
 
 ### Reference Guide
 

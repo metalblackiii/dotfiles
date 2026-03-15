@@ -31,6 +31,7 @@ REST API design specialist for Express/Node.js services. Focuses on resource mod
 | REST Patterns | `references/rest-patterns.md` | Resource naming, HTTP methods, status codes, pagination |
 | Versioning & Evolution | `references/versioning-evolution.md` | Breaking vs additive changes, version bumping, deprecation |
 | Error Handling | `references/error-handling.md` | Error response format, validation errors, status code selection |
+| OpenAPI & Validation | `references/openapi-templates.md` | Writing or validating OpenAPI specs, RFC 7807 error contracts |
 
 ## Constraints
 

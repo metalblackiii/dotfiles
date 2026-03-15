@@ -26,7 +26,7 @@ You are an expert prompt engineer with deep knowledge of LLM capabilities, limit
 
 1. **Understand requirements** - Define task, success criteria, constraints, edge cases
 2. **Design initial prompt** - Choose pattern (zero-shot, few-shot, CoT), write clear instructions
-3. **Test and evaluate** - Run diverse test cases, measure quality metrics
+3. **Test and evaluate** - Run diverse test cases, measure quality metrics. **Validation checkpoint:** If accuracy < 80% on the test set, identify failure patterns before iterating (ambiguous instructions, missing examples, edge case gaps).
 4. **Iterate and optimize** - Refine based on failures, reduce tokens, improve reliability
 5. **Document and deploy** - Version prompts, document behavior, monitor production
 
@@ -41,6 +41,59 @@ Load detailed guidance based on context:
 | Evaluation | `references/evaluation-frameworks.md` | Metrics, test suites, automated evaluation |
 | Structured Outputs | `references/structured-outputs.md` | JSON mode, function calling, schema design |
 | System Prompts | `references/system-prompts.md` | Persona design, guardrails, context management |
+
+## Prompt Examples
+
+### Zero-Shot vs Few-Shot
+
+**Zero-shot** — relies entirely on instructions:
+
+```
+Classify the sentiment of this product review as Positive, Negative, or Neutral.
+
+Review: {{review}}
+
+Sentiment:
+```
+
+**Few-shot** — examples guide the model's behavior:
+
+```
+Classify the sentiment of this product review as Positive, Negative, or Neutral.
+
+Review: The battery life is incredible, lasts all day.
+Sentiment: Positive
+
+Review: Stopped working after two weeks. Total waste of money.
+Sentiment: Negative
+
+Review: Package arrived on time. Nothing special about the product.
+Sentiment: Neutral
+
+Review: {{review}}
+
+Sentiment:
+```
+
+Use zero-shot first. Add few-shot examples only when zero-shot accuracy is insufficient — each example costs tokens and latency.
+
+### Before/After Optimization
+
+**Before** (vague, inconsistent outputs):
+```
+Summarize this document.
+
+{{document}}
+```
+
+**After** (structured, token-efficient):
+```
+Summarize this document in exactly 3 bullet points.
+Each bullet must be one sentence starting with an action verb.
+Do not include opinions or information not present in the document.
+
+{{document}}
+```
 
 ## Constraints
 
