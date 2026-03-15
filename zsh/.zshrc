@@ -28,7 +28,6 @@ plugins=(
   helm
   kubectl
   sudo
-  timer
   you-should-use
   zsh-autosuggestions
   zsh-history-substring-search
