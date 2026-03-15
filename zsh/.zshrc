@@ -6,11 +6,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 
-alias t=turbo
-alias co=codex
-alias cl=claude
-alias cc=claude
-
 
 # Have kubectl/k9s edit commands use vscode; requires adding code to path via VSCode
 export KUBE_EDITOR='code -w'

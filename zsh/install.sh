@@ -12,5 +12,6 @@ echo "Installing Zsh config..."
 
 symlink_with_backup "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 symlink_with_backup "$DOTFILES_DIR/zsh/.p10k.zsh" "$HOME/.p10k.zsh"
+symlink_with_backup "$DOTFILES_DIR/zsh/omz-custom/aliases.zsh" "$HOME/.oh-my-zsh/custom/aliases.zsh"
 
 echo "Zsh config installed."
