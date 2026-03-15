@@ -157,7 +157,7 @@ Useful when the situation appears, with little ongoing overhead:
 - `handoff` — Capture session state when pausing or when context pressure is high.
 - `the-fool` — Structured critical reasoning: devil's advocate, pre-mortems, red teams, assumption auditing. Invoke it before committing to a design or plan — it's surprisingly effective at surfacing blind spots you're too close to see.
 - `quick-wins` — Scan a repo for low-risk improvement opportunities without making changes. Good for onboarding into an unfamiliar codebase.
-- `mcp-vetting` — Evaluate whether an MCP server is appropriate to install, especially in HIPAA-adjacent environments.
+- `mcp-expert` — Evaluate, build, debug, or extend MCP servers and clients. Covers security vetting (HIPAA egress, tool poisoning) and development (TypeScript/Python SDKs, protocol compliance).
 - `prompt-engineer` — Design prompts for LLMs, build evaluation frameworks, and implement advanced prompting techniques.
 
 ### 6) Domain Skills (If It's Important to You)
@@ -193,7 +193,7 @@ For teams that use Snyk CLI for vulnerability scanning:
 
 ---
 
-These bundles are **curated highlights**, not an exhaustive list. The repo contains 44 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
+These bundles are **curated highlights**, not an exhaustive list. The repo contains 43 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
 
 ## What This Repo Does Not Cover
 
