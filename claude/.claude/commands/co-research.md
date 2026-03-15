@@ -218,7 +218,7 @@ Use the `Write` tool to create `.co-research/draft.md` using this structure:
 
 Present the draft to the user.
 
-Ask: "Where should I save this? Default: `docs/research-<topic-slug>.md`"
+Ask: "Where should I save this? Default: `docs/research-<topic-slug>-YYYY-MM-DD.md`"
 
 Wait for confirmation. Use the `Write` tool to save the final document to the specified path.
 

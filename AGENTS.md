@@ -1,7 +1,5 @@
 # Dotfiles Repo — Project Rules
 
-These rules apply only when working inside this repository.
-
 ## Canonical Editing
 
 This configuration is managed via a dotfiles repo with symlinks.
@@ -13,6 +11,18 @@ This configuration is managed via a dotfiles repo with symlinks.
 CLI tools and GUI apps are managed via `Brewfile` at the repo root. When adding or removing tools, update the Brewfile — don't just `brew install` ad hoc.
 
 @claude/.claude/BASH-PERMISSIONS.md
+
+## Survey Repos
+
+Representative sample across the neb platform for cross-cutting research.
+Org: Chiropractic-CT-Cloud (unless noted)
+
+- neb-www — main frontend, Lit/web components
+- neb-ms-billing — largest microservice
+- neb-ms-image — leanest microservice
+- neb-microservice — base framework all services inherit from
+- neb-local-dev — local dev environment, devops patterns
+- ptek-ai-platform (org: PracticeTek-Common-Services) — newer AWS-native stack
 
 ## RTK (Rust Token Killer)
 
