@@ -154,7 +154,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-#### Skills (43)
+#### Skills (46)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -166,6 +166,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **auto-review** | Automated PR review with domain-expert panel, batch comment approval, and 30-minute re-review loop. Manual invoke only (`/auto-review`) |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
+| **babysit-loop** | Monitor a running prd-loop session. Designed for use with `/loop` |
 | **bash-expert** | Create, generate, validate, lint, audit, or fix bash/shell scripts |
 | **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
 | **cli-developer** | Building CLI tools, argument parsing, interactive prompts, shell completions |
@@ -178,9 +179,11 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
 | **k8s-expert** | Diagnose, troubleshoot, and fix Kubernetes clusters, pods, networking, storage, and rollout failures |
+| **loop-postmortem** | Structured post-mortem after a prd-loop run completes or crashes |
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
 | **neb-ms-conventions** | Code in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
+| **peer-review** | Multi-round code review using Codex as an isolated reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **pr-review-queue** | Consolidated dashboard for PRs where you are a reviewer, with action buckets and next-step triage |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
@@ -201,6 +204,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
 | **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
+| **writing-agents-md** | Writing, auditing, or improving AGENTS.md, CLAUDE.md, or AI agent instruction files |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 
 ### Instructions (Two Layers)
