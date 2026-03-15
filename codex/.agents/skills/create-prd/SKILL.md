@@ -1,15 +1,15 @@
 ---
 name: create-prd
-description: ALWAYS invoke when defining what to build before a prd-loop run, formalizing a feature idea, converting a ticket into an implementation-ready PRD, or writing feature specifications with structured requirements and acceptance criteria. Not for analyzing existing tickets or specs — use requirements-analyst.
+description: ALWAYS invoke when defining what to build before an AI implementation run, formalizing a feature idea, converting a ticket into an implementation-ready PRD, or writing feature specifications with structured requirements and acceptance criteria. Not for analyzing existing tickets or specs — use requirements-analyst.
 ---
 
 # Create PRD
 
-Interview-driven PRD generator. Produces lean PRDs optimized for decomposition and phased AI implementation via the `prd-loop` CLI.
+Interview-driven PRD generator. Produces lean PRDs optimized for decomposition and phased AI implementation.
 
 ## When to Use
 
-- Defining what to build before kicking off a prd-loop run
+- Defining what to build before kicking off an AI implementation run (prd-loop, auto-agent-codex, or direct AI)
 - Converting a ticket, spec, or conversation into a structured PRD
 - When you have a feature idea but need to formalize scope, requirements, and acceptance criteria
 
@@ -71,7 +71,7 @@ After each round, summarize what you heard and confirm before moving on.
 
 Derive a slug from the feature name (e.g., `phx-confetti`). Propose a branch name based on the slug — default to the slug itself (e.g., `phx-confetti`). The user can override either. Write to the path: `docs/prd-<slug>.md`.
 
-Use this lean format — optimized for prd-loop decomposition. For neb features needing feature gating tables, cross-service impact matrices, or Kafka event mappings, load `references/specification-template.md` for expanded section templates.
+Use this lean format — optimized for AI-driven phase decomposition. For neb features needing feature gating tables, cross-service impact matrices, or Kafka event mappings, load `references/specification-template.md` for expanded section templates.
 
 ```markdown
 # PRD: [Feature Title]
@@ -144,16 +144,16 @@ files not to touch. Agents read this as guardrails.]
 
 ### Section Guidance
 
-| Section | Purpose for Loop | Required? |
-|---------|-----------------|-----------|
+| Section | Purpose for Decomposition | Required? |
+|---------|--------------------------|-----------|
 | Problem & Outcome | Orients decomposition — what are we building toward | Yes |
 | Scope | Prevents agent drift during implementation | Yes |
 | Functional Requirements | Drives phase decomposition — each FR maps to work | Yes |
 | Non-Functional | Constraints every phase must respect | Yes |
 | Codebase Context | Grounds specs in real code — reduces hallucination | Yes |
 | Acceptance Criteria | Review step uses these to evaluate each phase | Yes |
-| Verification | Codex runs these commands to validate | Yes |
-| Constraints | Guardrails for Codex — what NOT to do | Yes |
+| Verification | Agent runs these commands to validate | Yes |
+| Constraints | Guardrails for the implementing agent — what NOT to do | Yes |
 | Open Questions | Flags risk — decompose step can route these to early phases | Recommended |
 
 ## Step 5 — Readiness Check
@@ -177,13 +177,38 @@ Show the complete PRD. Ask:
 
 "Does this capture your requirements? Reply to proceed, or edit the PRD first."
 
-After confirmation, display next steps:
+After confirmation, save the PRD to `docs/prd-<slug>.md`.
+
+Also generate an `auto-agent-codex` manifest at `prd_list-<slug>.json` (one manifest per PRD — do not append to existing manifests for different projects). See `references/auto-agent-codex-prd-list.example.json` for the schema:
+
+```json
+{
+  "version": "1.0",
+  "project_name": "<slug>",
+  "state_dir": ".<slug>",
+  "log_dir": ".<slug>/agent_logs-codex",
+  "experimental_playwright_validation_enabled": false,
+  "prds": [
+    {
+      "id": "prd-<slug>",
+      "prd_path": "docs/prd-<slug>.md",
+      "branch_name": "<branch-name>",
+      "description": "<one-line summary from Problem & Outcome>"
+    }
+  ]
+}
+```
+
+Display next steps:
 
 ```
 PRD saved to: docs/prd-<slug>.md
 
-To decompose and execute:
-  prd-loop docs/prd-<slug>.md
+Execute with:
+  1. AI direct:         Open the PRD in Claude Code or Codex and implement directly
+  2. auto-agent-codex:  Manifest generated at prd_list-<slug>.json
+                         (requires auto-agent-codex runner installed separately)
+  3. prd-loop:          prd-loop docs/prd-<slug>.md
 ```
 
 ## Constraints

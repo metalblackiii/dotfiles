@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "project_name": "example-feature",
+  "state_dir": ".example-feature",
+  "log_dir": ".example-feature/agent_logs-codex",
+  "experimental_playwright_validation_enabled": false,
+  "prds": [
+    {
+      "id": "prd-example-feature",
+      "prd_path": "docs/prd-example-feature.md",
+      "branch_name": "example-feature",
+      "description": "Short summary of the feature"
+    }
+  ]
+}
