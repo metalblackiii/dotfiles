@@ -132,7 +132,17 @@ This bundle tightens quality gates before code reaches teammates. See [Review Wo
 - `review` — Full GitHub PR review for architecture, tests, quality, and security.
 - `self-review` — Fresh-eyes local diff review before commit/PR, no `gh` required.
 - `pr-analysis` — Shared review checklist criteria consumed by `review` and `self-review`.
-### 3) Meta Bundle
+### 3) Planning & Discovery Bundle
+
+These skills bookend implementation — defining what to build and understanding what already exists:
+
+- `create-prd` — Formalize a feature idea or ticket into an implementation-ready PRD with structured requirements and acceptance criteria.
+- `requirements-analyst` — Identify gaps, risks, edge cases, and ambiguities in tickets or specs before starting implementation.
+- `spec-miner` — Reverse-engineer specifications from existing code when documentation is absent or outdated.
+
+Use `create-prd` when starting from scratch; use `requirements-analyst` when handed an existing spec or ticket. `spec-miner` fills in when neither exists and the code is the only source of truth.
+
+### 4) Meta Bundle
 
 These skills help you improve the system itself:
 
@@ -140,24 +150,30 @@ These skills help you improve the system itself:
 - `introspect` — Audit agent configuration for conflicts, redundancy, and stale guidance.
 - `audit-skills` — Measure skill adoption and find dormant skills.
 
-### 4) Niche Skills (Low-Cost One-Offs)
+### 5) Niche Skills (Low-Cost One-Offs)
 
 Useful when the situation appears, with little ongoing overhead:
 
 - `handoff` — Capture session state when pausing or when context pressure is high.
 - `the-fool` — Structured critical reasoning: devil's advocate, pre-mortems, red teams, assumption auditing. Invoke it before committing to a design or plan — it's surprisingly effective at surfacing blind spots you're too close to see.
+- `quick-wins` — Scan a repo for low-risk improvement opportunities without making changes. Good for onboarding into an unfamiliar codebase.
+- `mcp-vetting` — Evaluate whether an MCP server is appropriate to install, especially in HIPAA-adjacent environments.
+- `prompt-engineer` — Design prompts for LLMs, build evaluation frameworks, and implement advanced prompting techniques.
 
-### 5) Domain Skills (If It's Important to You)
+### 6) Domain Skills (If It's Important to You)
 
 Domain-heavy skills are worth adopting when they match your recurring work:
 
 - `database-expert` — SQL, schema design, query optimization, indexes, and Aurora/ORM patterns.
 - `api-designer` — REST contracts, versioning strategy, and API evolution planning.
 - `neb-playwright-expert` — E2E test design/debugging for neb-www's Playwright setup.
+- `neb-ms-conventions` — Neb backend patterns: routing, controllers, models, services, and messaging.
+- `creating-neb-patch-pr` — Create patch PRs for merged main PRs in neb-ms-* or neb-www repos.
+- `playwright-cli` — Browser automation for web testing, form filling, screenshots, and data extraction via Playwright CLI.
 
 For more domain-specific ideas, see the `jeffallan/claude-skills` source listed in `ATTRIBUTION.md`.
 
-### 6) Optional Security Bundle (Escalation Lane)
+### 7) Optional Security Bundle (Escalation Lane)
 
 Treat security as an opt-in escalation lane, not baseline complexity:
 
@@ -166,7 +182,7 @@ Treat security as an opt-in escalation lane, not baseline complexity:
 
 This bundle does **not** require extra tooling to adopt. Teams can run in manual mode first (threat-focused code review + remediation guidance), then add scanner tooling later if they want deeper automation.
 
-### 7) Snyk Security Bundle (Tooling-Backed)
+### 8) Snyk Security Bundle (Tooling-Backed)
 
 For teams that use Snyk CLI for vulnerability scanning:
 
@@ -177,7 +193,7 @@ For teams that use Snyk CLI for vulnerability scanning:
 
 ---
 
-These bundles are **curated highlights**, not an exhaustive list. The repo contains 43 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
+These bundles are **curated highlights**, not an exhaustive list. The repo contains 44 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
 
 ## What This Repo Does Not Cover
 
@@ -188,7 +204,7 @@ This repo focuses on portable instructions + skills + symlinked platform config.
   - `/co-research` — Dispatches parallel research agents and Codex, then synthesizes findings.
 
   The standalone [`prd-loop` CLI](https://github.com/metalblackiii/prd-loop) handles phased PRD implementation (previously `/prd-loop` and `/co-implement` commands). Codex also runs with `multi_agent = true`. Full multi-agent orchestration patterns are evolving but not yet fully codified as reusable skills.
-- **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)). The `prd-loop` CLI is a step in this direction.
+- **Loop programming**: Autonomous iterative loops for planning/execution/reflection workflows (for example, [awesome-ralph](https://github.com/snwfdhmp/awesome-ralph)). The `prd-loop` CLI and the `ratchet` skill (metric-driven iteration) are steps in this direction. Full loop orchestration patterns are evolving but not yet fully codified.
 
 These approaches complement the baseline. As patterns stabilize, they may graduate into proper skills.
 

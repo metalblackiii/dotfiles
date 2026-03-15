@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Autonomous iteration on any task with a measurable outcome. One atomic change, verify against a mechanical metric, keep improvements, restore failures. Repeat.
 
-Core insight from Karpathy's autoresearch: constraint + mechanical metric + iteration = compounding gains. Ratchet adapts this to work within existing process skills — it never touches git, never claims completion, and always hands off for review.
+Loosely based on [uditgoenka/autoresearch](https://github.com/uditgoenka/autoresearch) (itself inspired by Karpathy's autoresearch concept): constraint + mechanical metric + iteration = compounding gains. Ratchet adapts this to work within existing process skills — it never touches git, never claims completion, and always hands off for review.
 
 ## When to Use
 
