@@ -1,0 +1,109 @@
+{
+    "projectManager.git.baseFolders": [
+        "~/repos"
+    ],
+    "editor.bracketPairColorization.enabled": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "editor.linkedEditing": true,
+    "editor.renderControlCharacters": true,
+    "editor.renderWhitespace": "all",
+    "editor.snippetSuggestions": "top",
+    "editor.suggestSelection": "first",
+    "editor.tabSize": 2,
+    "eslint.format.enable": true,
+    "eslint.codeActionsOnSave.mode": "problems",
+    "files.trimTrailingWhitespace": true,
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.explorerKind": "external",
+    "terminal.integrated.allowMnemonics": true,
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "search.exclude": {
+        "**/node_modules": false,
+        "**/node_modules2": true
+    },
+    "terminal.integrated.scrollback": 50000,
+    "workbench.editor.empty.hint": "hidden",
+    "accessibility.signals.terminalBell": {
+        "sound": "on"
+    },
+    "terminal.integrated.enableVisualBell": true,
+    "snyk.yesWelcomeNotification": false,
+    "snyk.severity": {
+        "low": false
+    },
+    "snyk.features.infrastructureAsCode": false,
+    "snyk.scanningMode": "manual",
+    "snyk.trustedFolders": [
+        "/Users/martinburch/repos/neb-database-migrator",
+        "/Users/martinburch/repos/neb-demo-data",
+        "/Users/martinburch/repos/neb-deploy",
+        "/Users/martinburch/repos/neb-local-dev",
+        "/Users/martinburch/repos/neb-microservice",
+        "/Users/martinburch/repos/neb-ms-appointments",
+        "/Users/martinburch/repos/neb-ms-billing",
+        "/Users/martinburch/repos/neb-ms-charting",
+        "/Users/martinburch/repos/neb-ms-clearinghouse",
+        "/Users/martinburch/repos/neb-ms-conversion",
+        "/Users/martinburch/repos/neb-ms-core",
+        "/Users/martinburch/repos/neb-ms-electronic-claims",
+        "/Users/martinburch/repos/neb-ms-email",
+        "/Users/martinburch/repos/neb-ms-files",
+        "/Users/martinburch/repos/neb-ms-image",
+        "/Users/martinburch/repos/neb-ms-macro-metadata",
+        "/Users/martinburch/repos/neb-ms-mock-chc",
+        "/Users/martinburch/repos/neb-ms-mock-cognito",
+        "/Users/martinburch/repos/neb-ms-mock-doctible",
+        "/Users/martinburch/repos/neb-ms-partner",
+        "/Users/martinburch/repos/neb-ms-payments",
+        "/Users/martinburch/repos/neb-ms-pdf",
+        "/Users/martinburch/repos/neb-ms-permissions",
+        "/Users/martinburch/repos/neb-ms-registry",
+        "/Users/martinburch/repos/neb-ms-reports",
+        "/Users/martinburch/repos/neb-ms-x12",
+        "/Users/martinburch/repos/neb-pipe-data-funnel",
+        "/Users/martinburch/repos/neb-pipe-warehouse-sink",
+        "/Users/martinburch/repos/neb-www",
+        "/Users/martinburch/repos/neb-api",
+        "/Users/martinburch/repos/neb-rollup-plugins",
+        "/Users/martinburch/repos/neb-forked-mysql-import",
+        "/Users/martinburch/repos/neb-utilities",
+        "/Users/martinburch/repos/neb-pipe-compare",
+        "/Users/martinburch/repos/neb-integration-test",
+        "/Users/martinburch/repos/neb-test-support",
+        "/Users/martinburch/repos/neb-sequelize-model-validator",
+        "/Users/martinburch/repos/neb-elastic",
+        "/Users/martinburch/repos/neb-integration-helper",
+        "/Users/martinburch/repos/webdriverIO-with-mochaBDD",
+        "/Users/martinburch/repos/neb-proxy"
+    ],
+    "github.copilot.advanced": {},
+    "snyk.folderConfigs": [
+        {
+            "folderPath": "/Users/martinburch/repos/neb-local-dev",
+            "baseBranch": "master",
+            "localBranches": [
+                "SAVED-mjb-egg-NEB-83993-move-image-ecr",
+                "master",
+                "mjb-egg-NEB-79537-setup-es-kibana",
+                "mjb-poc-local-development"
+            ]
+        }
+    ],
+    "git.openRepositoryInParentFolders": "never",
+    "snyk.advanced.cliPath": "/Users/martinburch/Library/Application Support/snyk-ls/snyk-macos-arm64",
+    "gitlens.telemetry.enabled": false,
+    "telemetry.feedback.enabled": false,
+    "telemetry.telemetryLevel": "off",
+    "claudeCode.preferredLocation": "panel",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "datadog.ust.environment.setup.focusedName": "prod",
+    "datadog.telemetry.setup.enableTelemetry": "disabled",
+    "datadog.telemetry.setup.enableAgentObservability": false,
+    "datadog.timeRange.setup.timeFrame": "4h",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "gitlens.views.commitDetails.files.layout": "tree"
+}

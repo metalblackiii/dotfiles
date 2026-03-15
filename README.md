@@ -2,7 +2,7 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Codex**, **Claude Code**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
+Currently supports **Codex**, **Claude Code**, **VS Code**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
 
 New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatomy, and adoption guide.
 
@@ -51,6 +51,10 @@ dotfiles/
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
 │       ├── scripts/         # Status bar, hooks
 │       └── skills           # Symlink → ../../codex/.agents/skills
+├── vscode/                  # VS Code configuration (personal)
+│   ├── install.sh
+│   ├── uninstall.sh
+│   └── settings.json        # User settings → ~/Library/Application Support/Code/User/settings.json
 ├── zsh/                     # Zsh shell configuration (personal)
 │   ├── install.sh
 │   ├── uninstall.sh
