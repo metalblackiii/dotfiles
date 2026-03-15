@@ -21,6 +21,7 @@ Checklist-driven workflow for writing or auditing AI coding agent instruction fi
 **Triggers:**
 - Creating a new AGENTS.md or CLAUDE.md
 - Auditing an existing instruction file for quality
+- Auditing based on actual agent usage ("what's working", "audit from sessions")
 - Pruning a bloated instruction file
 - Migrating between formats (CLAUDE.md ↔ AGENTS.md)
 - Reviewing instruction file changes in a PR
@@ -89,6 +90,7 @@ If both an AGENTS.md and CLAUDE.md exist (at any path), determine which pattern 
 - **No instruction files exist** → Write mode (Phase 2b)
 - **Files exist, user wants simplify/prune** → Simplify mode: run Phase 2a checks 1-2 only (non-inferable details + size), then skip to Phase 3.2 bloat ratio and Phase 4 audit output
 - **Files exist, user wants full audit** → Phase 2a (all 7 checks)
+- **Files exist, user wants usage-based audit** → Phase 2c (conversation mining), then Phase 2a for static checks
 - **Files exist, user wants rewrite** → Phase 2b
 
 ## Phase 2a: Audit
@@ -207,6 +209,69 @@ After drafting, do a deletion pass. For each line ask: "Would removing this caus
 
 AI has a strong tendency to overspecify when generating these files. This step must actively counteract that by defaulting to omission over inclusion.
 
+## Phase 2c: Usage Audit (Conversation Mining)
+
+Empirical audit mode — analyze what the agent *actually did* in real sessions, not just what the instruction file says.
+
+### 2c.1 Locate Session Logs
+
+Discover available conversation history. Use `find` (not bare globs) to avoid zsh `no matches found` errors:
+
+```bash
+# Claude Code — JSONL logs: ~/.claude/projects/<project-hash>/<uuid>.jsonl
+find ~/.claude/projects/ -name '*.jsonl' -maxdepth 2 -type f 2>/dev/null | head -20
+
+# Codex — JSONL logs: ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl
+find ~/.codex/sessions/ -name '*.jsonl' -type f 2>/dev/null | head -20
+
+# If no logs found at known locations, ask the user where session history lives
+```
+
+Sort by modification time and pick the 5-10 most recent sessions relevant to the project being audited. If the project has a known path, filter Claude logs by project-hash directory name (path segments joined by hyphens, e.g., `-Users-martinburch-repos-myproject`).
+
+### 2c.2 Extract and Sample
+
+Log schemas differ by platform. Use the correct extractor:
+
+```bash
+# Claude Code: top-level "type" field — look for "user" and "assistant" records
+jq -r 'select(.type == "assistant") | .content' <logfile> 2>/dev/null | head -200
+jq -r 'select(.type == "user") | .content' <logfile> 2>/dev/null | head -200
+
+# Codex: wrapped in type/payload — assistant content is in response_item records
+jq -r 'select(.type == "response_item") | .payload | select(.role == "assistant" or .type == "function_call") | .content // .arguments // .name' <logfile> 2>/dev/null | head -200
+jq -r 'select(.type == "event_msg") | .payload | select(.type == "user_message") | .message' <logfile> 2>/dev/null | head -200
+```
+
+If extractors return empty, the schema may have changed — sample a few raw lines with `head -5 <logfile>` and adapt the jq filters.
+
+Focus on:
+- **Tool calls the agent made** — what actions did it take?
+- **User corrections** — "no, don't do that", "I said to...", "wrong approach"
+- **Repeated patterns** — same mistake across sessions = missing rule
+- **Rules the agent followed without needing the instruction file** — already-known behavior
+
+### 2c.3 Cross-Reference Against Instruction File
+
+For each rule in the instruction file, classify:
+
+| Category | Meaning |
+|---|---|
+| **Followed** | Agent complied in sessions where the rule was relevant |
+| **Violated** | Agent broke this rule despite it being in the file — needs strengthening or hook |
+| **Untriggered** | Rule was never relevant across all sampled sessions — candidate for staleness review |
+| **Undocumented pattern** | Agent needed correction but no rule exists — candidate for addition |
+
+### 2c.4 Scope Findings
+
+Tag each finding as:
+- **LOCAL** — project-specific, belongs in the project's instruction file
+- **GLOBAL** — applies everywhere, belongs in `~/.claude/CLAUDE.md` or `~/.codex/AGENTS.md` (or equivalent global config)
+
+### 2c.5 Output
+
+Feed findings into Phase 2a (static audit) as additional context — usage evidence strengthens or weakens each check's findings. Then proceed to Phase 3.
+
 ## Phase 3: Quality Gate
 
 Both modes converge here. Run these checks against audit findings or the draft.
@@ -290,7 +355,10 @@ For full audit mode (all 7 checks):
 <numbered list with reason for each>
 
 ## Lines to Add
-<numbered list with rationale>
+<numbered list with rationale — tag each as LOCAL (project file) or GLOBAL (user-wide config)>
+
+## Potentially Outdated
+<rules that were never triggered across sampled sessions, or that the agent consistently followed without needing the rule — candidates for removal. Only populated when Phase 2c was run.>
 
 ## Hook Candidates
 <rules that should become hooks>
