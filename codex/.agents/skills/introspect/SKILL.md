@@ -66,7 +66,6 @@ For each skill, evaluate the **description** field. Read the `writing-skills` sk
 - **Directive prefix?** Does it start with "ALWAYS invoke"? This is the primary activation criterion — passive descriptions ("Use when...") achieve ~77% activation vs 100% for directive ones.
 - **Trigger-only?** Does it say WHEN to use, not HOW it works? Descriptions containing process steps cause agents to follow the brief summary instead of reading the full skill.
 - **Specific enough?** Would a model reliably match this description to the right user request?
-- **Overlap detection:** Do any two descriptions match the same user request? If so, which one wins and is the precedence clear?
 - **Completeness:** Are there common triggering scenarios the description misses?
 
 Rate each: **STRONG** / **NEEDS WORK** / **WEAK**, with a one-line explanation.
@@ -75,6 +74,11 @@ Rating criteria:
 - **STRONG:** Has "ALWAYS invoke" prefix + clear trigger conditions.
 - **NEEDS WORK:** Missing "ALWAYS invoke" prefix, or triggers are vague/overlapping with another skill without clear precedence.
 - **WEAK:** Passive description + vague triggers, or actively misleading (describes process instead of triggers).
+
+Token budget matters. Descriptions are loaded into every session context. Optimize for undertriggering prevention, not overtriggering:
+- **Do not flag** missing "Not for" boundaries or negative constraints as NEEDS WORK. These add tokens with diminishing returns when overtriggering is not an observed problem.
+- **Do flag** boundary gaps only when two skills demonstrably confuse the model on the same user request (observed overlap, not theoretical). Report these under Suggestions, not as rating downgrades.
+- Negative constraints ("Do not X directly") are valuable but optional — note their absence informally, don't penalize the rating.
 
 Prompt-quality platform rule:
 - Rate primarily through the active platform/model lens.

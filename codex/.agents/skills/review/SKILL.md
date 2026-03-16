@@ -193,9 +193,11 @@ Flag naming issues as Minor unless they create genuine ambiguity (Important).
 **[Changes Requested | Approved with Suggestions | Approved]**
 
 **Reasoning**: [1-2 sentence summary]
+
+FINDINGS: X critical, Y important, Z minor
 ```
 
-Omit any severity section that has no findings.
+Omit any severity section that has no findings. Always end with the `FINDINGS:` summary line — it enables machine parsing by automation skills. Count 0 for empty sections.
 
 ### Step 8: Submit Review (Only When Asked)
 

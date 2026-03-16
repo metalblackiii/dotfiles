@@ -178,7 +178,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **handoff** | Ending sessions with work in progress or high context usage |
 | **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
-| **jira-delegate** | Interacting with Jira via `ptjira` CLI — ticket lookup, search, context, comments, updates, attachments |
+| **ptjira-delegate** | Interacting with Jira via `ptjira` CLI — ticket lookup, search, context, comments, updates, attachments |
 | **k8s-expert** | Diagnose, troubleshoot, and fix Kubernetes clusters, pods, networking, storage, and rollout failures |
 | **loop-postmortem** | Structured post-mortem after a prd-loop run completes or crashes |
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
