@@ -51,7 +51,7 @@ govulncheck ./...
 
 ```bash
 # Semgrep - Universal SAST
-pip install semgrep
+brew install semgrep
 semgrep --config=auto .
 semgrep --config=p/security-audit .
 semgrep --config=p/owasp-top-ten .

@@ -95,14 +95,14 @@ The AI tool configuration is designed to be shareable. It covers agent platforms
 
 The security skills work without additional installs. Extra tooling is optional and only used for deeper scan automation.
 
-Scanner-mode tools that use `pip` assume `python3` and `pip` are installed (or use `pipx` equivalents).
+**Recommended:** `gitleaks` + `trivy` + `snyk` cover all five scanning lanes (secrets, dependencies, containers, IaC, SAST) with no gaps. `snyk` is listed above and requires authentication.
 
-| Tool | Required | Install | Used by |
-|------|----------|---------|---------|
-| `gitleaks` | No | `brew install gitleaks` | Secret scanning workflows |
-| `semgrep` | No | `pip install semgrep` | Static security pattern scanning |
-| `trivy` | No | `brew install trivy` | Dependency/config/container security checks |
-| `checkov` | No | `pip install checkov` | IaC security checks |
+| Tool | Install | Coverage |
+|------|---------|----------|
+| `gitleaks` | `brew install gitleaks` | Secret scanning (git history) — sole coverage, no overlap |
+| `trivy` | `brew install trivy` | Dependencies, container images, IaC misconfigs |
+| `semgrep` | `brew install semgrep` | SAST (static analysis). Optional — Snyk Code covers this lane; both together add depth |
+| `checkov` | `pip install checkov` | IaC policy checks. Optional — trivy covers IaC basics. Requires `python3`/`pip` |
 
 If these tools are unavailable, `security-reviewer` falls back to manual review and reports which scans were not executed.
 

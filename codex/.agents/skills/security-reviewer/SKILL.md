@@ -47,6 +47,7 @@ When editing this skill, check `../review/SKILL.md`, `../self-review/SKILL.md`, 
 | Penetration Testing | `references/penetration-testing.md` | Controlled active testing and attack simulation |
 | Infrastructure Security | `references/infrastructure-security.md` | K8s/cloud/CI hardening and policy checks |
 | Report Template | `references/report-template.md` | Writing final findings report |
+| Snyk Expertise | Load `snyk-expert` skill | Interpreting Snyk scan results, prioritizing CVEs, upgrade risk |
 
 ## Integration Rules
 
@@ -55,7 +56,12 @@ When editing this skill, check `../review/SKILL.md`, `../self-review/SKILL.md`, 
 - For fixing findings, hand off implementation work to `secure-code-guardian`.
 - Use two operating modes:
   - **Manual mode (default):** perform threat-focused review using available local context.
-  - **Scanner mode (optional):** run tool-based scans when security tooling is available and approved.
+  - **Scanner mode (optional):** run tool-based scans when security tooling is available and approved:
+    - `gitleaks` — secret scanning (git history)
+    - `trivy` — dependency CVEs, container images, IaC misconfigs
+    - `snyk test` + `snyk code test` — SCA and SAST (requires auth). Load `snyk-expert` skill for result interpretation.
+    - `semgrep` — SAST alternative when Snyk is unavailable. Either Snyk Code or semgrep provides SAST coverage; both together add depth.
+    - `checkov` — deeper IaC policy checks (supplement to trivy)
 - If optional scanner tools are missing, continue in manual mode and explicitly report unexecuted scans.
 
 ## Constraints
@@ -74,3 +80,10 @@ When editing this skill, check `../review/SKILL.md`, `../self-review/SKILL.md`, 
 - Leak exploit details or sensitive data in reports.
 - Duplicate baseline review feedback that does not change security posture.
 - Block the assessment solely because optional scanner tooling is not installed.
+
+## Related Skills
+
+- **snyk-scan** — automated scan-assess-fix workflow for dependency remediation
+- **snyk-expert** — vulnerability interpretation, prioritization, CLI configuration, upgrade risk assessment
+- **secure-code-guardian** — implementing security controls for findings that need code changes
+- **review** / **self-review** — baseline code review (this skill extends them for security depth)
