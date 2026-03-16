@@ -109,6 +109,8 @@ For each finding:
 2. Make targeted fixes
 3. Stay within the scope of the findings — don't refactor, don't gold-plate
 
+**Stage untracked files flagged by the reviewer.** If a finding flags an untracked file that code depends on, `git add` it now — staging is the fix, not a deferred concern. Untracked files are invisible to `git diff HEAD` in Step 6, so deferring staging forces a wasted re-review round just to verify `git add` happened.
+
 Display a brief summary of which findings you addressed and how.
 
 **Expand the file scope.** If you edited or created any files not already in `.peer-review/scope-files`, append those paths now. Only add files you actually touched during this fix — do not scan `git diff HEAD --name-only`, as that would pull in unrelated local changes. The scope grows monotonically — files are never removed.
