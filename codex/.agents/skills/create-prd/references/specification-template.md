@@ -12,6 +12,21 @@
 **Feature Flag**: [Flag name, or "None"]
 **Entitlement**: [Entitlement key, or "None"]
 
+## Repositories
+
+[For multi-repo work, list every affected repo with its role and what
+changes. Agents and loop tools read this to know which repos to
+clone, branch, or verify. Omit for single-repo features.]
+
+| Repo | Role | Changes |
+|------|------|---------|
+| `repo-name` | Primary implementation | [what code lives here] |
+| `other-repo` | Operational impact (no code) | [config or infra changes, verification steps] |
+| `another-repo` | Verification target (no code) | [what to smoke-test] |
+| `ref-repo` | Reference only | [patterns to follow] |
+
+Roles: `Primary implementation`, `Operational impact (no code)`, `Verification target (no code)`, `Reference only`, `Potential update`. Mark new repos with **(NEW — org name)**.
+
 ## Functional Requirements
 
 ### FR-001: [Requirement Name]
@@ -110,6 +125,7 @@ Then [gated behavior]
 | Section | Required | Notes |
 |---------|----------|-------|
 | Overview + tier/flag/entitlement | Yes | Always specify gating up front |
+| Repositories | If multi-repo | List each affected repo, its role, and expected changes |
 | Functional Requirements (EARS) | Yes | Core of the spec |
 | Non-Functional Requirements | Yes | Security and multi-tenant always relevant |
 | Feature Gating | If gated | Most neb features are gated |

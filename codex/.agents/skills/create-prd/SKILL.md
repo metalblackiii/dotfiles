@@ -93,6 +93,21 @@ Use this lean format — optimized for AI-driven phase decomposition. For neb fe
 
 [What problem, for whom, desired end state. 2-3 sentences.]
 
+## Repositories
+
+[For multi-repo work, list every affected repo with its role and what
+changes. Agents and loop tools read this to know which repos to
+clone, branch, or verify. Omit for single-repo features.]
+
+| Repo | Role | Changes |
+|------|------|---------|
+| `repo-name` | Primary implementation | [what code lives here] |
+| `other-repo` | Operational impact (no code) | [config or infra changes, verification steps] |
+| `another-repo` | Verification target (no code) | [what to smoke-test] |
+| `ref-repo` | Reference only | [patterns to follow] |
+
+Roles: `Primary implementation`, `Operational impact (no code)`, `Verification target (no code)`, `Reference only`, `Potential update`. Mark new repos with **(NEW — org name)**.
+
 ## Scope
 
 ### In Scope
@@ -154,6 +169,7 @@ files not to touch. Agents read this as guardrails.]
 | Section | Purpose for Decomposition | Required? |
 |---------|--------------------------|-----------|
 | Problem & Outcome | Orients decomposition — what are we building toward | Yes |
+| Repositories | Tells agents/loop tools which repos to clone, branch, or verify | If multi-repo |
 | Scope | Prevents agent drift during implementation | Yes |
 | Functional Requirements | Drives phase decomposition — each FR maps to work | Yes |
 | Non-Functional | Constraints every phase must respect | Yes |
@@ -168,6 +184,7 @@ files not to touch. Agents read this as guardrails.]
 Before saving, verify against the quality bar:
 
 - [ ] Problem and desired outcome are specific (not vague)
+- [ ] Repositories section included if feature spans multiple repos (roles and changes specified)
 - [ ] In-scope and out-of-scope are explicit
 - [ ] Requirements are specific enough to decompose into ≤12-file phases
 - [ ] Acceptance criteria are objective and testable (not "looks good")
