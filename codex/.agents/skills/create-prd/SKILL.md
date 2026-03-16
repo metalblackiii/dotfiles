@@ -61,6 +61,13 @@ Conduct a focused interview. Ask questions **one topic at a time** — not a wal
 - What verification commands exist? (test suites, build, lint)
 - What must NOT break?
 
+### Round 4: Slug & Branch
+Derive a slug from the feature name (e.g., `login-confetti-celebration`). Propose a branch name — default to the slug itself. Present both to the user for confirmation before writing the PRD:
+
+"Proposed slug: `<slug>` / Branch: `<branch-name>` — OK, or would you like to change either?"
+
+The user can override slug, branch, or both. Once confirmed, these are locked for the PRD and manifest.
+
 For neb features touching multi-tenant, feature gating, or cross-service concerns, load `references/interview-questions.md` for deeper question banks and structured elicitation guidance.
 
 Use **structured choices** when answers have a finite set (priority, scope level, auth approach). Use **open-ended** questions for problem description, user journey, edge cases.
@@ -69,7 +76,7 @@ After each round, summarize what you heard and confirm before moving on.
 
 ## Step 4 — Write the PRD
 
-Derive a slug from the feature name (e.g., `phx-confetti`). Propose a branch name based on the slug — default to the slug itself (e.g., `phx-confetti`). The user can override either. Write to the path: `docs/prd-<slug>.md`.
+Use the slug and branch name confirmed in the interview (Round 4). Write to the path: `docs/prd-<slug>.md`.
 
 Use this lean format — optimized for AI-driven phase decomposition. For neb features needing feature gating tables, cross-service impact matrices, or Kafka event mappings, load `references/specification-template.md` for expanded section templates.
 
@@ -179,7 +186,7 @@ Show the complete PRD. Ask:
 
 After confirmation, save the PRD to `docs/prd-<slug>.md`.
 
-Also generate an `auto-agent-codex` manifest at `prd_list-<slug>.json` (one manifest per PRD — do not append to existing manifests for different projects). See `references/auto-agent-codex-prd-list.example.json` for the schema:
+Also generate an `auto-agent-codex` manifest at `docs/prd_list-<slug>.json` — colocated with the PRD so they travel as a pair (one manifest per PRD — do not append to existing manifests for different projects). See `references/auto-agent-codex-prd-list.example.json` for the schema:
 
 ```json
 {
@@ -191,7 +198,7 @@ Also generate an `auto-agent-codex` manifest at `prd_list-<slug>.json` (one mani
   "prds": [
     {
       "id": "prd-<slug>",
-      "prd_path": "docs/prd-<slug>.md",
+      "prd_path": "prd-<slug>.md",
       "branch_name": "<branch-name>",
       "description": "<one-line summary from Problem & Outcome>"
     }
@@ -203,10 +210,11 @@ Display next steps:
 
 ```
 PRD saved to: docs/prd-<slug>.md
+Manifest saved to: docs/prd_list-<slug>.json
 
 Execute with:
   1. AI direct:         Open the PRD in Claude Code or Codex and implement directly
-  2. auto-agent-codex:  Manifest generated at prd_list-<slug>.json
+  2. auto-agent-codex:  Manifest generated at docs/prd_list-<slug>.json
                          (requires auto-agent-codex runner installed separately)
   3. prd-loop:          prd-loop docs/prd-<slug>.md
 ```
