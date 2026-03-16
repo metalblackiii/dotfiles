@@ -51,9 +51,10 @@ print_markdown_section() {
   printf '| PR | Repo | Age | Review | Checks | Next Step |\n'
   printf '|---|---|---:|---|---|---|\n'
 
-  while IFS=$'\t' read -r pr repo age review checks next; do
+  while IFS=$'\t' read -r number url title repo age review checks next; do
+    pr_cell="[#${number}](${url}) $(escape_cell "$title")"
     printf '| %s | %s | %s | %s | %s | %s |\n' \
-      "$(escape_cell "$pr")" \
+      "$pr_cell" \
       "$(escape_cell "$repo")" \
       "$(escape_cell "$age")" \
       "$(escape_cell "$review")" \
@@ -64,7 +65,9 @@ print_markdown_section() {
       .rows[]
       | select(.bucket == $bucket)
       | [
-          ("#" + (.number|tostring) + " " + .title + " <" + .url + ">"),
+          (.number|tostring),
+          .url,
+          .title,
           .repo,
           (.ageDays|tostring + "d"),
           (if .draft then "DRAFT" else .reviewDecision end),
