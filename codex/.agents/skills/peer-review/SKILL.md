@@ -23,39 +23,46 @@ The implementer is blind to their own assumptions. A separate reviewer process w
 
 ## Workflow
 
-### Step 1: Capture the Diff
+### Step 0: Clean Slate
 
-Determine the **diff mode** from the requested scope:
+If `.peer-review/` exists from a previous run, ask the user before removing it. Stale `session-id`, `scope-files`, or `round-N.md` files will corrupt the new run, but the user may want to inspect prior results first. If the user confirms, `rm -rf .peer-review`.
 
-- **Working-tree mode** (default): `git diff --staged`, `git diff`, `git diff HEAD`, or no scope specified. Any scope that includes uncommitted local changes.
-- **Branch mode**: `git diff main...HEAD`, `git diff <ref1>..<ref2>`, or any scope comparing only committed ranges. The key signal is the triple-dot or double-dot range syntax — these never include working-tree state.
+### Step 1: Verify Changes and Record Scope
 
-Run the diff command.
+Determine the **diff scope** from user input. Default: `git diff --staged`, falling back to `git diff` if staged is empty. Branch-mode scopes use range syntax (`main...HEAD`, `<ref1>..<ref2>`).
 
-**Working-tree mode only:** Also collect untracked files via `git ls-files --others --exclude-standard`, excluding `.peer-review/`. Untracked files are part of local work-in-progress but irrelevant when reviewing committed branch history.
+Create `.peer-review/` (`mkdir -p .peer-review`), then check that changes exist and record the file list:
 
-If both diff and untracked list (if applicable) are empty, report "No changes to review" and stop.
+```bash
+rtk proxy git diff --staged --name-only --no-color   # if rtk is installed
+git diff --staged --name-only --no-color              # otherwise (Codex, CI, etc.)
+```
 
-Display: `Peer review: [N lines across M files] (working-tree mode)` or `(branch mode)`
+When rtk is installed, its Claude Code hook rewrites `git` commands to add compact formatting. Use `rtk proxy` to bypass the filtering and get raw output (see RTK.md). In environments without rtk (Codex, CI), plain `git` already produces raw output. Adjust diff arguments for the requested scope.
+
+In working-tree mode (default), also collect untracked files via `git ls-files --others --exclude-standard`, excluding `.peer-review/`.
+
+If both are empty, report "No changes to review" and stop.
+
+Save the combined file list to `.peer-review/scope-files` (one path per line). This is the source of truth for which files the review covers — re-review diffs in rounds 2+ are scoped to these files so unrelated local changes don't leak in.
+
+Display: `Peer review: [M files] ([scope description])`
 
 ### Step 2: Build the Review Prompt
 
-Create `.peer-review/` if it doesn't exist: `mkdir -p .peer-review`
+Use the platform-native file-creation tool to create `.peer-review/prompt-1.md`. Do not use bash redirects — they may be blocked by shell hooks.
 
-Write the prompt to `.peer-review/prompt-1.md`. It must be self-contained — Codex has no prior context.
+The prompt tells Codex to invoke the `self-review` skill, which already handles diff capture, pr-analysis criteria, defensive audit, naming scan, and severity-formatted output. The prompt only needs to specify the scope and add the exhaustive single-pass requirement:
 
-The prompt instructs Codex to:
+```
+Run $self-review [scope].
 
-1. Read `~/.agents/skills/pr-analysis/SKILL.md` for review categories and severity definitions
-2. Review the inlined diff against those criteria
-3. Read full files for surrounding context on each changed file
-4. Run a defensive code audit: empty catches, silent fallbacks, unchecked null/undefined, ignored promise rejections
-5. Run a naming scan: vague names (`data`, `result`, `temp`, `handle*`, `process*`, `manager`, `helper`, `utils`) and "what" comments
-6. For each finding, report: **Severity** (Critical/Important/Minor), **Location** (file:line), **Issue**, **Fix**
-7. List what looks good
-8. End with a summary line: `FINDINGS: X critical, Y important, Z minor`
+Report ALL findings in a single pass. Do not hold back issues for later rounds —
+each round costs real time and compute. Check every edge case, every assumption,
+every interaction between changes before concluding.
+```
 
-Include the full diff output and untracked file contents inline in the prompt. The prompt file may be large — that's expected.
+Replace `[scope]` with the user's requested scope (e.g., `staged`, `main...HEAD`). That's the entire prompt — self-review handles everything else including the `FINDINGS:` summary line.
 
 ### Step 3: Dispatch to Codex
 
@@ -66,13 +73,11 @@ cat .peer-review/prompt-1.md | codex exec - \
   --json > .peer-review/events-1.jsonl
 ```
 
-Extract and save the session ID for resume:
+**Extract the session ID.** Read `.peer-review/events-1.jsonl` using the platform-native file-read capability and find the `thread_id` from the first `thread.started` event. Do not use `python3 -c` or other shell-based JSON parsing — it may be blocked by hooks.
 
-```bash
-head -1 .peer-review/events-1.jsonl  # → {"type":"thread.started","thread_id":"<UUID>"}
-```
+Save the thread ID to `.peer-review/session-id` using the platform-native file-write capability.
 
-Save the thread ID to `.peer-review/session-id`.
+**Verify round output.** Codex `-o` may write a brief summary rather than the full review. Read `.peer-review/round-1.md` — if it lacks the `FINDINGS:` summary line or is suspiciously short (under 1KB), the actual review is in the events JSONL. Search the events file for the review content (look for the `FINDINGS:` line in message events) and rewrite `round-1.md` with the full review.
 
 ### Step 4: Apply Verdict Logic
 
@@ -106,18 +111,24 @@ For each finding:
 
 Display a brief summary of which findings you addressed and how.
 
+**Expand the file scope.** If you edited or created any files not already in `.peer-review/scope-files`, append those paths now. Only add files you actually touched during this fix — do not scan `git diff HEAD --name-only`, as that would pull in unrelated local changes. The scope grows monotonically — files are never removed.
+
 If a finding is unclear or requires a design decision, ask the user before proceeding.
 
 ### Step 6: Re-Review via Resume
 
-Recapture the diff for re-review. The diff command changes from round 1 — fixes are uncommitted local edits, so we need `git diff HEAD` to see them regardless of the original scope:
+Recapture the diff for re-review, **scoped to the tracked file list.** Read `.peer-review/scope-files` and pass the paths as pathspecs:
 
-- **Working-tree mode:** Use `git diff HEAD` to capture all local changes (both staged and unstaged) against the last commit.
-- **Branch mode:** Use `git diff HEAD` as well — the original branch range (e.g., `main...HEAD`) wouldn't include uncommitted fixes.
+```bash
+rtk proxy git diff HEAD --no-color -U3 -- file1 file2 file3   # if rtk is installed
+git diff HEAD --no-color -U3 -- file1 file2 file3              # otherwise
+```
 
-In both cases, also collect untracked files (exclude `.peer-review/`) since fixes may create new files.
+This ensures unrelated local changes don't leak into the re-review. Both working-tree and branch modes use `git diff HEAD` here — the original range (e.g., `main...HEAD`) wouldn't include uncommitted fixes.
 
-**Scope caveat:** `git diff HEAD` captures *all* local changes, which may be broader than what round 1 reviewed if unrelated edits exist. If this is a concern, stash unrelated work before starting peer-review. Tracking per-file scope across rounds is a future enhancement.
+Use `rtk proxy` when rtk is installed (see Step 1 note). Plain `git` works in environments without rtk.
+
+For untracked files, filter `git ls-files --others --exclude-standard` to only paths in `scope-files`.
 
 Write the re-review prompt to `.peer-review/prompt-N.md`:
 
@@ -170,12 +181,25 @@ If round 6 (or `--max-rounds`) is reached and findings remain:
 | `round-N.md` | Codex review output each round |
 | `events-N.jsonl` | Raw JSONL events (contains session ID) |
 | `session-id` | Thread ID for resume |
+| `scope-files` | File paths in review scope (grows monotonically) |
 
 Inform the user these files exist for debugging. Do not delete them automatically:
 
 ```bash
 rm -rf .peer-review/
 ```
+
+## Platform Compatibility
+
+Shell hooks (Claude Code) or sandbox rules (Codex) may block common patterns:
+
+| Blocked pattern | Use instead |
+|----------------|-------------|
+| `cat > file`, `echo ... > file`, heredocs | Platform-native file-write capability |
+| `python3 -c "..."`, `node -e "..."` | Platform-native file-read + in-context parsing |
+| `git diff` (raw output needed) | `rtk proxy git diff` if rtk installed, plain `git diff` otherwise |
+
+When a command is blocked, do not retry — switch to the platform-native equivalent.
 
 ## Constraints
 

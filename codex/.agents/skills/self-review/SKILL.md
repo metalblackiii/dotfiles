@@ -114,9 +114,11 @@ Flag naming issues as Minor unless they create genuine ambiguity (Important).
 
 ### Looks Good
 - [Positive observations — patterns followed, good test coverage, etc.]
+
+FINDINGS: X critical, Y important, Z minor
 ```
 
-Omit any severity section that has no findings.
+Omit any severity section that has no findings. Always end with the `FINDINGS:` summary line — it enables machine parsing by automation skills (e.g., peer-review verdict logic). Count 0 for empty sections.
 
 ## Anti-Hallucination Rules
 
