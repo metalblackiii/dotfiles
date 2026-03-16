@@ -42,6 +42,9 @@ trust_level = "trusted"
 [projects."/Users/martinburch/repos/prd-loop"]
 trust_level = "trusted"
 
+[projects."/Users/martinburch/repos/ptek-jira-cli"]
+trust_level = "trusted"
+
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-window-size", "context-used"]
 # Model migration: gpt-5.3-codex → gpt-5.4
