@@ -1,6 +1,6 @@
 ---
 name: writing-agents-md
-description: ALWAYS invoke when AGENTS.md, CLAUDE.md, or any AI coding agent instruction file is mentioned — even in passing. Do not answer questions or make recommendations about these files without loading this skill first. Not for skills (use writing-skills), hooks, or settings.json.
+description: ALWAYS invoke when the USER asks to create, edit, audit, simplify, or discuss AGENTS.md, CLAUDE.md, or any AI coding agent instruction file. Do not answer questions or make recommendations about these files without loading this skill first. System-prompt references to CLAUDE.md (loaded project instructions) do NOT count as a trigger. Not for skills (use writing-skills), hooks, or settings.json.
 allowed-tools: Bash, Read, Glob, Grep
 ---
 
