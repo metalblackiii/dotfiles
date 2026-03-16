@@ -82,6 +82,12 @@ When a session runs long, proactively run the `handoff` skill before autocompact
 
 Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-context handoff is far more useful than a post-compact recovery.
 
+## Brewfile
+
+CLI tools and GUI apps are managed via `~/repos/dotfiles/Brewfile`. When installing a brew package, also add it to the Brewfile. Don't just `brew install` ad hoc.
+
+- To sync after editing: `brew bundle install --file=~/repos/dotfiles/Brewfile`
+
 ## Shell Hygiene
 
 - If a blocked command appears to come from a project-level hook or permission system, ask for guidance rather than retrying.

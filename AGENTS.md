@@ -10,10 +10,6 @@ This configuration is managed via a dotfiles repo with symlinks.
 
 When adding, removing, or renaming skills, commands, agents, or hooks, update the corresponding table in `README.md` (including the skill count). The README is the inventory for this repo.
 
-## Brewfile
-
-CLI tools and GUI apps are managed via `Brewfile` at the repo root. When adding or removing tools, update the Brewfile — don't just `brew install` ad hoc.
-
 @claude/.claude/BASH-PERMISSIONS.md
 
 ## Survey Repos
