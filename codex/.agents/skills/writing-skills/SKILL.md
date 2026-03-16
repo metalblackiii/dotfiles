@@ -73,14 +73,14 @@ description: For debugging
 # BAD: Passive "Use when" - achieves ~77% activation (650-trial study)
 description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
 
-# GOOD: Directive + negative constraint - achieves 100% activation
-description: ALWAYS invoke for bugs, test failures, flaky tests, or unexpected behavior with a non-obvious root cause. Do not debug directly. Not for typos or single-line fixes where the cause is already clear.
+# GOOD: Directive + escape-hatch blocker - achieves 100% activation
+description: ALWAYS invoke for bugs, test failures, flaky tests, or unexpected behavior with a non-obvious root cause. Do not debug directly.
 ```
 
 **Rules:**
 - Start with "ALWAYS invoke for..." for user-invocable skills
-- Include a negative constraint ("Do not X directly") to block the model's default path of answering without the skill
-- End with "Not for..." to define the boundary and prevent overtriggering
+- Include a negative constraint ("Do not X directly") when it blocks the model's default path of answering without the skill — this is the high-value constraint
+- "Not for..." boundaries are optional. Only add them when overtriggering between two specific skills is an observed problem, not a theoretical one. Every token in the description is loaded into every session context
 - Background/non-invocable skills may use concise declarative descriptions with "not invoked directly" or equivalent boundary language
 - Describe triggers/symptoms, NOT what the skill does
 - Max 1024 characters (spec limit), aim for under 500
@@ -93,7 +93,7 @@ description: ALWAYS invoke for bugs, test failures, flaky tests, or unexpected b
 ```markdown
 ---
 name: skill-name
-description: ALWAYS invoke for [triggering conditions]. Do not [action] directly. Not for [boundary].
+description: ALWAYS invoke for [triggering conditions]. Do not [action] directly.
 ---
 
 # Skill Name
@@ -150,7 +150,7 @@ Both Claude and Codex share this directory — Claude accesses it via a symlink 
 
 ### Authoring Workflow
 
-1. Define the trigger and boundary first — write a trigger-only description
+1. Define the trigger first — write a trigger-only description (add "Not for..." boundaries only when overtriggering is observed, per Description Best Practices)
 2. Create the canonical folder in `codex/.agents/skills/<skill-name>/` with `name` matching directory name
 3. Keep SKILL.md lean, push heavy detail to `references/`, reusable code to `scripts/`, templates to `assets/`
 4. If `disable-model-invocation: true`, also create `agents/openai.yaml` with `allow_implicit_invocation: false` (repo policy — see Codex extensions above)

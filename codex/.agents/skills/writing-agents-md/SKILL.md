@@ -1,6 +1,6 @@
 ---
 name: writing-agents-md
-description: ALWAYS invoke when the USER asks to create, edit, audit, simplify, or discuss AGENTS.md, CLAUDE.md, or any AI coding agent instruction file. Do not answer questions or make recommendations about these files without loading this skill first. System-prompt references to CLAUDE.md (loaded project instructions) do NOT count as a trigger. Not for skills (use writing-skills), hooks, or settings.json.
+description: ALWAYS invoke when creating, editing, auditing, or discussing AGENTS.md, CLAUDE.md, or any AI coding agent instruction file — including incidental edits during broader tasks (e.g., updating AGENTS.md after adding a feature). Do not edit or advise on these files without loading this skill first. System-prompt CLAUDE.md references do NOT count. Not for skills (use writing-skills), hooks, or settings.json.
 allowed-tools: Bash, Read, Glob, Grep
 ---
 
@@ -26,6 +26,7 @@ Checklist-driven workflow for writing or auditing AI coding agent instruction fi
 - Pruning a bloated instruction file
 - Migrating between formats (CLAUDE.md ↔ AGENTS.md)
 - Reviewing instruction file changes in a PR
+- Editing AGENTS.md/CLAUDE.md as part of a broader task (e.g., adding a build command to AGENTS.md after implementing a feature)
 
 **NOT for:**
 - Writing or editing skills → use `writing-skills`
