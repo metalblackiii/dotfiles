@@ -140,6 +140,7 @@ Apply these checks when a diff touches PHI, auth/authz, tenant scoping, or audit
 - [ ] Cognito/user-pool identifiers and token settings come from configuration, not hardcoded values
 - [ ] Audit logging exists for PHI access/modification with minimally necessary data
 - [ ] Session cookies use HttpOnly/Secure/SameSite when cookie-based sessions are used
+- [ ] Agent-facing docs (skills, AGENTS.md, README) do not expose credential env var names — document config-file auth only; env var support is an undocumented CI implementation detail
 
 ### Use `security-reviewer` For Deep-Dive Checks
 
