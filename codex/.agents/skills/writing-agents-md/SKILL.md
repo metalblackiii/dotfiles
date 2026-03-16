@@ -1,6 +1,6 @@
 ---
 name: writing-agents-md
-description: ALWAYS invoke when writing, auditing, or improving AGENTS.md, CLAUDE.md, or any AI coding agent instruction file. Do not write or audit instruction files directly. Not for editing skills (use writing-skills), hook configuration, or settings.json.
+description: ALWAYS invoke when AGENTS.md, CLAUDE.md, or any AI coding agent instruction file is mentioned — even in passing. Do not answer questions or make recommendations about these files without loading this skill first. Not for skills (use writing-skills), hooks, or settings.json.
 allowed-tools: Bash, Read, Glob, Grep
 ---
 
@@ -19,6 +19,7 @@ Checklist-driven workflow for writing or auditing AI coding agent instruction fi
 ## When to Use
 
 **Triggers:**
+- Evaluating whether a repo needs an instruction file ("should we add", "do we need", "is it worth")
 - Creating a new AGENTS.md or CLAUDE.md
 - Auditing an existing instruction file for quality
 - Auditing based on actual agent usage ("what's working", "audit from sessions")
