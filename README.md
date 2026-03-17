@@ -256,9 +256,7 @@ Read-only MCP tools can be added to the `permissions.allow` list in `settings.js
 
 #### Current Servers
 
-| Server | Source | Profile | Allowed | Ask |
-|--------|--------|---------|---------|-----|
-| **ptek-jira** | [ptek-eng-toolbox](../ptek-eng-toolbox) | `jira` | getJiraTicket, searchJiraIssuesUsingJql, getJiraIssueContext, getJiraAttachments, getJiraDefectSummary | updateJiraTicket, addCommentToJiraTicket |
+No MCP servers currently have explicit tool permissions in `settings.json`. Servers are added to `~/.claude.json` (user scope) and all their tools default to prompting for confirmation.
 
 ### Claude Code Configuration
 
