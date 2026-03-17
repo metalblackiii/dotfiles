@@ -18,12 +18,7 @@
       "Write(~/.claude/plans/**)",
       "Edit(~/.claude/plans/**)",
       "WebFetch",
-      "WebSearch",
-      "mcp__ptek-jira__getJiraTicket",
-      "mcp__ptek-jira__searchJiraIssuesUsingJql",
-      "mcp__ptek-jira__getJiraIssueContext",
-      "mcp__ptek-jira__getJiraAttachments",
-      "mcp__ptek-jira__getJiraDefectSummary"
+      "WebSearch"
     ],
     "deny": [
       "Read(**/.env*)",
