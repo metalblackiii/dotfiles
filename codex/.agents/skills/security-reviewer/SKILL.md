@@ -73,6 +73,7 @@ When editing this skill, check `../review/SKILL.md`, `../self-review/SKILL.md`, 
 - Separate confirmed findings from hypotheses and open questions.
 - Follow scope and authorization boundaries for active testing.
 - Document which scans were run vs skipped due to unavailable tooling.
+- Verify agent-facing docs (skills, AGENTS.md, README) do not expose credential env var names — document config-file auth only; env var support is a CI implementation detail.
 
 ### MUST NOT DO
 - Treat unverified scanner output as confirmed vulnerabilities.
