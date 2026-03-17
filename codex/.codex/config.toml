@@ -30,16 +30,109 @@ enabled = false
 [projects."/Users/martinburch/repos/dotfiles"]
 trust_level = "trusted"
 
+[projects."/Users/martinburch/repos/neb-deploy"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-entitlements"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-factory-girl"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-github-actions"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-local-dev"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-microservice"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-appointments"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-billing"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-charting"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-clearinghouse"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-conversion"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-core"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-data-integrity"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-electronic-claims"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-email"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-files"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-image"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-macro-metadata"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-mock-chc"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-mock-cognito"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-mock-doctible"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-partner"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-payments"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-pdf"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-permissions"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-realtime"]
+trust_level = "trusted"
+
 [projects."/Users/martinburch/repos/neb-ms-registry"]
 trust_level = "trusted"
 
-[projects."/Users/martinburch/repos/platform-ops"]
+[projects."/Users/martinburch/repos/neb-ms-reports"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/neb-ms-x12"]
 trust_level = "trusted"
 
 [projects."/Users/martinburch/repos/neb-www"]
 trust_level = "trusted"
 
+[projects."/Users/martinburch/repos/platform-ops"]
+trust_level = "trusted"
+
 [projects."/Users/martinburch/repos/prd-loop"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/ptek-ai-platform"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/ptek-ai-playbook"]
+trust_level = "trusted"
+
+[projects."/Users/martinburch/repos/ptek-eng-toolbox"]
 trust_level = "trusted"
 
 [projects."/Users/martinburch/repos/ptek-jira-cli"]

@@ -99,7 +99,7 @@ Use structured choices when questions have a finite set of likely answers. Use o
 
 For features touching multiple services, explore the codebase BEFORE starting the interview. This ensures questions are grounded in what actually exists.
 
-Use the `spec-miner` skill to reverse-engineer existing behavior, or dispatch parallel agents:
+Reverse-engineer existing behavior by reading related code, or dispatch parallel agents:
 
 ```
 Before interview, launch in parallel:

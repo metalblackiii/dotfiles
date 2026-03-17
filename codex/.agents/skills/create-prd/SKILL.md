@@ -9,7 +9,7 @@ Interview-driven PRD generator. Produces lean PRDs optimized for decomposition a
 
 ## When to Use
 
-- Defining what to build before kicking off an AI implementation run (prd-loop, auto-agent-codex, or direct AI)
+- Defining what to build before kicking off an AI implementation run (auto-agent-codex, ralph loop tool, or direct AI)
 - Converting a ticket, spec, or conversation into a structured PRD
 - When you have a feature idea but need to formalize scope, requirements, and acceptance criteria
 
