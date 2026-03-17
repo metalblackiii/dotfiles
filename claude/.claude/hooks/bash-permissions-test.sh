@@ -407,6 +407,9 @@ else
   test_hook_decision "deny" "$SAFE_CWD" 'git commit --template ~/.aws/credentials'
   test_hook_decision "deny" "$SAFE_CWD" 'git commit --amend --no-edit ~/.ssh/id_rsa'
 
+  # Heredoc body should not poison path-exemption (is_path_exempt uses CMD_NO_HEREDOC)
+  test_hook_decision "ask" "$SAFE_CWD" $'rm -rf dist <<\'EOF\'\n/tmp/other\nEOF'
+
   # Clean up temp dir if we created one
   if $CLEANUP_SAFE_CWD && [[ -d "$SAFE_CWD" ]]; then
     rmdir "$SAFE_CWD" 2>/dev/null || true
@@ -414,6 +417,109 @@ else
 
   fi  # end SAFE_CWD availability check
 fi
+
+# ---------------------------------------------------------------------------
+# Integration tests: heredoc body stripping
+#
+# Heredoc bodies are prose/data — path-layer regexes should not match against
+# them. These tests verify that sensitive keywords inside heredoc bodies pass,
+# while the same keywords in the command line (outside heredocs) still deny.
+# ---------------------------------------------------------------------------
+
+printf '\n%b--- Heredoc Body Stripping ---%b\n' "$BOLD" "$NC"
+
+HOOK_SCRIPT="${HOOK_SCRIPT:-${SCRIPT_DIR}/bash-permissions.sh}"
+
+test_hook_heredoc() {
+  local expect="$1" label="$2" cmd="$3"
+  local input
+  input=$(jq -n --arg cmd "$cmd" '{"tool_input":{"command":$cmd}}')
+  local output
+  output=$(printf '%s' "$input" | bash "$HOOK_SCRIPT" 2>/dev/null) || true
+  local actual
+  if [[ -z "$output" ]]; then
+    actual="allow"
+  else
+    actual=$(printf '%s' "$output" | jq -r '.hookSpecificOutput.permissionDecision // "allow"')
+  fi
+  total=$((total + 1))
+  if [[ "$actual" == "$expect" ]]; then
+    pass=$((pass + 1))
+    printf "${GREEN}  OK${NC}  %-5s %-22s %s\n" "$expect" "[heredoc]" "$label"
+  else
+    fail=$((fail + 1))
+    printf "${RED}FAIL${NC}  expected=%-5s got=%-5s %-22s %s\n" "$expect" "$actual" "[heredoc]" "$label"
+  fi
+}
+
+# Heredoc body with sensitive keywords → should NOT be blocked
+test_hook_heredoc "allow" "secrets in heredoc body" \
+  $'/path/to/script.sh <<\'EOF\'\nResearch /secrets/ directory patterns\nEOF'
+test_hook_heredoc "allow" ".env in heredoc body" \
+  $'/path/to/script.sh <<\'EOF\'\nCheck .env file handling and .env.local config\nEOF'
+test_hook_heredoc "allow" ".pem in heredoc body" \
+  $'/path/to/script.sh <<\'EOF\'\nAnalyze server.pem certificate rotation\nEOF'
+test_hook_heredoc "allow" "~/.ssh in heredoc body" \
+  $'some-tool <<EOF\nAccess ~/.ssh/id_rsa for key rotation\nEOF'
+test_hook_heredoc "allow" "~/.aws in heredoc body" \
+  $'some-tool <<\'PROMPT\'\nCheck ~/.aws/credentials setup\nPROMPT'
+test_hook_heredoc "allow" "~/.zshrc in heredoc body" \
+  $'script.sh <<\'END\'\nEdit ~/.zshrc for path changes\nEND'
+test_hook_heredoc "allow" "mixed sensitive words in body" \
+  $'research.sh <<\'EOF\'\nReview /secrets/ and .env and ~/.ssh/ patterns\nEOF'
+test_hook_heredoc "allow" "<<- heredoc variant" \
+  $'script.sh <<-\'EOF\'\n\tMentions /secrets/ and .env\n\tEOF'
+
+# Sensitive paths in command line (outside heredoc) → should still deny
+test_hook_heredoc "deny" "secrets in command args" \
+  "cat /app/secrets/db.yml"
+test_hook_heredoc "deny" ".env in command args" \
+  "cat .env"
+test_hook_heredoc "deny" "sensitive path before heredoc" \
+  $'cat /app/secrets/key <<\'EOF\'\ninnocent body\nEOF'
+test_hook_heredoc "deny" "sensitive path after heredoc" \
+  $'script.sh <<\'EOF\'\ninnocent body\nEOF\ncat .env'
+
+# Edge cases — state machine correctness
+test_hook_heredoc "allow" "multiple heredocs with sensitive bodies" \
+  $'cmd1 <<\'A\'\n/secrets/ stuff\nA\ncmd2 <<\'B\'\n.env stuff\nB'
+test_hook_heredoc "allow" "empty heredoc" \
+  $'script.sh <<\'EOF\'\nEOF'
+
+# Non-identifier delimiters (dots, hyphens, digits)
+test_hook_heredoc "allow" "dotted delimiter with sensitive body" \
+  $'script.sh <<\'END.JSON\'\n/secrets/ and .env\nEND.JSON'
+test_hook_heredoc "deny" "dotted delimiter with path after heredoc" \
+  $'script.sh <<\'END.JSON\'\ninnocent\nEND.JSON\ncat .env'
+test_hook_heredoc "allow" "numeric delimiter" \
+  $'script.sh <<123\ncat .env\n123'
+test_hook_heredoc "allow" "hyphenated delimiter" \
+  $'script.sh <<\'END-DATA\'\n~/.ssh/id_rsa\nEND-DATA'
+
+# Deny-layer: heredoc body should not trigger deny rules
+test_hook_heredoc "allow" "sudo in heredoc body (deny bypass)" \
+  $'script.sh <<\'EOF\'\nsudo ls\nEOF'
+test_hook_heredoc "allow" "kill in heredoc body (deny bypass)" \
+  $'script.sh <<\'EOF\'\nkill 1234\nEOF'
+
+# Multiple heredocs on same command line
+test_hook_heredoc "allow" "two heredocs on one line" \
+  $'cmd <<\'A\' <<\'B\'\nbodyA\nA\nsudo ls\nB'
+test_hook_heredoc "allow" "two heredocs mixed sensitive content" \
+  $'cmd <<\'X\' <<\'Y\'\n/secrets/ data\nX\n.env content\nY'
+
+# <<- with tab-stripped closing delimiter
+test_hook_heredoc "deny" "<<- with tabbed closer then sensitive cmd" \
+  $'script <<-\'EOF\'\nbody\n\tEOF\ncat .env'
+test_hook_heredoc "allow" "<<- with tabbed closer (body only)" \
+  $'script <<-\'EOF\'\n\t/secrets/ stuff\n\tEOF'
+
+# Here-strings (<<<) must not be misparsed as heredocs
+test_hook_heredoc "deny" "herestring followed by sensitive path" \
+  $'printf x <<< "$foo"\ncat .env'
+test_hook_heredoc "deny" "herestring with quoted value" \
+  $'cmd <<<\'text\'\ncat /app/secrets/key'
+
 
 printf '\nResults: %d/%d passed' "$pass" "$total"
 if [[ "$fail" -gt 0 ]]; then

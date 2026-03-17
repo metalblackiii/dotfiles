@@ -88,6 +88,60 @@ command_to_regex() {
   printf '%s' "\\b${escaped}\\b"
 }
 
+# Strip heredoc body content from a command string.
+# WHY: Heredoc bodies are prose (prompts, templates, messages), not commands
+# or file references. Rule regexes match sensitive keywords in that prose,
+# causing false positives (e.g., a research prompt mentioning "/secrets/"
+# or "sudo" triggers deny/paths layers). Keeps command lines; strips only
+# interstitial body lines between <<DELIM and DELIM.
+strip_heredoc_bodies() {
+  local -a delim_queue=()
+  while IFS= read -r line; do
+    if [[ ${#delim_queue[@]} -gt 0 ]]; then
+      # In heredoc body — close when line matches the queued delimiter.
+      # Queue entries are "mode:DELIM" where mode is e(xact) or t(ab-strip).
+      local entry="${delim_queue[0]}"
+      local mode="${entry%%:*}" delim="${entry#*:}"
+      local check="$line"
+      if [[ "$mode" == "t" ]]; then
+        # <<- allows leading tabs on closing delimiter
+        while [[ "$check" == $'\t'* ]]; do check="${check:1}"; done
+      fi
+      if [[ "$check" == "$delim" ]]; then
+        delim_queue=("${delim_queue[@]:1}")
+      fi
+    else
+      printf '%s\n' "$line"
+      # Collect ALL heredoc delimiters from this line (handles cmd <<A <<B).
+      # Neutralize here-strings (<<<) so they don't false-match as heredocs.
+      # Scan left-to-right by consuming matched prefixes from a shrinking copy.
+      local scan="${line//<<</__HS__}"
+      while true; do
+        local d=""
+        if [[ "$scan" =~ \<\<-?[[:space:]]*\'([^\']+)\' ]]; then
+          d="${BASH_REMATCH[1]}"
+        elif [[ "$scan" =~ \<\<-?[[:space:]]*\"([^\"]+)\" ]]; then
+          d="${BASH_REMATCH[1]}"
+        elif [[ "$scan" =~ \<\<-?[[:space:]]*([^[:space:]]+) ]]; then
+          d="${BASH_REMATCH[1]}"
+        else
+          break
+        fi
+        # Encode mode: "t:DELIM" for <<- (tab-strip), "e:DELIM" for << (exact)
+        if [[ "${BASH_REMATCH[0]}" == *'<<-'* ]]; then
+          delim_queue+=("t:${d}")
+        else
+          delim_queue+=("e:${d}")
+        fi
+        # Advance past the matched text
+        scan="${scan#*"${BASH_REMATCH[0]}"}"
+        [[ -z "$scan" ]] && break
+      done
+    fi
+  done <<< "$1"
+  return 0
+}
+
 # Resolve the effective git directory from the command.
 # If the command contains "cd <path> &&", use the last cd target;
 # otherwise fall back to cwd. Lazy — only called when a rule needs it.
@@ -129,7 +183,7 @@ is_path_exempt() {
   #   1. Expand ~ and $HOME/${HOME} to the actual home directory
   #   2. Strip shell quotes so "/tmp/foo" is detected as an absolute path
   local cmd_expanded
-  cmd_expanded=$(printf '%s' "$CMD_CLEAN" | sed "s|~|${HOME}|g; s/['\"]//g")
+  cmd_expanded=$(printf '%s' "$CMD_NO_HEREDOC" | sed "s|~|${HOME}|g; s/['\"]//g")
   cmd_expanded="${cmd_expanded//\$HOME/$HOME}"
   cmd_expanded="${cmd_expanded//\$\{HOME\}/$HOME}"
 
@@ -198,7 +252,7 @@ check_layer() {
     else
       pattern="$value"
     fi
-    if echo "$CMD_CLEAN" | grep -qE "$pattern"; then
+    if echo "$CMD_NO_HEREDOC" | grep -qE "$pattern"; then
       # Skip all deny-layer matches for simple git commit commands — every
       # match is against message prose, not an actual command invocation.
       # Compound commands (&&, |, ;) are not considered simple commits.
@@ -229,6 +283,9 @@ check_layer() {
   )
 }
 
+# Strip heredoc bodies so prose content doesn't false-positive deny/path rules
+CMD_NO_HEREDOC=$(strip_heredoc_bodies "$CMD_CLEAN")
+
 # ---------------------------------------------------------------------------
 # Layer 1: DENY — blocked unconditionally
 # ---------------------------------------------------------------------------
@@ -248,7 +305,7 @@ if ! $_is_simple_commit; then
   while IFS= read -r regex; do
     [[ -z "$regex" ]] && continue
     local_pattern="${regex//__HOME__/$HOME_ESC}"
-    if echo "$CMD_CLEAN" | grep -qE "$local_pattern"; then
+    if echo "$CMD_NO_HEREDOC" | grep -qE "$local_pattern"; then
       emit_decision "deny" \
         "Sensitive files (.env, secrets, keys, credentials, shell config) are off-limits."
     fi
@@ -276,7 +333,7 @@ while IFS=$'\t' read -r value entry_type branch_regex; do
   else
     allow_pattern="$value"
   fi
-  if echo "$CMD_CLEAN" | grep -qE "$allow_pattern"; then
+  if echo "$CMD_NO_HEREDOC" | grep -qE "$allow_pattern"; then
     # If rule has a branch condition, verify it before allowing
     if [[ -n "$branch_regex" ]]; then
       branch=$(current_branch)
