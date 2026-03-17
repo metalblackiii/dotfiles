@@ -233,7 +233,7 @@ Execute with:
   1. AI direct:         Open the PRD in Claude Code or Codex and implement directly
   2. auto-agent-codex:  Manifest generated at docs/prd_list-<slug>.json
                          (requires auto-agent-codex runner installed separately)
-  3. prd-loop:          prd-loop docs/prd-<slug>.md
+  3. Ralph loop tool:   Feed the PRD to any iterative execution runner (e.g., ralph, prd-loop)
 ```
 
 ## Constraints
