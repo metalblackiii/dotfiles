@@ -291,3 +291,29 @@ ASK	allow_gh_pr	develop	gh pr create
 # Should ASK: other gh commands on matching branch
 ASK	allow_gh_pr	mjb-pho-NEB-1234	gh pr merge
 ASK	allow_gh_pr	mjb-pho-NEB-1234	gh issue close 42
+#
+# -------------------------------------------------------------------
+# path_dotconfig — application config (~/.config/)
+# -------------------------------------------------------------------
+# Should DENY: access to .config directory contents
+DENY	path_dotconfig	cat ~/.config/gh/hosts.yml
+DENY	path_dotconfig	ls __HOME__/.config/
+DENY	path_dotconfig	cat ~/.config/dbeaver/credentials.json
+# Should PASS: .config in other contexts
+PASS	path_dotconfig	cat ./src/.config/defaults.json
+PASS	path_dotconfig	cat /app/.config/settings.yml
+#
+# -------------------------------------------------------------------
+# path_myclirc — database credentials (~/.myclirc)
+# -------------------------------------------------------------------
+# Should DENY: direct access to myclirc
+DENY	path_myclirc	cat ~/.myclirc
+DENY	path_myclirc	cat __HOME__/.myclirc
+DENY	path_myclirc	less ~/.myclirc
+DENY	path_myclirc	head ~/.myclirc
+DENY	path_myclirc	grep password ~/.myclirc
+DENY	path_myclirc	cp ~/.myclirc /tmp/backup
+# Should PASS: mycli commands that don't reference the config file
+PASS	path_myclirc	mycli --dsn local -e "SELECT 1"
+PASS	path_myclirc	mycli --csv --dsn unit -e "SHOW TABLES"
+PASS	path_myclirc	mycli --list-dsn

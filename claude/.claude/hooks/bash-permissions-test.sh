@@ -87,6 +87,8 @@ jq -r --arg home_esc "$HOME_ESC" '
       elif .category == "certificate/key files" then "path_cert_key"
       elif .category == "home credentials" then
         if (.regex | test("\\.aws")) then "path_aws" else "path_ssh" end
+      elif .category == "application config" then "path_dotconfig"
+      elif .category == "database credentials" then "path_myclirc"
       elif .category == "shell/git config" then "path_shell_config"
       elif .category == "private local config" then "path_local_config"
       else ("path_unknown_" + .category)

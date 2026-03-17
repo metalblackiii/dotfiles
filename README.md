@@ -88,6 +88,7 @@ The AI tool configuration is designed to be shareable. It covers agent platforms
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
+| `mycli` | Optional | `brew install mycli` | `db-query` skill (live MySQL database queries via DSN aliases) |
 | `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
 | `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
 
@@ -154,44 +155,45 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-#### Skills (47)
+#### Skills (48)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
 | Skill | When it activates |
 |-------|-------------------|
-| **pr-analysis** | Reviewing PR diffs for quality, security, architecture, testing |
-| **requirements-analyst** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
-| **auto-review** | Automated PR review with domain-expert panel, batch comment approval, and 30-minute re-review loop. Manual invoke only (`/auto-review`) |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
+| **auto-review** | Automated PR review with domain-expert panel, batch comment approval, and 30-minute re-review loop. Manual invoke only (`/auto-review`) |
 | **babysit-loop** | Monitor a running prd-loop session. Designed for use with `/loop` |
 | **bash-expert** | Create, generate, validate, lint, audit, or fix bash/shell scripts |
 | **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
 | **cli-developer** | Building CLI tools, argument parsing, interactive prompts, shell completions |
-| **create-prd** | Define what to build before a prd-loop run, formalize a feature idea, convert a ticket into an implementation-ready PRD, or write feature specs with structured requirements |
+| **code-renovator** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
+| **create-prd** | Define what to build before running an agentic loop, formalize a feature idea, convert a ticket into an implementation-ready PRD, or write feature specs with structured requirements |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
+| **db-query** | Execute queries against live MySQL databases using mycli with DSN aliases |
 | **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
 | **gha-expert** | Create, generate, validate, lint, audit, fix, or diagnose GitHub Actions workflows and CI/CD pipeline failures |
-| **handoff** | Ending sessions with work in progress or high context usage |
+| **handoff** | Ending sessions with work in progress with context saved in a doc for a fresh session |
 | **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
-| **ptjira-delegate** | Interacting with Jira via `ptjira` CLI — ticket lookup, search, context, comments, updates, attachments |
 | **k8s-expert** | Diagnose, troubleshoot, and fix Kubernetes clusters, pods, networking, storage, and rollout failures |
 | **loop-postmortem** | Structured post-mortem after a prd-loop run completes or crashes |
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
-| **neb-ms-conventions** | Code in neb microservice repositories |
+| **neb-ms-conventions** | Code conventions used in neb microservice repositories |
 | **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
-| **peer-review** | Multi-round code review using Codex as an isolated reviewer with progressive verdict thresholds |
+| **peer-review** | Multi-round code review using an isolated agentic reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
+| **pr-analysis** | Reviewing PR/git diffs for quality, security, architecture, testing |
 | **pr-review-queue** | Consolidated dashboard for PRs where you are a reviewer, with action buckets and next-step triage |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
+| **ptjira-delegate** | Interacting with Jira via `ptjira` CLI — ticket lookup, search, context, comments, updates, attachments |
 | **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
 | **ratchet** | Autonomous metric-driven iteration — interview, loop (change → verify → keep/restore), hand off for review. Manual invoke only (`/ratchet`) |
-| **code-renovator** | Refactoring discipline, code smells, incremental legacy migrations, strangler fig patterns |
+| **requirements-analyst** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
 | **security-reviewer** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
@@ -298,7 +300,7 @@ Claude Code permissions are split across two layers that handle different tool t
 The `permissions` block in `settings.json` controls Claude Code's built-in tools (Read, Edit, Write, Glob, Grep, WebFetch, WebSearch). These use glob-based path matching:
 
 - **Allowed**: all built-in tools, `Bash(*)`, scoped web access
-- **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), private local overrides (`~/.*.local`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
+- **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, `~/.config/`, `~/.myclirc`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), private local overrides (`~/.*.local`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
 
 ##### Bash Commands (`bash-permissions.sh` + `bash-permissions.json`)
 
@@ -309,7 +311,7 @@ Rules live in `bash-permissions.json` and are evaluated in four layers. The scri
 | Layer | Decision | Purpose |
 |-------|----------|---------|
 | **deny** | Block | Unconditionally blocked. Optional `"nudge"` message guides Claude toward the right tool. |
-| **paths** | Block | Blocks commands referencing sensitive file patterns (`.env`, `/secrets/`, `.pem`, `~/.aws/`, `~/.ssh/`, shell configs). Uses `__HOME__` placeholder expanded at runtime. |
+| **paths** | Block | Blocks commands referencing sensitive file patterns (`.env`, `/secrets/`, `.pem`, `~/.aws/`, `~/.ssh/`, `~/.config/`, `~/.myclirc`, shell configs). Uses `__HOME__` placeholder expanded at runtime. |
 | **allow** | Auto-approve | Bypasses the ask layer for trusted patterns. Supports optional `"branch"` condition — rule only fires when the current git branch matches the regex (e.g., `^mjb-pho-NEB-` auto-approves `git commit`, `git push`, and `gh pr create` on personal feature branches). |
 | **ask** | Prompt user | Forces confirmation for `git commit/push`, `gh pr create/merge/close`, `curl`, `chmod`, `brew`, etc. |
 
