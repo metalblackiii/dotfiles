@@ -1,6 +1,6 @@
 ---
 name: self-review
-description: ALWAYS invoke when checking local changes before committing or opening a PR. Triggers on "check my changes", "review before commit", "pre-commit check". Local git only (no `gh`). For dedicated security audits, use `security-reviewer`.
+description: ALWAYS invoke when checking local changes before committing or opening a PR. Triggers on "check my changes", "review before commit", "pre-commit check". Local git only (no `gh`). For dedicated security audits, use `security-review`.
 ---
 
 # Self-Review Skill
@@ -82,7 +82,7 @@ These are high-value findings because they create bugs that are hard to diagnose
 
 ### Security Escalation (When Needed)
 
-`self-review` includes baseline security checks via `pr-analysis`. Escalate to `security-reviewer` only when:
+`self-review` includes baseline security checks via `pr-analysis`. Escalate to `security-review` only when:
 - the user explicitly requests security depth, or
 - local changes hit high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 

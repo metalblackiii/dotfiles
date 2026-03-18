@@ -1,6 +1,6 @@
 ---
 name: review
-description: ALWAYS invoke for PR reviews, code review requests, "review this PR", "check this PR", or pull request quality assessments. Do not review PRs directly without this skill. Not for dedicated security audits (use security-reviewer) or local uncommitted change reviews (use self-review). Requires working gh CLI. Accepts a PR number, URL, or empty for the current branch.
+description: ALWAYS invoke for PR reviews, code review requests, "review this PR", "check this PR", or pull request quality assessments. Do not review PRs directly without this skill. Not for dedicated security audits (use security-review) or local uncommitted change reviews (use self-review). Requires working gh CLI. Accepts a PR number, URL, or empty for the current branch.
 ---
 
 # PR Review Skill
@@ -95,7 +95,7 @@ These are high-value findings because they create bugs that are hard to diagnose
 
 ### Security Escalation (When Needed)
 
-`review` includes baseline security checks via `pr-analysis`. Escalate to `security-reviewer` only when:
+`review` includes baseline security checks via `pr-analysis`. Escalate to `security-review` only when:
 - the user explicitly requests a security audit/deep-dive, or
 - the PR changes high-risk surfaces (auth, permissions, secrets, PHI handling, tenant isolation, exposed infrastructure config).
 

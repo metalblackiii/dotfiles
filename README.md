@@ -92,7 +92,7 @@ The AI tool configuration is designed to be shareable. It covers agent platforms
 | `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
 | `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
 
-#### Optional Security Tooling (Only for `security-reviewer` Scanner Mode)
+#### Optional Security Tooling (Only for `security-review` Scanner Mode)
 
 The security skills work without additional installs. Extra tooling is optional and only used for deeper scan automation.
 
@@ -105,7 +105,7 @@ The security skills work without additional installs. Extra tooling is optional 
 | `semgrep` | `brew install semgrep` | SAST (static analysis). Optional — Snyk Code covers this lane; both together add depth |
 | `checkov` | `pip install checkov` | IaC policy checks. Optional — trivy covers IaC basics. Requires `python3`/`pip` |
 
-If these tools are unavailable, `security-reviewer` falls back to manual review and reports which scans were not executed.
+If these tools are unavailable, `security-review` falls back to manual review and reports which scans were not executed.
 
 ### Installation
 
@@ -190,13 +190,13 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **pr-review-queue** | Consolidated dashboard for PRs where you are a reviewer, with action buckets and next-step triage |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
-| **ptjira-delegate** | Interacting with Jira via `ptjira` CLI — ticket lookup, search, context, comments, updates, attachments |
+| **ptjira-cli** | Interacting with Jira via `ptjira` CLI — ticket lookup, search, context, comments, updates, attachments |
 | **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
 | **ratchet** | Autonomous metric-driven iteration — interview, loop (change → verify → keep/restore), hand off for review. Manual invoke only (`/ratchet`) |
 | **requirements-analyst** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
 | **review** | PR review for architecture, testing, code quality, security |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
-| **security-reviewer** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
+| **security-review** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
 | **self-review** | Pre-commit/pre-PR quality gate for local git changes |
 | **snyk-expert** | Interpreting Snyk scan results, CVE/CWE assessment, vulnerability prioritization, CLI config, container scanning, remediation strategy |
 | **snyk-scan** | Scanning repos for vulnerabilities and applying fixes — orchestrates scan, assess, approve, remediate, report |

@@ -124,7 +124,7 @@ Use these categories to evaluate PR changes comprehensively.
 
 `pr-analysis` provides baseline security checks for standard `review` and `self-review` workflows.
 
-For dedicated security audits and tool-assisted deep analysis, escalate to `security-reviewer`.
+For dedicated security audits and tool-assisted deep analysis, escalate to `security-review`.
 
 ### Baseline Healthcare Addendum (Apply When Relevant)
 
@@ -142,7 +142,7 @@ Apply these checks when a diff touches PHI, auth/authz, tenant scoping, or audit
 - [ ] Session cookies use HttpOnly/Secure/SameSite when cookie-based sessions are used
 - [ ] Agent-facing docs (skills, AGENTS.md, README) do not expose credential env var names — document config-file auth only; env var support is an undocumented CI implementation detail
 
-### Use `security-reviewer` For Deep-Dive Checks
+### Use `security-review` For Deep-Dive Checks
 
 - OWASP-class vulnerability analysis (SQLi, XSS, IDOR, deserialization, etc.)
 - Secrets scanning, SAST, dependency/CVE, and IaC security scanning

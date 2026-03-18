@@ -1,6 +1,6 @@
 ---
 name: secure-code-guardian
-description: ALWAYS invoke when implementing or remediating security controls (authn/authz, input validation, secrets handling, encryption, session/cookie policy, security headers). Do not implement security controls directly. Not for generic code review or security audits (use security-reviewer).
+description: ALWAYS invoke when implementing or remediating security controls (authn/authz, input validation, secrets handling, encryption, session/cookie policy, security headers). Do not implement security controls directly. Not for generic code review or security audits (use security-review).
 ---
 
 # Secure Code Guardian
@@ -13,11 +13,11 @@ Security-first implementation skill for building and fixing controls in applicat
 - Adding input validation and output encoding
 - Hardening session handling, cookie settings, and security headers
 - Implementing secrets management and encryption patterns
-- Remediating findings from `security-reviewer`, `review`, or `self-review`
+- Remediating findings from `security-review`, `review`, or `self-review`
 
 ## When NOT to Use
 
-- User asks for a dedicated security assessment (use `security-reviewer`)
+- User asks for a dedicated security assessment (use `security-review`)
 - Routine feature coding with no security-sensitive changes
 - PR quality gate tasks (use `review` or `self-review`)
 
@@ -44,7 +44,7 @@ Security-first implementation skill for building and fixing controls in applicat
 - Use after requirements/design are clear (`create-prd` or `requirements-analyst`).
 - Pair with `test-driven-development` for abuse-case tests before implementation.
 - Run `verification-before-completion` before claiming remediation is done.
-- If changes imply broader risk posture questions, escalate to `security-reviewer`.
+- If changes imply broader risk posture questions, escalate to `security-review`.
 
 ## Constraints
 

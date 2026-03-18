@@ -1,5 +1,5 @@
 ---
-name: security-reviewer
+name: security-review
 description: ALWAYS invoke when a dedicated security assessment is requested (security audit, compliance review, threat model, vulnerability triage, or incident security analysis) beyond normal PR or local code review.
 ---
 

@@ -9,7 +9,7 @@ Match changed file paths against these patterns. Multiple experts may match for 
 | Pattern | Expert | Skill to Load | Match Logic |
 |---|---|---|---|
 | `*.sql`, `migrations/**`, `models/**`, files containing Sequelize imports | Database | `../database-expert/SKILL.md` | Path glob or content grep for `sequelize`, `DataTypes`, `QueryInterface` |
-| Auth middleware, Cognito config, `**/permissions/**`, files referencing `userSecurity` | Security | `../secure-code-guardian/SKILL.md` + `../security-reviewer/SKILL.md` | Path contains `auth`, `cognito`, `permission`, `security`; or diff contains `userSecurity`, `SECURITY_SCHEMA_KEYS` |
+| Auth middleware, Cognito config, `**/permissions/**`, files referencing `userSecurity` | Security | `../secure-code-guardian/SKILL.md` + `../security-review/SKILL.md` | Path contains `auth`, `cognito`, `permission`, `security`; or diff contains `userSecurity`, `SECURITY_SCHEMA_KEYS` |
 | `Dockerfile*`, `docker-compose*`, `.dockerignore` | Infrastructure | `../dockerfile-expert/SKILL.md` | Path glob |
 | `.github/workflows/**`, `action.yml`, `action.yaml` | CI/CD | `../gha-expert/SKILL.md` | Path glob |
 | `routes/**`, `controllers/**`, files with route definitions or API contracts | API Design | `../api-designer/SKILL.md` | Path contains `route`, `controller`; or diff contains `router.get`, `router.post`, `app.use` |

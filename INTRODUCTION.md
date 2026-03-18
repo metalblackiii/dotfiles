@@ -177,7 +177,7 @@ For more domain-specific ideas, see the `jeffallan/claude-skills` source listed 
 
 Treat security as an opt-in escalation lane, not baseline complexity:
 
-- `security-reviewer` — Use for dedicated security audits or high-risk change sets. Keep this out of everyday review unless explicitly needed.
+- `security-review` — Use for dedicated security audits or high-risk change sets. Keep this out of everyday review unless explicitly needed.
 - `secure-code-guardian` — Use when implementing or remediating security controls in code.
 
 This bundle does **not** require extra tooling to adopt. Teams can run in manual mode first (threat-focused code review + remediation guidance), then add scanner tooling later if they want deeper automation.
@@ -193,7 +193,7 @@ For teams that use Snyk CLI for vulnerability scanning:
 
 ---
 
-These bundles are **curated highlights**, not an exhaustive list. The repo contains 43 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
+These bundles are **curated highlights**, not an exhaustive list. The repo contains 48 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
 
 ## What This Repo Does Not Cover
 

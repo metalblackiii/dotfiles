@@ -34,7 +34,7 @@ Skills compose naturally. Common sequences:
 - **Refactor:** `code-renovator` → `verification-before-completion`
 - **PR review:** `review` or `self-review` (these consume `pr-analysis` internally)
 - **Security-sensitive implementation:** `create-prd` (or `requirements-analyst`) → `secure-code-guardian` → `test-driven-development` → `verification-before-completion`
-- **Security deep-dive:** `review` or `self-review` → `security-reviewer` (only when explicitly requested or when high-risk surfaces changed)
+- **Security deep-dive:** `review` or `self-review` → `security-review` (only when explicitly requested or when high-risk surfaces changed)
 - **Quick wins:** `quick-wins` → `code-renovator` / `test-driven-development` (to act on findings)
 - **Multi-repo batch:** `batch-repo-ops` → `verification-before-completion`
 - **End of session:** `handoff` (if WIP remains)

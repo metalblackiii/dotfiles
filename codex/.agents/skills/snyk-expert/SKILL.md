@@ -24,7 +24,7 @@ Security scanning specialist for Node.js applications using Snyk CLI. Covers vul
 - Running an automated scan-fix workflow — use `snyk-scan`
 - General code review without security focus — use `review` or `self-review`
 - Implementing security controls in code — use `secure-code-guardian`
-- Deep security audit of a system — use `security-reviewer`
+- Deep security audit of a system — use `security-review`
 
 ## Core Concepts
 
@@ -106,5 +106,5 @@ snyk test --json | jq '[.vulnerabilities[] | select(.id == "SNYK-JS-EXAMPLE-123"
 
 - **snyk-scan** — automated scan-assess-fix workflow
 - **secure-code-guardian** — implementing security controls in application code
-- **security-reviewer** — deep security audits and threat modeling
+- **security-review** — deep security audits and threat modeling
 - **neb-ms-conventions** — neb service patterns (relevant for understanding dependency usage)

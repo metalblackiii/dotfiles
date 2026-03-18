@@ -18,7 +18,7 @@ Automated scan-assess-fix workflow for Node.js repositories using Snyk CLI. Scan
 
 - Interpreting a specific vulnerability or Snyk output — use `snyk-expert`
 - Implementing security controls in code — use `secure-code-guardian`
-- Deep security audit or threat modeling — use `security-reviewer`
+- Deep security audit or threat modeling — use `security-review`
 
 ## Prerequisites
 
@@ -227,5 +227,5 @@ Offer to create the PR if the user wants.
 
 - **snyk-expert** — vulnerability interpretation, CLI flags, prioritization knowledge
 - **secure-code-guardian** — implementing security controls for SAST findings
-- **security-reviewer** — deep security audits beyond dependency scanning
+- **security-review** — deep security audits beyond dependency scanning
 - **verification-before-completion** — verify fixes actually resolved the vulnerabilities

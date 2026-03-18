@@ -11,15 +11,18 @@ For trivial work (single-line fixes, typos, simple questions, file reads), proce
 `using-skills` is the canonical skill-usage policy.
 For skill authoring or skill-maintenance work in this repo, prefer `writing-skills` over system `skill-creator`.
 Use system `skill-creator` only as fallback when explicitly requested or when required guidance is missing from `writing-skills`.
-Do not rely on skill-name shadowing to override system skills.
-For high-effort features, use the prd-loop CLI: write a PRD → run `prd-loop` → review the diff against acceptance criteria.
 """
 
 [sandbox_workspace_write]
 network_access = true
 
-[features]
-multi_agent = true
+[shell_environment_policy]
+inherit = "core"
+exclude = ["AWS_*", "AZURE_*", "DATABASE_URL*", "*SECRET*", "*PASSWORD*"]
+
+[history]
+persistence = "save-all"
+max_bytes = 10_000_000
 
 [analytics]
 enabled = false
@@ -140,4 +143,3 @@ trust_level = "trusted"
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-window-size", "context-used"]
-# Model migration: gpt-5.3-codex → gpt-5.4
