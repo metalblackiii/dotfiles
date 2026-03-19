@@ -1,1 +1,12 @@
+# Font
+font-family = JetBrains Mono
+font-size = 13
+
+# Scrollback
+scrollback-limit = 50000
+
+# Split panes — dim unfocused splits so the active one pops
+unfocused-split-opacity = 0.7
+
+# Working directory
 working-directory = /Users/martinburch/repos/dotfiles
