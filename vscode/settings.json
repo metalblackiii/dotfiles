@@ -28,7 +28,7 @@
     "workbench.editor.empty.hint": "hidden",
 
     // Terminal
-    "terminal.external.osxExec": "Ghostty.app",
+    "terminal.external.osxExec": "cmux.app",
     "terminal.explorerKind": "external",
     "terminal.integrated.allowMnemonics": true,
     "terminal.integrated.enableVisualBell": true,
