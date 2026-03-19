@@ -2,7 +2,7 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Codex**, **Claude Code**, **VS Code**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
+Currently supports **Codex**, **Claude Code**, **VS Code**, **Ghostty**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
 
 New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatomy, and adoption guide.
 
@@ -51,6 +51,10 @@ dotfiles/
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
 │       ├── scripts/         # Status bar, hooks
 │       └── skills           # Symlink → ../../codex/.agents/skills
+├── ghostty/                 # Ghostty terminal configuration (personal)
+│   ├── install.sh
+│   ├── uninstall.sh
+│   └── config.ghostty       # Ghostty config → ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty
 ├── vscode/                  # VS Code configuration (personal)
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -403,6 +407,10 @@ brew bundle dump --force
 ```
 
 When adding a new tool, add it to the Brewfile and run `brew bundle` rather than `brew install` directly — this keeps the manifest in sync.
+
+### Ghostty
+
+`ghostty/config.ghostty` is symlinked to `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`. Edit the dotfiles copy to change Ghostty settings.
 
 ### Zsh
 
