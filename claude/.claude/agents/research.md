@@ -1,7 +1,7 @@
 ---
 name: research
 description: General-purpose research and multi-step tasks. Use for web research, codebase investigation, multi-angle analysis, and any task requiring both exploration and action. Prefer this over general-purpose for all research and investigation work.
-tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
+tools: Read, Write, Grep, Glob, Bash, WebSearch, WebFetch
 model: sonnet
 maxTurns: 25
 ---

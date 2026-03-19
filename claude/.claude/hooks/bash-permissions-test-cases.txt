@@ -304,16 +304,16 @@ PASS	path_dotconfig	cat ./src/.config/defaults.json
 PASS	path_dotconfig	cat /app/.config/settings.yml
 #
 # -------------------------------------------------------------------
-# path_myclirc — database credentials (~/.myclirc)
+# path_mylogin_cnf — database credentials (~/.mylogin.cnf)
 # -------------------------------------------------------------------
-# Should DENY: direct access to myclirc
-DENY	path_myclirc	cat ~/.myclirc
-DENY	path_myclirc	cat __HOME__/.myclirc
-DENY	path_myclirc	less ~/.myclirc
-DENY	path_myclirc	head ~/.myclirc
-DENY	path_myclirc	grep password ~/.myclirc
-DENY	path_myclirc	cp ~/.myclirc /tmp/backup
-# Should PASS: mycli commands that don't reference the config file
-PASS	path_myclirc	mycli --dsn local -e "SELECT 1"
-PASS	path_myclirc	mycli --csv --dsn unit -e "SHOW TABLES"
-PASS	path_myclirc	mycli --list-dsn
+# Should DENY: direct access to MySQL login file
+DENY	path_mylogin_cnf	cat ~/.mylogin.cnf
+DENY	path_mylogin_cnf	cat __HOME__/.mylogin.cnf
+DENY	path_mylogin_cnf	less ~/.mylogin.cnf
+DENY	path_mylogin_cnf	head ~/.mylogin.cnf
+DENY	path_mylogin_cnf	hexdump ~/.mylogin.cnf
+DENY	path_mylogin_cnf	cp ~/.mylogin.cnf /tmp/backup
+# Should PASS: mysql commands that don't reference the login file
+PASS	path_mylogin_cnf	mysql --login-path=local -B -e "SELECT 1"
+PASS	path_mylogin_cnf	mysql_config_editor print --all
+PASS	path_mylogin_cnf	dbq.sh local global "SELECT 1"

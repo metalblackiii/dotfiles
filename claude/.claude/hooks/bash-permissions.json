@@ -204,7 +204,7 @@
       "category": "private local config"
     },
     {
-      "regex": "(^|\\s)(~|__HOME__)/\\.myclirc($|\\s)",
+      "regex": "(^|\\s)(~|__HOME__)/\\.mylogin\\.cnf($|\\s)",
       "category": "database credentials"
     }
   ]

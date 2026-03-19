@@ -92,7 +92,7 @@ The AI tool configuration is designed to be shareable. It covers agent platforms
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
-| `mycli` | Optional | `brew install mycli` | `db-query` skill (live MySQL database queries via DSN aliases) |
+| `mysql-client` | Optional | `brew install mysql-client` | `db-query` skill (live MySQL database queries via login paths) |
 | `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
 | `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
 
@@ -178,7 +178,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **create-prd** | Define what to build before running an agentic loop, formalize a feature idea, convert a ticket into an implementation-ready PRD, or write feature specs with structured requirements |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
-| **db-query** | Execute queries against live MySQL databases using mycli with DSN aliases |
+| **db-query** | Execute queries against live MySQL databases using mysql-client with login paths |
 | **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
 | **gha-expert** | Create, generate, validate, lint, audit, fix, or diagnose GitHub Actions workflows and CI/CD pipeline failures |
 | **handoff** | Ending sessions with work in progress with context saved in a doc for a fresh session |
@@ -304,7 +304,7 @@ Claude Code permissions are split across two layers that handle different tool t
 The `permissions` block in `settings.json` controls Claude Code's built-in tools (Read, Edit, Write, Glob, Grep, WebFetch, WebSearch). These use glob-based path matching:
 
 - **Allowed**: all built-in tools, `Bash(*)`, scoped web access
-- **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, `~/.config/`, `~/.myclirc`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), private local overrides (`~/.*.local`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
+- **Denied**: Read/Edit/Write of `.env*` files, `/secrets/`, `.pem`/`.key` files, `~/.aws/`, `~/.ssh/`, `~/.config/`, `~/.mylogin.cnf`, shell configs (`~/.zshrc`, `~/.bashrc`, `~/.gitconfig`), private local overrides (`~/.*.local`), and the symlinked `~/.claude/` config files (prevents the agent from modifying its own configuration)
 
 ##### Bash Commands (`bash-permissions.sh` + `bash-permissions.json`)
 
@@ -315,7 +315,7 @@ Rules live in `bash-permissions.json` and are evaluated in four layers. The scri
 | Layer | Decision | Purpose |
 |-------|----------|---------|
 | **deny** | Block | Unconditionally blocked. Optional `"nudge"` message guides Claude toward the right tool. |
-| **paths** | Block | Blocks commands referencing sensitive file patterns (`.env`, `/secrets/`, `.pem`, `~/.aws/`, `~/.ssh/`, `~/.config/`, `~/.myclirc`, shell configs). Uses `__HOME__` placeholder expanded at runtime. |
+| **paths** | Block | Blocks commands referencing sensitive file patterns (`.env`, `/secrets/`, `.pem`, `~/.aws/`, `~/.ssh/`, `~/.config/`, `~/.mylogin.cnf`, shell configs). Uses `__HOME__` placeholder expanded at runtime. |
 | **allow** | Auto-approve | Bypasses the ask layer for trusted patterns. Supports optional `"branch"` condition — rule only fires when the current git branch matches the regex (e.g., `^mjb-pho-NEB-` auto-approves `git commit`, `git push`, and `gh pr create` on personal feature branches). |
 | **ask** | Prompt user | Forces confirmation for `git commit/push`, `gh pr create/merge/close`, `curl`, `chmod`, `brew`, etc. |
 

@@ -9,10 +9,12 @@ argument-hint: <research topic as a phrase>
 ## File Writing Rules
 
 - **Main agent**: Use the `Write` tool for all `.co-research/` files (plan.md, draft.md, final output). Never use `cat`, `echo`, or heredoc redirects via Bash.
-- **Subagents**: Cannot Write to files they haven't Read. Before dispatching subagents, pre-create empty placeholder files for every expected output using Bash `touch`. Then instruct each subagent to `Read` its target file before `Write`-ing to it.
-- **Pre-dispatch setup** (run once before Step 3a): create an empty placeholder for each Claude subagent output file. One `touch` per angle from the research plan:
+- **Claude subagent placeholders**: Before dispatching Claude subagents, use the main agent's `Write` tool to create a placeholder for each expected output file with a single line of content (e.g., `# Placeholder`). This ensures subagents get clean `Read` output (0-byte files from `touch` produce confusing warnings) and satisfies the Read-before-Write requirement.
+- **Pre-dispatch setup** (run once before Step 3a): for each Claude subagent output file, use `Write` to create a placeholder:
   ```
-  touch .co-research/claude-<angle1-slug>.md .co-research/claude-<angle2-slug>.md ...
+  Write .co-research/claude-<angle1-slug>.md  →  "# Placeholder"
+  Write .co-research/claude-<angle2-slug>.md  →  "# Placeholder"
+  ...
   ```
   Match the number of angles (3-5) and slugs to the actual research plan.
 
@@ -120,12 +122,12 @@ Each agent gets one research angle — launch one Claude subagent per angle so e
 
 **IMPORTANT:** Agent prompts must be directive — tell agents to do the research and write findings immediately. Do NOT leave room for agents to ask for confirmation or propose a plan. End each prompt with: "Read the output file first with the Read tool, then write your findings with the Write tool. Do the research now. Do not ask for confirmation."
 
-**IMPORTANT:** Each agent prompt MUST include this file-writing instruction: "IMPORTANT: Before writing, use the Read tool on your output file (it exists as an empty placeholder). Then use the Write tool to save your findings. Do NOT use Bash cat/echo/heredoc redirects."
+**IMPORTANT:** Each agent prompt MUST include this file-writing instruction: "IMPORTANT: Before writing, use the Read tool on your output file (it exists as a placeholder). Then use the Write tool to save your findings. Do NOT use Bash cat/echo/heredoc redirects."
 
 Example agent prompts (each must include the Read-then-Write instruction from above):
-- "Research the current ecosystem landscape for [topic]. Compare major tools/libraries, their adoption, maintenance status, and community sentiment. IMPORTANT: Before writing, use the Read tool on `.co-research/claude-ecosystem.md` (it exists as an empty placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
-- "Research best practices and common pitfalls for [topic]. Focus on authoritative sources (official docs, well-known blog posts, conference talks). IMPORTANT: Before writing, use the Read tool on `.co-research/claude-practices.md` (it exists as an empty placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
-- "Research real-world case studies and migration stories for [topic]. What did teams learn? What surprised them? IMPORTANT: Before writing, use the Read tool on `.co-research/claude-experiences.md` (it exists as an empty placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
+- "Research the current ecosystem landscape for [topic]. Compare major tools/libraries, their adoption, maintenance status, and community sentiment. IMPORTANT: Before writing, use the Read tool on `.co-research/claude-ecosystem.md` (it exists as a placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
+- "Research best practices and common pitfalls for [topic]. Focus on authoritative sources (official docs, well-known blog posts, conference talks). IMPORTANT: Before writing, use the Read tool on `.co-research/claude-practices.md` (it exists as a placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
+- "Research real-world case studies and migration stories for [topic]. What did teams learn? What surprised them? IMPORTANT: Before writing, use the Read tool on `.co-research/claude-experiences.md` (it exists as a placeholder). Then use the Write tool to save your findings with source URLs. Do NOT use Bash cat/echo/heredoc redirects. Do the research now. Do not ask for confirmation."
 
 Wait for all dispatches to complete (Bash background tasks will notify on completion; Task agents return when done).
 
