@@ -143,7 +143,7 @@ Apply progressive verdict thresholds:
 | 1-3 | No findings at any severity | Early rounds: chase a clean review |
 | 4-6 | No Critical or Important | Late rounds: minor-only findings are diminishing returns |
 
-**APPROVED:** Display the review summary, note the round count, and stop.
+**APPROVED:** Display the review summary, note the round count. Proceed to Cleanup.
 
 **REVISE:** Display the full review output. Proceed to Step 5.
 
@@ -236,6 +236,15 @@ If round 6 (or `--max-rounds`) is reached and findings remain:
 - Summarize what was addressed across all rounds
 - List remaining unresolved findings as an **advisory** — these are informational, not blocking
 - Do not ask for further action; the review cycle is complete
+- Proceed to Cleanup
+
+### Cleanup
+
+After the review cycle completes (APPROVED or circuit breaker), offer to remove `.peer-review/`:
+
+> Review complete. Remove `.peer-review/` working directory? (y/n)
+
+If the user confirms, `rm -rf .peer-review`. If declined, leave it in place — the user may want to reference results. Either way, the review is done.
 
 ## Working Files
 
@@ -252,7 +261,7 @@ If round 6 (or `--max-rounds`) is reached and findings remain:
 | `round-N.md` | Reviewer output each round |
 | `events-N.jsonl` | Raw JSONL events (`codex-exec` transport only) |
 
-Inform the user these files exist for debugging. Do not delete them automatically.
+These files exist for debugging. Cleanup is offered at the end of each run (see Cleanup step).
 
 ## Platform Compatibility
 
