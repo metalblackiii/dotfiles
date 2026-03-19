@@ -42,6 +42,7 @@ Load reference files on demand — don't read all upfront.
 | `references/anti-patterns.md` | Phase 3 quality gate; when checking for known failure modes |
 | `references/include-exclude-guide.md` | Deciding what belongs in the file; applying the litmus test |
 | `references/structural-taxonomy-template.md` | Drafting a new file; checking section structure |
+| `references/output-templates.md` | Phase 4 output; producing audit, write, or simplify deliverables; grading rubric |
 | `references/platform-comparison.md` | Multi-tool repos; choosing file strategy; checking size limits |
 
 ## Phase 1: Discovery
@@ -87,7 +88,14 @@ If both an AGENTS.md and CLAUDE.md exist (at any path), determine which pattern 
 - **Independent**: Different content serving different purposes — check for contradictions
 - **Duplication**: Same or near-identical content **and neither is a symlink** — anti-pattern, consolidate
 
-### 1.5 Branch
+### 1.5 Check Companion File
+
+Using all files discovered in 1.1 (not just root-level), check whether a companion file is missing. A companion is missing when AGENTS.md exists at any path but no CLAUDE.md exists anywhere (or vice versa).
+
+- **Write mode**: create the missing companion in Phase 2b.5 after file strategy selection determines the right pattern (stub redirect vs symlink).
+- **Audit / simplify mode**: flag the gap as a recommendation in the output — do not create files during read-oriented workflows.
+
+### 1.6 Branch
 
 - **No instruction files exist** → Write mode (Phase 2b)
 - **Files exist, user wants simplify/prune** → Simplify mode: run Phase 2a checks 1-2 only (non-inferable details + size), then skip to Phase 3.2 bloat ratio and Phase 4 audit output
@@ -201,11 +209,20 @@ For each candidate line from the survey and interview:
 - **Dotfiles repo**: Symlink strategy per `references/platform-comparison.md`
 - **Large project (>100 lines of content)**: Progressive disclosure (root + satellite docs)
 
-### 2b.5 Draft Using Taxonomy
+### 2b.5 Create Companion File
+
+If 1.5 flagged a missing companion, create it now using the strategy chosen in 2b.4:
+
+- **Stub redirect** (most repos): create `CLAUDE.md` containing `@AGENTS.md` (or vice versa) alongside the canonical file
+- **Symlink** (dotfiles/multi-platform repos): symlink the companion to the canonical source per `references/platform-comparison.md`
+
+Match the strategy — don't default to stub when the repo uses symlinks.
+
+### 2b.6 Draft Using Taxonomy
 
 Load `references/structural-taxonomy-template.md` and draft the file following the section order. Omit sections that have no content — an empty section is worse than a missing one.
 
-### 2b.6 Bloat Guard (Deletion Pass)
+### 2b.7 Bloat Guard (Deletion Pass)
 
 After drafting, do a deletion pass. For each line ask: "Would removing this cause the agent to make mistakes?" If not, cut it.
 
@@ -307,94 +324,7 @@ This matches `@.claude/rules/api.md` and `@AGENTS.md` but not `@app/api` (no ext
 
 ## Phase 4: Output
 
-### Simplify Output Template
-
-For simplify mode (checks 1-2 + bloat ratio only):
-
-```markdown
-# Simplify: <filename>
-
-## Summary
-<1-2 sentences: current state and reduction potential>
-
-| Metric | Value |
-|---|---|
-| Lines | <count> |
-| Bloat ratio | <directive:descriptive> |
-
-## Lines to Remove
-<numbered list with reason for each>
-
-## Recommended Actions
-1. ...
-```
-
-### Full Audit Output Template
-
-For full audit mode (all 7 checks):
-
-```markdown
-# Instruction File Audit: <filename>
-
-## Summary
-<1-2 sentences: overall assessment>
-
-## Dimension Scores
-
-| Dimension | Score | Notes |
-|---|---|---|
-| Non-inferable content | STRONG/NEEDS WORK/WEAK | |
-| Size | STRONG/NEEDS WORK/WEAK | <line count> |
-| Emphasis discipline | STRONG/NEEDS WORK/WEAK | <marker count> |
-| Structure | STRONG/NEEDS WORK/WEAK | |
-| Boundary format | STRONG/NEEDS WORK/WEAK | |
-| Hook opportunities | STRONG/NEEDS WORK/WEAK | |
-| Cross-platform | STRONG/NEEDS WORK/WEAK | |
-
-**Overall: STRONG / NEEDS WORK / WEAK**
-
-## Lines to Remove
-<numbered list with reason for each>
-
-## Lines to Add
-<numbered list with rationale — tag each as LOCAL (project file) or GLOBAL (user-wide config)>
-
-## Potentially Outdated
-<rules that were never triggered across sampled sessions, or that the agent consistently followed without needing the rule — candidates for removal. Only populated when Phase 2c was run.>
-
-## Hook Candidates
-<rules that should become hooks>
-
-## Anti-Patterns Detected
-<from the 11-pattern checklist>
-
-## Recommended Actions (Priority Order)
-1. ...
-2. ...
-```
-
-### Write Output Template
-
-```markdown
-# Draft: <filename>
-
-<the drafted instruction file>
-
----
-
-## Decisions Made
-- File strategy: <chosen pattern and why>
-- Sections included/omitted: <rationale>
-- Lines excluded by litmus test: <count>
-
-## Post-Creation Checklist
-- [ ] Verify all referenced files/paths exist
-- [ ] Run any mentioned commands to confirm they work
-- [ ] If AGENTS.md + CLAUDE.md, verify relationship is clean
-- [ ] If using @imports, verify Claude Code resolves them
-- [ ] Review emphasis markers — are they all protecting against real failures?
-- [ ] Schedule first maintenance review (suggest: 30 days or next major refactor)
-```
+Load `references/output-templates.md` and use the template matching the current mode (simplify, full audit, or write). The grading rubric for dimension and overall scores is in the same file.
 
 ## Writing Style Guidance
 
@@ -416,24 +346,6 @@ These checks must be performed mechanically, not estimated:
 - **Actually diff** AGENTS.md vs CLAUDE.md if both exist — don't assume they match
 
 **Anti-bloat rule:** When writing or fixing instruction files, resist the urge to add "helpful context." If a proposed addition doesn't pass the litmus test, do not include it regardless of how useful it seems. The research is clear: more content = worse compliance across all rules.
-
-## Grading Rubric
-
-### Per Dimension
-
-| Grade | Meaning |
-|---|---|
-| **STRONG** | No issues found; follows best practices |
-| **NEEDS WORK** | Minor issues; file works but could be improved |
-| **WEAK** | Significant issues; file likely hurts more than it helps |
-
-### Overall Grade
-
-| Overall | Criteria |
-|---|---|
-| **STRONG** | No dimensions rated WEAK |
-| **NEEDS WORK** | 1-3 dimensions rated WEAK |
-| **WEAK** | 4+ dimensions rated WEAK, OR any critical anti-pattern (LLM-generated content, >300 lines, emphasis on >10% of rules) |
 
 ## Related Skills
 
