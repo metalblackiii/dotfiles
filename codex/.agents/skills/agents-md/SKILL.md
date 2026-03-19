@@ -1,5 +1,5 @@
 ---
-name: writing-agents-md
+name: agents-md
 description: ALWAYS invoke when creating, editing, auditing, or discussing AGENTS.md, CLAUDE.md, or any AI coding agent instruction file — including incidental edits during broader tasks (e.g., updating AGENTS.md after adding a feature). Do not edit or advise on these files without loading this skill first. System-prompt CLAUDE.md references do NOT count. Not for skills (use writing-skills), hooks, or settings.json.
 allowed-tools: Bash, Read, Glob, Grep
 ---

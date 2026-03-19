@@ -161,6 +161,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 
 | Skill | When it activates |
 |-------|-------------------|
+| **agents-md** | Writing, auditing, or improving AGENTS.md, CLAUDE.md, or AI agent instruction files |
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
@@ -207,7 +208,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
 | **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
-| **writing-agents-md** | Writing, auditing, or improving AGENTS.md, CLAUDE.md, or AI agent instruction files |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 
 ### Instructions (Two Layers)
