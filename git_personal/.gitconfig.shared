@@ -13,5 +13,8 @@
     line-numbers = true
     syntax-theme = Dracula
 
+[fetch]
+    prune = true
+
 [merge]
     conflictstyle = zdiff3

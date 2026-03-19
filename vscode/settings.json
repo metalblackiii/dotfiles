@@ -1,7 +1,5 @@
 {
-    "projectManager.git.baseFolders": [
-        "~/repos"
-    ],
+    // Editor
     "editor.bracketPairColorization.enabled": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "explicit"
@@ -12,23 +10,55 @@
     "editor.snippetSuggestions": "top",
     "editor.suggestSelection": "first",
     "editor.tabSize": 2,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+
+    // ESLint
     "eslint.format.enable": true,
     "eslint.codeActionsOnSave.mode": "problems",
+
+    // Files & Search
     "files.trimTrailingWhitespace": true,
-    "terminal.external.osxExec": "iTerm.app",
-    "terminal.explorerKind": "external",
-    "terminal.integrated.allowMnemonics": true,
-    "terminal.integrated.fontFamily": "MesloLGS NF",
     "search.exclude": {
         "**/node_modules": false,
         "**/node_modules2": true
     },
-    "terminal.integrated.scrollback": 50000,
     "workbench.editor.empty.hint": "hidden",
+
+    // Terminal
+    "terminal.external.osxExec": "Ghostty.app",
+    "terminal.explorerKind": "external",
+    "terminal.integrated.allowMnemonics": true,
+    "terminal.integrated.enableVisualBell": true,
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "terminal.integrated.scrollback": 50000,
     "accessibility.signals.terminalBell": {
         "sound": "on"
     },
-    "terminal.integrated.enableVisualBell": true,
+
+    // Git & SCM
+    "git.mergeEditor": true,
+    "git.openRepositoryInParentFolders": "never",
+    "git.timeline.date": "committed",
+    "scm.defaultViewMode": "tree",
+    "scm.graph.badges": "all",
+
+    // GitLens
+    "gitlens.telemetry.enabled": false,
+    "gitlens.views.commitDetails.files.layout": "tree",
+    "gitlens.views.worktrees.branches.layout": "list",
+
+    // Project Manager
+    "projectManager.git.baseFolders": [
+        "~/repos"
+    ],
+
+    // Claude Code
+    "claudeCode.preferredLocation": "panel",
+
+    // Snyk
     "snyk.yesWelcomeNotification": false,
     "snyk.severity": {
         "low": false
@@ -78,31 +108,15 @@
         "/Users/martinburch/repos/webdriverIO-with-mochaBDD",
         "/Users/martinburch/repos/neb-proxy"
     ],
-    "snyk.folderConfigs": [
-        {
-            "folderPath": "/Users/martinburch/repos/neb-local-dev",
-            "baseBranch": "master",
-            "localBranches": [
-                "SAVED-mjb-egg-NEB-83993-move-image-ecr",
-                "master",
-                "mjb-egg-NEB-79537-setup-es-kibana",
-                "mjb-poc-local-development"
-            ]
-        }
-    ],
-    "git.openRepositoryInParentFolders": "never",
     "snyk.advanced.cliPath": "/Users/martinburch/Library/Application Support/snyk-ls/snyk-macos-arm64",
-    "gitlens.telemetry.enabled": false,
-    "telemetry.feedback.enabled": false,
-    "telemetry.telemetryLevel": "off",
-    "claudeCode.preferredLocation": "panel",
-    "[json]": {
-        "editor.defaultFormatter": "vscode.json-language-features"
-    },
+
+    // Datadog
     "datadog.ust.environment.setup.focusedName": "prod",
     "datadog.telemetry.setup.enableTelemetry": "disabled",
     "datadog.telemetry.setup.enableAgentObservability": false,
     "datadog.timeRange.setup.timeFrame": "4h",
-    "diffEditor.ignoreTrimWhitespace": false,
-    "gitlens.views.commitDetails.files.layout": "tree"
+
+    // Telemetry
+    "telemetry.feedback.enabled": false,
+    "telemetry.telemetryLevel": "off"
 }
