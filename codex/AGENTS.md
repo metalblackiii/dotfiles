@@ -78,16 +78,6 @@ Don't gold-plate. Don't add features nobody asked for. But don't leave code wors
 
 Don't add plugin-style abstractions, path resolution systems, or multi-layer patterns unless explicitly requested.
 
-## Context Management
-
-When a session runs long, proactively run the `handoff` skill before autocompact kicks in. Signs you should trigger handoff:
-- Context usage exceeds 400K tokens
-- Conversation has had many tool calls or substantial back-and-forth
-- You're working on a multi-step task that isn't yet complete
-- The session feels heavy — don't wait to be asked
-
-Run handoff, tell the user to start fresh with HANDOFF.md, and stop. A full-context handoff is far more useful than a post-compact recovery.
-
 ## Brewfile
 
 CLI tools and GUI apps are managed via `~/repos/dotfiles/Brewfile`. When installing a brew package, also add it to the Brewfile. Don't just `brew install` ad hoc.

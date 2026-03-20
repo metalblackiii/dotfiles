@@ -1,7 +1,6 @@
 {
   "env": {
-    "ENABLE_TOOL_SEARCH": "true",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "60"
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "attribution": {
     "commit": "",
