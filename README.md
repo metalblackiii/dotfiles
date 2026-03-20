@@ -2,7 +2,7 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Codex**, **Claude Code**, **VS Code**, **Ghostty**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
+Currently supports **Codex**, **Claude Code**, **VS Code**, **Ghostty**, **Yazi**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
 
 New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatomy, and adoption guide.
 
@@ -59,6 +59,10 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── settings.json        # User settings → ~/Library/Application Support/Code/User/settings.json
+├── yazi/                    # Yazi file manager configuration (personal)
+│   ├── install.sh
+│   ├── uninstall.sh
+│   └── yazi.toml            # Yazi config → ~/.config/yazi/yazi.toml
 ├── zsh/                     # Zsh shell configuration (personal)
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -419,6 +423,10 @@ When adding a new tool, add it to the Brewfile and run `brew bundle` rather than
 ### Ghostty
 
 `ghostty/config.ghostty` is symlinked to `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty`. Edit the dotfiles copy to change Ghostty settings.
+
+### Yazi
+
+`yazi/yazi.toml` is symlinked to `~/.config/yazi/yazi.toml`. A `y` shell wrapper in `zsh/omz-custom/aliases.zsh` provides cd-on-exit behavior (quit with `q` to cd, `Q` to stay).
 
 ### Zsh
 

@@ -3,7 +3,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Have kubectl/k9s edit commands use vscode; requires adding code to path via VSCode
+# Default editor (used by yazi, git, etc.)
+export EDITOR='code -w'
 export KUBE_EDITOR='code -w'
 
 # Disable RTK_TEE (claude token saver) for better security
