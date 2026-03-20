@@ -87,17 +87,26 @@ Display: `Peer review: [M files] ([scope description]) | transport: [transport] 
 
 Use the platform-native file-creation tool to create `.peer-review/prompt-1.md`. Do not use bash redirects — they may be blocked by shell hooks.
 
-The prompt tells the reviewer to invoke the `self-review` skill, which already handles diff capture, pr-analysis criteria, defensive audit, naming scan, and severity-formatted output. The prompt only needs to specify the scope and add the exhaustive single-pass requirement:
+The prompt must be **transport-agnostic**. Do not assume the reviewer can invoke `$self-review` directly — some isolated reviewer transports have no skill attachment or skill invocation support even when the parent session does. The prompt should prefer skill invocation when available, then fall back to reading the installed skill from the runtime skill roots.
+
+Create this prompt:
 
 ```
-Run $self-review [scope].
+Review the requested local changes for [scope].
 
-Report ALL findings in a single pass. Do not hold back issues for later rounds —
-each round costs real time and compute. Check every edge case, every assumption,
-every interaction between changes before concluding.
+If skill invocation is available, run:
+$self-review [scope]
+
+Otherwise, bootstrap from the installed skill files:
+1. Check `~/.agents/skills/personal/self-review/SKILL.md`
+2. If not found, check `~/.claude/skills/self-review/SKILL.md`
+3. Read whichever exists and follow it exactly
+4. When that workflow references sibling skills (for example `../pr-analysis/SKILL.md`), resolve them relative to the loaded skill file's directory
+
+Review exhaustively in a single pass; do not defer findings to later rounds.
 ```
 
-Replace `[scope]` with the user's requested scope (e.g., `staged`, `main...HEAD`). That's the entire prompt — self-review handles everything else including the `FINDINGS:` summary line.
+Replace `[scope]` with the user's requested scope (e.g., `staged`, `main...HEAD`). This keeps reviewer bootstrapping portable across Claude Code, Codex, and transports that only expose filesystem access. `self-review` still owns the review workflow and `FINDINGS:` summary format.
 
 ### Step 3: Dispatch to Reviewer
 
