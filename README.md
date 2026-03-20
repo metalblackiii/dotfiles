@@ -287,6 +287,13 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 |---------|---------|
 | **co-research** | Dispatch parallel research agents and Codex, then synthesize findings |
 
+#### CLI Tools (`claude/bin/`)
+
+| Tool | Purpose |
+|------|---------|
+| **claude-backup** | Back up Claude Code runtime data (sessions, history, usage-data) to `~/.claude-backup/<timestamp>` |
+| **claude-restore** | Restore from backup with non-destructive merge (`-n` dry run, `-l` list backups) |
+
 #### Hooks & Scripts
 
 - **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Injects the `using-skills` guidance and enforces skill-first workflow.
@@ -294,6 +301,7 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 - **bash-permissions.sh** + **bash-permissions.json** — PreToolUse hook that enforces layered Bash permission rules (deny, sensitive paths, branch-conditional allow, ask). Rules are externalized to JSON for easy editing.
 - **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.
 - **context-bar.sh** — Status line script showing model, git branch, uncommitted files, sync status, and context usage percentage.
+- **claude-guard.sh** (zsh) — `npm` wrapper that auto-triggers `claude-backup` before `npm uninstall ... claude-code` to prevent runtime data loss.
 
 #### Permissions
 

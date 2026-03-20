@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Restore Claude Code runtime data from a backup.
+# Non-destructive: never overwrites existing files.
+
+CLAUDE_DIR="$HOME/.claude"
+BACKUP_ROOT="$HOME/.claude-backup"
+
+RUNTIME_DIRS=(
+    projects
+    usage-data
+    telemetry
+    tasks
+    plans
+    todos
+    file-history
+    backups
+    plugins
+)
+
+usage() {
+    echo "Usage: ${0##*/} [-h] [-l] [-n] [TIMESTAMP]"
+    echo ""
+    echo "Restore Claude Code runtime data from ~/.claude-backup/<timestamp>."
+    echo "If TIMESTAMP is omitted, uses the latest backup."
+    echo ""
+    echo "Files are merged non-destructively (existing files are never overwritten)."
+    echo "history.jsonl is prepended (old entries before current)."
+    echo ""
+    echo "Options:"
+    echo "    -h    Show this help"
+    echo "    -l    List available backups"
+    echo "    -n    Dry run (show what would be restored)"
+}
+
+list_backups() {
+    if [[ ! -d "$BACKUP_ROOT" ]]; then
+        echo "No backups found at $BACKUP_ROOT"
+        exit 0
+    fi
+    echo "Available backups:"
+    for dir in "$BACKUP_ROOT"/*/; do
+        [[ -d "$dir" ]] || continue
+        local ts size
+        ts="$(basename "$dir")"
+        size="$(du -sh "$dir" | cut -f1)"
+        echo "  $ts  ($size)"
+    done
+}
+
+resolve_backup_dir() {
+    local ts="${1:-}"
+    if [[ -n "$ts" ]]; then
+        local dir="$BACKUP_ROOT/$ts"
+        if [[ ! -d "$dir" ]]; then
+            echo "Error: backup $dir does not exist" >&2
+            list_backups >&2
+            exit 1
+        fi
+        echo "$dir"
+    else
+        if [[ ! -d "$BACKUP_ROOT" ]]; then
+            echo "Error: no backups found at $BACKUP_ROOT" >&2
+            exit 1
+        fi
+        local latest
+        latest="$(find "$BACKUP_ROOT" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | xargs -n1 basename | sort -r | head -1)"
+        if [[ -z "$latest" ]]; then
+            echo "Error: no backups found in $BACKUP_ROOT" >&2
+            exit 1
+        fi
+        echo "$BACKUP_ROOT/$latest"
+    fi
+}
+
+main() {
+    local dry_run=false
+    while getopts ":hln" opt; do
+        case $opt in
+            h) usage; exit 0 ;;
+            l) list_backups; exit 0 ;;
+            n) dry_run=true ;;
+            \?) echo "Error: invalid option -${OPTARG}" >&2; exit 1 ;;
+        esac
+    done
+    shift $((OPTIND - 1))
+
+    local backup_dir
+    backup_dir="$(resolve_backup_dir "${1:-}")"
+    echo "Restoring from: $backup_dir"
+    $dry_run && echo "(dry run — no changes will be made)"
+
+    mkdir -p "$CLAUDE_DIR"
+
+    # Merge history.jsonl (prepend old entries)
+    if [[ -f "$backup_dir/history.jsonl" ]]; then
+        if [[ -f "$CLAUDE_DIR/history.jsonl" ]]; then
+            local old_lines current_lines
+            old_lines="$(wc -l < "$backup_dir/history.jsonl")"
+            current_lines="$(wc -l < "$CLAUDE_DIR/history.jsonl")"
+            echo "  history.jsonl: prepending $old_lines old entries to $current_lines current"
+            if ! $dry_run; then
+                local tmp
+                tmp="$(mktemp)"
+                cat "$backup_dir/history.jsonl" "$CLAUDE_DIR/history.jsonl" > "$tmp"
+                mv "$tmp" "$CLAUDE_DIR/history.jsonl"
+            fi
+        else
+            echo "  history.jsonl: copying"
+            $dry_run || cp -a "$backup_dir/history.jsonl" "$CLAUDE_DIR/history.jsonl"
+        fi
+    fi
+
+    # Merge directories non-destructively
+    for dir in "${RUNTIME_DIRS[@]}"; do
+        if [[ -d "$backup_dir/$dir" ]]; then
+            if [[ -d "$CLAUDE_DIR/$dir" ]]; then
+                echo "  $dir/: merging (--ignore-existing)"
+                $dry_run || rsync -a --ignore-existing "$backup_dir/$dir/" "$CLAUDE_DIR/$dir/"
+            else
+                echo "  $dir/: copying"
+                $dry_run || cp -a "$backup_dir/$dir" "$CLAUDE_DIR/$dir"
+            fi
+        fi
+    done
+
+    echo "Done."
+}
+
+main "$@"

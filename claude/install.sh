@@ -45,6 +45,16 @@ for item in "${CLAUDE_ITEMS[@]}"; do
     fi
 done
 
+# User-facing CLI tools (claude-backup, claude-restore)
+CLAUDE_BIN="$DOTFILES_DIR/claude/bin"
+if [ -d "$CLAUDE_BIN" ]; then
+    mkdir -p "$HOME/.local/bin"
+    for script in "$CLAUDE_BIN"/*; do
+        [ -f "$script" ] || continue
+        symlink_with_backup "$script" "$HOME/.local/bin/$(basename "$script")"
+    done
+fi
+
 # RTK config (dependency of rtk-rewrite hook)
 RTK_INSTALLER="$DOTFILES_DIR/rtk/install.sh"
 if [ -x "$RTK_INSTALLER" ]; then

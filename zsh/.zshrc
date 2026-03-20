@@ -55,6 +55,10 @@ eval "$(zoxide init zsh)"
 # Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Guard against Claude Code uninstall destroying runtime data
+[[ -f "${${:-$HOME/.zshrc}:A:h}/scripts/claude-guard.sh" ]] && \
+  source "${${:-$HOME/.zshrc}:A:h}/scripts/claude-guard.sh"
+
 # fnm — fast node manager (replaces nvm)
 eval "$(fnm env --use-on-cd --shell zsh)"
 

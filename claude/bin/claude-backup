@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Back up Claude Code runtime data that npm uninstall destroys.
+# Creates timestamped snapshots under ~/.claude-backup/.
+
+CLAUDE_DIR="$HOME/.claude"
+BACKUP_ROOT="$HOME/.claude-backup"
+TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
+BACKUP_DIR="$BACKUP_ROOT/$TIMESTAMP"
+
+# Runtime directories at risk during uninstall.
+# Config (CLAUDE.md, settings.json, hooks, skills, etc.) is safe — symlinked from dotfiles.
+RUNTIME_ITEMS=(
+    projects
+    history.jsonl
+    usage-data
+    telemetry
+    tasks
+    plans
+    todos
+    file-history
+    backups
+    plugins
+)
+
+usage() {
+    echo "Usage: ${0##*/} [-h] [-q]"
+    echo ""
+    echo "Back up Claude Code runtime data to ~/.claude-backup/<timestamp>."
+    echo ""
+    echo "Options:"
+    echo "    -h    Show this help"
+    echo "    -q    Quiet mode (no progress output)"
+}
+
+main() {
+    local quiet=false
+    while getopts ":hq" opt; do
+        case $opt in
+            h) usage; exit 0 ;;
+            q) quiet=true ;;
+            \?) echo "Error: invalid option -${OPTARG}" >&2; exit 1 ;;
+        esac
+    done
+
+    if [[ ! -d "$CLAUDE_DIR" ]]; then
+        echo "Error: $CLAUDE_DIR does not exist" >&2
+        exit 1
+    fi
+
+    local found=0
+    for item in "${RUNTIME_ITEMS[@]}"; do
+        [[ -e "$CLAUDE_DIR/$item" ]] && ((found++))
+    done
+    if [[ $found -eq 0 ]]; then
+        echo "Nothing to back up (no runtime data found in $CLAUDE_DIR)"
+        exit 0
+    fi
+
+    mkdir -p "$BACKUP_DIR"
+    $quiet || echo "Backing up to $BACKUP_DIR"
+
+    for item in "${RUNTIME_ITEMS[@]}"; do
+        if [[ -e "$CLAUDE_DIR/$item" ]]; then
+            $quiet || echo "  $item"
+            cp -a "$CLAUDE_DIR/$item" "$BACKUP_DIR/$item"
+        fi
+    done
+
+    local size
+    size="$(du -sh "$BACKUP_DIR" | cut -f1)"
+    $quiet || echo "Done. Backup size: $size"
+    echo "$BACKUP_DIR"
+}
+
+main "$@"
