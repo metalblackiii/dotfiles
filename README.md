@@ -46,7 +46,7 @@ dotfiles/
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 3 custom subagents
 │       ├── commands/        # Slash commands (co-research)
-│       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
+│       ├── hooks/           # PreToolUse and PostToolUse hooks
 │       ├── scripts/         # Status bar, hooks
 │       └── skills           # Symlink → ../../codex/.agents/skills
 ├── ghostty/                 # Ghostty terminal configuration (personal)
@@ -161,7 +161,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-#### Skills (48)
+#### Skills (47)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -212,7 +212,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
 | **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
 | **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
-| **using-skills** | Session-start skill discovery and invocation workflow (loaded automatically) |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 
@@ -297,7 +296,6 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 
 #### Hooks & Scripts
 
-- **session-start.sh** — SessionStart hook. Fires on startup, resume, clear, and compact. Injects the `using-skills` guidance and enforces skill-first workflow.
 - **rtk-rewrite.sh** — PreToolUse hook that transparently rewrites Bash commands through [RTK](https://github.com/rtk-ai/rtk) for token savings. Silently no-ops if `rtk` or `jq` aren't installed.
 - **bash-permissions.sh** + **bash-permissions.json** — PreToolUse hook that enforces layered Bash permission rules (deny, sensitive paths, branch-conditional allow, ask). Rules are externalized to JSON for easy editing.
 - **eslint-autofix.sh** — PostToolUse hook that auto-runs ESLint `--fix` after Edit/Write operations on JS/TS files.

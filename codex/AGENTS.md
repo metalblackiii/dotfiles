@@ -99,6 +99,10 @@ CLI tools and GUI apps are managed via `~/repos/dotfiles/Brewfile`. When install
 - If a blocked command appears to come from a project-level hook or permission system, ask for guidance rather than retrying.
 - When npm/shell commands fail due to cwd, use `--prefix <path>` or `cd <path> &&` immediately — don't retry the broken approach.
 
+## Skill Compliance
+
+Check the skills list before every task. Matching skill → invoke it first, work second.
+
 ## Self-Documenting Code
 
 - Every "what" comment is a naming failure. Try renaming before commenting.

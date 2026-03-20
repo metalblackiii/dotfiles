@@ -103,7 +103,7 @@ Use this three-layer model:
 
 ### Skills-First Workflow
 
-In Codex, the `developer_instructions` field in `config.toml` runs on every session. Treat this as your always-on hook: it's where you enforce "check for applicable skills before non-trivial work." This is "The Iron Law" — skills activate before work begins, not as an afterthought. Claude Code achieves similar behavior via a SessionStart hook.
+In Codex, the `developer_instructions` field in `config.toml` runs on every session. In Claude Code, `AGENTS.md` (imported via `@` in `CLAUDE.md`) serves the same purpose. Either way, this is where you enforce "check for applicable skills before non-trivial work." This is "The Iron Law" — skills activate before work begins, not as an afterthought.
 
 Even if you don't adopt the full skill set, adding a skills-first reminder to your agent's always-on instructions is high-value with low effort.
 
@@ -123,7 +123,6 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), this bundle
 - `test-driven-development` — Non-trivial feature/bugfix work where tests should drive design.
 - `systematic-debugging` — Bugs with non-obvious root cause; structured debugging before proposing fixes.
 - `verification-before-completion` — Run evidence-based checks before claiming work is complete or passing.
-- `using-skills` — Session-start discovery/invocation workflow for applicable skills.
 
 ### 2) Review Bundle
 
@@ -193,7 +192,7 @@ For teams that use Snyk CLI for vulnerability scanning:
 
 ---
 
-These bundles are **curated highlights**, not an exhaustive list. The repo contains 48 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
+These bundles are **curated highlights**, not an exhaustive list. The repo contains 47 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
 
 ## What This Repo Does Not Cover
 
@@ -224,7 +223,7 @@ Update the values in the [Customization](README.md#customization) section of the
 
 1. Create a new repo with the same structure
 2. Use the `writing-skills` skill to guide you through creating your first SKILL.md
-3. Add a skills-first reminder to your agent config (`developer_instructions` in Codex, SessionStart hook in Claude Code)
+3. Add a skills-first reminder to your agent config (`developer_instructions` in Codex, `AGENTS.md`/`CLAUDE.md` in Claude Code)
 4. Build up gradually — add skills as you find yourself repeating the same guidance
 
 Starting from scratch is more work up front but gives you a setup that's entirely yours. No dead skills, no conventions that don't match your workflow.
