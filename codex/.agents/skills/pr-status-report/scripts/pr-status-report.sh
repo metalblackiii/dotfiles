@@ -21,6 +21,7 @@ Options:
   --stale-days <n>       Mark PR as stale after n inactive days (default: 7)
   --search <query>       Additional GitHub search qualifiers
   --json                 Output JSON instead of Markdown
+  --compact              One-line-per-PR list (terminal-friendly, no tables)
   -h, --help             Show help
 EOF
 }
@@ -48,14 +49,15 @@ print_markdown_section() {
   fi
 
   printf '\n## %s (%s)\n\n' "$heading" "$count"
-  printf '| PR | Repo | Age | Review | Checks | Next Step |\n'
-  printf '|---|---|---:|---|---|---|\n'
+  printf '| PR | Repo | Branch | Age | Review | Checks | Next Step |\n'
+  printf '|---|---|---|---:|---|---|---|\n'
 
-  while IFS=$'\t' read -r number url title repo age review checks next; do
+  while IFS=$'\t' read -r number url title repo branch age review checks next; do
     pr_cell="[#${number}](${url}) $(escape_cell "$title")"
-    printf '| %s | %s | %s | %s | %s | %s |\n' \
+    printf '| %s | %s | %s | %s | %s | %s | %s |\n' \
       "$pr_cell" \
       "$(escape_cell "$repo")" \
+      "\`$(escape_cell "$branch")\`" \
       "$(escape_cell "$age")" \
       "$(escape_cell "$review")" \
       "$(escape_cell "$checks")" \
@@ -69,6 +71,59 @@ print_markdown_section() {
           .url,
           .title,
           .repo,
+          .branch,
+          (.ageDays|tostring + "d"),
+          (if .draft then "DRAFT" else .reviewDecision end),
+          ("F:" + (.checks.failed|tostring) + " P:" + (.checks.pending|tostring) + " S:" + (.checks.success|tostring)),
+          .nextAction
+        ]
+      | @tsv
+    ' <<< "$report_json"
+  )
+}
+
+print_compact_section() {
+  local report_json="$1"
+  local bucket="$2"
+  local heading="$3"
+
+  local count
+  count="$(jq --arg bucket "$bucket" '[.rows[] | select(.bucket == $bucket)] | length' <<< "$report_json")"
+  if [[ "$count" -eq 0 ]]; then
+    return
+  fi
+
+  printf '\n## %s (%s)\n' "$heading" "$count"
+
+  while IFS=$'\t' read -r number url repo branch age review checks next; do
+    # Strip org prefix for brevity (Chiropractic-CT-Cloud/neb-www -> neb-www)
+    local short_repo="${repo##*/}"
+    # Compact checks: only show non-zero counts
+    local check_parts=()
+    local f p s
+    f="$(cut -d: -f2 <<< "$(cut -d' ' -f1 <<< "$checks")")"
+    p="$(cut -d: -f2 <<< "$(cut -d' ' -f2 <<< "$checks")")"
+    s="$(cut -d: -f2 <<< "$(cut -d' ' -f3 <<< "$checks")")"
+    [[ "$f" != "0" ]] && check_parts+=("${f}F")
+    [[ "$p" != "0" ]] && check_parts+=("${p}P")
+    [[ "$s" != "0" ]] && check_parts+=("${s}S")
+    local check_str
+    if [[ ${#check_parts[@]} -eq 0 ]]; then
+      check_str="no checks"
+    else
+      check_str="$(IFS=/; echo "${check_parts[*]}")"
+    fi
+    printf -- '- [%s#%s](%s) \`%s\` %s %s %s -> %s\n' \
+      "$short_repo" "$number" "$url" "$branch" "$age" "$review" "$check_str" "$next"
+  done < <(
+    jq -r --arg bucket "$bucket" '
+      .rows[]
+      | select(.bucket == $bucket)
+      | [
+          (.number|tostring),
+          .url,
+          .repo,
+          .branch,
           (.ageDays|tostring + "d"),
           (if .draft then "DRAFT" else .reviewDecision end),
           ("F:" + (.checks.failed|tostring) + " P:" + (.checks.pending|tostring) + " S:" + (.checks.success|tostring)),
@@ -107,6 +162,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --json)
       OUTPUT_FORMAT="json"
+      shift
+      ;;
+    --compact)
+      OUTPUT_FORMAT="compact"
       shift
       ;;
     -h|--help)
@@ -193,7 +252,7 @@ while IFS= read -r pr_url; do
   )"
 
   if pr_view="$(
-    gh pr view "$pr_url" --json number,title,url,createdAt,updatedAt,isDraft,reviewDecision,mergeStateStatus,mergeable,reviewRequests,statusCheckRollup 2>/dev/null
+    gh pr view "$pr_url" --json number,title,url,headRefName,createdAt,updatedAt,isDraft,reviewDecision,mergeStateStatus,mergeable,reviewRequests,statusCheckRollup 2>/dev/null
   )"; then
     :
   else
@@ -203,6 +262,7 @@ while IFS= read -r pr_url; do
           number: $item.number,
           title: $item.title,
           url: $item.url,
+          headRefName: "UNKNOWN",
           createdAt: $item.createdAt,
           updatedAt: $item.updatedAt,
           isDraft: $item.isDraft,
@@ -318,6 +378,7 @@ report_json="$(
           number: $pr.number,
           title: $pr.title,
           url: $pr.url,
+          branch: ($pr.headRefName // "UNKNOWN"),
           reviewDecision: ($pr.reviewDecision // "UNKNOWN"),
           mergeStateStatus: ($pr.mergeStateStatus // "UNKNOWN"),
           mergeable: ($pr.mergeable // "UNKNOWN"),
@@ -365,6 +426,19 @@ report_json="$(
 
 if [[ "$OUTPUT_FORMAT" == "json" ]]; then
   jq '.' <<< "$report_json"
+  exit 0
+fi
+
+if [[ "$OUTPUT_FORMAT" == "compact" ]]; then
+  echo "# PR Status Report"
+  echo
+  echo "$(jq -r '.totals | "\(.all) open (\(.active) active, \(.draftFollowUp) draft) | action: \(.needsAction) | waiting: \(.waiting) | ready: \(.ready) | stale: \(.stale)"' <<< "$report_json")"
+
+  print_compact_section "$report_json" "Needs your action" "Needs Your Action"
+  print_compact_section "$report_json" "Waiting on others" "Waiting On Others"
+  print_compact_section "$report_json" "Ready to merge" "Ready To Merge"
+  print_compact_section "$report_json" "Stale" "Stale"
+  print_compact_section "$report_json" "Draft follow-up" "Draft Follow-up"
   exit 0
 fi
 

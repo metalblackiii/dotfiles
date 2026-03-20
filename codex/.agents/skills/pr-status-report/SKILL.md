@@ -30,13 +30,15 @@ Draft PRs are intentionally excluded from active status buckets and listed in a 
 1. Validate prerequisites:
    - `gh` is installed and authenticated
    - `jq` is installed
-2. Run the helper script:
+2. Run the helper script with `--compact` flag — this produces a one-line-per-PR list that renders cleanly in the terminal (no markdown tables that get bloated by the renderer):
    - Codex runtime path: `~/.agents/skills/personal/pr-status-report/scripts/pr-status-report.sh`
    - Claude runtime path: `~/.claude/skills/pr-status-report/scripts/pr-status-report.sh`
-3. Present the markdown report exactly, then add a short triage summary:
+3. **Echo the compact output VERBATIM in your text response — do not rewrite, summarize, or reformat it.** The script output contains markdown links (`[repo#N](url)`) that must be preserved exactly so they render as clickable links. If you paraphrase or restructure the output, the links break. Copy-paste the entire script output character-for-character, then add your triage summary after it.
+4. After the compact report, add a short triage summary:
    - Count by bucket (active buckets plus draft follow-up)
    - Top 3 highest-priority actions
-4. If requested, rerun with tighter filters (owner/repo/search/stale threshold).
+   - **Link format:** Always reference PRs as `owner/repo#number` (e.g., `Chiropractic-CT-Cloud/neb-ms-registry#140`), never bare `#number` — bare numbers resolve to the wrong repo in markdown contexts.
+5. If requested, rerun with tighter filters (owner/repo/search/stale threshold).
 
 ## Commands
 
@@ -45,7 +47,10 @@ Draft PRs are intentionally excluded from active status buckets and listed in a 
 SCRIPT_PATH="$HOME/.agents/skills/personal/pr-status-report/scripts/pr-status-report.sh"
 [[ -x "$SCRIPT_PATH" ]] || SCRIPT_PATH="$HOME/.claude/skills/pr-status-report/scripts/pr-status-report.sh"
 
-# Default dashboard for your open PRs
+# Default: compact one-line-per-PR (use for text response)
+bash "$SCRIPT_PATH" --compact
+
+# Full markdown tables (stays in tool result for reference)
 bash "$SCRIPT_PATH"
 
 # Org-scoped
