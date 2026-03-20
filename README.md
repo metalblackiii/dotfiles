@@ -44,7 +44,7 @@ dotfiles/
 │       ├── BASH-PERMISSIONS.md # Bash permissions context (included via project AGENTS.md)
 │       ├── RTK.md           # RTK usage reference (included via project AGENTS.md)
 │       ├── settings.json    # Permissions, hooks, env vars
-│       ├── agents/          # 4 custom subagents
+│       ├── agents/          # 3 custom subagents
 │       ├── commands/        # Slash commands (co-research)
 │       ├── hooks/           # PreToolUse, PostToolUse, and SessionStart hooks
 │       ├── scripts/         # Status bar, hooks
@@ -270,13 +270,12 @@ No MCP servers currently have explicit tool permissions in `settings.json`. Serv
 
 Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via `@import` (`claude/.claude/CLAUDE.md` imports `codex/AGENTS.md`). It adds platform-specific features on top.
 
-#### Agents (4)
+#### Agents (3)
 
 Custom subagents spawned via the Task tool for parallel or specialized work.
 
 | Agent | Purpose |
 |-------|---------|
-| **analysis-writer** | Produce structured analysis documents for team decision-making |
 | **neb-explorer** | Explore feature implementations across neb microservices |
 | **research** | General-purpose research, web fetching, codebase investigation, multi-step tasks |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |

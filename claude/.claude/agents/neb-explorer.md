@@ -1,6 +1,6 @@
 ---
 name: neb-explorer
-description: Explore feature implementations, data flows, or patterns across the neb microservices ecosystem. Use when investigating how a feature spans multiple repos.
+description: ALWAYS invoke to explore feature implementations, data flows, or patterns across the neb microservices ecosystem. Use when investigating how a feature spans multiple repos, tracing cross-service calls, or understanding neb architecture.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 maxTurns: 15
