@@ -17,10 +17,9 @@ Prefer dedicated file-reading and search tools for file discovery and content in
 Scan configuration from the dotfiles repo. Resolve the repo root from current workspace context and trace symlink targets, preferring file tools first and using minimal shell commands only when needed. All config lives under these paths (relative to the repo root):
 
 ### Shared (both platforms)
-- `shared/INSTRUCTIONS.md` — global instructions (single source of truth)
+- `codex/AGENTS.md` — global instructions (single source of truth)
 - `codex/.agents/skills/*/SKILL.md` — canonical skill files (source of truth)
-- `claude/.claude/CLAUDE.md` — symlink → `shared/INSTRUCTIONS.md`
-- `codex/AGENTS.md` — symlink → `shared/INSTRUCTIONS.md`
+- `claude/.claude/CLAUDE.md` — `@import` of `codex/AGENTS.md` (resolves through symlinks via real file path)
 
 ### Claude Code
 - `claude/.claude/settings.json` — global settings
@@ -112,7 +111,7 @@ To prevent drift without structural extraction, compare `review` and `self-revie
 
 Determine active platform first, then prioritize findings accordingly:
 
-1. **Shared sources of truth** (always first): `shared/INSTRUCTIONS.md`, canonical skills in `codex/.agents/skills/`, and shared symlink wiring
+1. **Shared sources of truth** (always first): `codex/AGENTS.md`, canonical skills in `codex/.agents/skills/`, and `@import` wiring
 2. **Active platform configuration** (depends on runtime):
    - In **Codex**: prioritize `codex/.codex/config.toml` and Codex runtime behavior
    - In **Claude Code**: prioritize `claude/.claude/settings.json`, hooks, status line, and Claude runtime behavior
@@ -132,7 +131,7 @@ Codex-mode hard rule:
 - In Codex mode, Claude settings may only appear under:
   - **Cross-Platform Parity** (wiring/parity impacts), or
   - **Suggestions** (informational notes), if relevant.
-- If a concern originates in Claude settings and also affects shared policy, report the shared-policy conflict against shared/canonical files first (for example `shared/INSTRUCTIONS.md`), not as a Claude-settings conflict.
+- If a concern originates in Claude settings and also affects shared policy, report the shared-policy conflict against shared/canonical files first (for example `codex/AGENTS.md`), not as a Claude-settings conflict.
 
 Note: some assets are inherently platform-specific and should NOT be flagged:
 - Slash commands (`claude/.claude/commands/`) — Claude Code only, Codex has no equivalent
@@ -144,8 +143,8 @@ Note: some assets are inherently platform-specific and should NOT be flagged:
 - Empty `attribution` fields in settings.json — intentionally suppress default attribution behavior
 - Claude-only commands (`.claude/commands/`) that have shared skill equivalents — the command is kept for `/slash` invocation
 - Claude-only permission tuning and UX wiring (hooks/status line) without Codex or shared-policy impact
-- `@RTK.md` in `shared/INSTRUCTIONS.md` — RTK is Claude-only infrastructure; the `@` include is inert literal text on Codex with zero functional impact
-- `@BASH-PERMISSIONS.md` in `shared/INSTRUCTIONS.md` — bash-permissions is Claude-only infrastructure; the `@` include is inert literal text on Codex with zero functional impact
+- `@RTK.md` in project-level `CLAUDE.md`/`AGENTS.md` — RTK is Claude-only infrastructure; the `@` include is inert literal text on Codex with zero functional impact
+- `@BASH-PERMISSIONS.md` in project-level `CLAUDE.md`/`AGENTS.md` — bash-permissions is Claude-only infrastructure; the `@` include is inert literal text on Codex with zero functional impact
 
 ## Output Format
 

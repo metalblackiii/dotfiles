@@ -2,7 +2,7 @@
 
 Personal configuration files for AI coding assistants, managed with Git and symlinks.
 
-Currently supports **Codex**, **Claude Code**, **VS Code**, **Ghostty**, **Yazi**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and agent instructions in `shared/INSTRUCTIONS.md` — both shared across Codex and Claude Code via symlinks.
+Currently supports **Codex**, **Claude Code**, **VS Code**, **Ghostty**, **Yazi**, and some **Git** configurations. Agent skills live in `codex/.agents/skills/` and shared instructions in `codex/AGENTS.md` — Claude Code imports via `@` in `CLAUDE.md`, Codex reads directly.
 
 New here? See [INTRODUCTION.md](INTRODUCTION.md) for the rationale, skill anatomy, and adoption guide.
 
@@ -25,12 +25,10 @@ dotfiles/
 │   └── .gitconfig.shared    # Included via [include] in ~/.gitconfig
 ├── AGENTS.md                # Project-level rules (dotfiles-specific)
 ├── CLAUDE.md                # Symlink → AGENTS.md
-├── shared/                  # Cross-platform sources of truth
-│   └── INSTRUCTIONS.md      # Global agent conventions, rules, preferences
 ├── codex/                   # Codex configuration
 │   ├── install.sh
 │   ├── uninstall.sh
-│   ├── AGENTS.md            # Symlink → ../shared/INSTRUCTIONS.md
+│   ├── AGENTS.md            # Shared instructions (canonical source of truth)
 │   ├── .codex/
 │   │   └── config.toml      # Codex runtime settings
 │   └── .agents/
@@ -42,7 +40,7 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .claude/
-│       ├── CLAUDE.md        # Symlink → ../../shared/INSTRUCTIONS.md (global rules)
+│       ├── CLAUDE.md        # @import of ../../codex/AGENTS.md (global rules)
 │       ├── BASH-PERMISSIONS.md # Bash permissions context (included via project AGENTS.md)
 │       ├── RTK.md           # RTK usage reference (included via project AGENTS.md)
 │       ├── settings.json    # Permissions, hooks, env vars
@@ -147,7 +145,7 @@ To remove:
 
 | Layer | Shared? | Where |
 |-------|---------|-------|
-| Instructions (conventions, rules) | Yes | `shared/INSTRUCTIONS.md` — symlinked as `CLAUDE.md` and `AGENTS.md` |
+| Instructions (conventions, rules) | Yes | `codex/AGENTS.md` — Claude Code imports via `@`, Codex reads directly |
 | Skills | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
 | Claude settings, hooks, agents | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
@@ -220,7 +218,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 
 ### Instructions (Two Layers)
 
-**Global** — `shared/INSTRUCTIONS.md` is symlinked as `claude/.claude/CLAUDE.md` and `codex/AGENTS.md`, loaded in every repo:
+**Global** — `codex/AGENTS.md` is the canonical source of shared instructions. Claude Code imports it via `@` in `claude/.claude/CLAUDE.md`; Codex reads it directly. Loaded in every repo:
 
 - **Git preferences** — conventional commits, explicit commit/push approval
 - **PR defaults** — reviewers, gh flags
@@ -270,7 +268,7 @@ No MCP servers currently have explicit tool permissions in `settings.json`. Serv
 
 ### Claude Code Configuration
 
-Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via another (`claude/.claude/CLAUDE.md` → `shared/INSTRUCTIONS.md`). It adds platform-specific features on top.
+Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via `@import` (`claude/.claude/CLAUDE.md` imports `codex/AGENTS.md`). It adds platform-specific features on top.
 
 #### Agents (4)
 
@@ -383,7 +381,7 @@ If you fork this repo, update these team/environment-specific values:
 | What | Where | Default |
 |------|-------|---------|
 | Neb repo base path | `claude/.claude/agents/neb-explorer.md` | `~/repos/` |
-| PR default reviewers | `shared/INSTRUCTIONS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
+| PR default reviewers | `codex/AGENTS.md` → PR Defaults | `Chiropractic-CT-Cloud/phoenix` |
 | Feature branch pattern | `claude/.claude/hooks/bash-permissions.json` → allow layer `"branch"` | `^mjb-pho-NEB-` |
 
 ## Attribution

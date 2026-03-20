@@ -37,7 +37,7 @@ The skill surfacing mechanism in the dotfiles repo is well-architected:
 
 1. **SessionStart hook** (`claude/.claude/hooks/session-start.sh`) reads `~/.claude/skills/using-skills/SKILL.md`, JSON-escapes it, and injects the full body wrapped in `<EXTREMELY_IMPORTANT>` tags into startup context
 2. **Shared skill corpus** — `claude/.claude/skills` symlinks to `codex/.agents/skills` (47 skills), so both platforms consume the same definitions
-3. **CLAUDE.md reinforcement** — `shared/INSTRUCTIONS.md` explicitly states: "Before responding to any task, scan the available skills list... Skills are mandatory when applicable"
+3. **CLAUDE.md reinforcement** — `codex/AGENTS.md` (shared instructions) explicitly states: "Before responding to any task, scan the available skills list... Skills are mandatory when applicable"
 4. **`ENABLE_TOOL_SEARCH=true`** — set in settings.json, enabling deferred tool discovery
 5. **Agent preloading** — `neb-explorer.md` demonstrates skill preloading via frontmatter (`skills: neb-ms-conventions`)
 
@@ -113,7 +113,7 @@ This achieved 100% activation in controlled trials. It's the single highest-leve
 
 ### Layer 3: Slim CLAUDE.md
 
-- Current shared/INSTRUCTIONS.md is well-structured but the skill section could be leaner
+- Current codex/AGENTS.md (shared instructions) is well-structured but the skill section could be leaner
 - Move enforcement to descriptions (Layer 1) and hooks (Layer 4)
 - The using-skills content injected via SessionStart is valuable but may be doing more harm than good if it pushes context past the attention threshold
 

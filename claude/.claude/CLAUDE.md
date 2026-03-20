@@ -1,1 +1,1 @@
-../../shared/INSTRUCTIONS.md
+@../../codex/AGENTS.md

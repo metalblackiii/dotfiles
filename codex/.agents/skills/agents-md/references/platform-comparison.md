@@ -52,19 +52,19 @@ CLAUDE.md    → Claude-specific config (@imports, hooks references, skills refe
 **Pros:** Each file serves its platform's strengths
 **Cons:** Two files to maintain; risk of contradiction
 
-### Pattern 3: Symlinked (Dotfiles Pattern)
+### Pattern 3: @import Through Symlinks (Dotfiles Pattern)
 
 ```
-AGENTS.md    → symlink to canonical source
-CLAUDE.md    → symlink to same target (or to AGENTS.md)
+AGENTS.md    → canonical source (real file)
+CLAUDE.md    → real file containing @../../path/to/AGENTS.md
 ```
 
-**When to use:** Dotfiles repos or any setup where both files should always be identical. The symlink is the single source of truth — no drift possible.
+**When to use:** Dotfiles repos or multi-platform setups where AGENTS.md is canonical and CLAUDE.md is deployed via symlink to `~/.claude/`. Claude Code resolves `@` paths relative to the real file location (not the symlink path), so imports work through symlink chains.
 
-**Pros:** Zero maintenance; physically impossible to diverge
-**Cons:** Only works when content is truly identical across platforms
+**Pros:** AGENTS.md is canonical; CLAUDE.md can optionally add Claude-specific supplements alongside the import; no intermediate `shared/` directory needed
+**Cons:** Depends on Claude Code's real-path resolution behavior (empirically verified, not documented)
 
-**During audit:** If both files resolve to the same inode or one is a symlink to the other, classify as "Symlinked" — not duplication. This is intentional.
+**During audit:** If CLAUDE.md contains only `@<path-to-AGENTS.md>`, classify as "@import redirect" — not duplication. This is intentional.
 
 ### Pattern 4: Full Duplication (Anti-Pattern)
 
@@ -99,19 +99,17 @@ alwaysApply: true
 
 ### For Dotfiles Repos (Personal Config)
 
-Use symlinks to share content across platforms. The key principle: pick one canonical file, symlink everything else to it.
+Use `@import` to share content across platforms. The key principle: AGENTS.md is canonical, CLAUDE.md imports it.
 
 ```
 # Example layout (paths vary by repo)
-<canonical-location>/AGENTS.md          # single source of truth
-claude/.claude/CLAUDE.md  →  <canonical> # symlink if content is identical
-codex/AGENTS.md           →  <canonical> # symlink for Codex
-
-# OR: independent CLAUDE.md when Claude-specific features are needed
-claude/.claude/CLAUDE.md                 # independent file with @imports
+codex/AGENTS.md                          # canonical source of truth (real file)
+claude/.claude/CLAUDE.md                 # real file containing @../../codex/AGENTS.md
 ```
 
-The dotfiles pattern allows different content per platform while keeping everything in one repo. Use Phase 1 discovery to find the actual layout — don't assume root-level paths.
+Claude Code resolves `@` relative paths from the real file location, not the apparent symlink path. So even though `~/.claude/CLAUDE.md` is a symlink to `dotfiles/claude/.claude/CLAUDE.md`, the `@../../codex/AGENTS.md` resolves correctly from the dotfiles repo.
+
+CLAUDE.md can optionally include Claude-specific supplements below the import. Use Phase 1 discovery to find the actual layout — don't assume root-level paths.
 
 ### Progressive Disclosure Architecture
 

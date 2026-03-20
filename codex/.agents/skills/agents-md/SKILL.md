@@ -206,7 +206,7 @@ For each candidate line from the survey and interview:
 
 - **Most repos**: AGENTS.md canonical + CLAUDE.md stub (`@AGENTS.md`)
 - **Claude-specific features needed**: AGENTS.md canonical + CLAUDE.md supplements (never duplicates)
-- **Dotfiles repo**: Symlink strategy per `references/platform-comparison.md`
+- **Dotfiles/multi-platform repos**: AGENTS.md canonical + CLAUDE.md `@import` (resolves through symlinks via real file path). Verified pattern: Claude Code resolves `@` relative paths from the real file location, not the apparent symlink path
 - **Large project (>100 lines of content)**: Progressive disclosure (root + satellite docs)
 
 ### 2b.5 Create Companion File
@@ -214,9 +214,9 @@ For each candidate line from the survey and interview:
 If 1.5 flagged a missing companion, create it now using the strategy chosen in 2b.4:
 
 - **Stub redirect** (most repos): create `CLAUDE.md` containing `@AGENTS.md` (or vice versa) alongside the canonical file
-- **Symlink** (dotfiles/multi-platform repos): symlink the companion to the canonical source per `references/platform-comparison.md`
+- **@import** (dotfiles/multi-platform repos): create `CLAUDE.md` with `@<relative-path-to-AGENTS.md>`. `@` resolves through symlinks via real file path, so the import works even when the CLAUDE.md file is deployed via symlink to a different location (e.g., `~/.claude/CLAUDE.md`)
 
-Match the strategy — don't default to stub when the repo uses symlinks.
+Match the strategy — don't default to stub when the repo uses `@import`.
 
 ### 2b.6 Draft Using Taxonomy
 
