@@ -31,7 +31,7 @@ dotfiles/
 │   ├── AGENTS.md            # Shared instructions (canonical source of truth)
 │   ├── .codex/
 │   │   ├── config.toml      # Codex runtime settings
-│   │   └── agents/          # 3 custom agents (derived from Claude Code agents)
+│   │   └── agents/          # 4 custom agents (derived from Claude Code agents)
 │   └── .agents/
 │       └── skills/          # SOURCE OF TRUTH — actual skill files
 │           ├── pr-analysis/SKILL.md
@@ -41,11 +41,11 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .claude/
-│       ├── CLAUDE.md        # @import of ../../codex/AGENTS.md (global rules)
+│       ├── CLAUDE.md        # @imports: AGENTS.md, RTK-GLOBAL.md, WAYPOINT.md
 │       ├── BASH-PERMISSIONS.md # Bash permissions context (included via project AGENTS.md)
 │       ├── RTK.md           # RTK usage reference (included via project AGENTS.md)
 │       ├── settings.json    # Permissions, hooks, env vars
-│       ├── agents/          # 3 custom subagents
+│       ├── agents/          # 4 custom subagents
 │       ├── commands/        # Slash commands (co-research)
 │       ├── hooks/           # PreToolUse and PostToolUse hooks
 │       ├── scripts/         # Status bar, hooks
@@ -162,7 +162,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Sandbox mode**: `workspace-write` with network access enabled (required for `gh` commands, web searches, and API calls)
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
-- **Agents**: 3 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer)
+- **Agents**: 4 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer, www-wtr-runner)
 
 #### Skills (47)
 
@@ -279,9 +279,9 @@ No MCP servers currently have explicit tool permissions in `settings.json`. Serv
 
 ### Claude Code Configuration
 
-Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via `@import` (`claude/.claude/CLAUDE.md` imports `codex/AGENTS.md`). It adds platform-specific features on top.
+Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via `@import` (`claude/.claude/CLAUDE.md` imports `codex/AGENTS.md`, `codex/RTK-GLOBAL.md`, and `~/repos/waypoint/WAYPOINT.md`). It adds platform-specific features on top.
 
-#### Agents (3)
+#### Agents (4)
 
 Custom subagents spawned via the Task tool for parallel or specialized work.
 
@@ -290,8 +290,15 @@ Custom subagents spawned via the Task tool for parallel or specialized work.
 | **neb-explorer** | Explore feature implementations across neb microservices |
 | **research** | General-purpose research, web fetching, codebase investigation, multi-step tasks |
 | **upgrade-analyst** | Research dependency upgrades, migrations, and breaking changes |
+| **www-wtr-runner** | Run and debug `web-test-runner` tests in `neb-www` |
 
 > **Neb-specific agents**: `neb-explorer` has the neb architecture knowledge (layers, environments, services, shared libraries) inlined directly and assumes neb repositories are cloned into `~/repos/` with their standard names (e.g., `~/repos/neb-ms-billing`, `~/repos/neb-microservice`). If your repos live elsewhere, update the base path in `claude/.claude/agents/neb-explorer.md`.
+
+**Invocation**
+
+Codex: `Use the www-wtr-runner agent to run TEST_FILES=test/services/update-notifications.unit.test.js in neb-www`
+
+Claude Code: `@"www-wtr-runner (agent)" run TEST_FILES=test/services/update-notifications.unit.test.js in neb-www`
 
 #### Commands
 
