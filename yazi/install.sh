@@ -9,7 +9,7 @@ source "$DOTFILES_DIR/lib/dotfiles.sh"
 YAZI_SOURCE="$DOTFILES_DIR/yazi"
 YAZI_TARGET="$HOME/.config/yazi"
 
-echo "Installing yazi config..."
+echo "Installing Yazi config..."
 
 mkdir -p "$YAZI_TARGET"
 

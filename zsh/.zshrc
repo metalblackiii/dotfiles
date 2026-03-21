@@ -50,15 +50,18 @@ eval "$(zoxide init zsh)"
 
 #export AWS_DEFAULT_PROFILE=<in private env vars>
 
-[[ -f "${${:-$HOME/.zshrc}:A:h}/scripts/aws-sso-profiles.sh" ]] && \
-  source "${${:-$HOME/.zshrc}:A:h}/scripts/aws-sso-profiles.sh"
+# Resolve dotfiles dir once via .zshrc symlink
+_dotfiles_zsh="${${:-$HOME/.zshrc}:A:h}"
+
+[[ -f "$_dotfiles_zsh/scripts/aws-sso-profiles.sh" ]] && \
+  source "$_dotfiles_zsh/scripts/aws-sso-profiles.sh"
 
 # Powerlevel10k config
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Guard against Claude Code uninstall destroying runtime data
-[[ -f "${${:-$HOME/.zshrc}:A:h}/scripts/claude-guard.sh" ]] && \
-  source "${${:-$HOME/.zshrc}:A:h}/scripts/claude-guard.sh"
+[[ -f "$_dotfiles_zsh/scripts/claude-guard.sh" ]] && \
+  source "$_dotfiles_zsh/scripts/claude-guard.sh"
 
 # fnm — fast node manager (replaces nvm)
 eval "$(fnm env --use-on-cd --shell zsh)"

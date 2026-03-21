@@ -8,5 +8,5 @@ scrollback-limit = 300000
 # Split panes — dim unfocused splits so the active one pops
 unfocused-split-opacity = 0.7
 
-# Working directory
-working-directory = /Users/martinburch/repos/dotfiles
+# Working directory — Ghostty resolves "home" to $HOME
+working-directory = home

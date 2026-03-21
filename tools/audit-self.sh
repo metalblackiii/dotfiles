@@ -56,15 +56,14 @@ main() {
         \( -name 'CLAUDE.md' -o -name 'AGENTS.md' -o -name 'HANDOFF.md' \) \
         -delete
 
-    # Isolated HOME so Claude loads no ~/.claude config, skills, or settings
-    mkdir -p "$TMPDIR_CREATED/home"
-
     echo "Running fresh-eyes audit (no project context)..."
     echo ""
 
     cd "$TMPDIR_CREATED/dotfiles"
-    HOME="$TMPDIR_CREATED/home" claude -p "$prompt" \
+    claude -p "$prompt" \
         --system-prompt "You are a code reviewer with no prior context about this repo." \
+        --setting-sources "" \
+        --no-chrome \
         --disable-slash-commands
 }
 

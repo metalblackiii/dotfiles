@@ -8,7 +8,7 @@ source "$DOTFILES_DIR/lib/dotfiles.sh"
 
 YAZI_TARGET="$HOME/.config/yazi"
 
-echo "Uninstalling yazi config..."
+echo "Uninstalling Yazi config..."
 
 remove_symlink "$YAZI_TARGET/yazi.toml"
 
