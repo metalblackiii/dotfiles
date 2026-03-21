@@ -164,7 +164,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 - **Agents**: 4 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer, www-wtr-runner)
 
-#### Skills (47)
+#### Skills (48)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -204,6 +204,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **ratchet** | Autonomous metric-driven iteration — interview, loop (change → verify → keep/restore), hand off for review. Manual invoke only (`/ratchet`) |
 | **requirements-analyst** | Surfacing ambiguities, risks, and gaps in requirements before engineering |
 | **review** | PR review for architecture, testing, code quality, security |
+| **rust-expert** | Writing, reviewing, or modifying Rust code — including Cargo.toml, CI, dependencies, error handling |
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
 | **security-review** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
 | **self-review** | Pre-commit/pre-PR quality gate for local git changes |

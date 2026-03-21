@@ -93,6 +93,7 @@ Structure findings by repository:
 
 ## Guidelines
 
+- Prefer Grep for cross-repo keyword searches, Read for examining specific files
 - Report file:line references so the user can navigate directly
 - Flag inconsistencies between repos (mismatched types, stale contracts, env var mismatches)
 - If a repo isn't cloned locally, note it as a gap rather than silently skipping
