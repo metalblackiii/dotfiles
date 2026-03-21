@@ -172,11 +172,12 @@
     "type": "command",
     "command": "bash ~/.claude/scripts/context-bar.sh"
   },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
   "effortLevel": "high",
   "autoUpdatesChannel": "stable",
   "minimumVersion": "2.1.70",
-  "autoMemoryEnabled": false,
-  "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true
-  }
+  "autoMemoryEnabled": false
 }
