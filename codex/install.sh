@@ -15,6 +15,7 @@ echo "Installing Codex config..."
 mkdir -p "$CODEX_TARGET"
 
 symlink_with_backup "$DOTFILES_DIR/codex/.codex/config.toml" "$CODEX_TARGET/config.toml"
+symlink_with_backup "$DOTFILES_DIR/codex/.codex/agents" "$CODEX_TARGET/agents"
 symlink_with_backup "$DOTFILES_DIR/codex/AGENTS.md" "$CODEX_TARGET/AGENTS.md"
 
 # Share skills with Codex via native skill discovery

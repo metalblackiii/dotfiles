@@ -30,7 +30,8 @@ dotfiles/
 │   ├── uninstall.sh
 │   ├── AGENTS.md            # Shared instructions (canonical source of truth)
 │   ├── .codex/
-│   │   └── config.toml      # Codex runtime settings
+│   │   ├── config.toml      # Codex runtime settings
+│   │   └── agents/          # 3 custom agents (derived from Claude Code agents)
 │   └── .agents/
 │       └── skills/          # SOURCE OF TRUTH — actual skill files
 │           ├── pr-analysis/SKILL.md
@@ -147,7 +148,8 @@ To remove:
 |-------|---------|-------|
 | Instructions (conventions, rules) | Yes | `codex/AGENTS.md` — Claude Code imports via `@`, Codex reads directly |
 | Skills | Yes | `codex/.agents/skills/` — Claude Code accesses via symlink |
-| Claude settings, hooks, agents | No | Claude-only features |
+| Agents | No (synced by convention) | `claude/.claude/agents/` (canonical) + `codex/.codex/agents/` (derived) |
+| Claude settings, hooks | No | Claude-only features |
 | Codex config.toml | No | Codex-only runtime settings |
 
 ### Codex Configuration
@@ -160,8 +162,9 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Sandbox mode**: `workspace-write` with network access enabled (required for `gh` commands, web searches, and API calls)
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
+- **Agents**: 3 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer)
 
-#### Skills (46)
+#### Skills (47)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -212,6 +215,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **thinking-partner** | Challenging ideas with structured critical reasoning, mental models (150+), and orientation detection |
 | **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
+| **writing-agents** | Creating, updating, or converting agent/subagent definitions for Claude Code or Codex |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 
 #### Dormant Skills (2)

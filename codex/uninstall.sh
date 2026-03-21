@@ -14,6 +14,7 @@ echo "Uninstalling Codex config..."
 
 CODEX_ITEMS=(
     "config.toml"
+    "agents"
     "AGENTS.md"
 )
 
