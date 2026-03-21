@@ -22,8 +22,7 @@
     // Files & Search
     "files.trimTrailingWhitespace": true,
     "search.exclude": {
-        "**/node_modules": false,
-        "**/node_modules2": true
+        "**/node_modules": false
     },
     "workbench.editor.empty.hint": "hidden",
 
@@ -33,7 +32,7 @@
     "terminal.integrated.allowMnemonics": true,
     "terminal.integrated.enableVisualBell": true,
     "terminal.integrated.fontFamily": "MesloLGS NF",
-    "terminal.integrated.scrollback": 50000,
+    "terminal.integrated.scrollback": 300000,
     "accessibility.signals.terminalBell": {
         "sound": "on"
     },
@@ -54,9 +53,6 @@
     "projectManager.git.baseFolders": [
         "~/repos"
     ],
-
-    // Claude Code
-    "claudeCode.preferredLocation": "panel",
 
     // Snyk
     "snyk.yesWelcomeNotification": false,
@@ -117,5 +113,18 @@
 
     // Telemetry
     "telemetry.feedback.enabled": false,
-    "telemetry.telemetryLevel": "off"
+    "telemetry.telemetryLevel": "off",
+    "redhat.telemetry.enabled": false,
+    "typescript.surveys.enabled": false,
+
+    // AI
+    "github.copilot.enable": false,
+    "chat.commandCenter.enabled": false,
+    "terminal.integrated.initialHint": false,
+
+    // UI
+    "workbench.activityBar.orientation": "horizontal",
+
+    // Mirrord
+    "mirrord.promptUsingBinary": false
 }
