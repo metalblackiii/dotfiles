@@ -126,5 +126,8 @@
     "workbench.activityBar.orientation": "horizontal",
 
     // Mirrord
-    "mirrord.promptUsingBinary": false
+    "mirrord.promptUsingBinary": false,
+
+    // Rust
+    "rust-analyzer.check.command": "clippy"
 }
