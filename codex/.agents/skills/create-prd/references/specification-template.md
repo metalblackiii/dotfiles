@@ -14,9 +14,9 @@
 
 ## Repositories
 
-[For multi-repo work, list every affected repo with its role and what
-changes. Agents and loop tools read this to know which repos to
-clone, branch, or verify. Omit for single-repo features.]
+[Always list every affected repo — even for single-repo features.
+Agents and loop tools read this to know which repos to clone, branch,
+or verify. A single-row table is fine.]
 
 | Repo | Role | Changes |
 |------|------|---------|
@@ -125,7 +125,7 @@ Then [gated behavior]
 | Section | Required | Notes |
 |---------|----------|-------|
 | Overview + tier/flag/entitlement | Yes | Always specify gating up front |
-| Repositories | If multi-repo | List each affected repo, its role, and expected changes |
+| Repositories | Yes | List each affected repo, its role, and expected changes |
 | Functional Requirements (EARS) | Yes | Core of the spec |
 | Non-Functional Requirements | Yes | Security and multi-tenant always relevant |
 | Feature Gating | If gated | Most neb features are gated |
