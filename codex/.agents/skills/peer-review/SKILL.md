@@ -137,7 +137,7 @@ Save the thread ID to `.peer-review/reviewer-id`.
 
 Spawn a named agent (name: `Reviewer`) with the contents of `.peer-review/prompt-1.md` as the task prompt. The agent must have zero implementation context — do not fork or share the current conversation.
 
-Wait for the agent to complete. Write the agent's response to `.peer-review/round-1.md`.
+Wait for the agent to complete. **Immediately** write the agent's response to `.peer-review/round-1.md` — before parsing findings or applying verdict logic.
 
 Save the agent's ID to `.peer-review/reviewer-id`.
 
@@ -234,7 +234,7 @@ Verify round output as in Step 3.
 
 #### Transport: `native-subagent`
 
-Send the contents of `.peer-review/prompt-N.md` as input to the existing reviewer agent (read agent ID from `.peer-review/reviewer-id`). Wait for the response and write it to `.peer-review/round-N.md`.
+Send the contents of `.peer-review/prompt-N.md` as input to the existing reviewer agent (read agent ID from `.peer-review/reviewer-id`). Wait for the response. **Immediately** write it to `.peer-review/round-N.md` — before parsing findings or applying verdict logic.
 
 Return to Step 4.
 
