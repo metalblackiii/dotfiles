@@ -59,7 +59,7 @@ From there, go back and forth with the agent — challenge assumptions, ask whet
 
 If the PR touches database logic (schema changes, complex queries, index impact), ask the agent to run the [`database-expert`](codex/.agents/skills/database-expert/) skill as a follow-up pass. This surfaces optimization and correctness issues that a general review misses.
 
-The same idea applies to any domain skill — `api-designer` for contract changes, `neb-playwright-expert` for E2E test changes. Stack domain passes on top of the general review when the diff warrants it.
+The same idea applies to any domain skill — `api-designer` for contract changes, `neb-ms-conventions` for backend service changes. Stack domain passes on top of the general review when the diff warrants it.
 
 ### 3. Local Self-Review (Before Commit)
 
@@ -154,7 +154,7 @@ These skills help you improve the system itself:
 Useful when the situation appears, with little ongoing overhead:
 
 - `handoff` — Capture session state when pausing or when context pressure is high.
-- `the-fool` — Structured critical reasoning: devil's advocate, pre-mortems, red teams, assumption auditing. Invoke it before committing to a design or plan — it's surprisingly effective at surfacing blind spots you're too close to see.
+- `thinking-partner` — Structured critical reasoning with 150+ mental models and orientation detection. Invoke it before committing to a design or plan — it's surprisingly effective at surfacing blind spots you're too close to see.
 - `quick-wins` — Scan a repo for low-risk improvement opportunities without making changes. Good for onboarding into an unfamiliar codebase.
 - `mcp-expert` — Evaluate, build, debug, or extend MCP servers and clients. Covers security vetting (HIPAA egress, tool poisoning) and development (TypeScript/Python SDKs, protocol compliance).
 - `prompt-engineer` — Design prompts for LLMs, build evaluation frameworks, and implement advanced prompting techniques.
@@ -165,7 +165,6 @@ Domain-heavy skills are worth adopting when they match your recurring work:
 
 - `database-expert` — SQL, schema design, query optimization, indexes, and Aurora/ORM patterns.
 - `api-designer` — REST contracts, versioning strategy, and API evolution planning.
-- `neb-playwright-expert` — E2E test design/debugging for neb-www's Playwright setup.
 - `neb-ms-conventions` — Neb backend patterns: routing, controllers, models, services, and messaging.
 - `creating-neb-patch-pr` — Create patch PRs for merged main PRs in neb-ms-* or neb-www repos.
 - `playwright-cli` — Browser automation for web testing, form filling, screenshots, and data extraction via Playwright CLI.
@@ -192,7 +191,7 @@ For teams that use Snyk CLI for vulnerability scanning:
 
 ---
 
-These bundles are **curated highlights**, not an exhaustive list. The repo contains 47 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
+These bundles are **curated highlights**, not an exhaustive list. The repo contains 46 skills including generators, validators, and niche domain tools. Browse `codex/.agents/skills/` for the full set.
 
 ## What This Repo Does Not Cover
 

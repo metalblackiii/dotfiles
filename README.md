@@ -161,7 +161,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 
-#### Skills (47)
+#### Skills (46)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
 
@@ -190,7 +190,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **loop-postmortem** | Structured post-mortem after a prd-loop run completes or crashes |
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
 | **neb-ms-conventions** | Code conventions used in neb microservice repositories |
-| **neb-playwright-expert** | Writing, debugging, or planning E2E tests in neb-www's Playwright infrastructure |
 | **peer-review** | Multi-round code review using an isolated agentic reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **pr-analysis** | Reviewing PR/git diffs for quality, security, architecture, testing |
@@ -210,10 +209,19 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
-| **the-fool** | Challenging ideas with structured critical reasoning, pre-mortems, red teams |
+| **thinking-partner** | Challenging ideas with structured critical reasoning, mental models (150+), and orientation detection |
 | **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
+
+#### Dormant Skills (2)
+
+Skills moved out of active rotation but preserved in `dormant/skills/` for easy reactivation (`mv dormant/skills/<name> codex/.agents/skills/`).
+
+| Skill | Why dormant |
+|-------|-------------|
+| **the-fool** | Replaced by `thinking-partner` (superset with 150+ models and orientation detection) |
+| **neb-playwright-expert** | No current use; preserved for future E2E test work in neb-www |
 
 ### Instructions (Two Layers)
 

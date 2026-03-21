@@ -9,6 +9,7 @@ Skills in this repo were adapted from the following sources:
 - [microsoft/playwright-cli](https://github.com/microsoft/playwright-cli) — playwright-cli skill (SKILL.md + references)
 - [rtk-ai/rtk](https://github.com/rtk-ai/rtk) — RTK (Rust Token Killer) CLI proxy, PreToolUse hook, and RTK.md context file
 - [akin-ozer/cc-devops-skills](https://github.com/akin-ozer/cc-devops-skills) — bash-expert (merged from bash-script-generator + bash-script-validator), dockerfile-expert (merged from dockerfile-generator + dockerfile-validator), gha-expert (merged from github-actions-generator + github-actions-validator), helm-expert (merged from helm-generator + helm-validator), k8s-expert (from k8s-debug)
+- [mattnowdev/thinking-partner](https://github.com/mattnowdev/thinking-partner) — thinking-partner skill (SKILL.md + references, trigger description tightened)
 
 All other skills are original work or codified from standard practices.
 
