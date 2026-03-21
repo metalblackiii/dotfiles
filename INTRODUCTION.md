@@ -103,9 +103,7 @@ Use this three-layer model:
 
 ### Skills-First Workflow
 
-In Codex, the `developer_instructions` field in `config.toml` runs on every session. In Claude Code, `AGENTS.md` (imported via `@` in `CLAUDE.md`) serves the same purpose. Either way, this is where you enforce "check for applicable skills before non-trivial work." This is "The Iron Law" — skills activate before work begins, not as an afterthought.
-
-Even if you don't adopt the full skill set, adding a skills-first reminder to your agent's always-on instructions is high-value with low effort.
+Each skill's description includes explicit trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to activate skills before work begins. In Claude Code, these descriptions are injected into the system prompt. In Codex, skills are discovered via `$skill` invocation. Either way, skills activate before work begins, not as an afterthought.
 
 ### ATTRIBUTION.md Culture
 
@@ -222,7 +220,7 @@ Update the values in the [Customization](README.md#customization) section of the
 
 1. Create a new repo with the same structure
 2. Use the `writing-skills` skill to guide you through creating your first SKILL.md
-3. Add a skills-first reminder to your agent config (`developer_instructions` in Codex, `AGENTS.md`/`CLAUDE.md` in Claude Code)
+3. Write clear trigger conditions in each skill's description (e.g., "ALWAYS invoke when...")
 4. Build up gradually — add skills as you find yourself repeating the same guidance
 
 Starting from scratch is more work up front but gives you a setup that's entirely yours. No dead skills, no conventions that don't match your workflow.

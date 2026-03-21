@@ -160,13 +160,12 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Reasoning effort**: configured per preference; valid levels depend on the selected model
 - **Approval policy**: `on-request`
 - **Sandbox mode**: `workspace-write` with network access enabled (required for `gh` commands, web searches, and API calls)
-- **Developer instructions**: `developer_instructions` provides an always-on skills-first reminder for non-trivial work
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 - **Agents**: 4 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer, www-wtr-runner)
 
 #### Skills (48)
 
-Specialized methodologies that activate automatically when relevant tasks are detected. The `developer_instructions` in `config.toml` enforce "The Iron Law" — check for applicable skills before responding to non-trivial requests.
+Specialized methodologies that activate automatically when relevant tasks are detected. Each skill's description includes trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to use them.
 
 | Skill | When it activates |
 |-------|-------------------|
