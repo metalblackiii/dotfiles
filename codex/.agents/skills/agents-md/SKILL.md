@@ -16,6 +16,14 @@ Checklist-driven workflow for writing or auditing AI coding agent instruction fi
 
 **Corollary: When in doubt, leave it out.** AI agents tend to overspecify when writing or fixing instruction files — adding context "just in case" that erodes the signal-to-noise ratio. Every line has a cost: tokens consumed, compliance diluted across remaining rules, maintenance burden. The bias is always toward less.
 
+## The Canonical File Rule
+
+> AGENTS.md is the canonical instruction file. CLAUDE.md is a stub that imports it.
+
+**AGENTS.md** is the cross-platform standard (20+ tools, Linux Foundation governance). Codex reads it natively. All project-level instructions belong here. **CLAUDE.md** should contain only `@AGENTS.md` plus any Claude-specific `@imports` (e.g., `@WAYPOINT.md`). Never put instructions directly in CLAUDE.md that could live in AGENTS.md.
+
+This applies to every workflow — writing new files, auditing existing ones, or adding instructions during broader tasks. When asked to "add a CLAUDE.md", create AGENTS.md with the content and CLAUDE.md as a stub.
+
 ## When to Use
 
 **Triggers:**
