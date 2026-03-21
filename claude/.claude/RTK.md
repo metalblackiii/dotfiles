@@ -30,15 +30,20 @@ Refer to CLAUDE.md for full command reference.
 
 ## Bypassing the Rewrite Hook
 
-Skills that parse raw git output (unified diffs, `--name-only`, `--porcelain`) need unmodified output — rtk's compact format will break them.
+**Default: let RTK compress.** During iterative development, RTK's compact output is sufficient for "did I break something?" checks. Only bypass for:
+
+- **Final validation before commit** — exact warnings, file:line locations, regression counts
+- **Skills parsing structured output** — unified diffs, `--name-only`, `--porcelain`
 
 **Bypass pattern:** Use `rtk proxy` to execute the command without filtering. The rewrite hook passes `rtk proxy ...` through unchanged (input equals output, so the hook is a no-op).
 
 ```bash
-# Rewritten to rtk (compact output):
+# Iterative dev — let RTK compress (default, preferred):
+cargo clippy --all-targets 2>&1
 git diff --staged
 
-# Bypasses rtk (raw unified diff):
+# Final validation or skill parsing — bypass RTK:
+rtk proxy cargo clippy --all-targets --all-features 2>&1
 rtk proxy git diff --staged --no-color -U3
 ```
 
