@@ -40,6 +40,11 @@ This configuration is managed via a dotfiles repo. `codex/AGENTS.md` is the sing
 - Use `-r` with `gh pr create`:
   - team format: `org/team-slug` (for example `Chiropractic-CT-Cloud/phoenix`)
   - individual format: `username` (for example `daniel-goss_ptek`)
+- When creating PRs, include a Jira ticket link in the body if a ticket number is detectable (from branch name or context). After PR creation, add a comment on the Jira ticket linking back to the PR.
+
+## Jira Defaults
+
+- Scrum team field: `customfield_11251` ("Nebula Scrum Team"), Phoenix = `id:11570`
 
 ## Output Preferences
 
