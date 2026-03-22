@@ -44,6 +44,7 @@ This configuration is managed via a dotfiles repo. `codex/AGENTS.md` is the sing
 
 ## Jira Defaults
 
+- Base URL: `https://practicetek.atlassian.net` (link format: `https://practicetek.atlassian.net/browse/NEB-XXXXX`)
 - Scrum team field: `customfield_11251` ("Nebula Scrum Team"), Phoenix = `id:11570`
 
 ## Output Preferences

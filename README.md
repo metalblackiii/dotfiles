@@ -46,7 +46,7 @@ dotfiles/
 │       ├── RTK.md           # RTK usage reference (included via project AGENTS.md)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 4 custom subagents
-│       ├── commands/        # Slash commands (co-research)
+│       ├── commands/        # Slash commands (ai-teamup, co-research)
 │       ├── hooks/           # PreToolUse and PostToolUse hooks
 │       ├── scripts/         # Status bar, hooks
 │       └── skills           # Symlink → ../../codex/.agents/skills
@@ -197,6 +197,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **pr-analysis** | Reviewing PR/git diffs for quality, security, architecture, testing |
 | **pr-review-queue** | Consolidated dashboard for PRs where you are a reviewer, with action buckets and next-step triage |
 | **pr-status-report** | Consolidated dashboard for open GitHub PRs with action buckets and next-step triage |
+| **prd-triage** | Analyze a PRD and recommend execution strategy (one-shot, loop, or Agent Teams). Platform-aware — degrades gracefully on Codex. |
 | **prompt-engineer** | LLM prompt design, evaluation frameworks, structured outputs |
 | **ptjira-cli** | Interacting with Jira via `ptjira` CLI — ticket lookup, search, context, comments, updates, attachments |
 | **quick-wins** | Repo scan for low-risk improvements — reports findings without making changes |
@@ -304,6 +305,7 @@ Claude Code: `@"www-wtr-runner (agent)" run TEST_FILES=test/services/update-noti
 
 | Command | Purpose |
 |---------|---------|
+| **ai-teamup** | Implement a PRD using Agent Teams — parallel specialists with peer messaging, Mongoose gate, and escalation protocol. Claude Code only. |
 | **co-research** | Dispatch parallel research agents and Codex, then synthesize findings |
 
 #### CLI Tools (`claude/bin/`)
