@@ -11,10 +11,10 @@ if [[ "$(uname)" != "Darwin" ]]; then
     exit 0
 fi
 
-GHOSTTY_TARGET="$HOME/Library/Application Support/com.mitchellh.ghostty"
+GHOSTTY_TARGET="$HOME/.config/ghostty"
 
 echo "Uninstalling Ghostty config..."
 
-remove_symlink "$GHOSTTY_TARGET/config.ghostty"
+remove_symlink "$GHOSTTY_TARGET/config"
 
 echo "Ghostty config uninstalled."

@@ -12,12 +12,13 @@ if [[ "$(uname)" != "Darwin" ]]; then
 fi
 
 GHOSTTY_SOURCE="$DOTFILES_DIR/ghostty"
-GHOSTTY_TARGET="$HOME/Library/Application Support/com.mitchellh.ghostty"
+GHOSTTY_TARGET="$HOME/.config/ghostty"
 
 echo "Installing Ghostty config..."
 
 mkdir -p "$GHOSTTY_TARGET"
 
-symlink_with_backup "$GHOSTTY_SOURCE/config.ghostty" "$GHOSTTY_TARGET/config.ghostty"
+# cmux and Ghostty >=1.2.3 read from ~/.config/ghostty/config
+symlink_with_backup "$GHOSTTY_SOURCE/config.ghostty" "$GHOSTTY_TARGET/config"
 
 echo "Ghostty config installed."

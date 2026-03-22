@@ -2,8 +2,8 @@
 font-family = JetBrains Mono
 font-size = 13
 
-# Scrollback
-scrollback-limit = 300000
+# Scrollback (value is in bytes, not lines — 50MB ≈ 300K+ lines)
+scrollback-limit = 50000000
 
 # Split panes — dim unfocused splits so the active one pops
 unfocused-split-opacity = 0.7
