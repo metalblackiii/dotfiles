@@ -30,21 +30,10 @@ Refer to CLAUDE.md for full command reference.
 
 ## Bypassing the Rewrite Hook
 
-**Default: let RTK compress.** During iterative development, RTK's compact output is sufficient for "did I break something?" checks. Only bypass for:
+**NEVER use `rtk proxy` proactively.** Always run the normal command first. RTK's compressed output is sufficient for nearly all tasks.
 
-- **Final validation before commit** — exact warnings, file:line locations, regression counts
-- **Skills parsing structured output** — unified diffs, `--name-only`, `--porcelain`
+**`rtk proxy` is a retry tool.** Only use it when a prior command's RTK-compressed output was garbled, truncated, or missing information you need to proceed. If the compressed output works, do not retry with `rtk proxy`.
 
-**Bypass pattern:** Use `rtk proxy` to execute the command without filtering. The rewrite hook passes `rtk proxy ...` through unchanged (input equals output, so the hook is a no-op).
-
-```bash
-# Iterative dev — let RTK compress (default, preferred):
-cargo clippy --all-targets 2>&1
-git diff --staged
-
-# Final validation or skill parsing — bypass RTK:
-rtk proxy cargo clippy --all-targets --all-features 2>&1
-rtk proxy git diff --staged --no-color -U3
-```
+**Bypass pattern:** `rtk proxy <cmd>` executes without filtering. The rewrite hook passes `rtk proxy ...` through unchanged (input equals output, so the hook is a no-op).
 
 Note: env-var prefixes (`GIT_PAGER=cat git diff ...`) do NOT bypass the rewrite — rtk preserves the prefix and still rewrites `git` to `rtk git`.
