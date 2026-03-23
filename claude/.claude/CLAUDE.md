@@ -1,4 +1,4 @@
 @../../codex/AGENTS.md
-@../../codex/RTK-GLOBAL.md
-@../../codex/LSP.md
+@RTK-GLOBAL.md
+@LSP.md
 @~/repos/waypoint/WAYPOINT.md

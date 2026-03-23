@@ -17,6 +17,8 @@ CLAUDE_ITEMS=(
     "CLAUDE.md"
     "settings.json"
     "RTK.md"
+    "RTK-GLOBAL.md"
+    "LSP.md"
     "BASH-PERMISSIONS.md"
     "hooks"
     "skills"

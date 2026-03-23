@@ -4,8 +4,6 @@
 
 When adding, removing, or renaming skills, commands, agents, or hooks, update the corresponding table in `README.md` (including the skill count). The README is the inventory for this repo.
 
-@claude/.claude/BASH-PERMISSIONS.md
-
 ## Survey Repos
 
 Representative sample across the neb platform for cross-cutting research.
@@ -18,6 +16,3 @@ Org: Chiropractic-CT-Cloud (unless noted)
 - neb-local-dev — local dev environment, devops patterns
 - ptek-ai-platform (org: PracticeTek-Common-Services) — newer AWS-native stack
 
-## RTK (Rust Token Killer)
-
-@claude/.claude/RTK.md

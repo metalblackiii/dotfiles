@@ -24,7 +24,7 @@ dotfiles/
 │   ├── uninstall.sh
 │   └── .gitconfig.shared    # Included via [include] in ~/.gitconfig
 ├── AGENTS.md                # Project-level rules (dotfiles-specific)
-├── CLAUDE.md                # Symlink → AGENTS.md
+├── CLAUDE.md                # Stub that imports AGENTS.md
 ├── codex/                   # Codex configuration
 │   ├── install.sh
 │   ├── uninstall.sh
@@ -41,7 +41,7 @@ dotfiles/
 │   ├── install.sh
 │   ├── uninstall.sh
 │   └── .claude/
-│       ├── CLAUDE.md        # @imports: AGENTS.md, RTK-GLOBAL.md, WAYPOINT.md
+│       ├── CLAUDE.md        # @imports: ../../codex/AGENTS.md, RTK-GLOBAL.md, LSP.md, WAYPOINT.md
 │       ├── BASH-PERMISSIONS.md # Bash permissions context (included via project AGENTS.md)
 │       ├── RTK.md           # RTK usage reference (included via project AGENTS.md)
 │       ├── settings.json    # Permissions, hooks, env vars
@@ -241,7 +241,7 @@ Skills moved out of active rotation but preserved in `dormant-skills/` for easy 
 - **Security** — HIPAA context, no PII in examples, no hardcoded secrets
 - **Self-documenting code** — rename over comment, only "why" comments
 
-**Project-level** — `AGENTS.md` (with `CLAUDE.md` symlinked to it) at the repo root, loaded only in the dotfiles repo:
+**Project-level** — `AGENTS.md` (with `CLAUDE.md` as a stub that imports it) at the repo root, loaded only in the dotfiles repo:
 
 - **Canonical editing** — always edit in the dotfiles repo, never via symlinked paths
 - **Bash permissions** — rule format, layers, test suite for `bash-permissions.json`
@@ -283,7 +283,7 @@ No MCP servers currently have explicit tool permissions in `settings.json`. Serv
 
 ### Claude Code Configuration
 
-Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via `@import` (`claude/.claude/CLAUDE.md` imports `codex/AGENTS.md`, `codex/RTK-GLOBAL.md`, and `~/repos/waypoint/WAYPOINT.md`). It adds platform-specific features on top.
+Claude Code accesses skills via a symlink (`claude/.claude/skills` → `codex/.agents/skills`) and instructions via `@import` (`claude/.claude/CLAUDE.md` imports `../../codex/AGENTS.md`, `RTK-GLOBAL.md`, `LSP.md`, and `~/repos/waypoint/WAYPOINT.md`). Project-level `CLAUDE.md` imports `AGENTS.md`, `claude/.claude/BASH-PERMISSIONS.md`, and `claude/.claude/RTK.md`. It adds platform-specific features on top.
 
 #### Agents (4)
 
