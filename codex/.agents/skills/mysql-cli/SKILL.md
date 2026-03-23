@@ -1,9 +1,9 @@
 ---
-name: db-query
+name: mysql-cli
 description: ALWAYS invoke when you need to query a live MySQL database, inspect table schemas, explore data, or verify database state. Triggers on "check the database", "what tables exist", "query the DB", "look at the data", "describe this table", "run this SQL". Do not answer database questions from memory when live data is available.
 ---
 
-# DB Query
+# MySQL CLI
 
 Execute queries against live MySQL databases via the `dbq` wrapper. For query design, optimization, and EXPLAIN analysis, use `database-expert` instead.
 
@@ -45,8 +45,8 @@ The script lives alongside this skill. Use the path that matches the current pla
 
 | Platform | Path |
 |---|---|
-| Claude Code | `~/.claude/skills/db-query/scripts/dbq.sh` |
-| Codex | `~/.agents/skills/personal/db-query/scripts/dbq.sh` |
+| Claude Code | `~/.claude/skills/mysql-cli/scripts/dbq.sh` |
+| Codex | `~/.agents/skills/personal/mysql-cli/scripts/dbq.sh` |
 
 Use the path matching your platform in all commands below. Examples use the Claude Code path.
 
@@ -54,22 +54,22 @@ Use the path matching your platform in all commands below. Examples use the Clau
 # Usage: dbq.sh <login-path> <database> <sql>
 
 # List databases
-~/.claude/skills/db-query/scripts/dbq.sh local information_schema "SELECT SCHEMA_NAME FROM SCHEMATA"
+~/.claude/skills/mysql-cli/scripts/dbq.sh local information_schema "SELECT SCHEMA_NAME FROM SCHEMATA"
 
 # List tables
-~/.claude/skills/db-query/scripts/dbq.sh local global "SHOW TABLES"
+~/.claude/skills/mysql-cli/scripts/dbq.sh local global "SHOW TABLES"
 
 # Describe table structure
-~/.claude/skills/db-query/scripts/dbq.sh local global "DESCRIBE <table>"
+~/.claude/skills/mysql-cli/scripts/dbq.sh local global "DESCRIBE <table>"
 
 # Query data
-~/.claude/skills/db-query/scripts/dbq.sh local global "SELECT <columns> FROM <table> WHERE <condition> LIMIT 100"
+~/.claude/skills/mysql-cli/scripts/dbq.sh local global "SELECT <columns> FROM <table> WHERE <condition> LIMIT 100"
 
 # Show indexes
-~/.claude/skills/db-query/scripts/dbq.sh local global "SHOW INDEX FROM <table>"
+~/.claude/skills/mysql-cli/scripts/dbq.sh local global "SHOW INDEX FROM <table>"
 
 # Count rows
-~/.claude/skills/db-query/scripts/dbq.sh local global "SELECT COUNT(*) FROM <table>"
+~/.claude/skills/mysql-cli/scripts/dbq.sh local global "SELECT COUNT(*) FROM <table>"
 ```
 
 Replace `local` with the appropriate login path and `global` with the target database.

@@ -1,6 +1,3 @@
-# macOS
-.DS_Store
-
 # Ephemeral claude data (these stay in ~/.claude, not symlinked)
 # Listed here in case they accidentally get copied
 claude/.claude/projects/
@@ -16,11 +13,9 @@ claude/.claude/session-env/
 claude/.claude/shell-snapshots/
 claude/.claude/stats-cache.json
 
-# Local settings (machine-specific overrides, not shared)
+# Claude Code local settings (repo path differs from global gitignore pattern)
 claude/.claude/settings.local.json
-
-# Session handoff files
-HANDOFF.md
+claude/.claude/scheduled_tasks.lock
 
 # Research vault content (private repo, symlinked here)
 docs
@@ -28,6 +23,3 @@ profiles
 
 # Private/secrets files (never commit)
 *.local
-
-# Exclude turbo caching
-.turbo

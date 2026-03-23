@@ -39,6 +39,12 @@ plugins=(
 export PATH="/Users/martinburch/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
+# mysql-client is keg-only — add to PATH for dbq and direct mysql usage
+for _mc in /opt/homebrew/opt/mysql-client/bin /usr/local/opt/mysql-client/bin; do
+  [[ -d "$_mc" ]] && { export PATH="$_mc:$PATH"; break; }
+done
+unset _mc
+
 source $ZSH/oh-my-zsh.sh
 
 # Can configure z (now) or override cd

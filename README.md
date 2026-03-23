@@ -97,7 +97,7 @@ The AI tool configuration is designed to be shareable. It covers agent platforms
 | `ast-grep` | Optional | `brew install ast-grep` | `ast-grep-patterns` skill (structural code search) |
 | `playwright-cli` | Optional | `npm install -g @playwright/cli` | `playwright-cli` skill (browser automation for agents) |
 | `jq` | Optional | `brew install jq` | JSON processing in scripts |
-| `mysql-client` | Optional | `brew install mysql-client` | `db-query` skill (live MySQL database queries via login paths) |
+| `mysql-client` | Optional | `brew install mysql-client` | `mysql-cli` skill (live MySQL database queries via login paths) |
 | `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
 | `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
 
@@ -184,7 +184,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **create-prd** | Define what to build before running an agentic loop, formalize a feature idea, convert a ticket into an implementation-ready PRD, or write feature specs with structured requirements |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
-| **db-query** | Execute queries against live MySQL databases using mysql-client with login paths |
 | **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
 | **gha-expert** | Create, generate, validate, lint, audit, fix, or diagnose GitHub Actions workflows and CI/CD pipeline failures |
 | **handoff** | Ending sessions with work in progress with context saved in a doc for a fresh session |
@@ -193,6 +192,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **k8s-expert** | Diagnose, troubleshoot, and fix Kubernetes clusters, pods, networking, storage, and rollout failures |
 | **loop-postmortem** | Structured post-mortem after a prd-loop run completes or crashes |
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
+| **mysql-cli** | Execute queries against live MySQL databases using mysql-client with login paths |
 | **neb-ms-conventions** | Code conventions used in neb microservice repositories |
 | **peer-review** | Multi-round code review using an isolated agentic reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
@@ -219,8 +219,8 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **thinking-partner** | Challenging ideas with structured critical reasoning, mental models (150+), and orientation detection |
 | **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
-| **writing-agents** | Creating, updating, or converting agent/subagent definitions for Claude Code or Codex |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
+| **writing-subagents** | Creating, updating, or converting agent/subagent definitions for Claude Code or Codex |
 
 #### Dormant Skills (2)
 

@@ -1,9 +1,9 @@
 ---
-name: writing-agents
+name: writing-subagents
 description: ALWAYS invoke when creating, updating, or converting agent/subagent definitions for Claude Code or Codex. Covers frontmatter fields, TOML format, cross-platform field mapping, and sync conventions. Do not write agent definitions directly. Not for skills (use writing-skills).
 ---
 
-# Writing Agents
+# Writing Subagents
 
 ## Overview
 

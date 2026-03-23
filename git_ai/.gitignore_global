@@ -1,15 +1,23 @@
 # Editor backup files (vim, emacs create file.txt~ on save)
 *~
+
+# macOS
 .DS_Store
 
-# Agent working directories and artifacts
+# Agent working directories and artifacts for skills
 .co-research/
 .peer-review/
 .prd-loop/
 .ratchet-log.tsv
-.waypoint/
 HANDOFF.md
+
+# Waypoint specific
+.waypoint/
+
 
 # Claude Code local settings (per-user, not committed)
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
+
+# Exclude turbo caching
+.turbo
