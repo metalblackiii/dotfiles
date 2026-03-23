@@ -222,7 +222,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 
 #### Dormant Skills (2)
 
-Skills moved out of active rotation but preserved in `dormant/skills/` for easy reactivation (`mv dormant/skills/<name> codex/.agents/skills/`).
+Skills moved out of active rotation but preserved in `dormant-skills/` for easy reactivation (`mv dormant-skills/<name> codex/.agents/skills/`).
 
 | Skill | Why dormant |
 |-------|-------------|
