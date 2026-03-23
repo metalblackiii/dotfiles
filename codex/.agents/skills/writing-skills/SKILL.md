@@ -212,6 +212,25 @@ codex/.agents/skills/         # Source of truth — all skills live here
 **Separate files (`references/`):** Heavy reference (100+ lines), loaded on demand by the agent
 **Executable code (`scripts/`):** Reusable executable helpers the agent can run
 
+### Runtime Paths
+
+The source path (`codex/.agents/skills/`) is where you edit. But skills that reference helper scripts at runtime must use the **installed** paths, which differ by platform:
+
+| Platform | Runtime path |
+|----------|-------------|
+| Codex | `~/.agents/skills/personal/<skill-name>/` |
+| Claude Code | `~/.claude/skills/<skill-name>/` |
+
+When documenting script invocation in SKILL.md, list both paths and use a resolve-with-fallback pattern:
+
+```bash
+# Resolve script path (Codex first, Claude Code fallback)
+SCRIPT_PATH="$HOME/.agents/skills/personal/<skill-name>/scripts/<script>.sh"
+[[ -x "$SCRIPT_PATH" ]] || SCRIPT_PATH="$HOME/.claude/skills/<skill-name>/scripts/<script>.sh"
+```
+
+Do not use the source path (`codex/.agents/skills/...`) in runtime references — it only exists in the dotfiles repo, not on the installed system.
+
 ## Quick Checklist
 
 - [ ] Name: required, must match directory name, lowercase/numbers/hyphens only, no leading/trailing/consecutive hyphens

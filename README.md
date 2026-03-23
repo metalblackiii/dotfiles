@@ -67,6 +67,8 @@ dotfiles/
 │   ├── uninstall.sh
 │   ├── .zshrc               # Shell config → ~/.zshrc
 │   └── .p10k.zsh            # Powerlevel10k prompt config → ~/.p10k.zsh
+├── skills/                  # Symlink → codex/.agents/skills (convenience)
+├── dormant-skills/          # Skills removed from active rotation
 ├── docs/                    # Research docs, postmortems, analysis artifacts
 └── .gitignore
 ```
