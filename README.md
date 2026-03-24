@@ -165,7 +165,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 - **Agents**: 4 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer, www-wtr-runner)
 
-#### Skills (52)
+#### Skills (53)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. Each skill's description includes trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to use them.
 
@@ -196,6 +196,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
 | **mysql-cli** | Execute queries against live MySQL databases using mysql-client with login paths |
 | **neb-ms-conventions** | Code conventions used in neb microservice repositories |
+| **one-shot** | Implement a feature end-to-end in one run — accepts PRD or prose, worktree, peer review, commit, and PR |
 | **peer-review** | Multi-round code review using an isolated agentic reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **pr-analysis** | Reviewing PR/git diffs for quality, security, architecture, testing |
