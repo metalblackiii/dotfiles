@@ -72,6 +72,7 @@ Return findings as JSON:
     {
       "severity": "Critical|Important|Minor",
       "title": "short descriptive title",
+      "repo": "org/repo",
       "location": "path/to/file.ext:line",
       "evidence": "what you observed in the code",
       "recommendation": "specific fix or improvement"
@@ -79,6 +80,8 @@ Return findings as JSON:
   ],
   "looks_good": ["positive observations specific to your domain"]
 }
+
+For single-PR reviews, `repo` may be omitted. For multi-PR reviews, `repo` is required — experts receive files from multiple repos and must attribute findings accurately.
 
 Rules:
 - Only report findings within your domain expertise
@@ -132,10 +135,10 @@ Dispatch all matched experts, then `wait` for all to return results.
 After all subagents return:
 
 1. **Collect**: Gather findings from standard analysis + all expert subagents into a single list
-2. **Normalize**: Ensure every finding has severity, title, location (file:line), evidence, recommendation
+2. **Normalize**: Ensure every finding has severity, title, location (file:line), evidence, recommendation. For multi-PR reviews, also require `repo` (org/repo).
 3. **Dedup**:
-   - Group findings by file path
-   - Within each file, compare findings with overlapping line ranges (within 3 lines)
+   - Group findings by `repo + file path` (for multi-PR) or `file path` alone (single-PR)
+   - Within each group, compare findings with overlapping line ranges (within 3 lines)
    - If two findings overlap AND share the same issue category, keep the more specific one:
      - Prefer the finding with longer evidence (more detail)
      - Prefer the finding from the domain expert over standard analysis (expert has deeper context)

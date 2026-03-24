@@ -175,7 +175,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **api-designer** | Designing REST endpoints, versioning strategy, request/response contracts |
 | **ast-grep-patterns** | Large refactors, structural code pattern searches, API migrations |
 | **audit-skills** | Reviewing skill adoption, finding dormant skills, measuring effectiveness |
-| **auto-review** | Automated PR review with domain-expert panel, batch comment approval, and 30-minute re-review loop. Manual invoke only (`/auto-review`) |
+| **auto-review** | Automated PR review with domain-expert panel and re-review loop. Single PR or related PR set with cross-cutting analysis. Manual invoke only (`/auto-review`) |
 | **babysit-loop** | Monitor a running prd-loop session. Designed for use with `/loop` |
 | **bash-expert** | Create, generate, validate, lint, audit, or fix bash/shell scripts |
 | **batch-repo-ops** | Applying the same operation across multiple repos with batched sub-agents, rate limit awareness, and status tracking |
