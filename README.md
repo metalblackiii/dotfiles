@@ -165,7 +165,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 - **Agents**: 4 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer, www-wtr-runner)
 
-#### Skills (49)
+#### Skills (50)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. Each skill's description includes trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to use them.
 
@@ -189,6 +189,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **handoff** | Ending sessions with work in progress with context saved in a doc for a fresh session |
 | **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
+| **js-modernizer** | Modernizing JS → TS: CJS→ESM migration, Babel removal, JSDoc typing, incremental .js→.ts conversion |
 | **k8s-expert** | Diagnose, troubleshoot, and fix Kubernetes clusters, pods, networking, storage, and rollout failures |
 | **loop-postmortem** | Structured post-mortem after a prd-loop run completes or crashes |
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
@@ -217,12 +218,12 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **systematic-debugging** | Any bug or unexpected behavior — invoked before proposing fixes |
 | **test-driven-development** | Any feature or bugfix — invoked before writing implementation |
 | **thinking-partner** | Challenging ideas with structured critical reasoning, mental models (150+), and orientation detection |
-| **typescript-pro** | Advanced TypeScript generics, conditional/mapped types, branded types, monorepo setup, full-stack type safety |
+| **typescript-expert** | Writing, reviewing, or modifying TypeScript code — anti-hallucination guardrails, TS 6.0 ecosystem, module resolution |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 | **writing-subagents** | Creating, updating, or converting agent/subagent definitions for Claude Code or Codex |
 
-#### Dormant Skills (2)
+#### Dormant Skills (3)
 
 Skills moved out of active rotation but preserved in `dormant-skills/` for easy reactivation (`mv dormant-skills/<name> codex/.agents/skills/`).
 
@@ -230,6 +231,7 @@ Skills moved out of active rotation but preserved in `dormant-skills/` for easy 
 |-------|-------------|
 | **the-fool** | Replaced by `thinking-partner` (superset with 150+ models and orientation detection) |
 | **neb-playwright-expert** | No current use; preserved for future E2E test work in neb-www |
+| **typescript-pro** | Replaced by `typescript-expert` (anti-hallucination focus, TS 6.0 ecosystem, drops low-ROI advanced type references) |
 
 ### Instructions (Two Layers)
 
