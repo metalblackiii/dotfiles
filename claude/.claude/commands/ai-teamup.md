@@ -126,6 +126,10 @@ SendMessage(
 
   Work in your own git worktree. Run tests for your files before signaling completion.
   Do NOT modify files outside your ownership list.
+
+  **If context compaction occurs:** Re-read this message to recover your task assignment,
+  file ownership list, and acceptance criteria. These are your operating instructions —
+  do not proceed from memory alone after compaction.
   """,
   summary: "Task <task-id>: <one-line description>"
 )
@@ -150,6 +154,9 @@ SendMessage(
 
   Task ownership map:
   <task → file mapping table>
+
+  **If context compaction occurs:** Re-read this message to recover the PRD, task ownership
+  map, and your review responsibilities. Do not proceed from memory alone after compaction.
   """,
   summary: "Reviewer: review completed tasks against PRD acceptance criteria"
 )
@@ -257,6 +264,16 @@ If the Mongoose gate caught a bad decomposition (Step 3 revised the plan), log t
 | Reviewer rejects same task 3+ times | Escalation protocol: reassign to different implementer or escalate to user |
 | Mongoose gate reveals bad decomposition | Revise or abort before burning team tokens |
 
+## Context Compaction Recovery
+
+Long team runs will trigger context compaction for the lead. When compaction occurs:
+
+1. Re-read the PRD file to recover full acceptance criteria
+2. Re-check the completion checklist — query each teammate's status rather than relying on pre-compaction memory
+3. Re-derive the task ownership map from the original decomposition
+
+Include this instruction in the lead's own operating loop: after any compaction event, treat the next turn as a fresh status check — don't assume pre-compaction state is accurate.
+
 ## Constraints
 
 - **Never exceed 5 teammates** — diminishing returns beyond this
@@ -265,3 +282,9 @@ If the Mongoose gate caught a bad decomposition (Step 3 revised the plan), log t
 - **PRD is the spec** — deviations from the PRD must be flagged in the summary, not silently introduced
 - **Worktree isolation is mandatory** — no implementer works in the base checkout
 - **Mongoose gate is not optional** — challenge every decomposition before creating the team
+
+## Reference: Agent Teams Internals
+
+For messaging architecture, inbox paths, delivery timing, and debugging stuck teams:
+
+@references/agent-teams-internals.md
