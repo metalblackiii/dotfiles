@@ -412,6 +412,50 @@ else
   # Heredoc body should not poison path-exemption (is_path_exempt uses CMD_NO_HEREDOC)
   test_hook_decision "ask" "$SAFE_CWD" $'rm -rf dist <<\'EOF\'\n/tmp/other\nEOF'
 
+  # --- Symlink escape detection ---
+  # Verify paths that appear under the safe directory but resolve outside it
+  # (via symlinks) are correctly denied. Inspired by Symphony's path_safety.rs.
+  #
+  # Uses a dedicated temp dir under the safe root instead of SAFE_CWD, which
+  # may be an existing repo without write access.
+  #
+  # Known gap: no test coverage for safe_path itself being a symlink (the
+  # safe_resolved codepath). That would require temporarily modifying the
+  # JSON rules file or injecting a custom exempt_when_path, which is fragile.
+  # The codepath is defensive — fails open when realpath is unavailable.
+  if command -v realpath &>/dev/null; then
+    SYMLINK_TEST_DIR=$(mktemp -d "${SAFE_DIR}symlink-test-XXXXXX" 2>/dev/null) || SYMLINK_TEST_DIR=""
+    if [[ -n "$SYMLINK_TEST_DIR" && -d "$SYMLINK_TEST_DIR" ]]; then
+      printf '\n  %b--- Symlink Escape Detection ---%b\n' "$BOLD" "$NC"
+      SYMLINK_TARGET=$(mktemp -d)
+      SYMLINK_PATH="${SYMLINK_TEST_DIR}/escape-link"
+      ln -sf "$SYMLINK_TARGET" "$SYMLINK_PATH"
+
+      # Path through symlink escaping safe dir → deny
+      test_hook_decision "deny" "/tmp" "rm -rf ${SYMLINK_PATH}/something"
+      test_hook_decision "deny" "/tmp" "rm ${SYMLINK_PATH}/file.txt"
+
+      # Real (non-symlink) path under safe dir → still ask
+      REAL_SUBDIR="${SYMLINK_TEST_DIR}/real-subdir"
+      mkdir -p "$REAL_SUBDIR"
+      test_hook_decision "ask" "/tmp" "rm -rf ${REAL_SUBDIR}/dist"
+
+      # Symlink inside safe dir pointing to another safe location → ask (not deny)
+      SAFE_INTERNAL_TARGET="${SYMLINK_TEST_DIR}/internal-target"
+      mkdir -p "$SAFE_INTERNAL_TARGET"
+      SAFE_INTERNAL_LINK="${SYMLINK_TEST_DIR}/internal-link"
+      ln -sf "$SAFE_INTERNAL_TARGET" "$SAFE_INTERNAL_LINK"
+      test_hook_decision "ask" "/tmp" "rm -rf ${SAFE_INTERNAL_LINK}/file"
+
+      # Clean up symlink test artifacts
+      rm -rf "$SYMLINK_TEST_DIR" "$SYMLINK_TARGET" 2>/dev/null || true
+    else
+      printf '\n  %bSKIP%b  cannot create writable dir under %s — skipping symlink tests\n' "$YELLOW" "$NC" "$SAFE_DIR"
+    fi
+  else
+    printf '\n  %bSKIP%b  realpath not available — skipping symlink tests\n' "$YELLOW" "$NC"
+  fi
+
   # Clean up temp dir if we created one
   if $CLEANUP_SAFE_CWD && [[ -d "$SAFE_CWD" ]]; then
     rmdir "$SAFE_CWD" 2>/dev/null || true

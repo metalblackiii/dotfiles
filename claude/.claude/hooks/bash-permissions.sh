@@ -165,6 +165,22 @@ effective_git_dir() {
   printf '%s' "$_GIT_DIR"
 }
 
+# Resolve a path through symlinks, returning the canonical target.
+# If the full path doesn't exist, resolves the longest existing ancestor.
+# WHY: A symlink like ~/repos/evil → /etc passes literal prefix checks while
+# actually targeting outside the safe directory (inspired by Symphony path_safety).
+resolve_through_symlinks() {
+  local target="$1" resolved
+  resolved=$(realpath "$target" 2>/dev/null) && { printf '%s' "$resolved"; return 0; }
+  local parent="$target"
+  while true; do
+    parent=$(dirname "$parent")
+    [[ "$parent" == "/" || "$parent" == "." ]] && break
+    resolved=$(realpath "$parent" 2>/dev/null) && { printf '%s' "$resolved"; return 0; }
+  done
+  return 1
+}
+
 # ---------------------------------------------------------------------------
 # Path exemption: downgrades deny → ask when a command is scoped to a safe
 # directory (e.g., ~/repos/). Conservative — denies when in doubt.
@@ -178,6 +194,16 @@ is_path_exempt() {
   local safe_path="${1/#\~/$HOME}"
   # Ensure trailing slash for prefix matching
   [[ "$safe_path" != */ ]] && safe_path="${safe_path}/"
+
+  # Pre-resolve safe_path through symlinks for canonical comparison.
+  # WHY: If safe_path itself contains a symlink (e.g., ~/repos → /mnt/data/repos),
+  # resolved target paths won't match the literal prefix. Fails open if realpath
+  # is unavailable — symlink checks are skipped, not blocked.
+  local safe_resolved=""
+  if command -v realpath &>/dev/null; then
+    safe_resolved=$(realpath "${safe_path%/}" 2>/dev/null) || safe_resolved=""
+    [[ -n "$safe_resolved" && "$safe_resolved" != */ ]] && safe_resolved="${safe_resolved}/"
+  fi
 
   # Normalize the command for path analysis:
   #   1. Expand ~ and $HOME/${HOME} to the actual home directory
@@ -207,9 +233,20 @@ is_path_exempt() {
     [[ -z "$abs_path" ]] && continue
     abs_path="${abs_path#"${abs_path%%[![:space:]]*}"}"  # trim leading space
     [[ "$abs_path" == /dev/null ]] && continue
-    [[ "$abs_path" == "${safe_path}"* ]] && continue
-    has_unsafe_absolute=true
-    break
+    if [[ "$abs_path" != "${safe_path}"* ]]; then
+      has_unsafe_absolute=true
+      break
+    fi
+    # Literal prefix matched — verify symlinks don't escape the safe directory.
+    # WHY: ~/repos/evil → /etc would pass the literal check above but actually
+    # targets outside the safe root (inspired by Symphony's path_safety.rs).
+    if [[ -n "$safe_resolved" ]]; then
+      local resolved
+      resolved=$(resolve_through_symlinks "$abs_path") || continue
+      [[ "${resolved}/" == "${safe_resolved}"* ]] && continue
+      has_unsafe_absolute=true
+      break
+    fi
   done < <(printf '%s' "$cmd_expanded" | grep -oE '(^|[[:space:]])/[^[:space:]]+')
 
   if $has_unsafe_absolute; then
