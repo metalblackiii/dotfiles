@@ -41,6 +41,7 @@ This configuration is managed via a dotfiles repo. `codex/AGENTS.md` is the sing
   - team format: `org/team-slug` (for example `Chiropractic-CT-Cloud/phoenix`)
   - individual format: `username` (for example `daniel-goss_ptek`)
 - When creating PRs, include a Jira ticket link in the body if a ticket number is detectable (from branch name or context). After PR creation, add a comment on the Jira ticket linking back to the PR.
+- When commenting on Jira tickets, use markdown link syntax `[text](url)` — bare URLs render as plain text in ADF.
 
 ## Jira Defaults
 
