@@ -131,11 +131,11 @@ This runs the full multi-round cycle: isolated reviewer evaluates the diff, you 
 
 **After peer-review completes** (before cleanup is offered), capture the results:
 
-1. Find the final round file:
+1. List all round files:
    ```bash
-   ls .peer-review/round-*.md | sort -V | tail -1
+   ls .peer-review/round-*.md | sort -V
    ```
-2. Read its content — the `FINDINGS:` line and any remaining issues go into the PR body.
+2. Read **every** round file — extract the `FINDINGS:` line from each. This builds the per-round history for the PR body.
 3. Note the total round count and final verdict (APPROVED or circuit breaker).
 
 **When peer-review asks about `.peer-review/` cleanup:** Confirm removal — findings are already captured.
@@ -164,7 +164,9 @@ REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 ## Peer Review
 - **Rounds:** <N>
 - **Final verdict:** APPROVED | Advisory (circuit breaker, round N)
-- **Findings:** <FINDINGS line from final round>
+<For each round that had findings, one bullet summarizing what was fixed:>
+- **Round <N>:** <concise summary of changes made to address findings>
+<Omit rounds with no findings. If only 1 round and clean, omit the per-round list entirely.>
 
 <If circuit breaker: list remaining unresolved findings>
 
