@@ -178,16 +178,16 @@ Experts dispatched: [list or "none"]
 Verdict: [REQUEST_CHANGES | COMMENT | APPROVE]
 [repo-a#142:f-1] [Severity] [Title] — [file:line]
                   [One-line description]
+FINDINGS: X critical, Y important, Z minor
 
 --- repo-b#1646: [PR Title] ---
 Verdict: [COMMENT]
 [repo-b#1646:f-1] [Severity] [Title] — [file:line]
                    [One-line description]
+FINDINGS: X critical, Y important, Z minor
 
 --- Looks Good (across set) ---
 [Positive observations]
-
-FINDINGS: X critical, Y important, Z minor (per PR)
 
 Post reviews? (approve all / approve selective / reject / edit)
 ```
@@ -198,7 +198,7 @@ Wait for explicit user approval. Options for multi-PR:
 - **reject** — ask what to change
 - **edit** — adjust findings and re-present
 
-Omit any severity section that has no findings. Always end with a `FINDINGS:` summary line per PR — it enables machine parsing by automation skills. Count 0 for empty sections.
+Omit any severity section that has no findings. Each PR section (and the single-PR format) ends with a `FINDINGS:` summary line — it enables machine parsing by automation skills. Count 0 for empty sections.
 
 ### Step 8: Submit Reviews
 
