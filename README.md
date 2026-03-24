@@ -165,7 +165,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 - **Agents**: 4 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer, www-wtr-runner)
 
-#### Skills (50)
+#### Skills (52)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. Each skill's description includes trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to use them.
 
@@ -184,6 +184,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **create-prd** | Define what to build before running an agentic loop, formalize a feature idea, convert a ticket into an implementation-ready PRD, or write feature specs with structured requirements |
 | **creating-neb-patch-pr** | Creating patch PRs for merged main PRs in neb repos for hotfix deployment |
 | **database-expert** | SQL queries, schema design, Aurora migrations, Sequelize tuning, index strategies |
+| **discover-ratchet** | Scan a codebase for quantitatively improvable targets with measurable metrics, output ranked candidates ready for `/ratchet` |
 | **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
 | **gha-expert** | Create, generate, validate, lint, audit, fix, or diagnose GitHub Actions workflows and CI/CD pipeline failures |
 | **handoff** | Ending sessions with work in progress with context saved in a doc for a fresh session |
