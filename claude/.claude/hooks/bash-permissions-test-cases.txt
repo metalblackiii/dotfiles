@@ -296,9 +296,14 @@ ASK	allow_gh_pr	mjb-pho-NEB-1234	gh issue close 42
 # allow_skill_cleanup — rm -rf for known skill working directories
 # No branch condition — always allowed.
 # -------------------------------------------------------------------
-# Should ALLOW: rm -rf of known skill directories
+# Should ALLOW: rm -rf of known skill directories (relative and absolute)
 ALLOW	allow_skill_cleanup	-	rm -rf .peer-review
 ALLOW	allow_skill_cleanup	-	rm -rf .co-research
+ALLOW	allow_skill_cleanup	-	rm -rf /Users/me/repos/project/.peer-review
+ALLOW	allow_skill_cleanup	-	rm -rf /Users/me/repos/project/.co-research
+# Note: rm -rf /arbitrary/path/.peer-review also matches the regex, but the
+# deny layer blocks paths outside ~/repos/ before the allow layer runs.
+# End-to-end behavior for safe paths is covered by integration tests.
 # Should ASK: variations that shouldn't auto-allow
 ASK	allow_skill_cleanup	-	rm -rf .peer-review-backup
 ASK	allow_skill_cleanup	-	rm -rf .peer-reviews

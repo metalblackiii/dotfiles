@@ -297,10 +297,12 @@ check_layer() {
       if $_is_simple_commit && [[ "$layer" == "deny" ]]; then
         continue
       fi
-      # If the rule has a path exemption, check before emitting deny
+      # If the rule has a path exemption, skip this deny rule and let
+      # downstream layers (allow, ask) decide. This enables allow-listed
+      # patterns (e.g., skill cleanup dirs) to auto-accept instead of
+      # always prompting.
       if [[ -n "$exempt_path" ]] && is_path_exempt "$exempt_path"; then
-        emit_decision "${exempt_decision:-ask}" \
-          "Bash permissions hook: protected command pattern matched (path-exempted to ${exempt_decision:-ask})."
+        continue
       else
         emit_decision "$decision" "${nudge:-$default_reason}"
       fi

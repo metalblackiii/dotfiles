@@ -348,6 +348,12 @@ else
   test_hook_decision "ask" "/tmp" "cd ${SAFE_CWD_TILDE} && rm -rf dist"
   test_hook_decision "ask" "/tmp" "cd ${SAFE_CWD} && rm -r build"
 
+  # rm -rf of skill cleanup dirs → allow (deny exempt + allow-layer match)
+  test_hook_decision "allow" "$SAFE_CWD" "rm -rf .peer-review"
+  test_hook_decision "allow" "$SAFE_CWD" "rm -rf .co-research"
+  test_hook_decision "allow" "/tmp" "rm -rf ${SAFE_CWD}/.peer-review"
+  test_hook_decision "allow" "/tmp" "rm -rf ${SAFE_CWD}/.co-research"
+
   # rm outside safe path → deny
   test_hook_decision "deny" "/tmp" "rm -rf /tmp/something"
   test_hook_decision "deny" "/tmp" "rm file.txt"

@@ -5,7 +5,7 @@
       "category": "local dev testing"
     },
     {
-      "regex": "^rm\\s+-rf\\s+\\.(peer-review|co-research)\\s*$",
+      "regex": "^rm\\s+-rf\\s+(\\S+/)?\\.(peer-review|co-research)\\s*$",
       "category": "skill cleanup"
     },
     {

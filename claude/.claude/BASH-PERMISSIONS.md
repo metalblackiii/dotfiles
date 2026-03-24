@@ -32,7 +32,7 @@ When a deny rule matches and has `exempt_when_path`, the hook checks:
 2. **Safe reference** — the command explicitly references the safe directory (e.g., `~/repos/foo/dist`), OR
 3. **Safe cwd** — the effective working directory (actual cwd or `cd` target in compound commands) is under the safe directory.
 
-If exempt, the decision downgrades from deny to `exempt_decision` (typically `ask`). The command must also have a matching rule in the ask layer to catch the downgraded decision.
+If exempt, the deny rule is **skipped** and processing continues to the allow and ask layers. This means allow-listed patterns (e.g., skill cleanup dirs) auto-accept instead of prompting, while non-allow-listed commands still reach the ask layer and prompt as usual.
 
 Decision matrix:
 
