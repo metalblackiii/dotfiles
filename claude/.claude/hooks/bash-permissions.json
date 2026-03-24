@@ -5,6 +5,10 @@
       "category": "local dev testing"
     },
     {
+      "regex": "^rm\\s+-rf\\s+\\.(peer-review|co-research)\\s*$",
+      "category": "skill cleanup"
+    },
+    {
       "regex": "\\b(rtk[[:space:]]+)?git[[:space:]]+(commit|push)\\b",
       "branch": "^mjb-pho-NEB-",
       "category": "personal feature branch"

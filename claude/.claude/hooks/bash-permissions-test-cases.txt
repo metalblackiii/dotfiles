@@ -293,6 +293,22 @@ ASK	allow_gh_pr	mjb-pho-NEB-1234	gh pr merge
 ASK	allow_gh_pr	mjb-pho-NEB-1234	gh issue close 42
 #
 # -------------------------------------------------------------------
+# allow_skill_cleanup — rm -rf for known skill working directories
+# No branch condition — always allowed.
+# -------------------------------------------------------------------
+# Should ALLOW: rm -rf of known skill directories
+ALLOW	allow_skill_cleanup	-	rm -rf .peer-review
+ALLOW	allow_skill_cleanup	-	rm -rf .co-research
+# Should ASK: variations that shouldn't auto-allow
+ASK	allow_skill_cleanup	-	rm -rf .peer-review-backup
+ASK	allow_skill_cleanup	-	rm -rf .peer-reviews
+ASK	allow_skill_cleanup	-	rm -rf peer-review
+ASK	allow_skill_cleanup	-	rm -r .peer-review
+ASK	allow_skill_cleanup	-	rm .co-research
+ASK	allow_skill_cleanup	-	rm -rf .other-dir
+ASK	allow_skill_cleanup	-	rm -rf .co-research .peer-review /tmp/evil
+#
+# -------------------------------------------------------------------
 # path_dotconfig — application config (~/.config/)
 # -------------------------------------------------------------------
 # Should DENY: access to .config directory contents
