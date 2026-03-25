@@ -5,7 +5,7 @@ description: ALWAYS invoke when performing any operation — change, check, audi
 
 # Batch Repo Ops
 
-Orchestrate the same operation across multiple repositories using parallel sub-agents with rate limit guardrails, batching, retry logic, and status tracking.
+Orchestrate the same operation across multiple repositories using parallel sub-agents with rate limit guardrails, worktree isolation, batching, retry logic, and status tracking.
 
 ## When to Use
 
@@ -41,15 +41,34 @@ If the user says "all neb-ms-*" or similar, try local first. Fall back to remote
 
 If the user provides an explicit list (file path, inline list, or repos.md), use that directly.
 
+**Validation (write operations only):**
+1. **All repos must be cloned locally under `~/repos/`.** If any discovered repo is not cloned locally, fail immediately and list the missing repos so the user can clone them. Do not attempt to clone automatically — the user may have a reason for the repo not being local.
+2. **All repo paths must be under `~/repos/`.** Repos outside this convention are rejected. This is a hard requirement for worktree path safety.
+
 ### Phase 2: PLAN
 
-Classify the operation weight to determine execution strategy:
+#### Operation classification
+
+First, classify the operation as **read-only** or **write**:
+
+| Type | Examples | Worktree |
+|------|----------|----------|
+| **Read-only** | Version checks, config audits, dependency listings, status queries | No — direct repo access |
+| **Write** | Code changes, config edits, dependency upgrades, any commit/PR | Yes — worktree isolation |
+
+**The rule is simple: if it writes, it gets a worktree. No exceptions.** Even "trivial" writes use worktrees — this avoids judgment calls and guarantees the user's working trees are never disturbed.
+
+#### Weight classification
+
+Then classify the operation weight to determine execution strategy:
 
 | Weight | Characteristics | Strategy |
 |--------|----------------|----------|
-| **Light** | Single command, no branching, read-only or trivial write | Sequential Bash loop — no sub-agents needed |
+| **Light** | Single command or simple edit, templatable | Sequential Bash loop (read-only) or sequential Bash loop with worktrees (write) |
 | **Medium** | Multi-step but templatable (edit file, install, test, commit) | Sequential sub-agents — one at a time, reuse the same prompt |
 | **Heavy** | Complex changes requiring exploration, multi-file edits, test iteration | Batched parallel sub-agents — groups of 3 |
+
+#### Approval gate
 
 Present the plan to the user:
 
@@ -58,9 +77,12 @@ Present the plan to the user:
 
 **Operation:** [what will happen in each repo]
 **Repos (N):** [list or summary]
+**Type:** [Read-only / Write]
 **Weight:** [Light / Medium / Heavy]
 **Strategy:** [Sequential loop / Sequential sub-agents / Batched parallel (groups of 3)]
-**Branch:** [branch name if creating commits]
+**Branch:** [branch name — required for write ops]
+**Base:** [base-ref, default: main]
+**Worktree base:** ~/repos/.batch-worktrees/<branch>/
 **Estimated sub-agent prompt:** [show the prompt each sub-agent will receive]
 
 Proceed? [y/n/edit]
@@ -70,9 +92,46 @@ Wait for explicit approval before continuing. If the user edits the plan, incorp
 
 ### Phase 3: EXECUTE
 
-#### Light operations — Sequential Bash loop
+#### Stale worktree check (write operations only)
 
-Run directly in a loop. No sub-agents needed. Use absolute paths or subshells to avoid cwd drift.
+Before creating any worktrees, check for a stale batch directory:
+
+```bash
+BATCH_DIR=~/repos/.batch-worktrees/<branch>
+if [ -d "$BATCH_DIR" ]; then
+  echo "Stale batch worktree dir found: $BATCH_DIR"
+  ls "$BATCH_DIR"
+fi
+```
+
+If the directory exists, surface it to the user:
+> Stale batch worktree dir found for branch `<branch>` with N repos. Remove and continue, or abort?
+
+If the user says remove:
+```bash
+for wt in "$BATCH_DIR"/*/; do
+  repo=$(git -C "$wt" rev-parse --git-dir 2>/dev/null | sed 's|/\.git/worktrees/.*||')
+  if [ -n "$repo" ]; then
+    git -C "$repo" worktree remove "$wt" 2>/dev/null \
+      || echo "PRESERVED (dirty): $wt"
+  fi
+done
+# Prune dangling references
+for repo in <repo-list>; do
+  git -C "$repo" worktree prune
+done
+# Only remove the batch dir if all worktrees were successfully removed
+rmdir "$BATCH_DIR" 2>/dev/null \
+  || echo "Batch dir not empty (dirty worktrees preserved): $BATCH_DIR"
+```
+
+**Never `rm -rf` the batch directory.** Use `rmdir` — it only succeeds if empty, which means all worktrees were cleanly removed. If any dirty worktrees were preserved by `git worktree remove` (which correctly refuses dirty worktrees), `rmdir` fails and the directory stays intact.
+
+Never silently remove — it may be from a partial run the user wants to inspect.
+
+#### Read-only operations
+
+Run directly against the repos. No worktrees. Use absolute paths or subshells to avoid cwd drift.
 
 ```bash
 for repo in <repo-list>; do
@@ -86,9 +145,72 @@ For npm specifically, prefer `npm --prefix "$repo" <command>` over cd-based appr
 
 Collect output per repo. Move to Phase 5.
 
-#### Medium operations — Sequential sub-agents
+#### Light write operations — Sequential Bash loop with worktrees
 
-Spawn one sub-agent per repo, sequentially. Wait for each to complete before starting the next. This avoids rate limits entirely while keeping operations isolated.
+Create worktrees and operate in them. No sub-agents needed.
+
+```bash
+BATCH_DIR=~/repos/.batch-worktrees/<branch>
+mkdir -p "$BATCH_DIR"
+
+for repo in <repo-list>; do
+  basename=$(basename "$repo")
+  wt="$BATCH_DIR/$basename"
+  git -C "$repo" fetch origin <base-ref>
+  if ! git -C "$repo" worktree add "$wt" -b <branch> origin/<base-ref> 2>/dev/null; then
+    # Branch already exists — check for unpushed commits before reusing
+    git -C "$repo" worktree add "$wt" <branch> || { echo "SKIP $basename: worktree setup failed"; continue; }
+    local_ahead=$(git -C "$wt" log origin/<base-ref>..HEAD --oneline 2>/dev/null | wc -l)
+    if [ "$local_ahead" -gt 0 ]; then
+      echo "SKIP $basename: branch <branch> has $local_ahead unpushed commit(s) — refusing to reset"
+      git -C "$repo" worktree remove "$wt" 2>/dev/null
+      continue
+    fi
+    git -C "$wt" reset --hard origin/<base-ref>
+  fi
+  # <command> should include git add + git commit if changes are made
+  (cd "$wt" && <command>)
+  # Only push if there are commits ahead of the base
+  if (cd "$wt" && git log origin/<base-ref>..HEAD --oneline | grep -q .); then
+    (cd "$wt" && git push -u origin <branch>) || echo "PUSH FAILED for $basename"
+  fi
+done
+```
+
+The first `worktree add` (with `-b`) is expected to fail when the branch already exists — its stderr is suppressed. The fallback `worktree add` (without `-b`) checks out the existing branch, then **checks for unpushed commits before resetting.** If the branch has local-only commits (from prior manual work or a partial run that didn't push), the repo is skipped to prevent data loss. Only branches with no unpushed commits are reset to `origin/<base-ref>`. If the fallback `worktree add` itself fails (e.g., worktree path already registered from a crash), the `|| continue` skips that repo and surfaces the error.
+
+The push is conditional — only runs if there are commits ahead of the base. Push failures are surfaced (not swallowed) so the orchestrator can include them in the batch report.
+
+Collect output per repo. Move to Phase 5.
+
+#### Medium write operations — Sequential sub-agents with worktrees
+
+The orchestrator creates the worktree, then spawns a sub-agent to operate in it. Wait for each to complete before starting the next.
+
+```bash
+BATCH_DIR=~/repos/.batch-worktrees/<branch>
+mkdir -p "$BATCH_DIR"
+```
+
+For each repo:
+1. Create the worktree:
+   ```bash
+   basename=$(basename "$repo")
+   wt="$BATCH_DIR/$basename"
+   git -C "$repo" fetch origin <base-ref>
+   if ! git -C "$repo" worktree add "$wt" -b <branch> origin/<base-ref> 2>/dev/null; then
+     git -C "$repo" worktree add "$wt" <branch> || { echo "SKIP $basename: worktree setup failed"; continue; }
+     local_ahead=$(git -C "$wt" log origin/<base-ref>..HEAD --oneline 2>/dev/null | wc -l)
+     if [ "$local_ahead" -gt 0 ]; then
+       echo "SKIP $basename: branch has $local_ahead unpushed commit(s)"
+       git -C "$repo" worktree remove "$wt" 2>/dev/null; continue
+     fi
+     git -C "$wt" reset --hard origin/<base-ref>
+   fi
+   ```
+2. Spawn a sub-agent with the worktree path (see Sub-Agent Prompt Template)
+3. Wait for completion
+4. If the sub-agent used `gh` CLI commands heavily, add a 5-second pause before the next launch
 
 **Sub-agent configuration (adapt to your platform):**
 
@@ -99,13 +221,11 @@ Spawn one sub-agent per repo, sequentially. Wait for each to complete before sta
 | Type | `subagent_type: "general-purpose"` | `agent_type: "general-purpose"` |
 
 - `model`: `"sonnet"` (default — sufficient for templatable work)
-- Each sub-agent gets a self-contained prompt with: repo path, operation spec, branch name, and success criteria
+- Each sub-agent gets a self-contained prompt with: worktree path, source repo path, GitHub slug, operation spec, branch name, and success criteria
 
-**Between sub-agents:** No artificial delay needed since sequential execution naturally avoids rate limits. However, if a sub-agent uses `gh` CLI commands heavily (creating PRs, posting comments), add a 5-second pause before the next launch to respect GitHub's secondary rate limits.
+#### Heavy write operations — Batched parallel sub-agents with worktrees
 
-#### Heavy operations — Batched parallel sub-agents
-
-Spawn sub-agents in batches of 3. Wait for the entire batch to complete before launching the next.
+Same worktree setup as Medium, but spawn sub-agents in batches of 3. Wait for the entire batch to complete before launching the next.
 
 **Why 3?** Claude API concurrency limits and GitHub secondary rate limits (which throttle rapid successive API calls from the same token) make larger batches unreliable. 3 is the sweet spot — meaningful parallelism without triggering throttling.
 
@@ -115,12 +235,13 @@ Spawn sub-agents in batches of 3. Wait for the entire batch to complete before l
 
 **Batch loop:**
 1. Take the next 3 repos from the queue
-2. Launch 3 sub-agents in parallel
-3. Wait for all 3 to complete
-4. Record results per repo (success/failure/PR URL)
-5. If any failed due to rate limits, move them to a retry queue
-6. Pause 10 seconds between batches
-7. Repeat until queue is empty
+2. Create worktrees for all 3 (orchestrator does this, not the sub-agents)
+3. Launch 3 sub-agents in parallel, each targeting its worktree
+4. Wait for all 3 to complete
+5. Record results per repo (success/failure/PR URL)
+6. If any failed due to rate limits, move them to a retry queue
+7. Pause 10 seconds between batches
+8. Repeat until queue is empty
 
 ### Phase 4: RETRY
 
@@ -128,8 +249,9 @@ After all batches complete, process the retry queue:
 
 1. Wait 30 seconds before first retry (rate limits need cooldown)
 2. Retry failed repos one at a time (sequential — no more parallelism for retries)
-3. If a repo fails twice, mark it as failed and move on — don't burn context on a flaky operation
-4. Record retry outcomes
+3. Worktrees already exist from the initial attempt — **skip worktree setup entirely** if the worktree directory exists at the expected path. Do not re-run the `git worktree add` + `reset --hard` sequence, as that would wipe any commits from the first attempt. The sub-agent operates in the existing worktree as-is.
+4. If a repo fails twice, mark it as failed and move on — don't burn context on a flaky operation
+5. Record retry outcomes
 
 ### Phase 5: REPORT
 
@@ -146,22 +268,91 @@ Present a summary table:
 | neb-ms-scheduler | retry-success | #34 | Rate limited on first attempt |
 
 **Summary:** N/M repos succeeded, K PRs created, F failures
+**Worktree base:** ~/repos/.batch-worktrees/<branch>/
 
 ### Failed Repos (manual follow-up needed)
 - neb-ms-auth: [error details]
+  Worktree preserved: ~/repos/.batch-worktrees/<branch>/neb-ms-auth
 ```
 
 If any repos failed, suggest next steps (manual fix, re-run with adjusted params, etc.).
 
-## Branch Safety
+### Phase 6: CLEANUP (write operations only)
 
-Always branch from `main` unless the user explicitly specifies a different base. Before creating a branch in each repo, verify the current base:
+After reporting, clean up worktrees as a batch sweep.
 
 ```bash
-git checkout main && git pull origin main
+for wt in "$BATCH_DIR"/*/; do
+  # Derive the source repo from the worktree's git metadata
+  repo=$(git -C "$wt" rev-parse --git-dir 2>/dev/null | sed 's|/\.git/worktrees/.*||')
+  [ -n "$repo" ] || continue
+  dirty=$(git -C "$wt" status --porcelain)
+  # If the branch has no upstream, the push never succeeded — treat as unpushed
+  if git -C "$wt" rev-parse --abbrev-ref '@{upstream}' &>/dev/null; then
+    unpushed=$(git -C "$wt" log @{upstream}..HEAD --oneline 2>/dev/null)
+  else
+    unpushed="no-upstream"
+  fi
+  if [ -n "$dirty" ]; then
+    echo "Worktree preserved (uncommitted changes): $wt"
+  elif [ -n "$unpushed" ]; then
+    echo "Worktree preserved (unpushed commits): $wt"
+  else
+    git -C "$repo" worktree remove "$wt"
+  fi
+done
 ```
 
-Sub-agents that branch from a stale or wrong base (e.g., an existing feature branch) can silently inherit unrelated changes and cause cascading test failures across the batch.
+**After all worktrees are processed:**
+
+```bash
+# Prune stale worktree references in each source repo
+for repo in <repo-list>; do
+  git -C "$repo" worktree prune
+done
+
+# Remove the batch directory if empty
+rmdir ~/repos/.batch-worktrees/<branch> 2>/dev/null
+rmdir ~/repos/.batch-worktrees 2>/dev/null
+```
+
+If any worktrees were preserved, remind the user:
+> N worktrees preserved (uncommitted changes or unpushed commits) under ~/repos/.batch-worktrees/<branch>/. Inspect and remove manually when done.
+
+## Worktree Isolation
+
+Write operations use worktree isolation to avoid disturbing the user's working trees. This guarantees the user can work in repos concurrently with a batch operation without conflicts.
+
+**Worktree directory convention:**
+```
+~/repos/.batch-worktrees/<branch>/<repo-basename>/
+```
+
+Example for branch `mjb-pho-NEB-1234` across 3 repos:
+```
+~/repos/.batch-worktrees/mjb-pho-NEB-1234/neb-ms-billing/
+~/repos/.batch-worktrees/mjb-pho-NEB-1234/neb-ms-patients/
+~/repos/.batch-worktrees/mjb-pho-NEB-1234/neb-ms-auth/
+```
+
+**Key rules:**
+- **Never touch the source repo's working tree.** Use `git -C <repo> fetch` and `git -C <repo> worktree add` — these don't affect HEAD or the index.
+- **Push immediately after commit.** Once pushed, the remote branch is the durable record and the worktree becomes disposable. If push fails, preserve the worktree.
+- **Branch reuse with safety check.** If the branch already exists, `git worktree add` without `-b` checks it out, then the orchestrator checks for unpushed commits. If the branch has local-only commits, the repo is **skipped** — never reset a branch with unpublished work. Only branches with no unpushed commits are reset to `origin/<base-ref>`. On retry, skip worktree setup entirely if the worktree directory already exists.
+- **Orchestrator creates worktrees, not sub-agents.** The orchestrator sets up worktrees before dispatching sub-agents. Sub-agents only operate within their assigned worktree — they never run `git worktree add` or `git checkout` in the source repo.
+
+## Branch Safety
+
+Default base is `main` unless the user explicitly specifies a different base (e.g., a release branch). The `<base-ref>` placeholder appears throughout the skill — the orchestrator replaces it with the actual base branch name at execution time.
+
+```bash
+git -C "$repo" fetch origin <base-ref>
+git -C "$repo" worktree add "$wt" -b <branch> origin/<base-ref>
+```
+
+This guarantees a clean base without touching the repo's HEAD. No `git checkout` needed — the source repo stays on whatever branch it's on.
+
+**The approval gate must show the base.** Include `**Base:** [base-ref]` in the plan so the user can verify before execution begins.
 
 **Branch naming for auto-allow:** If bash-permissions rules auto-allow git/gh operations on branches matching a pattern (e.g., `^mjb-pho-NEB-`), use that pattern for batch branch names. This avoids a user confirmation prompt for every commit/push/PR across N repos. Ask the user for the branch name prefix before starting — a batch of 20 repos hitting the `ask` layer 3 times each means 60 prompts.
 
@@ -181,26 +372,35 @@ After a batch operation touches many repos, the orchestrator's working directory
 
 Each sub-agent prompt must be self-contained. Sub-agents don't inherit CLAUDE.md, so every safeguard must be spelled out in the prompt.
 
-Template:
+**Write operations template** (with worktree):
 
 ```
-You are operating on the repository at: [repo path]
+You are operating in a worktree for: [owner/repo]
+Worktree path: [worktree path]
+Source repo path: [repo path] (DO NOT modify — used only for git references)
 GitHub repo slug: [owner/repo]
 
 ## Task
 [Operation description — what to do]
 
 ## Steps
-1. cd [repo path] && git checkout main && git pull origin main
-2. cd [repo path] && git checkout -b [branch-name]
-3. cd [repo path] && [Step N — the actual work]
+1. cd [worktree path] && [Step 1 — the actual work]
+2. cd [worktree path] && [Step N]
 ...
+N. cd [worktree path] && git add <specific-files> && git commit -m "<message>"
+N+1. cd [worktree path] && git push -u origin [branch-name]
+N+2. gh pr create -R [owner/repo] --title "<title>" --body "<body>" -r Chiropractic-CT-Cloud/phoenix
 
-IMPORTANT: Every step must start with `cd [repo path] &&` because cwd does not persist between tool calls.
+IMPORTANT: Every step must start with `cd [worktree path] &&` because cwd does not persist between tool calls.
 
 ## Branch
-Create branch: [branch-name]
-Base: always main. The `cd && git checkout main && git pull` in step 1 ensures this. Never branch from whatever HEAD happens to be — it may be a stale feature branch with unrelated changes.
+Branch: [branch-name] (already checked out in the worktree — do not create or switch branches)
+Base: origin/[base-ref]
+
+## Jira Integration
+If a Jira ticket number is detectable from the branch name (pattern: NEB-\d+):
+- Include `https://practicetek.atlassian.net/browse/<ticket>` in the PR body
+- After PR creation, comment on the Jira ticket with the PR URL using markdown link syntax: `[PR #N](url)`
 
 ## Success Criteria
 - [ ] [Criterion 1]
@@ -208,23 +408,50 @@ Base: always main. The `cd && git checkout main && git pull` in step 1 ensures t
 
 ## Constraints
 - Do not modify files outside the scope of this task
-- Every shell command must begin with `cd [repo path] &&` — cwd does not persist between tool calls
-- For npm commands, use `cd [repo path] && npm ...` or `npm --prefix [repo path] ...`
+- Work ONLY in the worktree path — never cd to or modify the source repo
+- Every shell command must begin with `cd [worktree path] &&` — cwd does not persist between tool calls
+- For npm commands, use `cd [worktree path] && npm ...` or `npm --prefix [worktree path] ...`
 - Run tests after changes: [test command]
 - If tests fail, attempt to fix up to 2 times before reporting failure
+- Push immediately after committing — the remote branch is the durable record
 - For repo-scoped `gh` commands (`pr`, `issue`, `run`, etc.), use the repo slug: `gh ... -R [owner/repo]` — do not rely on cwd for repo resolution
 
 ## On Completion
 Report back with:
 - Files changed (list)
 - Test results (pass/fail)
+- Push status (success/fail)
 - PR URL (if created)
 - Any issues encountered
 ```
 
-The orchestrator must fill in both `[repo path]` (local filesystem path) and `[owner/repo]` (GitHub slug, e.g., `Chiropractic-CT-Cloud/neb-ms-billing`) before dispatching each sub-agent. Resolve slugs during Phase 1 (DISCOVER) using `gh repo view --json nameWithOwner -q .nameWithOwner` in each repo, or derive from the `gh repo list` output if using remote discovery.
+**Read-only operations template:**
 
-Adapt the template based on the operation. Light operations don't need all sections.
+```
+You are reading from the repository at: [repo path]
+GitHub repo slug: [owner/repo]
+
+## Task
+[Operation description — what to check/read]
+
+## Steps
+1. cd [repo path] && [Step 1]
+...
+
+IMPORTANT: Every step must start with `cd [repo path] &&` because cwd does not persist between tool calls.
+
+## Constraints
+- READ ONLY — do not modify any files, create branches, or commit
+- Every shell command must begin with `cd [repo path] &&`
+- For repo-scoped `gh` commands, use: `gh ... -R [owner/repo]`
+
+## On Completion
+Report back with:
+- [What was found/checked]
+- Any issues encountered
+```
+
+The orchestrator must fill in `[repo path]`, `[worktree path]` (write ops), and `[owner/repo]` (GitHub slug, e.g., `Chiropractic-CT-Cloud/neb-ms-billing`) before dispatching each sub-agent. Resolve slugs during Phase 1 (DISCOVER) using `gh repo view --json nameWithOwner -q .nameWithOwner` in each repo, or derive from the `gh repo list` output if using remote discovery.
 
 ## Rate Limit Guidance
 
@@ -245,7 +472,7 @@ If a sub-agent reports a rate limit error (HTTP 429, "secondary rate limit", "AP
 
 Batch operations consume significant context. Monitor and act:
 
-- **10+ repos with heavy operations**: Consider running `handoff` after Phase 5 to preserve results for a follow-up session
+- **10+ repos with heavy operations**: Consider running `handoff` after Phase 6 to preserve results for a follow-up session
 - **Sub-agent failures generating long error output**: Summarize errors rather than including full output in the tracking table
 - **Mid-batch context pressure**: Complete the current batch, write results to a file (`batch-results.md`), then run `handoff`
 
@@ -256,3 +483,4 @@ Batch operations consume significant context. Monitor and act:
 - Sub-agent prompt references conversation context — prompts must be self-contained
 - Same repo failing repeatedly — stop after 2 attempts, don't burn context
 - Rate limit errors on consecutive batches — pause and reassess with the user
+- Sub-agent running `git checkout` or `git worktree add` in a source repo — only the orchestrator manages worktrees
