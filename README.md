@@ -46,7 +46,7 @@ dotfiles/
 │       ├── RTK.md           # RTK usage reference (included via project AGENTS.md)
 │       ├── settings.json    # Permissions, hooks, env vars
 │       ├── agents/          # 4 custom subagents
-│       ├── commands/        # Slash commands (ai-teamup, co-research)
+│       ├── commands/        # Slash commands (ai-teamup, co-research, extra-usage)
 │       ├── hooks/           # PreToolUse and PostToolUse hooks
 │       ├── scripts/         # Status bar, hooks
 │       └── skills           # Symlink → ../../codex/.agents/skills
@@ -315,6 +315,7 @@ Claude Code: `@"www-wtr-runner (agent)" run TEST_FILES=test/services/update-noti
 |---------|---------|
 | **ai-teamup** | Implement a PRD using Agent Teams — parallel specialists with peer messaging, Mongoose gate, and escalation protocol. Claude Code only. |
 | **co-research** | Dispatch parallel research agents and Codex, then synthesize findings |
+| **extra-usage** | No-op shadow to prevent accidental `/extra-usage` activation (fat-finger guard for `/exit`) |
 
 #### CLI Tools (`claude/bin/`)
 
