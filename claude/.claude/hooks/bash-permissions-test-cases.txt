@@ -301,6 +301,10 @@ ALLOW	allow_skill_cleanup	-	rm -rf .peer-review
 ALLOW	allow_skill_cleanup	-	rm -rf .co-research
 ALLOW	allow_skill_cleanup	-	rm -rf /Users/me/repos/project/.peer-review
 ALLOW	allow_skill_cleanup	-	rm -rf /Users/me/repos/project/.co-research
+# Should ALLOW: compound commands with cd prefix
+ALLOW	allow_skill_cleanup	-	cd /Users/me/repos/project && rm -rf .peer-review
+ALLOW	allow_skill_cleanup	-	cd /Users/me/repos/project && rm -rf .co-research
+ALLOW	allow_skill_cleanup	-	something; rm -rf .peer-review
 # Note: rm -rf /arbitrary/path/.peer-review also matches the regex, but the
 # deny layer blocks paths outside ~/repos/ before the allow layer runs.
 # End-to-end behavior for safe paths is covered by integration tests.
