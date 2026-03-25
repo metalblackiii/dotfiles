@@ -165,7 +165,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 - **Project docs**: platform-default behavior may load project instruction files (for example `AGENTS.md` and `CLAUDE.md`); this repo does not configure custom fallback behavior
 - **Agents**: 4 custom agents in `codex/.codex/agents/`, derived from the Claude Code agents (research, upgrade-analyst, neb-explorer, www-wtr-runner)
 
-#### Skills (53)
+#### Skills (54)
 
 Specialized methodologies that activate automatically when relevant tasks are detected. Each skill's description includes trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to use them.
 
@@ -213,6 +213,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **secure-code-guardian** | Implementing security controls (auth/authz, validation, secrets, encryption, headers) |
 | **security-review** | Dedicated security audit/deep-dive review beyond normal PR quality gates |
 | **self-review** | Pre-commit/pre-PR quality gate for local git changes |
+| **sitrep** | Persistent situation report for large Jira work items — cross-session orientation, ticket inventory, repo scanning, gap analysis, interactive mode |
 | **snyk-expert** | Interpreting Snyk scan results, CVE/CWE assessment, vulnerability prioritization, CLI config, container scanning, remediation strategy |
 | **snyk-scan** | Scanning repos for vulnerabilities and applying fixes — orchestrates scan, assess, approve, remediate, report |
 | **spec-miner** | Reverse-engineering specs from existing code, documenting legacy systems |
