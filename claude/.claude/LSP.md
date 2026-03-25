@@ -9,4 +9,4 @@ TypeScript and Rust LSP servers are active.
 
 ## Diagnostics
 
-After editing code, check LSP diagnostics before proceeding — type errors surface immediately without running `tsc` or `cargo check`.
+Don't proceed after edits without checking LSP diagnostics — type errors surface immediately without running `tsc` or `cargo check`.
