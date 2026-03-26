@@ -38,6 +38,7 @@ CLAUDE_ITEMS=(
     "agents"
     "scripts"
     "commands"
+    "env-file"
 )
 
 for item in "${CLAUDE_ITEMS[@]}"; do

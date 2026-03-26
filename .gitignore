@@ -23,3 +23,4 @@ profiles
 
 # Private/secrets files (never commit)
 *.local
+claude/.claude/env-file

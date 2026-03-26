@@ -77,6 +77,15 @@
             "command": "~/.claude/hooks/waypoint-session-start.sh"
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat ~/.claude/env-file >> \"$CLAUDE_ENV_FILE\""
+          }
+        ]
       }
     ],
     "PreToolUse": [
