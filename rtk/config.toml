@@ -1,6 +1,11 @@
 [telemetry]
 enabled = false
 
+[tee]
+# Disable raw output logging — failed commands can contain credentials
+# or sensitive data that shouldn't persist on disk.
+mode = "never"
+
 [hooks]
 # Commands to exclude from auto-rewrite (e.g. ["curl", "helm"])
 # Use this when a rewritten command misbehaves.
