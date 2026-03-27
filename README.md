@@ -196,7 +196,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
 | **mysql-cli** | Execute queries against live MySQL databases using mysql-client with login paths |
 | **neb-ms-conventions** | Code conventions used in neb microservice repositories |
-| **one-shot** | Implement a feature end-to-end in one run — accepts PRD or prose, worktree, peer review, commit, and PR |
+| **one-shot** | Implement a feature end-to-end in one run — accepts PRD or prose, worktree, peer review, commit, and PR (manual-only, invoke with `/one-shot`) |
 | **peer-review** | Multi-round code review using an isolated agentic reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **pr-analysis** | Reviewing PR/git diffs for quality, security, architecture, testing |

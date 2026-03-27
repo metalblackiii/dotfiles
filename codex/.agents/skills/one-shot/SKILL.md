@@ -1,12 +1,12 @@
 ---
 name: one-shot
 description: >-
-  ALWAYS invoke for implementing a feature end-to-end in a single run — worktree setup,
-  implementation, peer review, commit, and PR creation in one automated pipeline.
-  Accepts a PRD file or prose description.
-  Triggers on "one-shot this", "implement this PRD", "build this feature", "implement this".
+  Automated pipeline from requirements to PR in a single run — worktree setup,
+  implementation, peer review, commit, and PR creation. Accepts a PRD file or prose description.
   Not for creating PRDs (use create-prd) or multi-repo implementation (use ai-teamup).
+  Manual invocation only; not invoked directly by the model.
 argument-hint: "<prd-path or prose description>"
+disable-model-invocation: true
 ---
 
 # One-Shot
