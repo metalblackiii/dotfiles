@@ -116,12 +116,54 @@ done
 
 ctx="${bar} ${C_GRAY}${pct}% of ${max_k}k tokens"
 
+# Session cost (omit when zero/absent to reduce visual noise)
+cost_usd=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
+cost_display=""
+if [[ -n "$cost_usd" && "$cost_usd" != "0" ]]; then
+    cost_display=$(printf '$%.2f' "$cost_usd")
+fi
+
+# Rate limit (5-hour window, Pro/Max only)
+rate_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+rate_display=""
+if [[ -n "$rate_pct" ]]; then
+    rate_int=$(printf '%.0f' "$rate_pct")
+    if [[ $rate_int -ge 80 ]]; then
+        C_RATE='\033[38;5;167m'
+    elif [[ $rate_int -ge 50 ]]; then
+        C_RATE='\033[38;5;172m'
+    else
+        C_RATE='\033[32m'
+    fi
+    resets_at=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
+    countdown=""
+    if [[ -n "$resets_at" && "$resets_at" =~ ^[0-9.]+$ ]]; then
+        resets_at=$(printf '%.0f' "$resets_at")
+        rate_now=$(date +%s)
+        remaining=$((resets_at - rate_now))
+        if [[ $remaining -gt 0 ]]; then
+            hours=$((remaining / 3600))
+            mins=$(( (remaining % 3600) / 60 ))
+            if [[ $hours -gt 0 ]]; then
+                countdown=" (${hours}h${mins}m)"
+            elif [[ $mins -gt 0 ]]; then
+                countdown=" (${mins}m)"
+            else
+                countdown=" (<1m)"
+            fi
+        fi
+    fi
+    rate_display=" | ${C_RATE}5h: ${rate_int}%${countdown}${C_RESET}"
+fi
+
 # Truncate branch name for display
 branch_display="$branch"
 [[ ${#branch} -gt 25 ]] && branch_display="${branch:0:25}…"
 
-# Build output: Model | Dir | Context | Branch (uncommitted)
+# Build output: Model | Dir | Context | Cost | Rate Limit | Branch (uncommitted)
 output="${C_ACCENT}${model}${C_GRAY} | 📁${dir} | ${ctx}"
+[[ -n "$cost_display" ]] && output+=" | ${cost_display}"
+output+="${rate_display}"
 [[ -n "$branch" ]] && output+=" | 🔀${branch_display} ${git_status}"
 output+="${C_RESET}"
 
@@ -131,6 +173,8 @@ printf '%b\n' "$output"
 if [[ -n "$transcript_path" && -f "$transcript_path" ]]; then
     # Calculate visible length (without ANSI codes) - 10 chars for bar + content
     plain_output="${model} | 📁${dir} | xxxxxxxxxx ${pct}% of ${max_k}k tokens"
+    [[ -n "$cost_display" ]] && plain_output+=" | ${cost_display}"
+    [[ -n "$rate_pct" ]] && plain_output+=" | 5h: ${rate_int}%${countdown}"
     [[ -n "$branch" ]] && plain_output+=" | 🔀${branch_display} ${git_status}"
     max_len=${#plain_output}
     last_user_msg=$(jq -rs '
