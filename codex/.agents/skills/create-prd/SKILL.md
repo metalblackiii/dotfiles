@@ -264,13 +264,16 @@ If yes, generate at `docs/prd_list-<slug>.json` — colocated with the PRD so th
 }
 ```
 
-Display next steps. Adapt the block based on whether the manifest was generated:
+Display next steps. Adapt the block based on whether the manifest was generated and whether `/requirements-analyst` was already invoked during this session.
+
+**Requirements-analyst check:** If `/requirements-analyst` was already invoked on this PRD during the current session, omit the "Before implementation, consider running /requirements-analyst" line. Only include it if the skill was NOT run.
 
 **If manifest was generated:**
 ```
 PRD saved to: docs/prd-<slug>.md
 Manifest saved to: docs/prd_list-<slug>.json
 
+[Only if /requirements-analyst was NOT run this session:]
 Before implementation, consider running /requirements-analyst on the PRD
 to surface gaps, risks, and hidden assumptions a fresh perspective catches.
 
@@ -285,6 +288,7 @@ Execute with:
 ```
 PRD saved to: docs/prd-<slug>.md
 
+[Only if /requirements-analyst was NOT run this session:]
 Before implementation, consider running /requirements-analyst on the PRD
 to surface gaps, risks, and hidden assumptions a fresh perspective catches.
 
