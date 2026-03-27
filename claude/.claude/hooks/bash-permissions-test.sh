@@ -102,6 +102,7 @@ jq -r --arg home_esc "$HOME_ESC" '
     (
       if .category == "local dev testing" then "allow_curl_local"
       elif .category == "skill cleanup" then "allow_skill_cleanup"
+      elif .category == "web content extraction" then "allow_trafilatura"
       elif .category == "personal feature branch" then
         if ((.regex // "") + ((.commands // []) | join(" ")) | test("git")) then "allow_git_ops"
         else "allow_gh_pr"

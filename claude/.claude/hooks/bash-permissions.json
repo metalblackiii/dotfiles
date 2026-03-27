@@ -17,6 +17,10 @@
       "regex": "\\b(rtk[[:space:]]+)?gh[[:space:]]+pr[[:space:]]+create\\b",
       "branch": "^mjb-pho-NEB-",
       "category": "personal feature branch"
+    },
+    {
+      "regex": "^trafilatura\\b",
+      "category": "web content extraction"
     }
   ],
 

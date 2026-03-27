@@ -50,6 +50,7 @@ Never start work without checking the skills list. Matching skill → invoke it 
 
 - `head`/`tail` are allowed for quick peeking. Never attempt to work around deny rules.
 - **Prefer `jq` for JSON parsing in shell contexts.** Do not suggest Python one-liners for JSON processing.
+- **Prefer `trafilatura` for web content extraction** over WebFetch/curl when available. `trafilatura -u <url> --markdown` produces clean markdown with ~67% fewer tokens than raw HTML. This is an explicit exception to the "prefer built-in tools" rule — trafilatura's output quality justifies the Bash call. Fall back to WebFetch if trafilatura is not installed.
 
 ### Claude Code
 

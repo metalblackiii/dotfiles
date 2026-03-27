@@ -318,6 +318,25 @@ ASK	allow_skill_cleanup	-	rm -rf .other-dir
 ASK	allow_skill_cleanup	-	rm -rf .co-research .peer-review /tmp/evil
 #
 # -------------------------------------------------------------------
+# allow_trafilatura — web content extraction (always allowed)
+# No branch condition.
+# -------------------------------------------------------------------
+# Should ALLOW: trafilatura commands
+ALLOW	allow_trafilatura	-	trafilatura -u https://example.com --markdown
+ALLOW	allow_trafilatura	-	trafilatura -u https://example.com --output-format markdown
+ALLOW	allow_trafilatura	-	trafilatura -i urls.txt --markdown
+ALLOW	allow_trafilatura	-	trafilatura --help
+# Should ASK: piped usage (auto-allow only at command start to avoid bypassing
+# ask rules for the left-hand command, e.g. curl)
+ASK	allow_trafilatura	-	cat page.html | trafilatura --markdown
+ASK	allow_trafilatura	-	curl -s https://example.com | trafilatura --markdown
+# Should ASK: trafilatura as argument, not command (must not bypass other ask rules)
+ASK	allow_trafilatura	-	brew install trafilatura
+ASK	allow_trafilatura	-	git commit -m "add trafilatura support"
+ASK	allow_trafilatura	-	curl https://example.com/trafilatura
+ASK	allow_trafilatura	-	pip install trafilatura
+#
+# -------------------------------------------------------------------
 # path_dotconfig — application config (~/.config/)
 # -------------------------------------------------------------------
 # Should DENY: access to .config directory contents

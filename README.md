@@ -100,6 +100,7 @@ The AI tool configuration is designed to be shareable. It covers agent platforms
 | `mysql-client` | Optional | `brew install mysql-client` | `mysql-cli` skill (live MySQL database queries via login paths) |
 | `snyk` | Optional | `brew tap snyk/tap && brew install snyk` | `snyk-expert` skill, vulnerability scanning. Run `snyk auth` after install to authenticate. |
 | `rtk` | Optional | `brew install rtk` | Token-optimized CLI proxy (60-90% savings) |
+| `trafilatura` | Optional | `brew install trafilatura` | Web content extraction — clean markdown from URLs (~67% fewer tokens than raw HTML). Preferred over WebFetch when available. |
 
 #### Optional Security Tooling (Only for `security-review` Scanner Mode)
 
