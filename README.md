@@ -167,7 +167,7 @@ Codex owns the canonical skill directory (`codex/.agents/skills/`), which is sym
 
 #### Skills (55)
 
-Specialized methodologies that activate automatically when relevant tasks are detected. Each skill's description includes trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to use them.
+Specialized methodologies that activate automatically when relevant tasks are detected. Each skill's description includes trigger conditions (e.g., "ALWAYS invoke when...") that guide the model to use them. A few skills are manual-only (`/skill-name`).
 
 | Skill | When it activates |
 |-------|-------------------|
@@ -187,7 +187,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **discover-ratchet** | Scan a codebase for quantitatively improvable targets with measurable metrics, output ranked candidates ready for `/ratchet` |
 | **dockerfile-expert** | Create, generate, validate, lint, scan, audit, or optimize Dockerfiles |
 | **gha-expert** | Create, generate, validate, lint, audit, fix, or diagnose GitHub Actions workflows and CI/CD pipeline failures |
-| **handoff** | Ending sessions with work in progress with context saved in a doc for a fresh session |
+| **handoff** | Write a handoff document for the next session (manual-only, invoke with `/handoff`) |
 | **helm-expert** | Create, scaffold, generate, validate, lint, audit, or check Helm charts |
 | **introspect** | Auditing agent configuration for conflicts, redundancy, staleness, prompt quality |
 | **js-modernizer** | Modernizing JS → TS: CJS→ESM migration, Babel removal, JSDoc typing, incremental .js→.ts conversion |
@@ -196,7 +196,6 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **mcp-expert** | Evaluate, build, debug, or extend MCP servers and clients (vetting + development) |
 | **mysql-cli** | Execute queries against live MySQL databases using mysql-client with login paths |
 | **neb-ms-conventions** | Code conventions used in neb microservice repositories |
-| **www-design** | Design system vocabulary, anti-patterns, and completion checklist for new UI in neb-www |
 | **one-shot** | Implement a feature end-to-end in one run — accepts PRD or prose, worktree, peer review, commit, and PR |
 | **peer-review** | Multi-round code review using an isolated agentic reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
@@ -226,6 +225,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
 | **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
 | **writing-subagents** | Creating, updating, or converting agent/subagent definitions for Claude Code or Codex |
+| **www-design** | Design system vocabulary, anti-patterns, and completion checklist for new UI in neb-www |
 
 #### Dormant Skills (3)
 

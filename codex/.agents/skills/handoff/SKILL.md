@@ -1,6 +1,7 @@
 ---
 name: handoff
-description: ALWAYS invoke when ending a session with work in progress, or when context usage reaches 75%.
+description: Write a handoff document so the next session can continue this work. Not invoked automatically.
+disable-model-invocation: true
 ---
 
 Write or update a handoff document so the next agent with fresh context can continue this work.
