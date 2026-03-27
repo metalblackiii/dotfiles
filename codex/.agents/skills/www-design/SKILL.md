@@ -21,7 +21,7 @@ AI-generated UI converges to the same mediocre aesthetic (Inter font, purple gra
 
 ### Colors
 
-**Brand palette:** `style-guide/colors.md` (relative to this skill) — full ChiroTouch Design System color scales (Sky, Ocean, Green, Gold, Coral, Neutrals). Read this when choosing colors for new UI.
+**Brand palette:** `style-guide/colors.md` — full ChiroTouch Design System color scales (Sky, Ocean, Green, Gold, Coral, Neutrals). Read this when choosing colors for new UI.
 
 **Implementation constants** (source: `packages/neb-styles/neb-styles.js`, `neb-variables.js`, `src/styles/index.js`).
 These are the actual values in code — they predate the design system and don't match brand tokens exactly. Always use these constants in code; the brand palette is for design decisions, not literal hex substitution.
@@ -82,11 +82,46 @@ Stick to these values. If a spacing value isn't in this table, it probably shoul
 - **Grid for forms and dense layouts.** See `src/styles/index.js:125` for grid conventions.
 - Layout helpers: `layoutStyles` from `src/styles/index.js`.
 
+### Controls
+
+**Full specs:** `style-guide/controls.md` — toggles, checkboxes, radio buttons, text toggles (segmented controls). Read this when building form controls.
+
+All interactive controls use Sky/cyan for their active/checked state and Neutral 500 for disabled. Accent color in code is `#0caadc` (`CSS_COLOR_HIGHLIGHT`).
+
+### Dropdowns
+
+**Full specs:** `style-guide/dropdowns.md` — single-select, multi-select (with checkboxes), and searchable variants. Read this when building selection UI.
+
+Dropdown panels are the one control where a subtle `box-shadow` is appropriate. Selected/hover items use Sky 100/200 background.
+
+### Input Fields
+
+**Full specs:** `style-guide/input-fields.md` — text inputs, search, password, textarea, and dropdown triggers. 5 field types x 7 states. Read this when building forms.
+
+Corner radius for all input fields and textareas is **6px**. Labels above fields by default; inline labels for compact layouts. Required fields use `Label *` pattern. Error messages appear below the field with coral icon + text.
+
+### Tables
+
+**Full specs:** `style-guide/tables.md` — container variants (bordered, borderless, compact), cell types (header, data, status badge, action, toggle), row patterns, and the full collection page layout. Read this when building list/table views.
+
+Tables are flat with horizontal dividers only — no zebra striping, no heavy shadows. Status badges use Green pill styling. The standard collection page pattern (sidebar + title + filters + table) uses `CollectionPage` base class.
+
+### Badges
+
+**Full specs:** `style-guide/badges.md` — 4 semantic colors (Green, Yellow, Red, Gray), text-only and icon+text variants, 2 sizes. Read this when showing status indicators.
+
+Badges are pill-shaped with light tinted backgrounds (100 level) and dark text (500/600 level). Used in table status columns, detail views, and anywhere state needs to be communicated. Don't invent new badge colors — stick to the 4 semantic options.
+
 ### Icons
 
-- Use `neb-icon` component with the `RENDERER_SVGS` registry from `packages/neb-styles/icons.js`.
-- Do NOT use inline SVG, external icon libraries (Lucide, Heroicons), or icon fonts.
-- Register new icons in the existing registry pattern — see `packages/neb-styles/icons.js`.
+**Full catalog:** `style-guide/iconography.md` — three icon sets (Essential Lined, Essentials Filled, Rheo Icons) with usage rules. Read this when choosing icons.
+
+- **Essential Lined** is the default — outlined/stroked icons for all standard UI
+- **Essentials Filled** for emphasis and active states only (filled star, alert icons, media controls)
+- **Rheo Icons** are product-scoped (Sky-colored, circular) — only for Rheo/AI Scribe features
+- Use `neb-icon` component with the `RENDERER_SVGS` registry from `packages/neb-styles/icons.js`
+- Do NOT use inline SVG, external icon libraries (Lucide, Heroicons, Font Awesome, Material Icons), or icon fonts
+- Register new icons in the existing registry pattern — see `packages/neb-styles/icons.js`
 
 ### Component Structure
 
@@ -131,7 +166,7 @@ These are the specific defaults Claude reaches for that clash with neb-www. Do n
 ### Layout
 - **Do not center-align body text.** Left-align is the default. Center is reserved for empty states and login.
 - **Do not create three-equal-column grids** for feature sections. Match the layout pattern of adjacent pages.
-- **Do not use `rounded-lg` or heavy border-radius.** neb-www uses subtle radius — 4px on form fields, minimal elsewhere.
+- **Do not use `rounded-lg` or heavy border-radius.** neb-www uses subtle radius — 6px on input fields/textareas, minimal elsewhere.
 - **Do not add excessive padding.** neb-www is information-dense. 20px container padding, 8px row gaps.
 
 ### Buttons
@@ -140,6 +175,30 @@ These are the specific defaults Claude reaches for that clash with neb-www. Do n
 - **Do not skip loading/disabled states.** Buttons must prevent double-submit.
 - **Filled and outlined buttons are pill-shaped** (full border-radius). Tertiary and link buttons are text-only — no background or border.
 - See `style-guide/buttons.md` (relative to this skill) for the full button system (5 types, 6 states, 4 content variants, 3 sizes).
+
+### Tables
+- **Do not use zebra striping (alternating row colors).** All rows are white; hover adds a subtle Neutral 100/200 background.
+- **Do not add vertical column borders.** Tables use horizontal row dividers only.
+- **Do not manually style status badges.** Use `neb-category` or the semantic badge component — see `style-guide/badges.md` for the 4-color system (Green, Yellow, Red, Gray).
+- **Do not skip the filter bar pattern.** Collection pages have search + filter + optional checkbox above the table.
+
+### Input Fields
+- **Do not use native `<input>` or `<textarea>` unstyled.** Use `neb-text-field`, `neb-md-textfield`, or `neb-textarea`.
+- **Do not use 4px or 8px border-radius on inputs.** The design system specifies 6px for input fields and textareas.
+- **Do not place error messages inside the field.** Error messages go below the field with a coral icon + text.
+- **Do not skip the 7-state matrix.** Every input field must handle: default, hover, focus, typing, disabled, placeholder, and error.
+
+### Controls
+- **Do not use HTML native checkboxes/radios/toggles unstyled.** Use neb's wrapped components (`neb-checkbox`, `neb-toggle`, etc.).
+- **Do not use green for checkbox checked state.** Checked controls use Sky/cyan, not green.
+- **Do not mix label placement within a group.** If a form section has labels after controls, all controls in that section use label-after.
+- **Do not invent toggle sizes.** The design system defines two sizes (default and small) — don't create medium or extra-large.
+
+### Dropdowns
+- **Do not use native `<select>` elements.** Use `neb-select`, `neb-dropdown`, or `neb-md-select`.
+- **Do not open dropdowns upward.** Panels drop below the trigger in standard usage.
+- **Do not use heavy shadows on dropdown panels.** A subtle shadow is correct — this is the one control where elevation via shadow is appropriate.
+- **Do not omit the chevron icon.** Dropdowns always show chevron-down (closed) / chevron-up (open).
 
 ### Components
 - **Do not create new shared style modules.** Use `baseStyles`, `layoutStyles`, `baseTableStyles`.
@@ -183,4 +242,10 @@ Read these before building new UI in their category:
 | Tables | `packages/neb-styles/neb-table-styles.js` |
 | Collection pages | `packages/neb-lit-components/src/components/neb-page-collection.js` |
 | Icons | `src/components/misc/neb-icon.js` |
+| Text fields | `packages/neb-lit-components/src/components/inputs/neb-text-field.js` |
+| Textareas | `packages/neb-lit-components/src/components/inputs/neb-textarea.js` |
+| Checkboxes | `packages/neb-lit-components/src/components/controls/neb-checkbox.js` |
+| Radio buttons | `packages/neb-lit-components/src/components/controls/neb-radio-button.js` |
+| Toggles | `packages/neb-lit-components/src/components/controls/neb-switch.js` |
+| Dropdowns/Select | `packages/neb-lit-components/src/components/inputs/neb-select.js` |
 | Alerts/categories | `packages/neb-lit-components/src/components/controls/neb-category.js` |
