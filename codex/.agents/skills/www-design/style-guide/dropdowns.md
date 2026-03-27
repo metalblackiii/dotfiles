@@ -92,7 +92,7 @@ Label uses Body 3 or Body 2 text in Neutral 600/700. The label is outside the co
 
 ## neb-www Implementation
 
-- Use `neb-select`, `neb-dropdown`, or `neb-md-select` — don't create custom dropdowns
+- Use `neb-select` or `neb-dropdown` — don't create custom dropdowns
 - Multi-select uses checkboxes from the design system (see `controls.md`)
 - Searchable variant uses an inline text input — match `neb-text-field` styles for the search box
 - Selected highlight color: Sky 100 or Sky 200 background

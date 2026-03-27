@@ -82,7 +82,7 @@ When no strong CTA is needed:
 
 ## neb-www Implementation
 
-- Use `neb-button` or `neb-md-button` — never create custom button elements
+- Use `neb-button` — never create custom button elements
 - Primary = default button role
 - Secondary = outline variant
 - Always pair primary + secondary for action groups — don't use two primaries side by side

@@ -170,7 +170,7 @@ These are the specific defaults Claude reaches for that clash with neb-www. Do n
 - **Do not add excessive padding.** neb-www is information-dense. 20px container padding, 8px row gaps.
 
 ### Buttons
-- **Do not create custom button elements.** Use `neb-button` or `neb-md-button`.
+- **Do not create custom button elements.** Use `neb-button`.
 - **Do not use two primary buttons side by side.** Pair primary (filled) + secondary (outlined).
 - **Do not skip loading/disabled states.** Buttons must prevent double-submit.
 - **Filled and outlined buttons are pill-shaped** (full border-radius). Tertiary and link buttons are text-only — no background or border.
@@ -183,7 +183,7 @@ These are the specific defaults Claude reaches for that clash with neb-www. Do n
 - **Do not skip the filter bar pattern.** Collection pages have search + filter + optional checkbox above the table.
 
 ### Input Fields
-- **Do not use native `<input>` or `<textarea>` unstyled.** Use `neb-text-field`, `neb-md-textfield`, or `neb-textarea`.
+- **Do not use native `<input>` or `<textarea>` unstyled.** Use `neb-text-field` or `neb-textarea`.
 - **Do not use 4px or 8px border-radius on inputs.** The design system specifies 6px for input fields and textareas.
 - **Do not place error messages inside the field.** Error messages go below the field with a coral icon + text.
 - **Do not skip the 7-state matrix.** Every input field must handle: default, hover, focus, typing, disabled, placeholder, and error.
@@ -195,7 +195,7 @@ These are the specific defaults Claude reaches for that clash with neb-www. Do n
 - **Do not invent toggle sizes.** The design system defines two sizes (default and small) — don't create medium or extra-large.
 
 ### Dropdowns
-- **Do not use native `<select>` elements.** Use `neb-select`, `neb-dropdown`, or `neb-md-select`.
+- **Do not use native `<select>` elements.** Use `neb-select` or `neb-dropdown`.
 - **Do not open dropdowns upward.** Panels drop below the trigger in standard usage.
 - **Do not use heavy shadows on dropdown panels.** A subtle shadow is correct — this is the one control where elevation via shadow is appropriate.
 - **Do not omit the chevron icon.** Dropdowns always show chevron-down (closed) / chevron-up (open).
@@ -203,7 +203,7 @@ These are the specific defaults Claude reaches for that clash with neb-www. Do n
 ### Components
 - **Do not create new shared style modules.** Use `baseStyles`, `layoutStyles`, `baseTableStyles`.
 - **Do not bypass `neb-icon`.** No inline SVG, no external icon libraries.
-- **Do not use Material Design components directly.** Use neb's wrapped versions (`neb-md-button`, etc.).
+- **Do not use Material Design components directly.** The `neb-md-*` wrappers are deprecated — use native neb components (`neb-button`, `neb-text-field`, `neb-select`, etc.).
 
 ## Completion Checklist
 

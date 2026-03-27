@@ -129,7 +129,7 @@ Reason for Visit
 
 ## neb-www Implementation
 
-- Use `neb-text-field` or `neb-md-textfield` — don't create custom input elements
+- Use `neb-text-field` — don't create custom input elements
 - Use `neb-textarea` for multiline fields
 - Password fields: use the built-in visibility toggle — don't implement your own show/hide
 - Search fields: use the component's built-in search icon — don't prepend icons manually
