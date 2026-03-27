@@ -300,7 +300,7 @@ All code-anchored findings are posted as inline review comments via `gh api`. Ne
 {
   "commit_id": "<head-sha>",
   "event": "<APPROVE|COMMENT|REQUEST_CHANGES>",
-  "body": "Auto-review summary (N findings: X critical, Y important, Z minor)",
+  "body": "Review summary (N findings: X critical, Y important, Z minor)",
   "comments": [
     {
       "path": "src/file.js",
