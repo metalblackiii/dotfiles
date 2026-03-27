@@ -92,11 +92,13 @@ Expert subagents use `model: "sonnet"` to avoid inheriting an expensive parent m
 **For multi-PR sets:** Union changed file paths across all PRs. Match against the expert heuristic table. Each expert receives the relevant files from all PRs where matches occurred, with repo context preserved — this gives experts cross-repo visibility within their domain.
 
 **Summary of the dispatch flow:**
-1. Match changed file paths (across all PRs) against the expert heuristic table
-2. For each matched expert domain, read the corresponding domain skill's SKILL.md
-3. Dispatch all matched experts as parallel subagents (platform-specific — see `references/expert-dispatch.md`)
-4. Each subagent receives: relevant diff portions (tagged by PR/repo), domain skill knowledge, `pr-analysis` criteria for their category, and instructions to return structured JSON findings
-5. If no patterns match, skip expert dispatch — standard analysis is sufficient
+1. Match changed file paths (across all PRs) and repo metadata against the expert heuristic table
+2. Apply conflict resolution (Neb Conventions subsumes API Design in neb-ms-* repos)
+3. Enforce the dispatch cap (max 4 experts, prioritized by tier — see `references/expert-dispatch.md`)
+4. For each matched expert domain, read the corresponding domain skill's SKILL.md
+5. Dispatch all matched experts as parallel subagents (platform-specific — see `references/expert-dispatch.md`)
+6. Each subagent receives: relevant diff portions (tagged by PR/repo), domain skill knowledge, `pr-analysis` criteria for their category, and instructions to return structured JSON findings
+7. If no patterns match, skip expert dispatch — standard analysis is sufficient
 
 ### Step 5: Cross-PR Analysis
 
