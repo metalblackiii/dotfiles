@@ -224,7 +224,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **thinking-partner** | Challenging ideas with structured critical reasoning, mental models (150+), and orientation detection |
 | **typescript-expert** | Writing, reviewing, or modifying TypeScript code — anti-hallucination guardrails, TS 6.0 ecosystem, module resolution |
 | **verification-before-completion** | Before claiming work is done, committing, or creating PRs |
-| **writing-skills** | Creating, testing, or optimizing skills — authoring, description tuning, eval-driven iteration |
+| **writing-skills** | Creating or optimizing skills — authoring conventions, description tuning |
 | **writing-subagents** | Creating, updating, or converting agent/subagent definitions for Claude Code or Codex |
 | **www-design** | Design system vocabulary, anti-patterns, and completion checklist for new UI in neb-www |
 

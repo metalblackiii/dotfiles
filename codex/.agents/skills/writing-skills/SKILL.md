@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: ALWAYS invoke when creating, updating, testing, or optimizing skills in this repo.
+description: ALWAYS invoke when creating, updating, or optimizing skills in this repo.
 ---
 
 # Writing Skills
@@ -9,11 +9,11 @@ description: ALWAYS invoke when creating, updating, testing, or optimizing skill
 
 Skills are reusable methodology guides that agents load when relevant. Good skills are discoverable, concise, and actionable. The format follows the open [Agent Skills spec](https://agentskills.io/specification) — skills work across Claude Code, Codex, and other compatible agents.
 
-This skill covers the full lifecycle: authoring conventions, eval-driven iteration, and description optimization for triggering accuracy.
+This skill covers authoring conventions and description optimization for triggering accuracy.
 
 ## Skill Precedence
 
-- This is the primary skill for all skill work in this repo — creation, maintenance, testing, and optimization.
+- This is the primary skill for all skill work in this repo — creation, maintenance, and optimization.
 - Do not rely on name shadowing (e.g., creating a local `skill-creator`) to override system behavior. Runtime precedence is implementation-dependent and may change.
 
 ## Frontmatter Reference
@@ -270,13 +270,7 @@ Good: `"ok so my boss just sent me this xlsx file (its in my downloads, called s
 
 ### Step 2: Review with user
 
-Present the eval set using the HTML template:
-
-1. Read `assets/eval_review.html`
-2. Replace `__EVAL_DATA_PLACEHOLDER__` with the JSON array, `__SKILL_NAME_PLACEHOLDER__` with the skill name, `__SKILL_DESCRIPTION_PLACEHOLDER__` with current description
-3. Write to a temp file and open it: `open /tmp/eval_review_<skill-name>.html`
-4. User edits queries, toggles triggers, clicks "Export Eval Set"
-5. Read the exported file from `~/Downloads/eval_set.json`
+Present the eval queries for review. Walk through edge cases — are the should-trigger queries realistic? Are the should-not-trigger queries genuine near-misses? Adjust based on feedback.
 
 ### Step 3: Manual trigger testing
 
@@ -289,47 +283,6 @@ If a should-trigger query doesn't trigger, iterate on the description: add adjac
 Update the skill's SKILL.md frontmatter with the improved description. Show the user before/after.
 
 ---
-
-## Eval-Driven Iteration
-
-For skills with objectively verifiable outputs, run test prompts to measure quality and iterate.
-
-### When to use evals
-
-Use the full eval loop when a skill produces structured, verifiable output — file transforms, code generation, data extraction, fixed workflow steps. Skip it for subjective/methodology skills (debugging process, review checklists) where human judgment is the only meaningful evaluation.
-
-### The core loop
-
-1. Write 2-3 realistic test prompts (save to `evals/evals.json` — see `references/schemas.md`)
-2. Spawn subagent test runs: with-skill vs baseline, in parallel
-3. Grade outputs against assertions
-4. Launch the eval viewer for human review
-5. Read feedback, improve the skill, repeat
-
-For the detailed step-by-step workflow (workspace layout, subagent prompts, grading, benchmarking, viewer commands), read `references/eval-workflow.md`.
-
-### Improvement Philosophy
-
-When iterating on a skill based on eval feedback:
-
-1. **Generalize from feedback.** The few test cases help iterate fast, but the skill will be used across many different prompts. Avoid overfitting to specific examples — if something is stubbornly failing, try different approaches or metaphors rather than adding rigid constraints.
-
-2. **Keep the skill lean.** Read the test transcripts, not just final outputs. If the skill makes the agent waste time on unproductive steps, remove those instructions.
-
-3. **Explain the why.** Frame instructions around reasoning rather than rigid rules. ALWAYS/NEVER in caps is a yellow flag — reframe with the reasoning so the model understands what matters and can generalize.
-
-4. **Extract repeated work.** If all test runs independently build similar helper scripts or take the same multi-step approach, that's a signal to bundle the script in `scripts/` so future invocations don't reinvent it.
-
----
-
-## Bundled Resources
-
-This skill includes infrastructure for eval-driven iteration:
-
-- `agents/` — Subagent instructions for grading (`grader.md`), blind comparison (`comparator.md`), and analysis (`analyzer.md`)
-- `eval-viewer/` — HTML viewer for reviewing test outputs (`viewer.html`)
-- `assets/` — Eval review HTML template for description optimization
-- `references/` — JSON schemas (`schemas.md`) and detailed eval workflow (`eval-workflow.md`)
 
 ## Cross-References
 
