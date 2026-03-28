@@ -158,8 +158,13 @@ Verdict: [REQUEST_CHANGES | COMMENT | APPROVE]
 
 FINDINGS: X critical, Y important, Z minor
 
-Post this review? (approve / reject / edit)
+proceed / discuss / pending
 ```
+
+Options:
+- **proceed** — submit the review with the computed verdict. The user can add color to override: "proceed, comment only", "proceed but drop f-2", "proceed, approve".
+- **discuss** — talk through findings, adjust (add, remove, reclassify), re-present the batch
+- **pending** — create as a pending GitHub review so the user can edit comment text in the GitHub UI before submitting
 
 **Multi-PR format:**
 ```
@@ -191,36 +196,37 @@ FINDINGS: X critical, Y important, Z minor
 --- Looks Good (across set) ---
 [Positive observations]
 
-Post reviews? (approve all / approve selective / reject / edit)
+proceed / discuss / pending
 ```
 
-Wait for explicit user approval. Options for multi-PR:
-- **approve all** — post reviews to all PRs
-- **approve selective** — choose which PRs to post to
-- **reject** — ask what to change
-- **edit** — adjust findings and re-present
+Wait for explicit user approval. Same options as single-PR, plus multi-PR qualifiers:
+- "proceed" — submit reviews to all PRs
+- "proceed repo-a and repo-b only" — selective submission
+- "discuss" / "pending" — same as single-PR
 
 Omit any severity section that has no findings. Each PR section (and the single-PR format) ends with a `FINDINGS:` summary line — it enables machine parsing by automation skills. Count 0 for empty sections.
 
 ### Step 8: Submit Reviews
 
-On approval, post via `gh api`. See the Comment Submission section below for the exact payload.
+On `proceed`, post via `gh api`. See the Comment Submission section below for the exact payload. On `pending`, omit the `event` field to create a pending GitHub review the user can edit in the UI before submitting.
 
 **For multi-PR sets:** Submit one review per PR, containing only that PR's findings as inline comments. Cross-PR findings are posted as inline comments on the most relevant PR (closest to root cause), with a note linking to the related PR(s).
 
 ### Step 9: Emit Metrics
 
-Append JSON records to `~/.auto-review-metrics.jsonl`. See Metrics Schema below.
+Skip metrics entirely for `pending` — a draft review has no submitted baseline and would corrupt dedup/resolution logic in re-review cycles.
+
+For `proceed`, append JSON records to `~/.auto-review-metrics.jsonl`. See Metrics Schema below.
 
 **For multi-PR sets:** Emit one record per PR plus one set-level record linking them via `set_id`.
 
 ## Phase 2: Re-Review Loop
 
-Skip this phase entirely if `--once` was specified.
+Skip this phase entirely if `--once` was specified or the user chose `pending` (pending reviews are drafts — the re-review loop requires a submitted review as baseline).
 
 ### Entry
 
-After Phase 1 completes (reviews posted), inform the user:
+After Phase 1 completes (reviews submitted), inform the user:
 
 **Single-PR:**
 ```
@@ -270,7 +276,7 @@ Each cycle:
     New commits: [count] since last review
     Previously resolved: [list of f-IDs]
     ```
-12. **Submit and emit metrics** on approval.
+12. **Submit and emit metrics** on `proceed`.
 
 ### Termination
 
@@ -313,6 +319,8 @@ All code-anchored findings are posted as inline review comments via `gh api`. Ne
   ]
 }
 ```
+
+For `proceed`: include `event` with the computed verdict. For `pending`: omit `event` entirely — the API creates a `PENDING` review. The user then submits it from the GitHub UI, or asks to submit later via `gh api -X POST repos/org/repo/pulls/<PR>/reviews/<review-id>/events -f event=<verdict>`.
 
 Get `head-sha` from the PR metadata fetched in Step 2 (`headRefOid` field).
 
