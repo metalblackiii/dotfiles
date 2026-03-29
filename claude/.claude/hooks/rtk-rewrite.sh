@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# rtk-hook-version: 3
+# rtk-hook-version: 3.1
 # RTK Claude Code hook — rewrites commands to use rtk for token savings.
 # Requires: rtk >= 0.23.0, jq
 #
@@ -8,10 +8,14 @@
 # To add or change rewrite rules, edit the Rust registry — not this file.
 #
 # Exit code protocol for `rtk rewrite`:
-#   0 + stdout  Rewrite found, no deny/ask rule matched → auto-allow
+#   0 + stdout  Rewrite found → emit updatedInput (no permissionDecision)
 #   1           No RTK equivalent → pass through unchanged
 #   2           Deny rule matched → pass through (Claude Code native deny handles it)
 #   3 + stdout  Ask rule matched → rewrite but let Claude Code prompt the user
+#
+# WARNING: Do NOT include permissionDecision alongside updatedInput.
+# Claude Code ignores updatedInput when permissionDecision is present,
+# causing the original (unrewritten) command to execute.
 
 if ! command -v jq &>/dev/null; then
   echo "[rtk] WARNING: jq is not installed. Hook cannot rewrite commands. Install jq: https://jqlang.github.io/jq/download/" >&2
@@ -49,7 +53,7 @@ EXIT_CODE=$?
 
 case $EXIT_CODE in
   0)
-    # Rewrite found, no permission rules matched — safe to auto-allow.
+    # Rewrite found — emit updatedInput, let Bash(*) handle permission.
     # If the output is identical, the command was already using RTK.
     [ "$CMD" = "$REWRITTEN" ] && exit 0
     ;;
@@ -73,26 +77,13 @@ esac
 ORIGINAL_INPUT=$(echo "$INPUT" | jq -c '.tool_input')
 UPDATED_INPUT=$(echo "$ORIGINAL_INPUT" | jq --arg cmd "$REWRITTEN" '.command = $cmd')
 
-if [ "$EXIT_CODE" -eq 3 ]; then
-  # Ask: rewrite the command, omit permissionDecision so Claude Code prompts.
-  jq -n \
-    --argjson updated "$UPDATED_INPUT" \
-    '{
-      "hookSpecificOutput": {
-        "hookEventName": "PreToolUse",
-        "updatedInput": $updated
-      }
-    }'
-else
-  # Allow: rewrite the command and auto-allow.
-  jq -n \
-    --argjson updated "$UPDATED_INPUT" \
-    '{
-      "hookSpecificOutput": {
-        "hookEventName": "PreToolUse",
-        "permissionDecision": "allow",
-        "permissionDecisionReason": "RTK auto-rewrite",
-        "updatedInput": $updated
-      }
-    }'
-fi
+# Emit updatedInput only — never permissionDecision (see WARNING above).
+# Claude Code's own permission system (Bash(*) or ask rules) handles authorization.
+jq -n \
+  --argjson updated "$UPDATED_INPUT" \
+  '{
+    "hookSpecificOutput": {
+      "hookEventName": "PreToolUse",
+      "updatedInput": $updated
+    }
+  }'

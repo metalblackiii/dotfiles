@@ -2,6 +2,10 @@
 
 **Usage**: Token-optimized CLI proxy (60-90% savings on dev operations)
 
+## Hook Authoring (IMPORTANT)
+
+Never return `permissionDecision` alongside `updatedInput` in the RTK rewrite hook (or any PreToolUse hook). Claude Code ignores `updatedInput` when `permissionDecision` is present — the original command executes unmodified, silently bypassing RTK with 0% savings. Return `updatedInput` only; let `Bash(*)` handle permission.
+
 ## Meta Commands (always use rtk directly)
 
 ```bash
