@@ -97,7 +97,7 @@ Both platforms share the same skill directory (`codex/.agents/skills/`). Verify 
 - Structure: `~/.agents/skills/personal/` → `dotfiles/codex/.agents/skills` (symlink under real parent dirs)
 - Should match canonical skill names exactly
 
-You may inspect `claude/.claude/skills/` in-repo to validate the symlink target, but runtime parity must still be verified from `~/.claude/skills/`.
+Inspect `claude/.claude/skills/` in-repo to validate the symlink target. Always verify runtime parity from `~/.claude/skills/`.
 
 ### 6. Review Skill Coherence
 

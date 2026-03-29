@@ -131,5 +131,8 @@ trust_level = "trusted"
 [projects."/Users/martinburch/repos/ptek-jira-cli"]
 trust_level = "trusted"
 
+[projects."/Users/martinburch/repos/waypoint"]
+trust_level = "trusted"
+
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-window-size", "context-used"]

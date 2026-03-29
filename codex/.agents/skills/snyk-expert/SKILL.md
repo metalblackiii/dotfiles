@@ -88,11 +88,11 @@ snyk test --json | jq '[.vulnerabilities[] | select(.id == "SNYK-JS-EXAMPLE-123"
 
 ### MUST DO
 - Get vulnerability context from the CLI (`snyk test --json`) first — it includes your actual dependency chain, not generic advisory info
-- Consider reachability before recommending urgency — an unreachable vuln is not urgent
+- Assess reachability before recommending urgency — an unreachable vuln is not urgent
 - Flag breaking changes explicitly when recommending major version upgrades
 - Distinguish between direct and transitive dependency vulnerabilities
 - Account for the neb ecosystem — `@neb/*` packages from private registry may have interdependencies
-- Consider HIPAA context — patient data exposure vulns get elevated priority regardless of CVSS
+- Elevate patient data exposure vulns regardless of CVSS — HIPAA context applies
 - Recommend `snyk ignore` with expiry and reason for accepted risks — not silent skips
 
 ### MUST NOT DO

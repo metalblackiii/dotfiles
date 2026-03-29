@@ -364,7 +364,7 @@ After a batch operation touches many repos, the orchestrator's working directory
 - For repo-scoped `gh` commands (`pr`, `issue`, `repo view`, `run`, etc.), always use `-R owner/repo` — never bare `gh pr view 123` (it resolves against cwd, which is likely the wrong repo)
 - If the user asks about a specific PR by number, resolve the repo from context (batch results table, conversation history) and use `-R`
 - If repo can't be determined, ask — don't guess from cwd
-- After the batch report, consider resetting cwd to the user's original working directory or a neutral location
+- After the batch report, reset cwd to the user's original working directory or a neutral location
 
 **This also applies to the user's follow-up questions.** After a batch op, if the user says "check PR 142" without specifying a repo, look at the batch results table to find which repo created PR #142 and use `-R` accordingly. PR numbers are only unique within a repo, not across repos.
 
@@ -472,7 +472,7 @@ If a sub-agent reports a rate limit error (HTTP 429, "secondary rate limit", "AP
 
 Batch operations consume significant context. Monitor and act:
 
-- **10+ repos with heavy operations**: Consider running `handoff` after Phase 6 to preserve results for a follow-up session
+- **10+ repos with heavy operations**: Run `handoff` after Phase 6 to preserve results for a follow-up session
 - **Sub-agent failures generating long error output**: Summarize errors rather than including full output in the tracking table
 - **Mid-batch context pressure**: Complete the current batch, write results to a file (`batch-results.md`), then run `handoff`
 

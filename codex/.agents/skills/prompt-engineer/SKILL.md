@@ -104,7 +104,7 @@ Do not include opinions or information not present in the document.
 - Document expected behavior and known limitations
 - Use few-shot examples that match target distribution
 - Validate structured outputs against schemas
-- Consider token costs and latency in design
+- Account for token costs and latency in design
 - Test across model versions before production deployment
 
 ### MUST NOT DO

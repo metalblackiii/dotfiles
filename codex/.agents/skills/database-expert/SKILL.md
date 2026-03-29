@@ -51,7 +51,7 @@ Database specialist for multi-tenant Node.js applications using Sequelize. Cover
 - Use EXISTS over COUNT for existence checks
 - Handle NULLs explicitly
 - Create covering indexes for frequent queries
-- Consider multi-tenant implications — indexes must perform across all tenant data volumes
+- Account for multi-tenant implications — indexes must perform across all tenant data volumes
 - Account for Aurora reader endpoint for read-heavy queries
 - Test index changes against write performance, not just reads
 - Test with production-scale data volumes
