@@ -2,7 +2,7 @@
 name: one-shot
 description: >-
   Automated pipeline from requirements to PR in a single run — worktree setup,
-  implementation, peer review, commit, and PR creation. Accepts a PRD file or prose description.
+  implementation, peer review, commit, PR creation, and CI fix loop. Accepts a PRD file or prose description.
   Not for creating PRDs (use create-prd) or multi-repo implementation.
   Manual invocation only; not invoked directly by the model.
 argument-hint: "<prd-path or prose description>"
@@ -11,7 +11,7 @@ disable-model-invocation: true
 
 # One-Shot
 
-Automated pipeline from requirements to PR. Creates a worktree, implements the feature, runs peer review with fix cycles, commits, creates a PR with review findings, and cleans up.
+Automated pipeline from requirements to PR. Creates a worktree, implements the feature, runs peer review with fix cycles, commits, creates a PR with review findings, monitors CI and fixes failures, and cleans up.
 
 Accepts two input types:
 - **PRD file** — structured, with extractable metadata (branch, verification commands, repo scope)
@@ -25,7 +25,7 @@ Accepts two input types:
 ## Pipeline
 
 ```
-PARSE → VALIDATE → WORKTREE → IMPLEMENT → VERIFY → COMMIT → PEER-REVIEW → PR → CLEANUP
+PARSE → VALIDATE → WORKTREE → IMPLEMENT → VERIFY → COMMIT → PEER-REVIEW → PR → CI WATCH → CLEANUP
 ```
 
 ## Step 0: Parse & Validate
@@ -182,18 +182,67 @@ REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 Create the PR:
 
 ```bash
-gh pr create -R "$REPO" \
+PR_URL=$(gh pr create -R "$REPO" \
   --title "<type>(<scope>): <concise title>" \
   --body "$(cat <<'EOF'
 <assembled PR body>
 EOF
-)" \
-  -r Chiropractic-CT-Cloud/phoenix
+)")
+PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]*$')
 ```
+
+Hold `PR_URL` and `PR_NUMBER` for Step 7 and Step 8.
 
 **Jira integration.** If a ticket number was extracted in Step 0, comment on the Jira ticket with the PR URL after PR creation.
 
-## Step 7: Cleanup
+## Step 7: CI Watch
+
+Monitor CI checks on the PR. Fix failures and push until green, or exhaust the attempt budget.
+
+### Poll
+
+Wait 5 minutes, then check:
+
+```bash
+gh pr checks $PR_NUMBER -R "$REPO"
+```
+
+If any checks are still `pending` or `queued`, wait another 5 minutes and re-check. Repeat until all checks reach a terminal state (pass, fail, neutral, skipped, cancelled). If checks remain non-terminal after **60 minutes** of polling, comment on the PR noting the stall and proceed to cleanup — something is stuck.
+
+### On All Green
+
+Proceed to Step 8 (Cleanup).
+
+### On Failure
+
+1. Identify the failing check(s). Get the run ID from the checks output, then fetch logs:
+   ```bash
+   gh run view <run-id> -R "$REPO" --log-failed
+   ```
+2. Read the error output. Triage the failure:
+   - **Code issue** (build error, test failure, lint violation) — fix the root cause in the worktree
+   - **Infra flake** (timeout, runner unavailable, transient network error) — re-run the workflow via `gh run rerun <run-id> -R "$REPO" --failed` (counts as one attempt)
+   - **Environment issue** (missing secret, permissions, external service down) — not fixable from code; skip to circuit breaker
+3. Fix the issue in the worktree — this may touch files beyond those changed in Step 2.
+4. Commit and push:
+   ```bash
+   git add <files>
+   git commit -m "fix(<scope>): <what was fixed for CI>"
+   git push
+   ```
+5. Return to **Poll** and wait for the new run.
+
+### Circuit Breaker
+
+After **5 fix attempts**, stop. Report remaining CI failures in a PR comment:
+
+```bash
+gh pr comment $PR_NUMBER -R "$REPO" --body "CI still failing after 5 fix attempts: <summary of remaining failures>"
+```
+
+Proceed to Step 8 (Cleanup).
+
+## Step 8: Cleanup
 
 Return to the original repository and remove the worktree:
 
@@ -206,7 +255,7 @@ Display:
 
 ```
 Done.
-<pr-url>
+$PR_URL
 Worktree removed: ../<branch>
 ```
 
@@ -219,7 +268,7 @@ If `git worktree remove` fails (uncommitted changes, lock), display the error an
 - **No scope creep.** Implement what was requested — no extras, no drive-by cleanup.
 - **Worktree isolation.** All work happens in the worktree. The original repo stays on main.
 - **Capture before cleanup.** Read peer-review findings before removing `.peer-review/` or the worktree.
-- **Default reviewers.** Always include `Chiropractic-CT-Cloud/phoenix` on PRs.
+- **Green CI.** The PR should have passing CI before the pipeline is done. CI watch runs after PR creation and fixes failures up to the attempt budget. CI fix commits are not peer-reviewed — they are small targeted fixes (lint, types, missing imports) where the feedback loop is CI itself.
 
 ## Failure Modes
 
@@ -233,3 +282,5 @@ If `git worktree remove` fails (uncommitted changes, lock), display the error an
 | Peer review circuit breaker | Include advisory findings in PR body |
 | `git push` fails | Display error, leave worktree for diagnosis |
 | `gh pr create` fails | Display error, branch is pushed for manual PR |
+| CI checks fail after 5 fix attempts | Comment remaining failures on PR, proceed to cleanup |
+| CI checks stuck pending for 60+ minutes | Skip to circuit breaker |

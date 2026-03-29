@@ -198,7 +198,7 @@ Specialized methodologies that activate automatically when relevant tasks are de
 | **mysql-cli** | Execute queries against live MySQL databases using mysql-client with login paths |
 | **neb-helm-env** | Adding, modifying, or deploying environment variables for neb microservices via Helm charts |
 | **neb-ms-conventions** | Code conventions used in neb microservice repositories |
-| **one-shot** | Implement a feature end-to-end in one run — accepts PRD or prose, worktree, peer review, commit, and PR (manual-only, invoke with `/one-shot`) |
+| **one-shot** | Implement a feature end-to-end in one run — accepts PRD or prose, worktree, peer review, commit, PR, and CI fix loop (manual-only, invoke with `/one-shot`) |
 | **peer-review** | Multi-round code review using an isolated agentic reviewer with progressive verdict thresholds |
 | **playwright-cli** | Browser automation via playwright-cli CLI (navigation, forms, screenshots, data extraction) |
 | **pr-analysis** | Reviewing PR/git diffs for quality, security, architecture, testing |
