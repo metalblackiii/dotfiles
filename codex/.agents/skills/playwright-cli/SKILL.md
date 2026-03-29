@@ -1,6 +1,6 @@
 ---
 name: playwright-cli
-description: ALWAYS invoke for automating browser interactions for web testing, form filling, screenshots, and data extraction via the playwright-cli CLI. Not for writing Playwright test files in neb-www — use neb-playwright-expert for that.
+description: ALWAYS invoke for automating browser interactions for web testing, form filling, screenshots, and data extraction via the playwright-cli CLI. Not for writing Playwright test files in neb-www.
 allowed-tools: Bash(playwright-cli:*)
 ---
 

@@ -3,7 +3,7 @@ name: one-shot
 description: >-
   Automated pipeline from requirements to PR in a single run — worktree setup,
   implementation, peer review, commit, and PR creation. Accepts a PRD file or prose description.
-  Not for creating PRDs (use create-prd) or multi-repo implementation (use ai-teamup).
+  Not for creating PRDs (use create-prd) or multi-repo implementation.
   Manual invocation only; not invoked directly by the model.
 argument-hint: "<prd-path or prose description>"
 disable-model-invocation: true
@@ -20,7 +20,7 @@ Accepts two input types:
 ## When to Use
 
 - You have requirements (PRD or prose) and want to implement them end-to-end
-- Single-repo features only — multi-repo work should use `ai-teamup`
+- Single-repo features only — reject any multi-repo request
 
 ## Pipeline
 
@@ -40,7 +40,7 @@ Read the PRD file. **Hold the full content in memory** — the PRD may not exist
 
 - **Branch**: Extract from `> Branch: [branch-name]`. If missing, prompt the user.
 - **Repo validation**: Parse the `## Repositories` table. Count repos with code-change roles (`Primary implementation` or `Potential update`). If more than one:
-  > This PRD spans multiple repositories. Use `/ai-teamup` for multi-repo implementation.
+  > This PRD spans multiple repositories. Stop and tell the user one-shot only supports single-repo work.
 
   Stop.
 - **Verification commands**: Extract from `## Verification`. Hold for Step 3.
@@ -226,7 +226,7 @@ If `git worktree remove` fails (uncommitted changes, lock), display the error an
 | Failure | Action |
 |---------|--------|
 | No branch name provided | Prompt user — do not guess |
-| Multi-repo PRD | Reject, suggest `/ai-teamup` |
+| Multi-repo PRD | Reject — one-shot only supports single-repo work |
 | Worktree exists and is clean | Remove and recreate |
 | Worktree exists with uncommitted changes | Stop — tell user to clean up manually |
 | Verification fails after 2 attempts | Note failure, continue to peer review |
